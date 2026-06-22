@@ -51,6 +51,7 @@ The following table presents the median and mean values of the hunk divergence c
 
 **Key Observations:**
 - **Overall Hunk Divergence** ranges from a minimum of **0.0000** to a maximum of **0.7423**, with a median of **0.3362** and a mean of **0.3326**.
+* A higher number mean greater internal heterogeneity (dissimilarity) among the changes within a patch. --> repair is difficult
 - **File Distance ($D_{file}$)** is **0.0000** for all bugs because all multi-hunk bugs in our dataset belong to the same file (`Cluster` class).
 
 ---
@@ -80,7 +81,7 @@ Based on these predicates, patches are classified into one of five categories:
 
 $\lambda$ is the directory depth threshold, set to $3$ in our analysis.
 
-### 3.3 Empirical Distribution in Our Dataset
+### 3.3 Resultsf for Our Dataset
 
 The distribution of spatial proximity classes and their average hunk divergence in our dataset (derived from [`proximity_class.csv`](https://github.com/NGimhana/PR-metrics/blob/main/HunkDivergence_Proximity/proximity_class/proximity_class.csv) and [`proximity_class_avg_hunk_divergence.csv`](https://github.com/NGimhana/PR-metrics/blob/main/HunkDivergence_Proximity/proximity_class/proximity_class_avg_hunk_divergence.csv)):
 
@@ -94,6 +95,8 @@ The distribution of spatial proximity classes and their average hunk divergence 
 | **Total** | **97** | **0.3326** (average over multi-hunk bugs) |
 
 **Key Observations:**
+
+- A higher value means The hunks are more spread out across the architecture of the codebase.
 - **Nucleus** contains **82 bugs**. These are single-hunk patches where all changes are confined to a single method in a single file. Because they only contain one hunk, hunk divergence is not computed for them.
 - **Cluster** contains **15 bugs**. These are multi-hunk patches where hunks span multiple methods but are restricted to a single file. Their average hunk divergence is **0.3326**.
 - There are **no bugs** classified as **Orbit**, **Sprawl**, or **Fragment** in our current dataset, reflecting that all analysed bugs in this dataset are single-file modifications.
