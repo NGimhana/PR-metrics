@@ -38,9 +38,9 @@ $$Div(P) = \ln(n) \cdot \left[ \frac{2}{n(n-1)} \cdot \sum_{1 \le i < j \le n} D
 
 The bracketed term represents the average pairwise divergence over all hunk pairs, while $\ln(n)$ scales the divergence to reflect the coordination complexity of having more hunks. For single-hunk patches ($n < 2$), hunk divergence is undefined (or set to $0.0$).
 
-### 2.3 Empirical Distribution in Our Dataset
+### 2.3 Results for our Dataset
 
-The following table presents the median and mean values of the hunk divergence components computed over the 15 multi-hunk bugs in our dataset (from [`bugwise_average_divergence.csv`](file:///Users/nadeeshan/Documents/Summer2026/PR-metrics/HunkDivergence_Proximity/hunk_divergence/bugwise_average_divergence.csv)):
+The following table presents the median and mean values of the hunk divergence components computed over the 15 multi-hunk bugs in our dataset (from [`bugwise_average_divergence.csv`](https://github.com/NGimhana/PR-metrics/blob/main/HunkDivergence_Proximity/hunk_divergence/bugwise_average_divergence.csv)):
 
 | Component | Median | Mean |
 |---|---|---|
@@ -82,7 +82,7 @@ $\lambda$ is the directory depth threshold, set to $3$ in our analysis.
 
 ### 3.3 Empirical Distribution in Our Dataset
 
-The distribution of spatial proximity classes and their average hunk divergence in our dataset (derived from [`proximity_class.csv`](file:///Users/nadeeshan/Documents/Summer2026/PR-metrics/HunkDivergence_Proximity/proximity_class/proximity_class.csv) and [`proximity_class_avg_hunk_divergence.csv`](file:///Users/nadeeshan/Documents/Summer2026/PR-metrics/HunkDivergence_Proximity/proximity_class/proximity_class_avg_hunk_divergence.csv)):
+The distribution of spatial proximity classes and their average hunk divergence in our dataset (derived from [`proximity_class.csv`](https://github.com/NGimhana/PR-metrics/blob/main/HunkDivergence_Proximity/proximity_class/proximity_class.csv) and [`proximity_class_avg_hunk_divergence.csv`](https://github.com/NGimhana/PR-metrics/blob/main/HunkDivergence_Proximity/proximity_class/proximity_class_avg_hunk_divergence.csv)):
 
 | Proximity Class | Number of Bugs | Mean Hunk Divergence |
 |---|---|---|
