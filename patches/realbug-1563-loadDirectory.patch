@@ -1,0 +1,23 @@
+diff --git a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+index cd2414b..2eec493 100644
+--- a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+@@ -612,8 +613,16 @@ public class FileActivity extends AppCompatActivity
+             errorText.setVisibility(GONE);
+             emptyText.setVisibility(GONE);
+ 
+-            arrayAdapter = new FileArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()));
+-            fileListView.setAdapter(arrayAdapter);
++
++
++            if (arrayAdapter == null || !currentDirectory.equals(path)) { // only keep scroll position when refreshing current folder
++                arrayAdapter = new FileArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()));
++                fileListView.setAdapter(arrayAdapter);
++            } else {
++                ((BaseArrayAdapter) fileListView.getAdapter()).clear();
++                ((BaseArrayAdapter) fileListView.getAdapter()).addAll(files);
++                ((BaseArrayAdapter) fileListView.getAdapter()).notifyDataSetChanged();
++            }
+         } catch (NoAccessException e) {
+             Log.w(TAG, "Can't read '" + path + "': Permission denied!");
+             fileListView.setVisibility(GONE);

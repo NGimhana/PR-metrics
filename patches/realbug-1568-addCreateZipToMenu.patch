@@ -1,0 +1,13 @@
+diff --git a/app/src/main/java/io/lerk/lrkFM/activities/file/ContextMenuUtil.java b/app/src/main/java/io/lerk/lrkFM/activities/file/ContextMenuUtil.java
+index 94f3263..c507a06 100644
+--- a/app/src/main/java/io/lerk/lrkFM/activities/file/ContextMenuUtil.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/file/ContextMenuUtil.java
+@@ -254,7 +255,7 @@ public class ContextMenuUtil {
+      */
+     private void addCreateZipToMenu(FMFile f, ContextMenu menu) {
+ 
+-        EditablePair<Operation, ArrayList<FMFile>> fileOpContext = activity.getFileOpContext();
++        EditablePair<Operation, CopyOnWriteArrayList<FMFile>> fileOpContext = activity.getFileOpContext();
+ 
+         boolean zipFileReady = fileOpContext.getFirst().equals(CREATE_ZIP) && fileOpContext.getSecond().size() >= 1;
+ 

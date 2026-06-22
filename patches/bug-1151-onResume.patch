@@ -1,0 +1,18 @@
+diff --git a/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java b/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java
+index 9db58604..16b816b3 100644
+--- a/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java
++++ b/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java
+@@ -251,6 +255,13 @@ public class GpsTestActivity extends AppCompatActivity
+     protected void onResume() {
+         super.onResume();
+ 
++        // If the theme has changed (e.g., from Preferences), destroy and recreate to reflect change
++        boolean useDarkTheme = Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false);
++        if (mUseDarkTheme != useDarkTheme) {
++            mUseDarkTheme = useDarkTheme;
++            recreate();
++        }
++
+         addStatusListener();
+ 
+         addOrientationSensorListener();

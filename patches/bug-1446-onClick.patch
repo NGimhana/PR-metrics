@@ -1,0 +1,13 @@
+diff --git a/AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java b/android/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java
+index 6f6b3bf4..6dee7d91 100644
+--- a/AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java
++++ b/android/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java
+@@ -190,8 +189,7 @@ public class ManageLocationFragment extends ManageContentFragment {
+         fishingSpotView.setOnClickDetailButton(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-                mFishingSpots.remove(spot);
+-                mContainer.removeView(fishingSpotView);
++                removeFishingSpot(spot, fishingSpotView);
+             }
+         });

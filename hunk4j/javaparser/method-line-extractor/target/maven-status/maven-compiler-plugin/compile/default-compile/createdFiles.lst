@@ -1,0 +1,4 @@
+ExampleClass.class
+com/example/MethodLineExtractor$BugEntry.class
+com/example/MethodLineExtractor.class
+com/example/MethodLineExtractor$Pair.class

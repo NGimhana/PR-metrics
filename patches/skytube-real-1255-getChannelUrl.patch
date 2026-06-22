@@ -1,0 +1,17 @@
+diff --git a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java
+index e723c49f..f3b0f2d2 100644
+--- a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java
++++ b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java
+@@ -325,11 +326,6 @@ public class YouTubeChannel extends CardData implements Serializable {
+ 	}
+ 
+ 	public String getChannelUrl() {
+-		try {
+-			return YoutubeChannelLinkHandlerFactory.getInstance().getUrl(getId());
+-		} catch (ParsingException p) {
+-			Logger.e(this, "getChannel URL for " + getId() + ", error:" + p.getMessage(), p);
+-			return id;
+-		}
++		return getChannelId().toURL();
+ 	}
+ }

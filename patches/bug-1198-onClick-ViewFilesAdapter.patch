@@ -1,0 +1,53 @@
+diff --git a/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java b/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
+index 4265738..4da5fda 100644
+--- a/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
++++ b/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
+@@ -169,7 +106,7 @@ public class ViewFilesAdapter extends RecyclerView.Adapter<ViewFilesAdapter.View
+         holder.mRipple.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+-                new MaterialDialog.Builder(mContext)
++                new MaterialDialog.Builder(mActivity)
+                         .title(R.string.title)
+                         .items(R.array.items)
+                         .itemsIds(R.array.itemIds)
+@@ -179,23 +116,34 @@ public class ViewFilesAdapter extends RecyclerView.Adapter<ViewFilesAdapter.View
+ 
+                                 switch (which) {
+                                     case 0: //Open
+-                                        openFile(fileName);
++                                        mFileUtils.openFile(filePath);
+                                         break;
+ 
+                                     case 1: //delete
+-                                        deleteFile(fileName, filePosition);
++                                        deleteFile(filePath, position);
+                                         break;
+ 
+                                     case 2: //rename
+-                                        renameFile(filePosition);
++                                        renameFile(position);
+                                         break;
+ 
+                                     case 3: //Print
+-                                        doPrint(fileName);
++                                        mFileUtils.printFile(mFileList.get(position));
+                                         break;
+ 
+                                     case 4: //Email
+-                                        shareFile(fileName);
++                                        mFileUtils.shareFile(mFileList.get(position));
++                                        break;
++
++                                    case 5: //Details
++                                        mPDFUtils.showDetails(fileName[fileName.length - 1],
++                                                filePath, fileSize, lastModDate);
++                                        break;
++                                    case 6://Password Set
++                                        mPDFUtils.setPassword(filePath, ViewFilesAdapter.this, mFileList);
++                                        break;
++                                    case 7://Password  Remove
++                                        mPDFUtils.removePassword(filePath, ViewFilesAdapter.this, mFileList);
+                                         break;
+                                 }
+                             }

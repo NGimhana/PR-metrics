@@ -1,0 +1,12 @@
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+index d215ec3e..be5e5614 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+@@ -1092,6 +1074,7 @@ public class GpsLoggingService extends Service  {
+         }
+         catch(Exception e){
+              LOG.error(getString(R.string.could_not_write_to_file), e);
++             Systems.showErrorNotification(this, getString(R.string.could_not_write_to_file));
+         }
+ 
+         session.clearDescription();

@@ -1,0 +1,15 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 3e7d3830..08e7ef53 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -405,6 +410,11 @@ public class IntroScreenActivity extends IntroActivity {
+                         UIHelper.hideKeyboard(getIntroActivity(), root);
+                     }
+ 
++                    passwordInput.setText(null);
++                    passwordConfirm.setText(null);
++
++                    authWarnings.setVisibility(View.GONE);
++
+                     updateNavigation();
+                 }

@@ -1,0 +1,14 @@
+diff --git a/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java b/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
+index c8816ff1..1bb69bfb 100644
+--- a/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
++++ b/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
+@@ -46,7 +46,8 @@ public class TowerInserter {
+             return;
+         }
+ 
+-        if (mInsertedTower == null && !mGameManager.isGameOver()) {
++        if (mInsertedTower == null && !mGameManager.isGameOver() &&
++                mScoreBoard.getCredits() >= mTowerFactory.getTowerValue(towerName)) {
+             showTowerLevels();
+             mInsertedTower = mTowerFactory.createTower(towerName);
+         }

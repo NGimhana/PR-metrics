@@ -1,0 +1,13 @@
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+index d215ec3e..be5e5614 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+@@ -179,8 +178,7 @@ public class GpsLoggingService extends Service  {
+ 
+                 if(!Systems.locationPermissionsGranted(this)){
+                     LOG.error("User has not granted permission to access location services. Will not continue!");
+-                    stopLogging();
+-                    stopSelf();
++                    Systems.showErrorNotification(this, getString(R.string.gpslogger_permissions_permanently_denied));
+                     return;
+                 }

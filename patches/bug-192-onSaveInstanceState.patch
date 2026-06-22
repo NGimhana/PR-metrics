@@ -1,0 +1,12 @@
+diff --git a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+index e6a58f03..0676d2c1 100644
+--- a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
++++ b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+@@ -266,6 +282,7 @@ public class DocumentEditFragment extends BaseFragment implements TextFormat.Tex
+     public void onSaveInstanceState(@NonNull Bundle outState) {
+         saveDocument();
+         outState.putSerializable(SAVESTATE_DOCUMENT, _document);
++        outState.putSerializable(SAVESTATE_CURSOR_POS, _hlEditor.getSelectionStart());
+         super.onSaveInstanceState(outState);
+     }
+ 

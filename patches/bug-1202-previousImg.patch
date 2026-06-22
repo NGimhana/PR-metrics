@@ -1,0 +1,17 @@
+diff --git a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+index d26b1c3..dba7159 100644
+--- a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
++++ b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+@@ -140,11 +138,9 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+     @OnClick(R.id.previousImageButton)
+     void previousImg() {
+         //move to previous if Save Current has been clicked
+-        if (mClicked == mClickedFilter) {
++        if (mClicked) {
+             previous();
+             decrementImageCount();
+-            mClicked = false;
+-            mClickedFilter = false;
+         } else
+             Toast.makeText(getApplicationContext(), R.string.save_first, Toast.LENGTH_SHORT).show();
+     }

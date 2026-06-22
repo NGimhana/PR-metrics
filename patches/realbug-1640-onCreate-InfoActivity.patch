@@ -1,0 +1,20 @@
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java b/app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java
+index 8924770..b12e697 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java
+@@ -34,14 +34,15 @@ public class InfoActivity extends AppCompatActivity {
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_info);
+-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
++        Toolbar toolbar = findViewById(R.id.toolbar);
+         setSupportActionBar(toolbar);
+ 
+         FloatingActionButton fab = findViewById(R.id.fab);
+         fab.setOnClickListener(view -> Snackbar.make(view,
+                 "Contact us on GitHub", Snackbar.LENGTH_LONG)
+                 .setAction("Action", null).show());
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
++
++        makeConnections();
+     }

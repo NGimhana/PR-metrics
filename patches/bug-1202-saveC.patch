@@ -1,0 +1,17 @@
+diff --git a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+index d26b1c3..dba7159 100644
+--- a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
++++ b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+@@ -154,9 +150,9 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+         mClicked = true;
+         if (mClickedFilter || mDoodleSelected) {
+             saveCurrentImage();
+-        } else {
+-            applyFilter(PhotoFilter.NONE);
+-            saveCurrentImage();
++            hideBrushEffect();
++            mClickedFilter = false;
++            mDoodleSelected = false;
+         }
+     }
+ 

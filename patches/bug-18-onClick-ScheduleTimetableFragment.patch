@@ -1,0 +1,12 @@
+diff --git a/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java b/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java
+index 3369cf9e..420cfd16 100644
+--- a/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java
++++ b/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java
+@@ -311,7 +311,7 @@ public class ScheduleTimetableFragment extends Fragment
+                         new RadialTimePickerDialogFragment()
+                                 .setOnTimeSetListener(ScheduleTimetableFragment.this)
+                                 .setStartTime(time.getHourOfDay(), time.getMinuteOfHour());
+-                timePickerDialog.show(getChildFragmentManager(), "111");
++                timePickerDialog.show(getActivity().getSupportFragmentManager(), "111");
+             }
+         });

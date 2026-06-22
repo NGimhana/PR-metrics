@@ -1,0 +1,25 @@
+diff --git a/app/src/main/java/swati4star/createpdf/activity/MainActivity.java b/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
+index 807337b..4712ce3 100644
+--- a/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
++++ b/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
+@@ -281,14 +282,16 @@
+         if (drawer.isDrawerOpen(GravityCompat.START)) {
+             drawer.closeDrawer(GravityCompat.START);
+         } else {
+-            Fragment currentFragment = getSupportFragmentManager()
++            mCurrentFragment = getSupportFragmentManager()
+                     .findFragmentById(R.id.content);
+-            if (currentFragment instanceof HomeFragment) {
++            if (mCurrentFragment instanceof HomeFragment) {
+                 checkDoubleBackPress();
+-            } else {
++            } else if (checkFragmentBottomSheetBehavior())
++                closeFragmentBottomSheet();
++            else {
+                 Fragment fragment = new HomeFragment();
+                 getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
+-                setDefaultMenuSelected(0);
++                setNavigationViewSelection(R.id.nav_home);
+             }
+         }
+     }

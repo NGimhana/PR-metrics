@@ -1,0 +1,30 @@
+diff --git a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+index d26b1c3..dba7159 100644
+--- a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
++++ b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+@@ -308,21 +304,18 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+      */
+     @Override
+     public void onItemClick(View view, int position) {
++        //setting mClicked true when none filter is selected otherwise false
++        mClicked = position == 0;
+         // Brush effect is in second position
+         if (position == 1) {
+             mPhotoEditor = new PhotoEditor.Builder(this, mPhotoEditorView)
+                     .setPinchTextScalable(true)
+                     .build();
+             if (doodleSeekBar.getVisibility() == View.GONE && brushColorsView.getVisibility() == View.GONE) {
+-                mPhotoEditor.setBrushDrawingMode(true);
+-                doodleSeekBar.setVisibility(View.VISIBLE);
+-                brushColorsView.setVisibility(View.VISIBLE);
+-                mDoodleSelected = true;
++                showBrushEffect();
+             } else if (doodleSeekBar.getVisibility() == View.VISIBLE &&
+                     brushColorsView.getVisibility() == View.VISIBLE) {
+-                mPhotoEditor.setBrushDrawingMode(false);
+-                doodleSeekBar.setVisibility(View.GONE);
+-                brushColorsView.setVisibility(View.GONE);
++                hideBrushEffect();
+             }
+         } else {
+             PhotoFilter filter = mFilterItems.get(position).getFilter();

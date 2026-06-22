@@ -1,0 +1,9 @@
+diff --git a/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java b/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java
+index f364dd9..234ebb5 100644
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java
+@@ -191,3 +191,3 @@ class RemoveQueriesDialog extends AModuleDialog {
+         public String getQueryName(int index) {
+-            return queries.get(index).split("=")[0];
++            return splitFix(queries.get(index),"=").get(0);
+        }

@@ -1,0 +1,13 @@
+diff --git a/app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java b/app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java
+index 10e45695..640101f0 100644
+--- a/app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java
++++ b/app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java
+@@ -113,7 +114,7 @@ public class CustomAuthenticatedSlide extends Fragment implements ISlidePolicy,
+                 // intentional fallthrough
+             case CustomAuthenticationSlide.CRYPT_TYPE_PASS:
+                 if (EditTextHelper.getEditTextChars(_textPassword).length > 0) {
+-                    return EditTextHelper.areEditTextsEqual(_textPassword, _textPasswordConfirm) || _checkPasswordVisibility.isChecked();
++                    return EditTextHelper.areEditTextsEqual(_textPassword, _textPasswordConfirm);
+                 }
+ 
+                 return false;

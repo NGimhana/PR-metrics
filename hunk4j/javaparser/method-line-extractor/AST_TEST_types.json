@@ -1,0 +1,1212 @@
+[
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1202-previousImg/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java",
+        "span_end": 143,
+        "name": "ImageEditor",
+        "start_line": 48,
+        "span_start": 141,
+        "bug_name": "bug-1202-previousImg",
+        "type": "class",
+        "end_line": 387
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1213-PasswordEntryDialog/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java",
+        "span_end": 46,
+        "name": "PasswordEntryDialog",
+        "start_line": 20,
+        "span_start": 46,
+        "bug_name": "bug-1213-PasswordEntryDialog",
+        "type": "class",
+        "end_line": 95
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-71-onSingleTapConfirmed/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java",
+        "span_end": 97,
+        "name": "ExperienceTweaks",
+        "start_line": 32,
+        "span_start": 95,
+        "bug_name": "bug-71-onSingleTapConfirmed",
+        "type": "class",
+        "end_line": 356
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-192-onSaveInstanceState/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java",
+        "span_end": 285,
+        "name": "DocumentEditFragment",
+        "start_line": 44,
+        "span_start": 285,
+        "bug_name": "bug-192-onSaveInstanceState",
+        "type": "class",
+        "end_line": 319
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/urlcheck-real-365-getQueryValue/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java",
+        "span_end": 201,
+        "name": "RemoveQueriesDialog",
+        "start_line": 56,
+        "span_start": 201,
+        "bug_name": "urlcheck-real-365-getQueryValue",
+        "type": "class",
+        "end_line": 255
+    },
+    {
+        "javadoc": "/**\n * Manages the splitting, removing and merging of queries\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/urlcheck-real-365-getQueryValue/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java",
+        "span_end": 201,
+        "name": "UrlParts",
+        "start_line": 154,
+        "span_start": 201,
+        "bug_name": "urlcheck-real-365-getQueryValue",
+        "type": "class",
+        "end_line": 240
+    },
+    {
+        "javadoc": "/**\n * The ManageLocationFragment is used to add and edit locations.\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1446-goToManageFishingSpot/AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java",
+        "span_end": 227,
+        "name": "ManageLocationFragment",
+        "start_line": 30,
+        "span_start": 225,
+        "bug_name": "bug-1446-goToManageFishingSpot",
+        "type": "class",
+        "end_line": 290
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-130-hideWarning/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 295,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 294,
+        "bug_name": "bug-130-hideWarning",
+        "type": "class",
+        "end_line": 485
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-130-hideWarning/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 295,
+        "name": "AuthenticationFragment",
+        "start_line": 231,
+        "span_start": 294,
+        "bug_name": "bug-130-hideWarning",
+        "type": "class",
+        "end_line": 484
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1213-updateLayout/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java",
+        "span_end": 260,
+        "name": "CredentialsPreference",
+        "start_line": 61,
+        "span_start": 260,
+        "bug_name": "bug-1213-updateLayout",
+        "type": "class",
+        "end_line": 315
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1213-updateLayout/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java",
+        "span_end": 281,
+        "name": "CredentialsPreference",
+        "start_line": 61,
+        "span_start": 281,
+        "bug_name": "bug-1213-updateLayout",
+        "type": "class",
+        "end_line": 315
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/harmonic-real-114-onClick/app/src/main/java/com/simon/harmonichackernews/CommentsRecyclerViewAdapter.java",
+        "span_end": 543,
+        "name": "CommentsRecyclerViewAdapter",
+        "start_line": 55,
+        "span_start": 540,
+        "bug_name": "harmonic-real-114-onClick",
+        "type": "class",
+        "end_line": 694
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/harmonic-real-114-onClick/app/src/main/java/com/simon/harmonichackernews/CommentsRecyclerViewAdapter.java",
+        "span_end": 543,
+        "name": "HeaderViewHolder",
+        "start_line": 449,
+        "span_start": 540,
+        "bug_name": "harmonic-real-114-onClick",
+        "type": "class",
+        "end_line": 614
+    },
+    {
+        "javadoc": "/**\n * @author Lukas Fülling (lukas@k40s.net)\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-1568-addCreateZipToMenu/app/src/main/java/io/lerk/lrkFM/activities/file/ContextMenuUtil.java",
+        "span_end": 258,
+        "name": "ContextMenuUtil",
+        "start_line": 42,
+        "span_start": 258,
+        "bug_name": "realbug-1568-addCreateZipToMenu",
+        "type": "class",
+        "end_line": 350
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-130-onItemSelected/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 417,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 413,
+        "bug_name": "bug-130-onItemSelected",
+        "type": "class",
+        "end_line": 485
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-130-onItemSelected/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 417,
+        "name": "AuthenticationFragment",
+        "start_line": 231,
+        "span_start": 413,
+        "bug_name": "bug-130-onItemSelected",
+        "type": "class",
+        "end_line": 484
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-1568-clearFileOpCache/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java",
+        "span_end": 965,
+        "name": "FileActivity",
+        "start_line": 107,
+        "span_start": 965,
+        "bug_name": "realbug-1568-clearFileOpCache",
+        "type": "class",
+        "end_line": 1275
+    },
+    {
+        "javadoc": "/**\n * The ManageLocationFragment is used to add and edit locations.\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1446-onCreateView/AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java",
+        "span_end": 51,
+        "name": "ManageLocationFragment",
+        "start_line": 30,
+        "span_start": 51,
+        "bug_name": "bug-1446-onCreateView",
+        "type": "class",
+        "end_line": 290
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-1641-onCreate/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java",
+        "span_end": 46,
+        "name": "GeneralTrainingScheduleEditor",
+        "start_line": 15,
+        "span_start": 42,
+        "bug_name": "realbug-1641-onCreate",
+        "type": "class",
+        "end_line": 84
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-1640-onCreate-ExerciseViewActivity/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java",
+        "span_end": 42,
+        "name": "ExerciseViewActivity",
+        "start_line": 21,
+        "span_start": 42,
+        "bug_name": "realbug-1640-onCreate-ExerciseViewActivity",
+        "type": "class",
+        "end_line": 131
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-71-onSingleTapUp/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java",
+        "span_end": 83,
+        "name": "ExperienceTweaks",
+        "start_line": 32,
+        "span_start": 81,
+        "bug_name": "bug-71-onSingleTapUp",
+        "type": "class",
+        "end_line": 356
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-159-updateMultiselectMenu/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java",
+        "span_end": 866,
+        "name": "CardBrowser",
+        "start_line": 106,
+        "span_start": 866,
+        "bug_name": "realbug-159-updateMultiselectMenu",
+        "type": "class",
+        "end_line": 2304
+    },
+    {
+        "javadoc": "/**\n * The previewer intent must supply an array of cards to show and the index in the list from where\n * to begin showing them. Special rules are applied if the list size is 1 (i.e., no scrolling\n * buttons will be shown).\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/Anki-Android-273-real-onCreate/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+        "span_end": 51,
+        "name": "Previewer",
+        "start_line": 34,
+        "span_start": 46,
+        "bug_name": "Anki-Android-273-real-onCreate",
+        "type": "class",
+        "end_line": 179
+    },
+    {
+        "javadoc": "/**\n * The previewer intent must supply an array of cards to show and the index in the list from where\n * to begin showing them. Special rules are applied if the list size is 1 (i.e., no scrolling\n * buttons will be shown).\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/Anki-Android-273-real-onCreate/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+        "span_end": 72,
+        "name": "Previewer",
+        "start_line": 34,
+        "span_start": 67,
+        "bug_name": "Anki-Android-273-real-onCreate",
+        "type": "class",
+        "end_line": 179
+    },
+    {
+        "javadoc": "/**\n * The previewer intent must supply an array of cards to show and the index in the list from where\n * to begin showing them. Special rules are applied if the list size is 1 (i.e., no scrolling\n * buttons will be shown).\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/Anki-Android-273-real-onCreate/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+        "span_end": 97,
+        "name": "Previewer",
+        "start_line": 34,
+        "span_start": 90,
+        "bug_name": "Anki-Android-273-real-onCreate",
+        "type": "class",
+        "end_line": 179
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/urlcheck-real-382-onDisplayUrl/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+        "span_end": 82,
+        "name": "UriPartsDialog",
+        "start_line": 50,
+        "span_start": 79,
+        "bug_name": "urlcheck-real-382-onDisplayUrl",
+        "type": "class",
+        "end_line": 202
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/urlcheck-real-382-onDisplayUrl/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+        "span_end": 127,
+        "name": "UriPartsDialog",
+        "start_line": 50,
+        "span_start": 122,
+        "bug_name": "urlcheck-real-382-onDisplayUrl",
+        "type": "class",
+        "end_line": 202
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1202-nextImg/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java",
+        "span_end": 133,
+        "name": "ImageEditor",
+        "start_line": 48,
+        "span_start": 131,
+        "bug_name": "bug-1202-nextImg",
+        "type": "class",
+        "end_line": 387
+    },
+    {
+        "javadoc": "/**\n * Settings Screen\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-1299-onItemClick/app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java",
+        "span_end": 238,
+        "name": "ConfigActivity",
+        "start_line": 86,
+        "span_start": 234,
+        "bug_name": "realbug-1299-onItemClick",
+        "type": "class",
+        "end_line": 1586
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/WiFiAnalyzer-92-real-findVendors-with-args/app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java",
+        "span_end": 82,
+        "name": "VendorDB",
+        "start_line": 38,
+        "span_start": 64,
+        "bug_name": "WiFiAnalyzer-92-real-findVendors-with-args",
+        "type": "class",
+        "end_line": 143
+    },
+    {
+        "javadoc": "/**\n * The Logbook class is a static class storing all of the user's log data.\n * @author Cohen Adair\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-1445-tripExists/android/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java",
+        "span_end": 926,
+        "name": "Logbook",
+        "start_line": 69,
+        "span_start": 921,
+        "bug_name": "realbug-1445-tripExists",
+        "type": "class",
+        "end_line": 1043
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-18-showStockDialog/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/MedicineCreateOrEditFragment.java",
+        "span_end": 486,
+        "name": "MedicineCreateOrEditFragment",
+        "start_line": 93,
+        "span_start": 486,
+        "bug_name": "bug-18-showStockDialog",
+        "type": "class",
+        "end_line": 728
+    },
+    {
+        "javadoc": "/**\n * Represents a YouTube Channel.\n *\n * <p>This class has the ability to query channel info by using the given channel ID.<\/p>\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/skytube-real-1255-getChannelUrl/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java",
+        "span_end": 328,
+        "name": "YouTubeChannel",
+        "start_line": 52,
+        "span_start": 329,
+        "bug_name": "skytube-real-1255-getChannelUrl",
+        "type": "class",
+        "end_line": 335
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/harmonic-real-171-showTextSelection/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java",
+        "span_end": 33,
+        "name": "DialogUtils",
+        "start_line": 16,
+        "span_start": 32,
+        "bug_name": "harmonic-real-171-showTextSelection",
+        "type": "class",
+        "end_line": 39
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-275-onUserIllegallyRequestedNextPage/app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java",
+        "span_end": 129,
+        "name": "CustomAuthenticatedSlide",
+        "start_line": 28,
+        "span_start": 129,
+        "bug_name": "bug-275-onUserIllegallyRequestedNextPage",
+        "type": "class",
+        "end_line": 156
+    },
+    {
+        "javadoc": "/**\n * The previewer intent must supply an array of cards to show and the index in the list from where\n * to begin showing them. Special rules are applied if the list size is 1 (i.e., no scrolling\n * buttons will be shown).\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/Anki-Android-273-real-onCollectionLoaded/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+        "span_end": 51,
+        "name": "Previewer",
+        "start_line": 34,
+        "span_start": 46,
+        "bug_name": "Anki-Android-273-real-onCollectionLoaded",
+        "type": "class",
+        "end_line": 179
+    },
+    {
+        "javadoc": "/**\n * The previewer intent must supply an array of cards to show and the index in the list from where\n * to begin showing them. Special rules are applied if the list size is 1 (i.e., no scrolling\n * buttons will be shown).\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/Anki-Android-273-real-onCollectionLoaded/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+        "span_end": 72,
+        "name": "Previewer",
+        "start_line": 34,
+        "span_start": 67,
+        "bug_name": "Anki-Android-273-real-onCollectionLoaded",
+        "type": "class",
+        "end_line": 179
+    },
+    {
+        "javadoc": "/**\n * The previewer intent must supply an array of cards to show and the index in the list from where\n * to begin showing them. Special rules are applied if the list size is 1 (i.e., no scrolling\n * buttons will be shown).\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/Anki-Android-273-real-onCollectionLoaded/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+        "span_end": 97,
+        "name": "Previewer",
+        "start_line": 34,
+        "span_start": 90,
+        "bug_name": "Anki-Android-273-real-onCollectionLoaded",
+        "type": "class",
+        "end_line": 179
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/pslab-real-2587-doInBackground/app/src/main/java/io/pslab/fragment/ESPFragment.java",
+        "span_end": 104,
+        "name": "ESPFragment",
+        "start_line": 32,
+        "span_start": 96,
+        "bug_name": "pslab-real-2587-doInBackground",
+        "type": "class",
+        "end_line": 128
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/pslab-real-2587-doInBackground/app/src/main/java/io/pslab/fragment/ESPFragment.java",
+        "span_end": 104,
+        "name": "ESPTask",
+        "start_line": 87,
+        "span_start": 96,
+        "bug_name": "pslab-real-2587-doInBackground",
+        "type": "class",
+        "end_line": 127
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-192-onViewCreated/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java",
+        "span_end": 112,
+        "name": "DocumentEditFragment",
+        "start_line": 44,
+        "span_start": 104,
+        "bug_name": "bug-192-onViewCreated",
+        "type": "class",
+        "end_line": 319
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/pslab-real-2677-onProgressChanged2/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 261,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 256,
+        "bug_name": "pslab-real-2677-onProgressChanged2",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/pslab-real-2677-onProgressChanged1/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 237,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 232,
+        "bug_name": "pslab-real-2677-onProgressChanged1",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-44-removeTag/omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java",
+        "span_end": 92,
+        "name": "TagsHelper",
+        "start_line": 33,
+        "span_start": 90,
+        "bug_name": "bug-44-removeTag",
+        "type": "class",
+        "end_line": 131
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-1641-onStart/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java",
+        "span_end": 65,
+        "name": "ExerciseViewActivity",
+        "start_line": 17,
+        "span_start": 62,
+        "bug_name": "realbug-1641-onStart",
+        "type": "class",
+        "end_line": 81
+    },
+    {
+        "javadoc": "/**\n * The ManageFishingSpotFragment is used to add and edit fishing spots. This\n * {@link ManageContentFragment} subclass works slightly different than others. It doesn't interact\n * with the backend database directly. This is so {@link FishingSpot} objects aren't manipulated in\n * the database before the user saves the location.\n *\n * @author Cohen Adair\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1441-verifyUserInput/android/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java",
+        "span_end": 132,
+        "name": "ManageFishingSpotFragment",
+        "start_line": 36,
+        "span_start": 127,
+        "bug_name": "bug-1441-verifyUserInput",
+        "type": "class",
+        "end_line": 348
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/pslab-real-2677-onProgressChanged4/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 307,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 303,
+        "bug_name": "pslab-real-2677-onProgressChanged4",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/pslab-real-2677-onProgressChanged3/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 284,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 279,
+        "bug_name": "pslab-real-2677-onProgressChanged3",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-18-showIntervalPickerDialog/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+        "span_end": 542,
+        "name": "ScheduleTimetableFragment",
+        "start_line": 95,
+        "span_start": 542,
+        "bug_name": "bug-18-showIntervalPickerDialog",
+        "type": "class",
+        "end_line": 1411
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/pslab-real-2678-processDegreeInput/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 490,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 488,
+        "bug_name": "pslab-real-2678-processDegreeInput",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/pslab-real-2678-processDegreeInput/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 507,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 507,
+        "bug_name": "pslab-real-2678-processDegreeInput",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/harmonic-real-181-loadStory/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java",
+        "span_end": 507,
+        "name": "StoriesFragment",
+        "start_line": 60,
+        "span_start": 494,
+        "bug_name": "harmonic-real-181-loadStory",
+        "type": "class",
+        "end_line": 832
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/gpslogger-real-1138-writeToFile/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java",
+        "span_end": 1077,
+        "name": "GpsLoggingService",
+        "start_line": 55,
+        "span_start": 1077,
+        "bug_name": "gpslogger-real-1138-writeToFile",
+        "type": "class",
+        "end_line": 1226
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/markor-54-real-isEditorHistoryEnabled/app/src/main/java/net/gsantner/markor/util/AppSettings.java",
+        "span_end": 186,
+        "name": "AppSettings",
+        "start_line": 31,
+        "span_start": 186,
+        "bug_name": "markor-54-real-isEditorHistoryEnabled",
+        "type": "class",
+        "end_line": 309
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/markor-54-real-isEditorHistoryEnabled/app/src/main/java/net/gsantner/markor/util/AppSettings.java",
+        "span_end": 306,
+        "name": "AppSettings",
+        "start_line": 31,
+        "span_start": 307,
+        "bug_name": "markor-54-real-isEditorHistoryEnabled",
+        "type": "class",
+        "end_line": 309
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-191-onTouch/app/src/main/java/ch/logixisland/anuto/view/game/TowerView.java",
+        "span_end": 140,
+        "name": "TowerView",
+        "start_line": 24,
+        "span_start": 125,
+        "bug_name": "bug-191-onTouch",
+        "type": "class",
+        "end_line": 169
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/pslab-real-2677-processDegreeInput/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 490,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 488,
+        "bug_name": "pslab-real-2677-processDegreeInput",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/pslab-real-2677-processDegreeInput/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 507,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 507,
+        "bug_name": "pslab-real-2677-processDegreeInput",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-191-insertTower/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java",
+        "span_end": 50,
+        "name": "TowerInserter",
+        "start_line": 16,
+        "span_start": 49,
+        "bug_name": "bug-191-insertTower",
+        "type": "class",
+        "end_line": 150
+    },
+    {
+        "javadoc": "/**\n * The ManageLocationFragment is used to add and edit locations.\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1446-onClick/AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java",
+        "span_end": 192,
+        "name": "ManageLocationFragment",
+        "start_line": 30,
+        "span_start": 192,
+        "bug_name": "bug-1446-onClick",
+        "type": "class",
+        "end_line": 290
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1213-setupForPinInput/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 410,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 410,
+        "bug_name": "bug-1213-setupForPinInput",
+        "type": "class",
+        "end_line": 515
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1213-setupForPinInput/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 410,
+        "name": "AuthenticationFragment",
+        "start_line": 223,
+        "span_start": 410,
+        "bug_name": "bug-1213-setupForPinInput",
+        "type": "class",
+        "end_line": 514
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1214-onCreateView/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 443,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 358,
+        "bug_name": "bug-1214-onCreateView",
+        "type": "class",
+        "end_line": 493
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1214-onCreateView/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 443,
+        "name": "AuthenticationFragment",
+        "start_line": 231,
+        "span_start": 358,
+        "bug_name": "bug-1214-onCreateView",
+        "type": "class",
+        "end_line": 492
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/urlcheck-real-358-onDisplayUrl/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+        "span_end": 84,
+        "name": "UriPartsDialog",
+        "start_line": 51,
+        "span_start": 82,
+        "bug_name": "urlcheck-real-358-onDisplayUrl",
+        "type": "class",
+        "end_line": 206
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/urlcheck-real-358-onDisplayUrl/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+        "span_end": 98,
+        "name": "UriPartsDialog",
+        "start_line": 51,
+        "span_start": 98,
+        "bug_name": "urlcheck-real-358-onDisplayUrl",
+        "type": "class",
+        "end_line": 206
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/urlcheck-real-358-onDisplayUrl/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+        "span_end": 114,
+        "name": "UriPartsDialog",
+        "start_line": 51,
+        "span_start": 114,
+        "bug_name": "urlcheck-real-358-onDisplayUrl",
+        "type": "class",
+        "end_line": 206
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-1563-loadDirectory/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java",
+        "span_end": 625,
+        "name": "FileActivity",
+        "start_line": 98,
+        "span_start": 616,
+        "bug_name": "realbug-1563-loadDirectory",
+        "type": "class",
+        "end_line": 1153
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-275-showSetPasswordDialog/app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java",
+        "span_end": 101,
+        "name": "Dialogs",
+        "start_line": 35,
+        "span_start": 96,
+        "bug_name": "bug-275-showSetPasswordDialog",
+        "type": "class",
+        "end_line": 217
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-275-showSetPasswordDialog/app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java",
+        "span_end": 120,
+        "name": "Dialogs",
+        "start_line": 35,
+        "span_start": 120,
+        "bug_name": "bug-275-showSetPasswordDialog",
+        "type": "class",
+        "end_line": 217
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-275-showSetPasswordDialog/app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java",
+        "span_end": 145,
+        "name": "Dialogs",
+        "start_line": 35,
+        "span_start": 145,
+        "bug_name": "bug-275-showSetPasswordDialog",
+        "type": "class",
+        "end_line": 217
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/harmonic-real-136-handleOnBackPressed/app/src/main/java/com/simon/harmonichackernews/ComposeActivity.java",
+        "span_end": 216,
+        "name": "ComposeActivity",
+        "start_line": 50,
+        "span_start": 211,
+        "bug_name": "harmonic-real-136-handleOnBackPressed",
+        "type": "class",
+        "end_line": 308
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1207-show/app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java",
+        "span_end": 208,
+        "name": "ManualEntryDialog",
+        "start_line": 52,
+        "span_start": 206,
+        "bug_name": "bug-1207-show",
+        "type": "class",
+        "end_line": 217
+    },
+    {
+        "javadoc": "/**\n * @author Sindre Mehus\n * @version $Id$\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/ultrasonic-84-real-getPreferences/ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java",
+        "span_end": 403,
+        "name": "Util",
+        "start_line": 92,
+        "span_start": 401,
+        "bug_name": "ultrasonic-84-real-getPreferences",
+        "type": "class",
+        "end_line": 1666
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1202-saveC/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java",
+        "span_end": 155,
+        "name": "ImageEditor",
+        "start_line": 48,
+        "span_start": 153,
+        "bug_name": "bug-1202-saveC",
+        "type": "class",
+        "end_line": 387
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-1645-generateExcercise/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java",
+        "span_end": 63,
+        "name": "ExerciseDialog",
+        "start_line": 15,
+        "span_start": 63,
+        "bug_name": "realbug-1645-generateExcercise",
+        "type": "class",
+        "end_line": 85
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/Anki-Android-123451-real-createCustomStudySession/AnkiDroid/src/main/java/com/ichi2/anki/dialogs/CustomStudyDialog.java",
+        "span_end": 439,
+        "name": "CustomStudyDialog",
+        "start_line": 64,
+        "span_start": 439,
+        "bug_name": "Anki-Android-123451-real-createCustomStudySession",
+        "type": "class",
+        "end_line": 523
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1213-onBindDialogView/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java",
+        "span_end": 139,
+        "name": "PasswordEncryptedPreference",
+        "start_line": 51,
+        "span_start": 139,
+        "bug_name": "bug-1213-onBindDialogView",
+        "type": "class",
+        "end_line": 211
+    },
+    {
+        "javadoc": "/**\n * Shows unread or recently published episodes\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1130-onFragmentLoaded-AllEpisodesFragment/app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java",
+        "span_end": 360,
+        "name": "AllEpisodesFragment",
+        "start_line": 61,
+        "span_start": 347,
+        "bug_name": "bug-1130-onFragmentLoaded-AllEpisodesFragment",
+        "type": "class",
+        "end_line": 528
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1151-onPreferenceChange/GPSTest/src/main/java/com/android/gpstest/Preferences.java",
+        "span_end": 139,
+        "name": "Preferences",
+        "start_line": 38,
+        "span_start": 138,
+        "bug_name": "bug-1151-onPreferenceChange",
+        "type": "class",
+        "end_line": 191
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-18-onClick-ScheduleTimetableFragment/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+        "span_end": 314,
+        "name": "ScheduleTimetableFragment",
+        "start_line": 95,
+        "span_start": 314,
+        "bug_name": "bug-18-onClick-ScheduleTimetableFragment",
+        "type": "class",
+        "end_line": 1411
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-160-onCreateOptionsMenu/AnkiDroid/src/main/java/com/ichi2/anki/Reviewer.java",
+        "span_end": 442,
+        "name": "Reviewer",
+        "start_line": 61,
+        "span_start": 435,
+        "bug_name": "realbug-160-onCreateOptionsMenu",
+        "type": "class",
+        "end_line": 929
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-71-doAction/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java",
+        "span_end": 184,
+        "name": "ExperienceTweaks",
+        "start_line": 32,
+        "span_start": 181,
+        "bug_name": "bug-71-doAction",
+        "type": "class",
+        "end_line": 356
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/WiFiAnalyzer-92-real-findVendors-no-args/app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java",
+        "span_end": 82,
+        "name": "VendorDB",
+        "start_line": 38,
+        "span_start": 64,
+        "bug_name": "WiFiAnalyzer-92-real-findVendors-no-args",
+        "type": "class",
+        "end_line": 143
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-1146-updateFilterView/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java",
+        "span_end": 782,
+        "name": "GpsStatusFragment",
+        "start_line": 91,
+        "span_start": 782,
+        "bug_name": "realbug-1146-updateFilterView",
+        "type": "class",
+        "end_line": 1207
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-129-show/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java",
+        "span_end": 197,
+        "name": "ManualEntryDialog",
+        "start_line": 56,
+        "span_start": 197,
+        "bug_name": "realbug-129-show",
+        "type": "class",
+        "end_line": 278
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-129-show/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java",
+        "span_end": 265,
+        "name": "ManualEntryDialog",
+        "start_line": 56,
+        "span_start": 207,
+        "bug_name": "realbug-129-show",
+        "type": "class",
+        "end_line": 278
+    },
+    {
+        "javadoc": "/**\n * Shows all items in the queue\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1130-onFragmentLoaded-QueueFragment/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java",
+        "span_end": 522,
+        "name": "QueueFragment",
+        "start_line": 64,
+        "span_start": 509,
+        "bug_name": "bug-1130-onFragmentLoaded-QueueFragment",
+        "type": "class",
+        "end_line": 649
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1151-onCreate/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java",
+        "span_end": 198,
+        "name": "GpsTestActivity",
+        "start_line": 87,
+        "span_start": 198,
+        "bug_name": "bug-1151-onCreate",
+        "type": "class",
+        "end_line": 1247
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-130-flashWarning/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 307,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 300,
+        "bug_name": "bug-130-flashWarning",
+        "type": "class",
+        "end_line": 485
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-130-flashWarning/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 307,
+        "name": "AuthenticationFragment",
+        "start_line": 231,
+        "span_start": 300,
+        "bug_name": "bug-130-flashWarning",
+        "type": "class",
+        "end_line": 484
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-275-isPolicyRespected/app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java",
+        "span_end": 117,
+        "name": "CustomAuthenticatedSlide",
+        "start_line": 28,
+        "span_start": 117,
+        "bug_name": "bug-275-isPolicyRespected",
+        "type": "class",
+        "end_line": 156
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-1146-setStarted/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java",
+        "span_end": 291,
+        "name": "GpsStatusFragment",
+        "start_line": 91,
+        "span_start": 291,
+        "bug_name": "realbug-1146-setStarted",
+        "type": "class",
+        "end_line": 1207
+    },
+    {
+        "javadoc": "/**\n * The ManageLocationFragment is used to add and edit locations.\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1446-updateAllFishingSpots/AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java",
+        "span_end": 159,
+        "name": "ManageLocationFragment",
+        "start_line": 30,
+        "span_start": 158,
+        "bug_name": "bug-1446-updateAllFishingSpots",
+        "type": "class",
+        "end_line": 290
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/gpslogger-real-1138-handleIntent/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java",
+        "span_end": 181,
+        "name": "GpsLoggingService",
+        "start_line": 55,
+        "span_start": 181,
+        "bug_name": "gpslogger-real-1138-handleIntent",
+        "type": "class",
+        "end_line": 1226
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/urlcheck-real-365-getQueryName/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java",
+        "span_end": 194,
+        "name": "RemoveQueriesDialog",
+        "start_line": 56,
+        "span_start": 192,
+        "bug_name": "urlcheck-real-365-getQueryName",
+        "type": "class",
+        "end_line": 255
+    },
+    {
+        "javadoc": "/**\n * Manages the splitting, removing and merging of queries\n */\n",
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/urlcheck-real-365-getQueryName/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java",
+        "span_end": 194,
+        "name": "UrlParts",
+        "start_line": 154,
+        "span_start": 192,
+        "bug_name": "urlcheck-real-365-getQueryName",
+        "type": "class",
+        "end_line": 240
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-130-updateEncryptionType/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 265,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 264,
+        "bug_name": "bug-130-updateEncryptionType",
+        "type": "class",
+        "end_line": 485
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-130-updateEncryptionType/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 265,
+        "name": "AuthenticationFragment",
+        "start_line": 231,
+        "span_start": 264,
+        "bug_name": "bug-130-updateEncryptionType",
+        "type": "class",
+        "end_line": 484
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1198-onClick-ViewFilesAdapter/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java",
+        "span_end": 109,
+        "name": "ViewFilesAdapter",
+        "start_line": 53,
+        "span_start": 109,
+        "bug_name": "bug-1198-onClick-ViewFilesAdapter",
+        "type": "class",
+        "end_line": 386
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1198-onClick-ViewFilesAdapter/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java",
+        "span_end": 146,
+        "name": "ViewFilesAdapter",
+        "start_line": 53,
+        "span_start": 119,
+        "bug_name": "bug-1198-onClick-ViewFilesAdapter",
+        "type": "class",
+        "end_line": 386
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-271-refresh/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java",
+        "span_end": 69,
+        "name": "TotpProgressBar",
+        "start_line": 16,
+        "span_start": 68,
+        "bug_name": "bug-271-refresh",
+        "type": "class",
+        "end_line": 82
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-18-updatePeriodSelector/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+        "span_end": 1021,
+        "name": "ScheduleTimetableFragment",
+        "start_line": 95,
+        "span_start": 1021,
+        "bug_name": "bug-18-updatePeriodSelector",
+        "type": "class",
+        "end_line": 1411
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-18-updatePeriodSelector/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+        "span_end": 1037,
+        "name": "ScheduleTimetableFragment",
+        "start_line": 95,
+        "span_start": 1037,
+        "bug_name": "bug-18-updatePeriodSelector",
+        "type": "class",
+        "end_line": 1411
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/realbug-1568-finishFileOperation/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java",
+        "span_end": 974,
+        "name": "FileActivity",
+        "start_line": 107,
+        "span_start": 974,
+        "bug_name": "realbug-1568-finishFileOperation",
+        "type": "class",
+        "end_line": 1275
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1205-onBackPressed/app/src/main/java/swati4star/createpdf/activity/MainActivity.java",
+        "span_end": 294,
+        "name": "MainActivity",
+        "start_line": 67,
+        "span_start": 285,
+        "bug_name": "bug-1205-onBackPressed",
+        "type": "class",
+        "end_line": 419
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1215-afterTextChanged/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java",
+        "span_end": 288,
+        "name": "ManualEntryDialog",
+        "start_line": 57,
+        "span_start": 283,
+        "bug_name": "bug-1215-afterTextChanged",
+        "type": "class",
+        "end_line": 352
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/WiFiAnalyzer-92-real-findMacAddresses/app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java",
+        "span_end": 82,
+        "name": "VendorDB",
+        "start_line": 38,
+        "span_start": 64,
+        "bug_name": "WiFiAnalyzer-92-real-findMacAddresses",
+        "type": "class",
+        "end_line": 143
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-18-showRecurrencePickerDialog/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+        "span_end": 595,
+        "name": "ScheduleTimetableFragment",
+        "start_line": 95,
+        "span_start": 595,
+        "bug_name": "bug-18-showRecurrencePickerDialog",
+        "type": "class",
+        "end_line": 1411
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1202-onItemClick/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java",
+        "span_end": 318,
+        "name": "ImageEditor",
+        "start_line": 48,
+        "span_start": 307,
+        "bug_name": "bug-1202-onItemClick",
+        "type": "class",
+        "end_line": 387
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1151-onResume/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java",
+        "span_end": 264,
+        "name": "GpsTestActivity",
+        "start_line": 87,
+        "span_start": 258,
+        "bug_name": "bug-1151-onResume",
+        "type": "class",
+        "end_line": 1247
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1213-setupForPasswordInput/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 384,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 384,
+        "bug_name": "bug-1213-setupForPasswordInput",
+        "type": "class",
+        "end_line": 515
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-1213-setupForPasswordInput/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 384,
+        "name": "AuthenticationFragment",
+        "start_line": 223,
+        "span_start": 384,
+        "bug_name": "bug-1213-setupForPasswordInput",
+        "type": "class",
+        "end_line": 514
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-192-onResume/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java",
+        "span_end": 123,
+        "name": "DocumentEditFragment",
+        "start_line": 44,
+        "span_start": 120,
+        "bug_name": "bug-192-onResume",
+        "type": "class",
+        "end_line": 319
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-275-onCreateView/app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java",
+        "span_end": 53,
+        "name": "CustomAuthenticatedSlide",
+        "start_line": 28,
+        "span_start": 48,
+        "bug_name": "bug-275-onCreateView",
+        "type": "class",
+        "end_line": 156
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/harmonic-real-181-loadAlgolia/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java",
+        "span_end": 793,
+        "name": "StoriesFragment",
+        "start_line": 60,
+        "span_start": 772,
+        "bug_name": "harmonic-real-181-loadAlgolia",
+        "type": "class",
+        "end_line": 832
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/markor-53-real-makeDialog/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java",
+        "span_end": 126,
+        "name": "NewFileDialog",
+        "start_line": 47,
+        "span_start": 118,
+        "bug_name": "markor-53-real-makeDialog",
+        "type": "class",
+        "end_line": 252
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/markor-53-real-makeDialog/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java",
+        "span_end": 245,
+        "name": "NewFileDialog",
+        "start_line": 47,
+        "span_start": 245,
+        "bug_name": "markor-53-real-makeDialog",
+        "type": "class",
+        "end_line": 252
+    },
+    {
+        "file": "/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs/bug-18-onClick-RoutineCreateOrEditFragment/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/RoutineCreateOrEditFragment.java",
+        "span_end": 122,
+        "name": "RoutineCreateOrEditFragment",
+        "start_line": 53,
+        "span_start": 122,
+        "bug_name": "bug-18-onClick-RoutineCreateOrEditFragment",
+        "type": "class",
+        "end_line": 279
+    }
+]

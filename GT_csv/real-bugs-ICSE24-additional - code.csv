@@ -1,0 +1,1261 @@
+slug,class_path,comment,buggy_code,solution,diff,located_code,infill_code,buggy_line,fixed_line,prefix,suffix,comments,buggy_line_numbers,buggy_method_start_line,buggy_method_end_line,Categories,Lines removed,Lines added,total lines,# of methods,# of files
+markor-53-real-makeDialog,markor-53-real-makeDialog/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java,"New file dialogue always says Type: Markdown rather than previous type used
+
+Steps to reproduce:
+
+1. Create a new file, change type to e.g. todo.txt, save it
+2. Create another new file
+3. Observe the dialogue correctly remembers .todo.txt as the previously used file extension, but below that it says Type: Markdown
+
+This appears to be a cosmetic issue only - the second new file is named something.todo.txt, so the app is correctly remembering the user's last settings, but nonetheless it looks odd and confusing to the user.
+
+It also makes it harder when you want to make a Markdown file as you have to choose something other than Markdown then choose Markdown again before the file extension will change to .md.
+
+Version 2.3.2 from F-Droid.","    private AlertDialog.Builder makeDialog(final File basedir, LayoutInflater inflater) {
+        View root;
+        AlertDialog.Builder dialogBuilder;
+        final AppSettings appSettings = new AppSettings(inflater.getContext());
+        dialogBuilder = new AlertDialog.Builder(inflater.getContext(), appSettings.isDarkThemeEnabled() ? R.style.Theme_AppCompat_Dialog : R.style.Theme_AppCompat_Light_Dialog);
+        root = inflater.inflate(R.layout.new_file_dialog, null);
+
+        final EditText fileNameEdit = root.findViewById(R.id.new_file_dialog__name);
+        final EditText fileExtEdit = root.findViewById(R.id.new_file_dialog__ext);
+        final CheckBox encryptCheckbox = root.findViewById(R.id.new_file_dialog__encrypt);
+        final Spinner typeSpinner = root.findViewById(R.id.new_file_dialog__type);
+        final Spinner templateSpinner = root.findViewById(R.id.new_file_dialog__template);
+        final String[] typeSpinnerToExtension = getResources().getStringArray(R.array.new_file_types__file_extension);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && appSettings.hasPasswordBeenSetOnce()) {
+            encryptCheckbox.setChecked(appSettings.getNewFileDialogLastUsedEncryption());
+        } else {
+            encryptCheckbox.setVisibility(View.GONE);
+        }
+        fileExtEdit.setText(appSettings.getNewFileDialogLastUsedExtension());
+        fileNameEdit.requestFocus();
+        new Handler().postDelayed(new ContextUtils.DoTouchView(fileNameEdit), 200);
+
+        fileNameEdit.setFilters(new InputFilter[]{ContextUtils.INPUTFILTER_FILENAME});
+        fileExtEdit.setFilters(fileNameEdit.getFilters());
+
+        final AtomicBoolean typeSpinnerNoTriggerOnFirst = new AtomicBoolean(true);
+        typeSpinner.setOnItemSelectedListener(new AndroidSpinnerOnItemSelectedAdapter(pos -> {
+            if (typeSpinnerNoTriggerOnFirst.getAndSet(false)) {
+                return;
+            }
+            String ext = pos < typeSpinnerToExtension.length ? typeSpinnerToExtension[pos] : """";
+
+            if (ext != null) {
+                if (encryptCheckbox.isChecked()) {
+                    fileExtEdit.setText(ext + JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION);
+                } else {
+                    fileExtEdit.setText(ext);
+                }
+            }
+            fileNameEdit.setSelection(fileNameEdit.length());
+        }));
+
+        templateSpinner.setOnItemSelectedListener(new AndroidSpinnerOnItemSelectedAdapter(pos -> {
+            String prefix = null;
+
+            if (pos == 3) { // Jekyll
+                prefix = SttCommander.DATEF_YYYY_MM_DD.format(new Date()) + ""-"";
+            }
+            if (!TextUtils.isEmpty(prefix) && !fileNameEdit.getText().toString().startsWith(prefix)) {
+                fileNameEdit.setText(prefix + fileNameEdit.getText().toString());
+            }
+            fileNameEdit.setSelection(fileNameEdit.length());
+        }));
+
+        encryptCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            final String currentExtention = fileExtEdit.getText().toString();
+            if (isChecked) {
+                if (!currentExtention.endsWith(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION)) {
+                    fileExtEdit.setText(currentExtention + JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION);
+                }
+            } else if (currentExtention.endsWith(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION)) {
+                fileExtEdit.setText(currentExtention.replace(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION, """"));
+            }
+            appSettings.setNewFileDialogLastUsedEncryption(isChecked);
+        });
+
+        dialogBuilder.setView(root);
+        fileNameEdit.requestFocus();
+
+        final ShareUtil shareUtil = new ShareUtil(getContext());
+        dialogBuilder
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(getString(android.R.string.ok), (dialogInterface, i) -> {
+                    if (ez(fileNameEdit)) {
+                        return;
+                    }
+
+                    appSettings.setNewFileDialogLastUsedExtension(fileExtEdit.getText().toString().trim());
+                    final File f = new File(basedir, fileNameEdit.getText().toString().trim() + fileExtEdit.getText().toString().trim());
+                    final byte[] templateContents = getTemplateContent(templateSpinner, basedir, encryptCheckbox.isChecked());
+                    shareUtil.writeFile(f, false, (arg_ok, arg_fos) -> {
+                        try {
+                            if (f.exists() && f.length() < ShareUtil.MIN_OVERWRITE_LENGTH && templateContents != null) {
+                                arg_fos.write(templateContents);
+                            }
+                        } catch (Exception ignored) {
+                        }
+                        callback(arg_ok || f.exists(), f);
+                        dialogInterface.dismiss();
+                    });
+                })
+                .setNeutralButton(R.string.folder, (dialogInterface, i) -> {
+                    if (ez(fileNameEdit)) {
+                        return;
+                    }
+                    File f = new File(basedir, fileNameEdit.getText().toString());
+                    if (shareUtil.isUnderStorageAccessFolder(f)) {
+                        DocumentFile dof = shareUtil.getDocumentFile(f, true);
+                        callback(dof != null && dof.exists(), f);
+                    } else {
+                        callback(f.mkdirs() || f.exists(), f);
+                    }
+                    dialogInterface.dismiss();
+                });
+
+        return dialogBuilder;
+    }","    private AlertDialog.Builder makeDialog(final File basedir, LayoutInflater inflater) {
+        View root;
+        AlertDialog.Builder dialogBuilder;
+        final AppSettings appSettings = new AppSettings(inflater.getContext());
+        dialogBuilder = new AlertDialog.Builder(inflater.getContext(), appSettings.isDarkThemeEnabled() ? R.style.Theme_AppCompat_Dialog : R.style.Theme_AppCompat_Light_Dialog);
+        root = inflater.inflate(R.layout.new_file_dialog, null);
+
+        final EditText fileNameEdit = root.findViewById(R.id.new_file_dialog__name);
+        final EditText fileExtEdit = root.findViewById(R.id.new_file_dialog__ext);
+        final CheckBox encryptCheckbox = root.findViewById(R.id.new_file_dialog__encrypt);
+        final Spinner typeSpinner = root.findViewById(R.id.new_file_dialog__type);
+        final Spinner templateSpinner = root.findViewById(R.id.new_file_dialog__template);
+        final String[] typeSpinnerToExtension = getResources().getStringArray(R.array.new_file_types__file_extension);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && appSettings.hasPasswordBeenSetOnce()) {
+            encryptCheckbox.setChecked(appSettings.getNewFileDialogLastUsedEncryption());
+        } else {
+            encryptCheckbox.setVisibility(View.GONE);
+        }
+        fileExtEdit.setText(appSettings.getNewFileDialogLastUsedExtension());
+        fileNameEdit.requestFocus();
+        new Handler().postDelayed(new ContextUtils.DoTouchView(fileNameEdit), 200);
+
+        fileNameEdit.setFilters(new InputFilter[]{ContextUtils.INPUTFILTER_FILENAME});
+        fileExtEdit.setFilters(fileNameEdit.getFilters());
+
+        final AtomicBoolean typeSpinnerNoTriggerOnFirst = new AtomicBoolean(true);
+        typeSpinner.setOnItemSelectedListener(new AndroidSpinnerOnItemSelectedAdapter(pos -> {
+            if (typeSpinnerNoTriggerOnFirst.getAndSet(false)) {
+                return;
+            }
+            String ext = pos < typeSpinnerToExtension.length ? typeSpinnerToExtension[pos] : """";
+
+            if (ext != null) {
+                if (encryptCheckbox.isChecked()) {
+                    fileExtEdit.setText(ext + JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION);
+                } else {
+                    fileExtEdit.setText(ext);
+                }
+            }
+            fileNameEdit.setSelection(fileNameEdit.length());
+            appSettings.setNewFileDialogLastUsedType(typeSpinner.getSelectedItemPosition());
+        }));
+        typeSpinner.setSelection(appSettings.getNewFileDialogLastUsedType());
+
+        templateSpinner.setOnItemSelectedListener(new AndroidSpinnerOnItemSelectedAdapter(pos -> {
+            String prefix = null;
+
+            if (pos == 3) { // Jekyll
+                prefix = TodoTxtTask.DATEF_YYYY_MM_DD.format(new Date()) + ""-"";
+            }
+            if (!TextUtils.isEmpty(prefix) && !fileNameEdit.getText().toString().startsWith(prefix)) {
+                fileNameEdit.setText(prefix + fileNameEdit.getText().toString());
+            }
+            fileNameEdit.setSelection(fileNameEdit.length());
+        }));
+
+        encryptCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            final String currentExtention = fileExtEdit.getText().toString();
+            if (isChecked) {
+                if (!currentExtention.endsWith(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION)) {
+                    fileExtEdit.setText(currentExtention + JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION);
+                }
+            } else if (currentExtention.endsWith(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION)) {
+                fileExtEdit.setText(currentExtention.replace(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION, """"));
+            }
+            appSettings.setNewFileDialogLastUsedEncryption(isChecked);
+        });
+
+        dialogBuilder.setView(root);
+        fileNameEdit.requestFocus();
+
+        final ShareUtil shareUtil = new ShareUtil(getContext());
+        dialogBuilder
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(getString(android.R.string.ok), (dialogInterface, i) -> {
+                    if (ez(fileNameEdit)) {
+                        return;
+                    }
+
+                    appSettings.setNewFileDialogLastUsedExtension(fileExtEdit.getText().toString().trim());
+                    final File f = new File(basedir, fileNameEdit.getText().toString().trim() + fileExtEdit.getText().toString().trim());
+                    final byte[] templateContents = getTemplateContent(templateSpinner, basedir, encryptCheckbox.isChecked());
+                    shareUtil.writeFile(f, false, (arg_ok, arg_fos) -> {
+                        try {
+                            if (f.exists() && f.length() < ShareUtil.MIN_OVERWRITE_LENGTH && templateContents != null) {
+                                arg_fos.write(templateContents);
+                            }
+                        } catch (Exception ignored) {
+                        }
+                        callback(arg_ok || f.exists(), f);
+                        dialogInterface.dismiss();
+                    });
+                })
+                .setNeutralButton(R.string.folder, (dialogInterface, i) -> {
+                    if (ez(fileNameEdit)) {
+                        return;
+                    }
+                    File f = new File(basedir, fileNameEdit.getText().toString());
+                    if (shareUtil.isUnderStorageAccessFolder(f)) {
+                        DocumentFile dof = shareUtil.getDocumentFile(f, true);
+                        callback(dof != null && dof.exists(), f);
+                    } else {
+                        callback(f.mkdirs() || f.exists(), f);
+                    }
+                    dialogInterface.dismiss();
+                });
+
+        return dialogBuilder;
+    }","    private AlertDialog.Builder makeDialog(final File basedir, LayoutInflater inflater) {
+        View root;
+        AlertDialog.Builder dialogBuilder;
+        final AppSettings appSettings = new AppSettings(inflater.getContext());
+        dialogBuilder = new AlertDialog.Builder(inflater.getContext(), appSettings.isDarkThemeEnabled() ? R.style.Theme_AppCompat_Dialog : R.style.Theme_AppCompat_Light_Dialog);
+        root = inflater.inflate(R.layout.new_file_dialog, null);
+
+        final EditText fileNameEdit = root.findViewById(R.id.new_file_dialog__name);
+        final EditText fileExtEdit = root.findViewById(R.id.new_file_dialog__ext);
+        final CheckBox encryptCheckbox = root.findViewById(R.id.new_file_dialog__encrypt);
+        final Spinner typeSpinner = root.findViewById(R.id.new_file_dialog__type);
+        final Spinner templateSpinner = root.findViewById(R.id.new_file_dialog__template);
+        final String[] typeSpinnerToExtension = getResources().getStringArray(R.array.new_file_types__file_extension);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && appSettings.hasPasswordBeenSetOnce()) {
+            encryptCheckbox.setChecked(appSettings.getNewFileDialogLastUsedEncryption());
+        } else {
+            encryptCheckbox.setVisibility(View.GONE);
+        }
+        fileExtEdit.setText(appSettings.getNewFileDialogLastUsedExtension());
+        fileNameEdit.requestFocus();
+        new Handler().postDelayed(new ContextUtils.DoTouchView(fileNameEdit), 200);
+
+        fileNameEdit.setFilters(new InputFilter[]{ContextUtils.INPUTFILTER_FILENAME});
+        fileExtEdit.setFilters(fileNameEdit.getFilters());
+
+        final AtomicBoolean typeSpinnerNoTriggerOnFirst = new AtomicBoolean(true);
+        typeSpinner.setOnItemSelectedListener(new AndroidSpinnerOnItemSelectedAdapter(pos -> {
+            if (typeSpinnerNoTriggerOnFirst.getAndSet(false)) {
+                return;
+            }
+            String ext = pos < typeSpinnerToExtension.length ? typeSpinnerToExtension[pos] : """";
+
+            if (ext != null) {
+                if (encryptCheckbox.isChecked()) {
+                    fileExtEdit.setText(ext + JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION);
+                } else {
+                    fileExtEdit.setText(ext);
+                }
+            }
+            fileNameEdit.setSelection(fileNameEdit.length());
++          appSettings.setNewFileDialogLastUsedType(typeSpinner.getSelectedItemPosition());
+        }));
++      typeSpinner.setSelection(appSettings.getNewFileDialogLastUsedType());
+
+        templateSpinner.setOnItemSelectedListener(new AndroidSpinnerOnItemSelectedAdapter(pos -> {
+            String prefix = null;
+
+            if (pos == 3) { // Jekyll
+-               prefix = SttCommander.DATEF_YYYY_MM_DD.format(new Date()) + ""-"";
++              prefix = TodoTxtTask.DATEF_YYYY_MM_DD.format(new Date()) + ""-"";
+            }
+            if (!TextUtils.isEmpty(prefix) && !fileNameEdit.getText().toString().startsWith(prefix)) {
+                fileNameEdit.setText(prefix + fileNameEdit.getText().toString());
+            }
+            fileNameEdit.setSelection(fileNameEdit.length());
+        }));
+
+        encryptCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            final String currentExtention = fileExtEdit.getText().toString();
+            if (isChecked) {
+                if (!currentExtention.endsWith(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION)) {
+                    fileExtEdit.setText(currentExtention + JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION);
+                }
+            } else if (currentExtention.endsWith(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION)) {
+                fileExtEdit.setText(currentExtention.replace(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION, """"));
+            }
+            appSettings.setNewFileDialogLastUsedEncryption(isChecked);
+        });
+
+        dialogBuilder.setView(root);
+        fileNameEdit.requestFocus();
+
+        final ShareUtil shareUtil = new ShareUtil(getContext());
+        dialogBuilder
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(getString(android.R.string.ok), (dialogInterface, i) -> {
+                    if (ez(fileNameEdit)) {
+                        return;
+                    }
+
+                    appSettings.setNewFileDialogLastUsedExtension(fileExtEdit.getText().toString().trim());
+                    final File f = new File(basedir, fileNameEdit.getText().toString().trim() + fileExtEdit.getText().toString().trim());
+                    final byte[] templateContents = getTemplateContent(templateSpinner, basedir, encryptCheckbox.isChecked());
+                    shareUtil.writeFile(f, false, (arg_ok, arg_fos) -> {
+                        try {
+                            if (f.exists() && f.length() < ShareUtil.MIN_OVERWRITE_LENGTH && templateContents != null) {
+                                arg_fos.write(templateContents);
+                            }
+                        } catch (Exception ignored) {
+                        }
+                        callback(arg_ok || f.exists(), f);
+                        dialogInterface.dismiss();
+                    });
+                })
+                .setNeutralButton(R.string.folder, (dialogInterface, i) -> {
+                    if (ez(fileNameEdit)) {
+                        return;
+                    }
+                    File f = new File(basedir, fileNameEdit.getText().toString());
+                    if (shareUtil.isUnderStorageAccessFolder(f)) {
+                        DocumentFile dof = shareUtil.getDocumentFile(f, true);
+                        callback(dof != null && dof.exists(), f);
+                    } else {
+                        callback(f.mkdirs() || f.exists(), f);
+                    }
+                    dialogInterface.dismiss();
+                });
+
+        return dialogBuilder;
+    }","    private AlertDialog.Builder makeDialog(final File basedir, LayoutInflater inflater) {
+        View root;
+        AlertDialog.Builder dialogBuilder;
+        final AppSettings appSettings = new AppSettings(inflater.getContext());
+        dialogBuilder = new AlertDialog.Builder(inflater.getContext(), appSettings.isDarkThemeEnabled() ? R.style.Theme_AppCompat_Dialog : R.style.Theme_AppCompat_Light_Dialog);
+        root = inflater.inflate(R.layout.new_file_dialog, null);
+
+        final EditText fileNameEdit = root.findViewById(R.id.new_file_dialog__name);
+        final EditText fileExtEdit = root.findViewById(R.id.new_file_dialog__ext);
+        final CheckBox encryptCheckbox = root.findViewById(R.id.new_file_dialog__encrypt);
+        final Spinner typeSpinner = root.findViewById(R.id.new_file_dialog__type);
+        final Spinner templateSpinner = root.findViewById(R.id.new_file_dialog__template);
+        final String[] typeSpinnerToExtension = getResources().getStringArray(R.array.new_file_types__file_extension);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && appSettings.hasPasswordBeenSetOnce()) {
+            encryptCheckbox.setChecked(appSettings.getNewFileDialogLastUsedEncryption());
+        } else {
+            encryptCheckbox.setVisibility(View.GONE);
+        }
+        fileExtEdit.setText(appSettings.getNewFileDialogLastUsedExtension());
+        fileNameEdit.requestFocus();
+        new Handler().postDelayed(new ContextUtils.DoTouchView(fileNameEdit), 200);
+
+        fileNameEdit.setFilters(new InputFilter[]{ContextUtils.INPUTFILTER_FILENAME});
+        fileExtEdit.setFilters(fileNameEdit.getFilters());
+
+        final AtomicBoolean typeSpinnerNoTriggerOnFirst = new AtomicBoolean(true);
+        typeSpinner.setOnItemSelectedListener(new AndroidSpinnerOnItemSelectedAdapter(pos -> {
+            if (typeSpinnerNoTriggerOnFirst.getAndSet(false)) {
+                return;
+            }
+            String ext = pos < typeSpinnerToExtension.length ? typeSpinnerToExtension[pos] : """";
+
+            if (ext != null) {
+                if (encryptCheckbox.isChecked()) {
+                    fileExtEdit.setText(ext + JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION);
+                } else {
+                    fileExtEdit.setText(ext);
+                }
+            }
+            fileNameEdit.setSelection(fileNameEdit.length());
+        <Chunk_For_Modification>
+        }));
+        <Chunk_For_Modification>
+
+        templateSpinner.setOnItemSelectedListener(new AndroidSpinnerOnItemSelectedAdapter(pos -> {
+            String prefix = null;
+
+            if (pos == 3) { // Jekyll
+        <Chunk_For_Modification>
+            }
+            if (!TextUtils.isEmpty(prefix) && !fileNameEdit.getText().toString().startsWith(prefix)) {
+                fileNameEdit.setText(prefix + fileNameEdit.getText().toString());
+            }
+            fileNameEdit.setSelection(fileNameEdit.length());
+        }));
+
+        encryptCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            final String currentExtention = fileExtEdit.getText().toString();
+            if (isChecked) {
+                if (!currentExtention.endsWith(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION)) {
+                    fileExtEdit.setText(currentExtention + JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION);
+                }
+            } else if (currentExtention.endsWith(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION)) {
+                fileExtEdit.setText(currentExtention.replace(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION, """"));
+            }
+            appSettings.setNewFileDialogLastUsedEncryption(isChecked);
+        });
+
+        dialogBuilder.setView(root);
+        fileNameEdit.requestFocus();
+
+        final ShareUtil shareUtil = new ShareUtil(getContext());
+        dialogBuilder
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(getString(android.R.string.ok), (dialogInterface, i) -> {
+                    if (ez(fileNameEdit)) {
+                        return;
+                    }
+
+                    appSettings.setNewFileDialogLastUsedExtension(fileExtEdit.getText().toString().trim());
+                    final File f = new File(basedir, fileNameEdit.getText().toString().trim() + fileExtEdit.getText().toString().trim());
+                    final byte[] templateContents = getTemplateContent(templateSpinner, basedir, encryptCheckbox.isChecked());
+                    shareUtil.writeFile(f, false, (arg_ok, arg_fos) -> {
+                        try {
+                            if (f.exists() && f.length() < ShareUtil.MIN_OVERWRITE_LENGTH && templateContents != null) {
+                                arg_fos.write(templateContents);
+                            }
+                        } catch (Exception ignored) {
+                        }
+                        callback(arg_ok || f.exists(), f);
+                        dialogInterface.dismiss();
+                    });
+                })
+                .setNeutralButton(R.string.folder, (dialogInterface, i) -> {
+                    if (ez(fileNameEdit)) {
+                        return;
+                    }
+                    File f = new File(basedir, fileNameEdit.getText().toString());
+                    if (shareUtil.isUnderStorageAccessFolder(f)) {
+                        DocumentFile dof = shareUtil.getDocumentFile(f, true);
+                        callback(dof != null && dof.exists(), f);
+                    } else {
+                        callback(f.mkdirs() || f.exists(), f);
+                    }
+                    dialogInterface.dismiss();
+                });
+
+        return dialogBuilder;
+    }","    private AlertDialog.Builder makeDialog(final File basedir, LayoutInflater inflater) {
+        View root;
+        AlertDialog.Builder dialogBuilder;
+        final AppSettings appSettings = new AppSettings(inflater.getContext());
+        dialogBuilder = new AlertDialog.Builder(inflater.getContext(), appSettings.isDarkThemeEnabled() ? R.style.Theme_AppCompat_Dialog : R.style.Theme_AppCompat_Light_Dialog);
+        root = inflater.inflate(R.layout.new_file_dialog, null);
+
+        final EditText fileNameEdit = root.findViewById(R.id.new_file_dialog__name);
+        final EditText fileExtEdit = root.findViewById(R.id.new_file_dialog__ext);
+        final CheckBox encryptCheckbox = root.findViewById(R.id.new_file_dialog__encrypt);
+        final Spinner typeSpinner = root.findViewById(R.id.new_file_dialog__type);
+        final Spinner templateSpinner = root.findViewById(R.id.new_file_dialog__template);
+        final String[] typeSpinnerToExtension = getResources().getStringArray(R.array.new_file_types__file_extension);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && appSettings.hasPasswordBeenSetOnce()) {
+            encryptCheckbox.setChecked(appSettings.getNewFileDialogLastUsedEncryption());
+        } else {
+            encryptCheckbox.setVisibility(View.GONE);
+        }
+        fileExtEdit.setText(appSettings.getNewFileDialogLastUsedExtension());
+        fileNameEdit.requestFocus();
+        new Handler().postDelayed(new ContextUtils.DoTouchView(fileNameEdit), 200);
+
+        fileNameEdit.setFilters(new InputFilter[]{ContextUtils.INPUTFILTER_FILENAME});
+        fileExtEdit.setFilters(fileNameEdit.getFilters());
+
+        final AtomicBoolean typeSpinnerNoTriggerOnFirst = new AtomicBoolean(true);
+        typeSpinner.setOnItemSelectedListener(new AndroidSpinnerOnItemSelectedAdapter(pos -> {
+            if (typeSpinnerNoTriggerOnFirst.getAndSet(false)) {
+                return;
+            }
+            String ext = pos < typeSpinnerToExtension.length ? typeSpinnerToExtension[pos] : """";
+
+            if (ext != null) {
+                if (encryptCheckbox.isChecked()) {
+                    fileExtEdit.setText(ext + JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION);
+                } else {
+                    fileExtEdit.setText(ext);
+                }
+            }
+            fileNameEdit.setSelection(fileNameEdit.length());
+        >>> [ INFILL ] <<<
+        }));
+        >>> [ INFILL ] <<<
+
+        templateSpinner.setOnItemSelectedListener(new AndroidSpinnerOnItemSelectedAdapter(pos -> {
+            String prefix = null;
+
+            if (pos == 3) { // Jekyll
+        >>> [ INFILL ] <<<
+            }
+            if (!TextUtils.isEmpty(prefix) && !fileNameEdit.getText().toString().startsWith(prefix)) {
+                fileNameEdit.setText(prefix + fileNameEdit.getText().toString());
+            }
+            fileNameEdit.setSelection(fileNameEdit.length());
+        }));
+
+        encryptCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            final String currentExtention = fileExtEdit.getText().toString();
+            if (isChecked) {
+                if (!currentExtention.endsWith(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION)) {
+                    fileExtEdit.setText(currentExtention + JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION);
+                }
+            } else if (currentExtention.endsWith(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION)) {
+                fileExtEdit.setText(currentExtention.replace(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION, """"));
+            }
+            appSettings.setNewFileDialogLastUsedEncryption(isChecked);
+        });
+
+        dialogBuilder.setView(root);
+        fileNameEdit.requestFocus();
+
+        final ShareUtil shareUtil = new ShareUtil(getContext());
+        dialogBuilder
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton(getString(android.R.string.ok), (dialogInterface, i) -> {
+                    if (ez(fileNameEdit)) {
+                        return;
+                    }
+
+                    appSettings.setNewFileDialogLastUsedExtension(fileExtEdit.getText().toString().trim());
+                    final File f = new File(basedir, fileNameEdit.getText().toString().trim() + fileExtEdit.getText().toString().trim());
+                    final byte[] templateContents = getTemplateContent(templateSpinner, basedir, encryptCheckbox.isChecked());
+                    shareUtil.writeFile(f, false, (arg_ok, arg_fos) -> {
+                        try {
+                            if (f.exists() && f.length() < ShareUtil.MIN_OVERWRITE_LENGTH && templateContents != null) {
+                                arg_fos.write(templateContents);
+                            }
+                        } catch (Exception ignored) {
+                        }
+                        callback(arg_ok || f.exists(), f);
+                        dialogInterface.dismiss();
+                    });
+                })
+                .setNeutralButton(R.string.folder, (dialogInterface, i) -> {
+                    if (ez(fileNameEdit)) {
+                        return;
+                    }
+                    File f = new File(basedir, fileNameEdit.getText().toString());
+                    if (shareUtil.isUnderStorageAccessFolder(f)) {
+                        DocumentFile dof = shareUtil.getDocumentFile(f, true);
+                        callback(dof != null && dof.exists(), f);
+                    } else {
+                        callback(f.mkdirs() || f.exists(), f);
+                    }
+                    dialogInterface.dismiss();
+                });
+
+        return dialogBuilder;
+    }",,"appSettings.setNewFileDialogLastUsedType(typeSpinner.getSelectedItemPosition()); 
+typeSpinner.setSelection(appSettings.getNewFileDialogLastUsedType());",,,,,,,,1,3,4,1,1
+markor-54-real-isEditorHistoryEnabled,markor-54-real-isEditorHistoryEnabled/app/src/main/java/net/gsantner/markor/util/AppSettings.java,"Save button makes the file not save
+
+General information
+- App version: 1.1.0 Google Play Store
+- System: Android 8.0.0 Sony XZ2 Compact
+
+Description
+Steps to reproduce the bug:
+
+1. Press + to create a new note.
+2. Enter title and some content
+3. Wait for the save icon to be enabled (it is grayed out at start)
+4. Press save icon
+5. Press the back arrow from top
+6. Note is NOT created
+The note creation works if I skip steps 3 and 4 and only just press the back arrow. If I wait then the note is not created.","    public boolean isEditorHistoryEnabled() {
+        return getBool(R.string.pref_key__editor_history_enabled, false);
+    }","    public boolean isEditorHistoryEnabled() {
+        return getBool(R.string.pref_key__editor_history_enabled3, true);
+    }","    public boolean isEditorHistoryEnabled() {
+-        return getBool(R.string.pref_key__editor_history_enabled, false);
++       return getBool(R.string.pref_key__editor_history_enabled3, true);
+    }","    public boolean isEditorHistoryEnabled() {
+        <Chunk_For_Modification>
+    }","    public boolean isEditorHistoryEnabled() {
+        >>> [ INFILL ] <<<
+    }","        return getBool(R.string.pref_key__editor_history_enabled, false);","        return getBool(R.string.pref_key__editor_history_enabled3, true);",,,,,,,,1,1,2,1,1
+ultrasonic-84-real-getPreferences,ultrasonic-84-real-getPreferences/ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java,"Does master branch work ?
+
+Problem description
+I am testing the master branch and it seems does not work.
+I am unable to set up a server.
+
+Steps to reproduce
+Lauch Ultrasonic master in an AVD.
+Go to settings, add server, enter name, url, user and password.
+Click on ""Test Connection"".
+
+System information
+- Ultrasonic version: master branch
+- Android version: 4.4.4 API 19
+- Device info: Device manufacturer, model
+
+Additional notes
+It tries to connect to localhost despite the fact that I entered a valid Airsonic server URL.
+All works fine with Ultrasonic 2.2.2","        public static SharedPreferences getPreferences(Context context)
+        {
+                return context.getSharedPreferences(Constants.PREFERENCES_FILE_NAME, 0);
+        }","    public static SharedPreferences getPreferences(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context);
+    }","        public static SharedPreferences getPreferences(Context context)
+        {
+-              return context.getSharedPreferences(Constants.PREFERENCES_FILE_NAME, 0);
++             return PreferenceManager.getDefaultSharedPreferences(context);
+        }","        public static SharedPreferences getPreferences(Context context)
+        {
+        <Chunk_For_Modification>
+        }","        public static SharedPreferences getPreferences(Context context)
+        {
+        >>> [ INFILL ] <<<
+        }","return context.getSharedPreferences(Constants.PREFERENCES_FILE_NAME, 0);",        return PreferenceManager.getDefaultSharedPreferences(context);,,,,,,,,1,1,2,1,1
+WiFiAnalyzer-92-real-findMacAddresses,WiFiAnalyzer-92-real-findMacAddresses/app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java,"MAC vendor search is case sensitive
+
+Please search issues (open and closed) to see the issues has already been reported.
+In #145 a hardware address vendor search was added, which I highly appreciate.
+
+Describe the bug
+However, as already stated in one of the comments, the search is case sensitive, it only works if you type upper case letters. That breaks user expectations and is cumbersome to type with some keyboards.
+
+I consider that a bug, because lower case letters are perfectly valid for a hexadecimal value.
+
+To Reproduce
+Steps to reproduce the behavior:
+
+1. Go to 'Menu'
+2. Click on 'Hersteller' (that may be 'Vendor' in English?)
+3. Type a valid address containing lower case letters from a to f
+4. See no results
+
+Expected behavior
+00:16:3e is actually the very same (part of) address like 00:16:3E because hexadecimal notation does not differentiate case of letters. So I expect both (and even mixed case) input to get me results.
+
+Note
+Some behaviour only occurs on certain devices or versions of Android, please provide the following screenshots/information Device/Android OS (Settings → About Phone) and WiFi Analyzer version (Menu -> About)
+
+Please make hardware address input/search case insensitive!","    public List<String> findMacAddresses(String vendorName) {
+        if (StringUtils.isBlank(vendorName)) {
+            return new ArrayList<>();
+        }
+        List<String> results = getVendors().get(vendorName);
+        return results == null ? new ArrayList<>() : results;
+    }","    public List<String> findMacAddresses(String vendorName) {
+        if (StringUtils.isBlank(vendorName)) {
+            return new ArrayList<>();
+        }
+        List<String> results = getVendors().get(vendorName.toUpperCase());
+        return results == null ? new ArrayList<>() : results;
+    }","    public List<String> findMacAddresses(String vendorName) {
+        if (StringUtils.isBlank(vendorName)) {
+            return new ArrayList<>();
+        }
+-       List<String> results = getVendors().get(vendorName);
++       List<String> results = getVendors().get(vendorName.toUpperCase());
+        return results == null ? new ArrayList<>() : results;
+    }","    public List<String> findMacAddresses(String vendorName) {
+        if (StringUtils.isBlank(vendorName)) {
+            return new ArrayList<>();
+        }
+        <Chunk_For_Modification>
+        return results == null ? new ArrayList<>() : results;
+    }","    public List<String> findMacAddresses(String vendorName) {
+        if (StringUtils.isBlank(vendorName)) {
+            return new ArrayList<>();
+        }
+        >>> [ INFILL ] <<<
+        return results == null ? new ArrayList<>() : results;
+    }"," List<String> results = getVendors().get(vendorName);
+",List<String> results = getVendors().get(vendorName.toUpperCase());,,,,,,,,1,1,2,3,1
+WiFiAnalyzer-92-real-findVendors-no-args,WiFiAnalyzer-92-real-findVendors-no-args/app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java,"MAC vendor search is case sensitive
+
+Please search issues (open and closed) to see the issues has already been reported.
+In #145 a hardware address vendor search was added, which I highly appreciate.
+
+Describe the bug
+However, as already stated in one of the comments, the search is case sensitive, it only works if you type upper case letters. That breaks user expectations and is cumbersome to type with some keyboards.
+
+I consider that a bug, because lower case letters are perfectly valid for a hexadecimal value.
+
+To Reproduce
+Steps to reproduce the behavior:
+
+1. Go to 'Menu'
+2. Click on 'Hersteller' (that may be 'Vendor' in English?)
+3. Type a valid address containing lower case letters from a to f
+4. See no results
+
+Expected behavior
+00:16:3e is actually the very same (part of) address like 00:16:3E because hexadecimal notation does not differentiate case of letters. So I expect both (and even mixed case) input to get me results.
+
+Note
+Some behaviour only occurs on certain devices or versions of Android, please provide the following screenshots/information Device/Android OS (Settings → About Phone) and WiFi Analyzer version (Menu -> About)
+
+Please make hardware address input/search case insensitive!","    public List<String> findVendors() {
+        return new ArrayList<>(getVendors().keySet());
+    }","    public List<String> findVendors() {
+        return findVendors(StringUtils.EMPTY);
+    }","    public List<String> findVendors() {
+-       return new ArrayList<>(getVendors().keySet());
++      return findVendors(StringUtils.EMPTY);
+    }","    public List<String> findVendors() {        
+        <Chunk_For_Modification>
+    }","    public List<String> findVendors() {        
+        >>> [ INFILL ] <<<
+    }",        return new ArrayList<>(getVendors().keySet());,        return findVendors(StringUtils.EMPTY);,,,,,,,,1,1,2,,
+WiFiAnalyzer-92-real-findVendors-with-args,WiFiAnalyzer-92-real-findVendors-with-args/app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java,"MAC vendor search is case sensitive
+
+Please search issues (open and closed) to see the issues has already been reported.
+In #145 a hardware address vendor search was added, which I highly appreciate.
+
+Describe the bug
+However, as already stated in one of the comments, the search is case sensitive, it only works if you type upper case letters. That breaks user expectations and is cumbersome to type with some keyboards.
+
+I consider that a bug, because lower case letters are perfectly valid for a hexadecimal value.
+
+To Reproduce
+Steps to reproduce the behavior:
+
+1. Go to 'Menu'
+2. Click on 'Hersteller' (that may be 'Vendor' in English?)
+3. Type a valid address containing lower case letters from a to f
+4. See no results
+
+Expected behavior
+00:16:3e is actually the very same (part of) address like 00:16:3E because hexadecimal notation does not differentiate case of letters. So I expect both (and even mixed case) input to get me results.
+
+Note
+Some behaviour only occurs on certain devices or versions of Android, please provide the following screenshots/information Device/Android OS (Settings → About Phone) and WiFi Analyzer version (Menu -> About)
+
+Please make hardware address input/search case insensitive!","    public List<String> findVendors(@NonNull String filter) {
+        Predicate<String> predicate = PredicateUtils.anyPredicate(new StringContains(filter), new MacContains(filter));
+        return new ArrayList<>(CollectionUtils.select(getVendors().keySet(), predicate));
+    }","    public List<String> findVendors(@NonNull String filter) {
+        if (StringUtils.isBlank(filter)) {
+            return new ArrayList<>(getVendors().keySet());
+        }
+        String filterToUpperCase = filter.toUpperCase();
+        Predicate<String> predicate = PredicateUtils.anyPredicate(new StringContains(filterToUpperCase), new MacContains(filterToUpperCase));
+        return new ArrayList<>(CollectionUtils.select(getVendors().keySet(), predicate));
+    }","    public List<String> findVendors(@NonNull String filter) {
++       if (StringUtils.isBlank(filter)) {
++          return new ArrayList<>(getVendors().keySet());
++       }
++       String filterToUpperCase = filter.toUpperCase();
+-         Predicate<String> predicate = PredicateUtils.anyPredicate(new StringContains(filter), new MacContains(filter));
++        Predicate<String> predicate = PredicateUtils.anyPredicate(new StringContains(filterToUpperCase), new MacContains(filterToUpperCase));
+        return new ArrayList<>(CollectionUtils.select(getVendors().keySet(), predicate));
+    }","    public List<String> findVendors(@NonNull String filter) {
+        <Chunk_For_Modification>
+        Predicate<String> predicate =
+        <Chunk_For_Modification>
+        return new ArrayList<>(CollectionUtils.select(getVendors().keySet(), predicate));
+    }","    public List<String> findVendors(@NonNull String filter) {
+        >>> [ INFILL ] <<<
+        Predicate<String> predicate =
+        >>> [ INFILL ] <<<
+        return new ArrayList<>(CollectionUtils.select(getVendors().keySet(), predicate));
+    }","Predicate<String> predicate = PredicateUtils.anyPredicate(new StringContains(filter), new MacContains(filter));","        if (StringUtils.isBlank(filter)) {
+            return new ArrayList<>(getVendors().keySet());
+        }
+        String filterToUpperCase = filter.toUpperCase();
+        Predicate<String> predicate = PredicateUtils.anyPredicate(new StringContains(filterToUpperCase), new MacContains(filterToUpperCase));",,,,,,,,1,5,6,,
+Anki-Android-273-real-onCreate,Anki-Android-273-real-onCreate/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java,"Screen rotate while Previewing, returns to the first card again
+
+Reproduction Steps
+1. While previewing cards
+2. when i screen rotate
+3. goes back to preview first card
+
+Expected Result
+only screen rotate present previewing card without going back to first card
+
+Actual Result
+preview reverts back to first card again
+
+Debug info
+Refer to the support page if you are unsure where to get the ""debug info"".
+
+Research
+Enter an [ x ] character to confirm the points below:
+
+[ ] I have read the support page and am reporting a bug or enhancement request specific to AnkiDroid
+
+[ ] I have checked the manual and the FAQ and could not find a solution to my issue
+
+[ ] I have searched for similar existing issues here and on the user forum","    protected void onCreate(Bundle savedInstanceState) {
+        Timber.d(""onCreate()"");
+        super.onCreate(savedInstanceState);
+
+        mCardList = getIntent().getLongArrayExtra(""cardList"");
+        mIndex = getIntent().getIntExtra(""index"", -1);
+        if (mCardList.length == 0 || mIndex < 0 || mIndex > mCardList.length - 1) {
+            Timber.e(""Previewer started with empty card list or invalid index"");
+            finishWithoutAnimation();
+            return;
+        }
+        showBackIcon();
+        // Ensure navigation drawer can't be opened. Various actions in the drawer cause crashes.
+        disableDrawerSwipe();
+        startLoadingCollection();
+    }","    protected void onCreate(Bundle savedInstanceState) {
+        Timber.d(""onCreate()"");
+        super.onCreate(savedInstanceState);
+
+        mCardList = getIntent().getLongArrayExtra(""cardList"");
+        mIndex = getIntent().getIntExtra(""index"", -1);
+
+        if (savedInstanceState != null){
+            mIndex = savedInstanceState.getInt(""index"", mIndex);
+            mShowingAnswer = savedInstanceState.getBoolean(""showingAnswer"", mShowingAnswer);
+        }
+
+        if (mCardList.length == 0 || mIndex < 0 || mIndex > mCardList.length - 1) {
+            Timber.e(""Previewer started with empty card list or invalid index"");
+            finishWithoutAnimation();
+            return;
+        }
+        showBackIcon();
+        // Ensure navigation drawer can't be opened. Various actions in the drawer cause crashes.
+        disableDrawerSwipe();
+        startLoadingCollection();
+    }","    protected void onCreate(Bundle savedInstanceState) {
+        Timber.d(""onCreate()"");
+        super.onCreate(savedInstanceState);
+
+        mCardList = getIntent().getLongArrayExtra(""cardList"");
+        mIndex = getIntent().getIntExtra(""index"", -1);
+
++      if (savedInstanceState != null){
++          mIndex = savedInstanceState.getInt(""index"", mIndex);
++          mShowingAnswer = savedInstanceState.getBoolean(""showingAnswer"", mShowingAnswer);
++      }
+
+        if (mCardList.length == 0 || mIndex < 0 || mIndex > mCardList.length - 1) {
+            Timber.e(""Previewer started with empty card list or invalid index"");
+            finishWithoutAnimation();
+            return;
+        }
+        showBackIcon();
+        // Ensure navigation drawer can't be opened. Various actions in the drawer cause crashes.
+        disableDrawerSwipe();
+        startLoadingCollection();
+    }","    protected void onCreate(Bundle savedInstanceState) {
+        Timber.d(""onCreate()"");
+        super.onCreate(savedInstanceState);
+
+        mCardList = getIntent().getLongArrayExtra(""cardList"");
+        mIndex = getIntent().getIntExtra(""index"", -1);
+
+        <Chunk_For_Modification>
+
+        if (mCardList.length == 0 || mIndex < 0 || mIndex > mCardList.length - 1) {
+            Timber.e(""Previewer started with empty card list or invalid index"");
+            finishWithoutAnimation();
+            return;
+        }
+        showBackIcon();
+        // Ensure navigation drawer can't be opened. Various actions in the drawer cause crashes.
+        disableDrawerSwipe();
+        startLoadingCollection();
+    }","    protected void onCreate(Bundle savedInstanceState) {
+        Timber.d(""onCreate()"");
+        super.onCreate(savedInstanceState);
+
+        mCardList = getIntent().getLongArrayExtra(""cardList"");
+        mIndex = getIntent().getIntExtra(""index"", -1);
+
+        >>> [ INFILL ] <<<
+
+        if (mCardList.length == 0 || mIndex < 0 || mIndex > mCardList.length - 1) {
+            Timber.e(""Previewer started with empty card list or invalid index"");
+            finishWithoutAnimation();
+            return;
+        }
+        showBackIcon();
+        // Ensure navigation drawer can't be opened. Various actions in the drawer cause crashes.
+        disableDrawerSwipe();
+        startLoadingCollection();
+    }",,"        if (savedInstanceState != null){
+            mIndex = savedInstanceState.getInt(""index"", mIndex);
+            mShowingAnswer = savedInstanceState.getBoolean(""showingAnswer"", mShowingAnswer);
+        }",,,,,,,,0,4,4,2,1
+Anki-Android-273-real-onCollectionLoaded,Anki-Android-273-real-onCollectionLoaded/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java,"Screen rotate while Previewing, returns to the first card again
+
+Reproduction Steps
+1. While previewing cards
+2. when i screen rotate
+3. goes back to preview first card
+
+Expected Result
+only screen rotate present previewing card without going back to first card
+
+Actual Result
+preview reverts back to first card again
+
+Debug info
+Refer to the support page if you are unsure where to get the ""debug info"".
+
+Research
+Enter an [ x ] character to confirm the points below:
+
+[ ] I have read the support page and am reporting a bug or enhancement request specific to AnkiDroid
+
+[ ] I have checked the manual and the FAQ and could not find a solution to my issue
+
+[ ] I have searched for similar existing issues here and on the user forum","    protected void onCollectionLoaded(Collection col) {
+        super.onCollectionLoaded(col);
+        mCurrentCard = col.getCard(mCardList[mIndex]);
+        displayCardQuestion();
+        showBackIcon();
+    }","    protected void onCollectionLoaded(Collection col) {
+        super.onCollectionLoaded(col);
+        mCurrentCard = col.getCard(mCardList[mIndex]);
+        if (mShowingAnswer){
+            displayCardQuestion();
+            displayCardAnswer();
+        } else {
+            displayCardQuestion();
+        }
+        showBackIcon();
+    }","    protected void onCollectionLoaded(Collection col) {
+        super.onCollectionLoaded(col);
+        mCurrentCard = col.getCard(mCardList[mIndex]);
++      if (mShowingAnswer){
++          displayCardQuestion();
++          displayCardAnswer();
++      } else {
++          displayCardQuestion();
++      }
+        showBackIcon();
+    }","    protected void onCollectionLoaded(Collection col) {
+        super.onCollectionLoaded(col);
+        mCurrentCard = col.getCard(mCardList[mIndex]);
+
+        <Chunk_For_Modification>
+
+        showBackIcon();
+    }","    protected void onCollectionLoaded(Collection col) {
+        super.onCollectionLoaded(col);
+        mCurrentCard = col.getCard(mCardList[mIndex]);
+
+        >>> [ INFILL ] <<<
+
+        showBackIcon();
+    }",,"        if (mShowingAnswer){
+            displayCardQuestion();
+            displayCardAnswer();
+        } else {
+            displayCardQuestion();
+        }",,,,,,,,0,6,6,,
+Anki-Android-123451-real-createCustomStudySession,Anki-Android-123451-real-createCustomStudySession/AnkiDroid/src/main/java/com/ichi2/anki/dialogs/CustomStudyDialog.java,"Deck Picker: ""rename custom study"" message obscured 
+
+Reproduction Steps
+1. Create a deck named ""Custom study session""
+2. Deck - Custom Study - Review Ahead - OK
+
+Expected Result
+3. Dialog should appear
+
+Actual Result
+3. Dialog is obscured by going back one menu item
+
+Ideal solution: convert the dialog to a toast.","    private void createCustomStudySession(JSONArray delays, Object[] terms, Boolean resched) {
+        Deck dyn;
+        final AnkiActivity activity = getAnkiActivity();
+        Collection col = CollectionHelper.getInstance().getCol(activity);
+        long did = getArguments().getLong(""did"");
+        String deckToStudyName = col.getDecks().get(did).getString(""name"");
+        String customStudyDeck = getResources().getString(R.string.custom_study_deck_name);
+        Deck cur = col.getDecks().byName(customStudyDeck);
+        if (cur != null) {
+            Timber.i(""Found deck: '%s'"", customStudyDeck);
+            if (cur.getInt(""dyn"") != 1) {
+                Timber.w(""Deck: '%s' was non-dynamic"", customStudyDeck);
+                new MaterialDialog.Builder(getActivity())
+                    .content(R.string.custom_study_deck_exists)
+                    .negativeText(R.string.dialog_cancel)
+                    .build().show();
+                return;
+            } else {
+                Timber.i(""Emptying dynamic deck '%s' for custom study"", customStudyDeck);
+                // safe to empty
+                col.getSched().emptyDyn(cur.getLong(""id""));
+                // reuse; don't delete as it may have children
+                dyn = cur;
+                col.getDecks().select(cur.getLong(""id""));
+            }
+        } else {
+            Timber.i(""Creating Dynamic Deck '%s' for custom study"", customStudyDeck);
+            long customStudyDid = col.getDecks().newDyn(customStudyDeck);
+            dyn = col.getDecks().get(customStudyDid);
+        }
+        if (!dyn.has(""terms"")) {
+            //#5959 - temp code to diagnose why terms doesn't exist.
+            // normally we wouldn't want to log this much, but we need to know how deep the corruption is to fix the
+            // issue
+            Timber.w(""Invalid Dynamic Deck: %s"", dyn);
+            AnkiDroidApp.sendExceptionReport(""Custom Study Deck had no terms"", ""CustomStudyDialog - createCustomStudySession"");
+            UIUtils.showThemedToast(this.getContext(), getString(R.string.custom_study_rebuild_deck_corrupt), false);
+            return;
+        }
+        // and then set various options
+        if (delays.length() > 0) {
+            dyn.put(""delays"", delays);
+        } else {
+            dyn.put(""delays"", JSONObject.NULL);
+        }
+        JSONArray ar = dyn.getJSONArray(""terms"");
+        ar.getJSONArray(0).put(0, ""deck:\"""" + deckToStudyName + ""\"" "" + terms[0]);
+        ar.getJSONArray(0).put(1, terms[1]);
+        @Consts.DYN_PRIORITY int priority = (Integer) terms[2];
+        ar.getJSONArray(0).put(2, priority);
+        dyn.put(""resched"", resched);
+        // Rebuild the filtered deck
+        Timber.i(""Rebuilding Custom Study Deck"");
+        TaskListener listener = createCustomStudySessionListener();
+        CollectionTask.launchCollectionTask(REBUILD_CRAM, listener);
+
+        // Hide the dialogs
+        activity.dismissAllDialogFragments();
+    }","    private void createCustomStudySession(JSONArray delays, Object[] terms, Boolean resched) {
+        Deck dyn;
+        final AnkiActivity activity = getAnkiActivity();
+        Collection col = CollectionHelper.getInstance().getCol(activity);
+        long did = getArguments().getLong(""did"");
+        String deckToStudyName = col.getDecks().get(did).getString(""name"");
+        String customStudyDeck = getResources().getString(R.string.custom_study_deck_name);
+        Deck cur = col.getDecks().byName(customStudyDeck);
+        if (cur != null) {
+            Timber.i(""Found deck: '%s'"", customStudyDeck);
+            if (cur.getInt(""dyn"") != 1) {
+                Timber.w(""Deck: '%s' was non-dynamic"", customStudyDeck);
+                UIUtils.showThemedToast(getActivity(), getString(R.string.custom_study_deck_exists), true);
+                return;
+            } else {
+                Timber.i(""Emptying dynamic deck '%s' for custom study"", customStudyDeck);
+                // safe to empty
+                col.getSched().emptyDyn(cur.getLong(""id""));
+                // reuse; don't delete as it may have children
+                dyn = cur;
+                col.getDecks().select(cur.getLong(""id""));
+            }
+        } else {
+            Timber.i(""Creating Dynamic Deck '%s' for custom study"", customStudyDeck);
+            long customStudyDid = col.getDecks().newDyn(customStudyDeck);
+            dyn = col.getDecks().get(customStudyDid);
+        }
+        if (!dyn.has(""terms"")) {
+            //#5959 - temp code to diagnose why terms doesn't exist.
+            // normally we wouldn't want to log this much, but we need to know how deep the corruption is to fix the
+            // issue
+            Timber.w(""Invalid Dynamic Deck: %s"", dyn);
+            AnkiDroidApp.sendExceptionReport(""Custom Study Deck had no terms"", ""CustomStudyDialog - createCustomStudySession"");
+            UIUtils.showThemedToast(this.getContext(), getString(R.string.custom_study_rebuild_deck_corrupt), false);
+            return;
+        }
+        // and then set various options
+        if (delays.length() > 0) {
+            dyn.put(""delays"", delays);
+        } else {
+            dyn.put(""delays"", JSONObject.NULL);
+        }
+        JSONArray ar = dyn.getJSONArray(""terms"");
+        ar.getJSONArray(0).put(0, ""deck:\"""" + deckToStudyName + ""\"" "" + terms[0]);
+        ar.getJSONArray(0).put(1, terms[1]);
+        @Consts.DYN_PRIORITY int priority = (Integer) terms[2];
+        ar.getJSONArray(0).put(2, priority);
+        dyn.put(""resched"", resched);
+        // Rebuild the filtered deck
+        Timber.i(""Rebuilding Custom Study Deck"");
+        TaskListener listener = createCustomStudySessionListener();
+        CollectionTask.launchCollectionTask(REBUILD_CRAM, listener);
+
+        // Hide the dialogs
+        activity.dismissAllDialogFragments();
+    }","    private void createCustomStudySession(JSONArray delays, Object[] terms, Boolean resched) {
+        Deck dyn;
+        final AnkiActivity activity = getAnkiActivity();
+        Collection col = CollectionHelper.getInstance().getCol(activity);
+        long did = getArguments().getLong(""did"");
+        String deckToStudyName = col.getDecks().get(did).getString(""name"");
+        String customStudyDeck = getResources().getString(R.string.custom_study_deck_name);
+        Deck cur = col.getDecks().byName(customStudyDeck);
+        if (cur != null) {
+            Timber.i(""Found deck: '%s'"", customStudyDeck);
+            if (cur.getInt(""dyn"") != 1) {
+                Timber.w(""Deck: '%s' was non-dynamic"", customStudyDeck);
+-               new MaterialDialog.Builder(getActivity())
+-                   .content(R.string.custom_study_deck_exists)
+-                   .negativeText(R.string.dialog_cancel)
+-                   .build().show();
++               UIUtils.showThemedToast(getActivity(), getString(R.string.custom_study_deck_exists), true);
+
+                return;
+            } else {
+                Timber.i(""Emptying dynamic deck '%s' for custom study"", customStudyDeck);
+                // safe to empty
+                col.getSched().emptyDyn(cur.getLong(""id""));
+                // reuse; don't delete as it may have children
+                dyn = cur;
+                col.getDecks().select(cur.getLong(""id""));
+            }
+        } else {
+            Timber.i(""Creating Dynamic Deck '%s' for custom study"", customStudyDeck);
+            long customStudyDid = col.getDecks().newDyn(customStudyDeck);
+            dyn = col.getDecks().get(customStudyDid);
+        }
+        if (!dyn.has(""terms"")) {
+            //#5959 - temp code to diagnose why terms doesn't exist.
+            // normally we wouldn't want to log this much, but we need to know how deep the corruption is to fix the
+            // issue
+            Timber.w(""Invalid Dynamic Deck: %s"", dyn);
+            AnkiDroidApp.sendExceptionReport(""Custom Study Deck had no terms"", ""CustomStudyDialog - createCustomStudySession"");
+            UIUtils.showThemedToast(this.getContext(), getString(R.string.custom_study_rebuild_deck_corrupt), false);
+            return;
+        }
+        // and then set various options
+        if (delays.length() > 0) {
+            dyn.put(""delays"", delays);
+        } else {
+            dyn.put(""delays"", JSONObject.NULL);
+        }
+        JSONArray ar = dyn.getJSONArray(""terms"");
+        ar.getJSONArray(0).put(0, ""deck:\"""" + deckToStudyName + ""\"" "" + terms[0]);
+        ar.getJSONArray(0).put(1, terms[1]);
+        @Consts.DYN_PRIORITY int priority = (Integer) terms[2];
+        ar.getJSONArray(0).put(2, priority);
+        dyn.put(""resched"", resched);
+        // Rebuild the filtered deck
+        Timber.i(""Rebuilding Custom Study Deck"");
+        TaskListener listener = createCustomStudySessionListener();
+        CollectionTask.launchCollectionTask(REBUILD_CRAM, listener);
+
+        // Hide the dialogs
+        activity.dismissAllDialogFragments();
+    }","    private void createCustomStudySession(JSONArray delays, Object[] terms, Boolean resched) {
+        Deck dyn;
+        final AnkiActivity activity = getAnkiActivity();
+        Collection col = CollectionHelper.getInstance().getCol(activity);
+        long did = getArguments().getLong(""did"");
+        String deckToStudyName = col.getDecks().get(did).getString(""name"");
+        String customStudyDeck = getResources().getString(R.string.custom_study_deck_name);
+        Deck cur = col.getDecks().byName(customStudyDeck);
+        if (cur != null) {
+            Timber.i(""Found deck: '%s'"", customStudyDeck);
+            if (cur.getInt(""dyn"") != 1) {
+                Timber.w(""Deck: '%s' was non-dynamic"", customStudyDeck);
+
+                <Chunk_For_Modification>
+
+                return;
+            } else {
+                Timber.i(""Emptying dynamic deck '%s' for custom study"", customStudyDeck);
+                // safe to empty
+                col.getSched().emptyDyn(cur.getLong(""id""));
+                // reuse; don't delete as it may have children
+                dyn = cur;
+                col.getDecks().select(cur.getLong(""id""));
+            }
+        } else {
+            Timber.i(""Creating Dynamic Deck '%s' for custom study"", customStudyDeck);
+            long customStudyDid = col.getDecks().newDyn(customStudyDeck);
+            dyn = col.getDecks().get(customStudyDid);
+        }
+        if (!dyn.has(""terms"")) {
+            //#5959 - temp code to diagnose why terms doesn't exist.
+            // normally we wouldn't want to log this much, but we need to know how deep the corruption is to fix the
+            // issue
+            Timber.w(""Invalid Dynamic Deck: %s"", dyn);
+            AnkiDroidApp.sendExceptionReport(""Custom Study Deck had no terms"", ""CustomStudyDialog - createCustomStudySession"");
+            UIUtils.showThemedToast(this.getContext(), getString(R.string.custom_study_rebuild_deck_corrupt), false);
+            return;
+        }
+        // and then set various options
+        if (delays.length() > 0) {
+            dyn.put(""delays"", delays);
+        } else {
+            dyn.put(""delays"", JSONObject.NULL);
+        }
+        JSONArray ar = dyn.getJSONArray(""terms"");
+        ar.getJSONArray(0).put(0, ""deck:\"""" + deckToStudyName + ""\"" "" + terms[0]);
+        ar.getJSONArray(0).put(1, terms[1]);
+        @Consts.DYN_PRIORITY int priority = (Integer) terms[2];
+        ar.getJSONArray(0).put(2, priority);
+        dyn.put(""resched"", resched);
+        // Rebuild the filtered deck
+        Timber.i(""Rebuilding Custom Study Deck"");
+        TaskListener listener = createCustomStudySessionListener();
+        CollectionTask.launchCollectionTask(REBUILD_CRAM, listener);
+
+        // Hide the dialogs
+        activity.dismissAllDialogFragments();
+    }","    private void createCustomStudySession(JSONArray delays, Object[] terms, Boolean resched) {
+        Deck dyn;
+        final AnkiActivity activity = getAnkiActivity();
+        Collection col = CollectionHelper.getInstance().getCol(activity);
+        long did = getArguments().getLong(""did"");
+        String deckToStudyName = col.getDecks().get(did).getString(""name"");
+        String customStudyDeck = getResources().getString(R.string.custom_study_deck_name);
+        Deck cur = col.getDecks().byName(customStudyDeck);
+        if (cur != null) {
+            Timber.i(""Found deck: '%s'"", customStudyDeck);
+            if (cur.getInt(""dyn"") != 1) {
+                Timber.w(""Deck: '%s' was non-dynamic"", customStudyDeck);
+
+        >>> [ INFILL ] <<<
+
+                return;
+            } else {
+                Timber.i(""Emptying dynamic deck '%s' for custom study"", customStudyDeck);
+                // safe to empty
+                col.getSched().emptyDyn(cur.getLong(""id""));
+                // reuse; don't delete as it may have children
+                dyn = cur;
+                col.getDecks().select(cur.getLong(""id""));
+            }
+        } else {
+            Timber.i(""Creating Dynamic Deck '%s' for custom study"", customStudyDeck);
+            long customStudyDid = col.getDecks().newDyn(customStudyDeck);
+            dyn = col.getDecks().get(customStudyDid);
+        }
+        if (!dyn.has(""terms"")) {
+            //#5959 - temp code to diagnose why terms doesn't exist.
+            // normally we wouldn't want to log this much, but we need to know how deep the corruption is to fix the
+            // issue
+            Timber.w(""Invalid Dynamic Deck: %s"", dyn);
+            AnkiDroidApp.sendExceptionReport(""Custom Study Deck had no terms"", ""CustomStudyDialog - createCustomStudySession"");
+            UIUtils.showThemedToast(this.getContext(), getString(R.string.custom_study_rebuild_deck_corrupt), false);
+            return;
+        }
+        // and then set various options
+        if (delays.length() > 0) {
+            dyn.put(""delays"", delays);
+        } else {
+            dyn.put(""delays"", JSONObject.NULL);
+        }
+        JSONArray ar = dyn.getJSONArray(""terms"");
+        ar.getJSONArray(0).put(0, ""deck:\"""" + deckToStudyName + ""\"" "" + terms[0]);
+        ar.getJSONArray(0).put(1, terms[1]);
+        @Consts.DYN_PRIORITY int priority = (Integer) terms[2];
+        ar.getJSONArray(0).put(2, priority);
+        dyn.put(""resched"", resched);
+        // Rebuild the filtered deck
+        Timber.i(""Rebuilding Custom Study Deck"");
+        TaskListener listener = createCustomStudySessionListener();
+        CollectionTask.launchCollectionTask(REBUILD_CRAM, listener);
+
+        // Hide the dialogs
+        activity.dismissAllDialogFragments();
+    }","new MaterialDialog.Builder(getActivity())
+                    .content(R.string.custom_study_deck_exists)
+                    .negativeText(R.string.dialog_cancel)
+                    .build().show();","                UIUtils.showThemedToast(getActivity(), getString(R.string.custom_study_deck_exists), true);",,,,,,,,4,1,5,1,1

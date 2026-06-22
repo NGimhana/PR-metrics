@@ -1,0 +1,15 @@
+diff --git a/app/src/main/java/com/simon/harmonichackernews/CommentsRecyclerViewAdapter.java b/app/src/main/java/com/simon/harmonichackernews/adapters/CommentsRecyclerViewAdapter.java
+index 943d257..5ee73f2 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/CommentsRecyclerViewAdapter.java
++++ b/app/src/main/java/com/simon/harmonichackernews/adapters/CommentsRecyclerViewAdapter.java
+@@ -537,8 +537,10 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
+             commentBody.setOnClickATagListener(new OnClickATagListener() {
+                 @Override
+                 public boolean onClick(View widget, String spannedText, @Nullable String href) {
++                    if (disableCommentATagClick) return true ;
++
+                     Utils.openLinkMaybeHN(widget.getContext(), href);
+                     return true;
+                 }
+             });
+         }

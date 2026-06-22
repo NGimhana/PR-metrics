@@ -1,0 +1,20 @@
+diff --git a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+index e6a58f03..0676d2c1 100644
+--- a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
++++ b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+@@ -100,7 +101,15 @@ public class DocumentEditFragment extends BaseFragment implements TextFormat.Tex
+         }
+         _document = loadDocument();
+         loadDocumentIntoUi();
++        if (savedInstanceState != null && savedInstanceState.containsKey(SAVESTATE_CURSOR_POS)) {
++            int cursor = savedInstanceState.getInt(SAVESTATE_CURSOR_POS);
++            if (cursor >= 0 && cursor < _hlEditor.length()){
++                _hlEditor.setSelection(cursor);
++            }
++        }
+ 
+         new ActivityUtils(getActivity()).hideSoftKeyboard();
++        AppSettings appSettings = new AppSettings(_context);
+         _hlEditor.clearFocus();
++        _hlEditor.setLineSpacing(0, appSettings.getEditorLineSpacing());
+     }

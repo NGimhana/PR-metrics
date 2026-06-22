@@ -1,0 +1,13 @@
+diff --git a/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/MedicineCreateOrEditFragment.java b/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/MedicineCreateOrEditFragment.java
+index a6822c2f..50eac905 100644
+--- a/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/MedicineCreateOrEditFragment.java
++++ b/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/MedicineCreateOrEditFragment.java
+@@ -483,7 +483,7 @@ public class MedicineCreateOrEditFragment extends Fragment implements SharedPref
+                         //.setLabelText(ref == DIALOG_STOCK_ADD ? "Increase stock by" : "Decrease stock by")
+                         .setDecimalVisibility(NumberPicker.VISIBLE)
+                         .setPlusMinusVisibility(NumberPicker.INVISIBLE)
+-                        .setFragmentManager(getChildFragmentManager())
++                        .setFragmentManager(getActivity().getSupportFragmentManager())
+                         .setTargetFragment(this).setReference(ref)
+                         .setStyleResId(R.style.BetterPickersDialogFragment_Calendula);
+         npb.show();

@@ -1,0 +1,18 @@
+diff --git a/AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java b/android/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java
+index 6f6b3bf4..6dee7d91 100644
+--- a/AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java
++++ b/android/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java
+@@ -153,11 +155,8 @@ public class ManageLocationFragment extends ManageContentFragment {
+ 
+     private void updateAllFishingSpots() {
+         // remove all old views
+-        for (MoreDetailView fishingSpotView : mFishingSpotViews) {
+-            ViewGroup parent = ((ViewGroup)fishingSpotView.getParent());
+-            if (parent != null)
+-                parent.removeView(fishingSpotView);
+-        }
++        mFishingSpotContainer.removeAllViews();
++        mFishingSpotViews.clear();
+ 
+         for (UserDefineObject spot : mFishingSpots)
+             addFishingSpot((FishingSpot)spot);

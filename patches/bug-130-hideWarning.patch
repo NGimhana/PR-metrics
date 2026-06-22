@@ -1,0 +1,9 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 3e7d3830..08e7ef53 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -291,3 +292,4 @@ public class IntroScreenActivity extends IntroActivity {
+         private void hideWarning() {
+             authWarnings.setVisibility(View.GONE);
++            authWarnings.setText(null);
+         }

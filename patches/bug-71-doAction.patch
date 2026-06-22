@@ -1,0 +1,15 @@
+diff --git a/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java b/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
+index 52e5a789d..3d43ab8e5 100644
+--- a/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
++++ b/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
+@@ -172,6 +178,10 @@ class ExperienceTweaks extends Forwarder {
+                             mainActivity.favoritesBar.setVisibility(View.VISIBLE);
+                         }
+                         break;
++                    case "display-favorites":
++                        // Not provided as an option for the gestures, but useful if you only want to display facorites on tap,
++                        // not history.
++                        mainActivity.favoritesBar.setVisibility(View.VISIBLE);
+                 }
+             }
+         });

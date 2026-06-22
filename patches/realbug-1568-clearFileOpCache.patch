@@ -1,0 +1,12 @@
+diff --git a/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java b/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java
+index 2302bfd..9453f32 100644
+--- a/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java
+@@ -945,7 +962,7 @@ public class FileActivity extends ThemedAppCompatActivity {
+      */
+     public void clearFileOpCache() {
+         fileOpContext.setFirst(NONE);
+-        fileOpContext.setSecond(new ArrayList<>());
++        fileOpContext.setSecond(new CopyOnWriteArrayList<>());
+         reloadCurrentDirectory();
+     }

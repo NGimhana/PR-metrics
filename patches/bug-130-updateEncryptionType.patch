@@ -1,0 +1,13 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 3e7d3830..08e7ef53 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -261,6 +261,8 @@ public class IntroScreenActivity extends IntroActivity {
+             if (desc != null) {
+                 if (encryptionType == Constants.EncryptionType.KEYSTORE) {
+                     desc.setText(R.string.intro_slide3_desc_keystore);
++
++                    selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.NONE));
+                 } else if (encryptionType == Constants.EncryptionType.PASSWORD) {
+                     desc.setText(R.string.intro_slide3_desc_password);
+ 

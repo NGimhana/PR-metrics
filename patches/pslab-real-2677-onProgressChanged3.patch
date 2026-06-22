@@ -1,0 +1,19 @@
+diff --git a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+index 8c44102f..64a4ad48 100644
+--- a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
++++ b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+@@ -276,11 +276,12 @@ public class RoboticArmActivity extends GuideActivity {
+         seekArc3.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
++
+             @Override
+-            public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
++            public void onProgressChanged(SeekArc seekArc, float progress, boolean b) {
+                 if (editEnter) {
+                     degreeText3.setText(String.valueOf(degree));
+                     editEnter = false;
+                 } else {
+-                    degreeText3.setText(String.valueOf((int) (i * 3.6)));
++                    degreeText3.setText(String.valueOf(Math.round(progress * 3.6f)));
+                 }
+                 degreeText3.setCursorVisible(false);
+             }

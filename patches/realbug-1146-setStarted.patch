@@ -1,0 +1,12 @@
+diff --git a/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java b/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java
+index 764f4681..63b0a064 100644
+--- a/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java
++++ b/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java
+@@ -288,6 +288,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
+                 mLongitudeView.setText(EMPTY_LAT_LONG);
+                 mFixTime = 0;
+                 updateFixTime();
++                updateFilterView();
+                 mTTFFView.setText("");
+                 mAltitudeView.setText("");
+                 mAltitudeMslView.setText("");

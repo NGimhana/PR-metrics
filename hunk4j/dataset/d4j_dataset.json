@@ -1,0 +1,985 @@
+{
+    "Anki-Android-123451-real-createCustomStudySession": {
+        "buggy_hunks": {
+            "0": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/dialogs/CustomStudyDialog.java",
+                "start_line": 439,
+                "end_line": 439
+            }
+        }
+    },
+    "Anki-Android-273-real-onCollectionLoaded": {
+        "buggy_hunks": {
+            "0": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+                "start_line": 46,
+                "end_line": 51
+            },
+            "1": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+                "start_line": 67,
+                "end_line": 72
+            },
+            "2": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+                "start_line": 90,
+                "end_line": 97
+            }
+        }
+    },
+    "Anki-Android-273-real-onCreate": {
+        "buggy_hunks": {
+            "0": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+                "start_line": 46,
+                "end_line": 51
+            },
+            "1": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+                "start_line": 67,
+                "end_line": 72
+            },
+            "2": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+                "start_line": 90,
+                "end_line": 97
+            }
+        }
+    },
+    "WiFiAnalyzer-92-real-findMacAddresses": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java",
+                "start_line": 64,
+                "end_line": 82
+            }
+        }
+    },
+    "WiFiAnalyzer-92-real-findVendors-no-args": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java",
+                "start_line": 64,
+                "end_line": 82
+            }
+        }
+    },
+    "WiFiAnalyzer-92-real-findVendors-with-args": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java",
+                "start_line": 64,
+                "end_line": 82
+            }
+        }
+    },
+    "bug-1130-onFragmentLoaded-AllEpisodesFragment": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java",
+                "start_line": 347,
+                "end_line": 360
+            }
+        }
+    },
+    "bug-1130-onFragmentLoaded-QueueFragment": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java",
+                "start_line": 509,
+                "end_line": 522
+            }
+        }
+    },
+    "bug-1151-onCreate": {
+        "buggy_hunks": {
+            "0": {
+                "file": "GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java",
+                "start_line": 198,
+                "end_line": 198
+            }
+        }
+    },
+    "bug-1151-onPreferenceChange": {
+        "buggy_hunks": {
+            "0": {
+                "file": "GPSTest/src/main/java/com/android/gpstest/Preferences.java",
+                "start_line": 138,
+                "end_line": 139
+            }
+        }
+    },
+    "bug-1151-onResume": {
+        "buggy_hunks": {
+            "0": {
+                "file": "GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java",
+                "start_line": 258,
+                "end_line": 264
+            }
+        }
+    },
+    "bug-1198-onClick-ViewFilesAdapter": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java",
+                "start_line": 109,
+                "end_line": 109
+            },
+            "1": {
+                "file": "app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java",
+                "start_line": 119,
+                "end_line": 146
+            }
+        }
+    },
+    "bug-1202-nextImg": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/swati4star/createpdf/activity/ImageEditor.java",
+                "start_line": 131,
+                "end_line": 133
+            }
+        }
+    },
+    "bug-1202-onItemClick": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/swati4star/createpdf/activity/ImageEditor.java",
+                "start_line": 307,
+                "end_line": 318
+            }
+        }
+    },
+    "bug-1202-previousImg": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/swati4star/createpdf/activity/ImageEditor.java",
+                "start_line": 141,
+                "end_line": 143
+            }
+        }
+    },
+    "bug-1202-saveC": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/swati4star/createpdf/activity/ImageEditor.java",
+                "start_line": 153,
+                "end_line": 155
+            }
+        }
+    },
+    "bug-1205-onBackPressed": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/swati4star/createpdf/activity/MainActivity.java",
+                "start_line": 285,
+                "end_line": 294
+            }
+        }
+    },
+    "bug-1207-show": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java",
+                "start_line": 206,
+                "end_line": 208
+            },
+            "1": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java",
+                "start_line": 218,
+                "end_line": 218
+            }
+        }
+    },
+    "bug-1213-PasswordEntryDialog": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java",
+                "start_line": 46,
+                "end_line": 46
+            }
+        }
+    },
+    "bug-1213-onBindDialogView": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java",
+                "start_line": 139,
+                "end_line": 139
+            }
+        }
+    },
+    "bug-1213-setupForPasswordInput": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 384,
+                "end_line": 384
+            }
+        }
+    },
+    "bug-1213-setupForPinInput": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 410,
+                "end_line": 410
+            }
+        }
+    },
+    "bug-1213-updateLayout": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java",
+                "start_line": 260,
+                "end_line": 260
+            },
+            "1": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java",
+                "start_line": 281,
+                "end_line": 281
+            }
+        }
+    },
+    "bug-1214-onCreateView": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 358,
+                "end_line": 443
+            }
+        }
+    },
+    "bug-1215-afterTextChanged": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java",
+                "start_line": 283,
+                "end_line": 288
+            }
+        }
+    },
+    "bug-130-canGoForward": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 459,
+                "end_line": 488
+            }
+        }
+    },
+    "bug-130-flashWarning": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 300,
+                "end_line": 307
+            }
+        }
+    },
+    "bug-130-hideWarning": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 294,
+                "end_line": 295
+            }
+        }
+    },
+    "bug-130-onItemSelected": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 413,
+                "end_line": 417
+            }
+        }
+    },
+    "bug-130-updateEncryptionType": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 264,
+                "end_line": 265
+            }
+        }
+    },
+    "bug-1441-verifyUserInput": {
+        "buggy_hunks": {
+            "0": {
+                "file": "android/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java",
+                "start_line": 127,
+                "end_line": 132
+            }
+        }
+    },
+    "bug-1446-goToManageFishingSpot": {
+        "buggy_hunks": {
+            "0": {
+                "file": "AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java",
+                "start_line": 225,
+                "end_line": 227
+            }
+        }
+    },
+    "bug-1446-onClick": {
+        "buggy_hunks": {
+            "0": {
+                "file": "AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java",
+                "start_line": 192,
+                "end_line": 192
+            }
+        }
+    },
+    "bug-1446-onCreateView": {
+        "buggy_hunks": {
+            "0": {
+                "file": "AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java",
+                "start_line": 51,
+                "end_line": 51
+            }
+        }
+    },
+    "bug-1446-updateAllFishingSpots": {
+        "buggy_hunks": {
+            "0": {
+                "file": "AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java",
+                "start_line": 158,
+                "end_line": 159
+            }
+        }
+    },
+    "bug-18-onClick-RoutineCreateOrEditFragment": {
+        "buggy_hunks": {
+            "0": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/RoutineCreateOrEditFragment.java",
+                "start_line": 122,
+                "end_line": 122
+            }
+        }
+    },
+    "bug-18-onClick-ScheduleTimetableFragment": {
+        "buggy_hunks": {
+            "0": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+                "start_line": 314,
+                "end_line": 314
+            }
+        }
+    },
+    "bug-18-showIntervalPickerDialog": {
+        "buggy_hunks": {
+            "0": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+                "start_line": 542,
+                "end_line": 542
+            }
+        }
+    },
+    "bug-18-showRecurrencePickerDialog": {
+        "buggy_hunks": {
+            "0": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+                "start_line": 595,
+                "end_line": 595
+            }
+        }
+    },
+    "bug-18-showStockDialog": {
+        "buggy_hunks": {
+            "0": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/MedicineCreateOrEditFragment.java",
+                "start_line": 486,
+                "end_line": 486
+            }
+        }
+    },
+    "bug-18-updatePeriodSelector": {
+        "buggy_hunks": {
+            "0": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+                "start_line": 1021,
+                "end_line": 1021
+            },
+            "1": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+                "start_line": 1037,
+                "end_line": 1037
+            }
+        }
+    },
+    "bug-191-insertTower": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java",
+                "start_line": 49,
+                "end_line": 50
+            }
+        }
+    },
+    "bug-191-onTouch": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/ch/logixisland/anuto/view/game/TowerView.java",
+                "start_line": 125,
+                "end_line": 140
+            }
+        }
+    },
+    "bug-192-onResume": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java",
+                "start_line": 120,
+                "end_line": 123
+            }
+        }
+    },
+    "bug-192-onSaveInstanceState": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java",
+                "start_line": 285,
+                "end_line": 285
+            }
+        }
+    },
+    "bug-192-onViewCreated": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java",
+                "start_line": 104,
+                "end_line": 112
+            }
+        }
+    },
+    "bug-271-refresh": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java",
+                "start_line": 68,
+                "end_line": 69
+            }
+        }
+    },
+    "bug-275-isPolicyRespected": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java",
+                "start_line": 117,
+                "end_line": 117
+            }
+        }
+    },
+    "bug-275-onCreateView": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java",
+                "start_line": 48,
+                "end_line": 53
+            }
+        }
+    },
+    "bug-275-onUserIllegallyRequestedNextPage": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java",
+                "start_line": 129,
+                "end_line": 129
+            }
+        }
+    },
+    "bug-275-showSetPasswordDialog": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java",
+                "start_line": 96,
+                "end_line": 101
+            },
+            "1": {
+                "file": "app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java",
+                "start_line": 120,
+                "end_line": 120
+            },
+            "2": {
+                "file": "app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java",
+                "start_line": 145,
+                "end_line": 145
+            }
+        }
+    },
+    "bug-44-removeTag": {
+        "buggy_hunks": {
+            "0": {
+                "file": "omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java",
+                "start_line": 90,
+                "end_line": 92
+            }
+        }
+    },
+    "bug-71-doAction": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java",
+                "start_line": 181,
+                "end_line": 184
+            }
+        }
+    },
+    "bug-71-onSingleTapConfirmed": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java",
+                "start_line": 95,
+                "end_line": 97
+            }
+        }
+    },
+    "bug-71-onSingleTapUp": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java",
+                "start_line": 81,
+                "end_line": 83
+            }
+        }
+    },
+    "gpslogger-real-1138-handleIntent": {
+        "buggy_hunks": {
+            "0": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java",
+                "start_line": 181,
+                "end_line": 181
+            }
+        }
+    },
+    "gpslogger-real-1138-writeToFile": {
+        "buggy_hunks": {
+            "0": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java",
+                "start_line": 1077,
+                "end_line": 1077
+            }
+        }
+    },
+    "harmonic-real-114-onClick": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/CommentsRecyclerViewAdapter.java",
+                "start_line": 540,
+                "end_line": 543
+            }
+        }
+    },
+    "harmonic-real-114-onItemClick": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java",
+                "start_line": 1638,
+                "end_line": 1647
+            }
+        }
+    },
+    "harmonic-real-136-handleOnBackPressed": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/ComposeActivity.java",
+                "start_line": 211,
+                "end_line": 216
+            }
+        }
+    },
+    "harmonic-real-171-showTextSelection": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java",
+                "start_line": 32,
+                "end_line": 33
+            }
+        }
+    },
+    "harmonic-real-181-loadAlgolia": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java",
+                "start_line": 772,
+                "end_line": 793
+            }
+        }
+    },
+    "harmonic-real-181-loadStory": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java",
+                "start_line": 494,
+                "end_line": 507
+            }
+        }
+    },
+    "markor-53-real-makeDialog": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java",
+                "start_line": 32,
+                "end_line": 34
+            },
+            "1": {
+                "file": "app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java",
+                "start_line": 118,
+                "end_line": 126
+            },
+            "2": {
+                "file": "app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java",
+                "start_line": 245,
+                "end_line": 245
+            }
+        }
+    },
+    "markor-54-real-isEditorHistoryEnabled": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/net/gsantner/markor/util/AppSettings.java",
+                "start_line": 29,
+                "end_line": 29
+            },
+            "1": {
+                "file": "app/src/main/java/net/gsantner/markor/util/AppSettings.java",
+                "start_line": 186,
+                "end_line": 186
+            },
+            "2": {
+                "file": "app/src/main/java/net/gsantner/markor/util/AppSettings.java",
+                "start_line": 307,
+                "end_line": 306
+            }
+        }
+    },
+    "pslab-real-2587-doInBackground": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/pslab/fragment/ESPFragment.java",
+                "start_line": 96,
+                "end_line": 104
+            }
+        }
+    },
+    "pslab-real-2677-onProgressChanged1": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 232,
+                "end_line": 237
+            }
+        }
+    },
+    "pslab-real-2677-onProgressChanged2": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 256,
+                "end_line": 261
+            }
+        }
+    },
+    "pslab-real-2677-onProgressChanged3": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 279,
+                "end_line": 284
+            }
+        }
+    },
+    "pslab-real-2677-onProgressChanged4": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 303,
+                "end_line": 307
+            }
+        }
+    },
+    "pslab-real-2677-processDegreeInput": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 488,
+                "end_line": 490
+            },
+            "1": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 507,
+                "end_line": 507
+            }
+        }
+    },
+    "pslab-real-2678-processDegreeInput": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 488,
+                "end_line": 490
+            },
+            "1": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 507,
+                "end_line": 507
+            }
+        }
+    },
+    "realbug-1146-setStarted": {
+        "buggy_hunks": {
+            "0": {
+                "file": "GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java",
+                "start_line": 291,
+                "end_line": 291
+            }
+        }
+    },
+    "realbug-1146-updateFilterView": {
+        "buggy_hunks": {
+            "0": {
+                "file": "GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java",
+                "start_line": 782,
+                "end_line": 782
+            }
+        }
+    },
+    "realbug-129-show": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java",
+                "start_line": 197,
+                "end_line": 197
+            },
+            "1": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java",
+                "start_line": 207,
+                "end_line": 265
+            }
+        }
+    },
+    "realbug-1299-onItemClick": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java",
+                "start_line": 234,
+                "end_line": 238
+            }
+        }
+    },
+    "realbug-1445-tripExists": {
+        "buggy_hunks": {
+            "0": {
+                "file": "android/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java",
+                "start_line": 921,
+                "end_line": 926
+            }
+        }
+    },
+    "realbug-1563-loadDirectory": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java",
+                "start_line": 616,
+                "end_line": 625
+            }
+        }
+    },
+    "realbug-1568-addCreateZipToMenu": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/lerk/lrkFM/activities/file/ContextMenuUtil.java",
+                "start_line": 258,
+                "end_line": 258
+            }
+        }
+    },
+    "realbug-1568-clearFileOpCache": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java",
+                "start_line": 965,
+                "end_line": 965
+            }
+        }
+    },
+    "realbug-1568-finishFileOperation": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java",
+                "start_line": 974,
+                "end_line": 974
+            }
+        }
+    },
+    "realbug-159-updateMultiselectMenu": {
+        "buggy_hunks": {
+            "0": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java",
+                "start_line": 866,
+                "end_line": 866
+            }
+        }
+    },
+    "realbug-160-onCreateOptionsMenu": {
+        "buggy_hunks": {
+            "0": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/Reviewer.java",
+                "start_line": 435,
+                "end_line": 442
+            }
+        }
+    },
+    "realbug-1640-onCreate-ExerciseViewActivity": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java",
+                "start_line": 42,
+                "end_line": 42
+            }
+        }
+    },
+    "realbug-1640-onCreate-InfoActivity": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java",
+                "start_line": 37,
+                "end_line": 45
+            }
+        }
+    },
+    "realbug-1641-addScheduleToModel": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java",
+                "start_line": 82,
+                "end_line": 94
+            },
+            "1": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java",
+                "start_line": 124,
+                "end_line": 130
+            }
+        }
+    },
+    "realbug-1641-onCreate": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java",
+                "start_line": 42,
+                "end_line": 46
+            }
+        }
+    },
+    "realbug-1641-onStart": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java",
+                "start_line": 62,
+                "end_line": 65
+            }
+        }
+    },
+    "realbug-1645-generateExcercise": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java",
+                "start_line": 63,
+                "end_line": 63
+            }
+        }
+    },
+    "realbug-8-setRunningActionMode": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java",
+                "start_line": 449,
+                "end_line": 448
+            }
+        }
+    },
+    "skytube-real-1255-getChannelUrl": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java",
+                "start_line": 329,
+                "end_line": 328
+            }
+        }
+    },
+    "ultrasonic-84-real-getPreferences": {
+        "buggy_hunks": {
+            "0": {
+                "file": "ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java",
+                "start_line": 401,
+                "end_line": 403
+            }
+        }
+    },
+    "urlcheck-real-358-onDisplayUrl": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+                "start_line": 82,
+                "end_line": 84
+            },
+            "1": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+                "start_line": 98,
+                "end_line": 98
+            },
+            "2": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+                "start_line": 114,
+                "end_line": 114
+            }
+        }
+    },
+    "urlcheck-real-365-getQueryName": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java",
+                "start_line": 192,
+                "end_line": 194
+            }
+        }
+    },
+    "urlcheck-real-365-getQueryValue": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java",
+                "start_line": 201,
+                "end_line": 201
+            }
+        }
+    },
+    "urlcheck-real-382-onDisplayUrl": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+                "start_line": 79,
+                "end_line": 82
+            },
+            "1": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+                "start_line": 122,
+                "end_line": 127
+            },
+            "2": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+                "start_line": 204,
+                "end_line": 220
+            }
+        }
+    },
+    "urlcheck-real-447-buildBuiltIn": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/companions/PatternCatalog.java",
+                "start_line": 48,
+                "end_line": 80
+            }
+        }
+    }
+}

@@ -1,0 +1,418 @@
+{
+    "bug-1202-previousImg": {"app/src/main/java/swati4star/createpdf/activity/ImageEditor.java": {
+        "diameter": 31,
+        "pairs": {}
+    }},
+    "bug-1213-PasswordEntryDialog": {"app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java": {
+        "diameter": 21,
+        "pairs": {}
+    }},
+    "bug-71-onSingleTapConfirmed": {"app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java": {
+        "diameter": 34,
+        "pairs": {}
+    }},
+    "bug-192-onSaveInstanceState": {"app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java": {
+        "diameter": 29,
+        "pairs": {}
+    }},
+    "urlcheck-real-365-getQueryValue": {"app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java": {
+        "diameter": 27,
+        "pairs": {}
+    }},
+    "bug-1446-goToManageFishingSpot": {"AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java": {
+        "diameter": 31,
+        "pairs": {}
+    }},
+    "bug-130-hideWarning": {"app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java": {
+        "diameter": 35,
+        "pairs": {}
+    }},
+    "bug-130-canGoForward": {"app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java": {
+        "diameter": 35,
+        "pairs": {}
+    }},
+    "bug-1213-updateLayout": {"app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java": {
+        "diameter": 26,
+        "pairs": {"0_1": 5}
+    }},
+    "harmonic-real-114-onClick": {"app/src/main/java/com/simon/harmonichackernews/CommentsRecyclerViewAdapter.java": {
+        "diameter": 38,
+        "pairs": {}
+    }},
+    "realbug-1568-addCreateZipToMenu": {"app/src/main/java/io/lerk/lrkFM/activities/file/ContextMenuUtil.java": {
+        "diameter": 63,
+        "pairs": {}
+    }},
+    "realbug-1640-onCreate-InfoActivity": {"app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java": {
+        "diameter": 21,
+        "pairs": {}
+    }},
+    "bug-130-onItemSelected": {"app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java": {
+        "diameter": 35,
+        "pairs": {}
+    }},
+    "realbug-1568-clearFileOpCache": {"app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java": {
+        "diameter": 65,
+        "pairs": {}
+    }},
+    "bug-1446-onCreateView": {"AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java": {
+        "diameter": 31,
+        "pairs": {}
+    }},
+    "realbug-1641-onCreate": {"app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java": {
+        "diameter": 32,
+        "pairs": {}
+    }},
+    "realbug-1640-onCreate-ExerciseViewActivity": {"app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java": {
+        "diameter": 25,
+        "pairs": {}
+    }},
+    "bug-71-onSingleTapUp": {"app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java": {
+        "diameter": 34,
+        "pairs": {}
+    }},
+    "realbug-159-updateMultiselectMenu": {"AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java": {
+        "diameter": 38,
+        "pairs": {}
+    }},
+    "Anki-Android-273-real-onCreate": {"AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java": {
+        "diameter": 28,
+        "pairs": {
+            "0_1": 2,
+            "0_2": 2,
+            "1_2": 0
+        }
+    }},
+    "urlcheck-real-382-onDisplayUrl": {"app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java": {
+        "diameter": 33,
+        "pairs": {
+            "0_1": 6,
+            "0_2": 4,
+            "1_2": 8
+        }
+    }},
+    "bug-1202-nextImg": {"app/src/main/java/swati4star/createpdf/activity/ImageEditor.java": {
+        "diameter": 31,
+        "pairs": {}
+    }},
+    "realbug-1299-onItemClick": {"app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java": {
+        "diameter": 43,
+        "pairs": {}
+    }},
+    "WiFiAnalyzer-92-real-findVendors-with-args": {"app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java": {
+        "diameter": 29,
+        "pairs": {}
+    }},
+    "realbug-1445-tripExists": {"android/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java": {
+        "diameter": 40,
+        "pairs": {}
+    }},
+    "bug-18-showStockDialog": {"Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/MedicineCreateOrEditFragment.java": {
+        "diameter": 39,
+        "pairs": {}
+    }},
+    "skytube-real-1255-getChannelUrl": {"app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java": {
+        "diameter": 34,
+        "pairs": {}
+    }},
+    "harmonic-real-171-showTextSelection": {"app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java": {
+        "diameter": 19,
+        "pairs": {}
+    }},
+    "bug-275-onUserIllegallyRequestedNextPage": {"app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java": {
+        "diameter": 26,
+        "pairs": {}
+    }},
+    "realbug-1641-addScheduleToModel": {"app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java": {
+        "diameter": 32,
+        "pairs": {"0_1": 0}
+    }},
+    "Anki-Android-273-real-onCollectionLoaded": {"AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java": {
+        "diameter": 28,
+        "pairs": {
+            "0_1": 2,
+            "0_2": 2,
+            "1_2": 0
+        }
+    }},
+    "pslab-real-2587-doInBackground": {"app/src/main/java/io/pslab/fragment/ESPFragment.java": {
+        "diameter": 31,
+        "pairs": {}
+    }},
+    "bug-192-onViewCreated": {"app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java": {
+        "diameter": 29,
+        "pairs": {}
+    }},
+    "pslab-real-2677-onProgressChanged2": {"app/src/main/java/io/pslab/activity/RoboticArmActivity.java": {
+        "diameter": 37,
+        "pairs": {}
+    }},
+    "pslab-real-2677-onProgressChanged1": {"app/src/main/java/io/pslab/activity/RoboticArmActivity.java": {
+        "diameter": 37,
+        "pairs": {}
+    }},
+    "realbug-8-setRunningActionMode": {"app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java": {
+        "diameter": 30,
+        "pairs": {}
+    }},
+    "bug-44-removeTag": {"omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java": {
+        "diameter": 29,
+        "pairs": {}
+    }},
+    "realbug-1641-onStart": {"app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java": {
+        "diameter": 22,
+        "pairs": {}
+    }},
+    "bug-1441-verifyUserInput": {"android/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java": {
+        "diameter": 30,
+        "pairs": {}
+    }},
+    "pslab-real-2677-onProgressChanged4": {"app/src/main/java/io/pslab/activity/RoboticArmActivity.java": {
+        "diameter": 37,
+        "pairs": {}
+    }},
+    "pslab-real-2677-onProgressChanged3": {"app/src/main/java/io/pslab/activity/RoboticArmActivity.java": {
+        "diameter": 37,
+        "pairs": {}
+    }},
+    "bug-18-showIntervalPickerDialog": {"Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java": {
+        "diameter": 46,
+        "pairs": {}
+    }},
+    "pslab-real-2678-processDegreeInput": {"app/src/main/java/io/pslab/activity/RoboticArmActivity.java": {
+        "diameter": 37,
+        "pairs": {"0_1": 6}
+    }},
+    "harmonic-real-181-loadStory": {"app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java": {
+        "diameter": 41,
+        "pairs": {}
+    }},
+    "gpslogger-real-1138-writeToFile": {"gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java": {
+        "diameter": 43,
+        "pairs": {}
+    }},
+    "markor-54-real-isEditorHistoryEnabled": {"app/src/main/java/net/gsantner/markor/util/AppSettings.java": {
+        "diameter": 26,
+        "pairs": {
+            "0_1": 5,
+            "0_2": 4,
+            "1_2": 5
+        }
+    }},
+    "bug-191-onTouch": {"app/src/main/java/ch/logixisland/anuto/view/game/TowerView.java": {
+        "diameter": 26,
+        "pairs": {}
+    }},
+    "pslab-real-2677-processDegreeInput": {"app/src/main/java/io/pslab/activity/RoboticArmActivity.java": {
+        "diameter": 37,
+        "pairs": {"0_1": 6}
+    }},
+    "bug-191-insertTower": {"app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java": {
+        "diameter": 27,
+        "pairs": {}
+    }},
+    "bug-1446-onClick": {"AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java": {
+        "diameter": 31,
+        "pairs": {}
+    }},
+    "bug-1213-setupForPinInput": {"app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java": {
+        "diameter": 36,
+        "pairs": {}
+    }},
+    "bug-1214-onCreateView": {"app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java": {
+        "diameter": 35,
+        "pairs": {}
+    }},
+    "urlcheck-real-358-onDisplayUrl": {"app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java": {
+        "diameter": 28,
+        "pairs": {
+            "0_1": 4,
+            "0_2": 4,
+            "1_2": 8
+        }
+    }},
+    "realbug-1563-loadDirectory": {"app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java": {
+        "diameter": 66,
+        "pairs": {}
+    }},
+    "bug-275-showSetPasswordDialog": {"app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java": {
+        "diameter": 38,
+        "pairs": {
+            "0_1": 17,
+            "0_2": 11,
+            "1_2": 16
+        }
+    }},
+    "harmonic-real-136-handleOnBackPressed": {"app/src/main/java/com/simon/harmonichackernews/ComposeActivity.java": {
+        "diameter": 36,
+        "pairs": {}
+    }},
+    "bug-1207-show": {"app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java": {
+        "diameter": 30,
+        "pairs": {"0_1": 11}
+    }},
+    "ultrasonic-84-real-getPreferences": {"ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java": {
+        "diameter": 35,
+        "pairs": {}
+    }},
+    "bug-1202-saveC": {"app/src/main/java/swati4star/createpdf/activity/ImageEditor.java": {
+        "diameter": 31,
+        "pairs": {}
+    }},
+    "realbug-1645-generateExcercise": {"app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java": {
+        "diameter": 26,
+        "pairs": {}
+    }},
+    "Anki-Android-123451-real-createCustomStudySession": {"AnkiDroid/src/main/java/com/ichi2/anki/dialogs/CustomStudyDialog.java": {
+        "diameter": 40,
+        "pairs": {}
+    }},
+    "bug-1213-onBindDialogView": {"app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java": {
+        "diameter": 24,
+        "pairs": {}
+    }},
+    "bug-1130-onFragmentLoaded-AllEpisodesFragment": {"app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java": {
+        "diameter": 35,
+        "pairs": {}
+    }},
+    "bug-1151-onPreferenceChange": {"GPSTest/src/main/java/com/android/gpstest/Preferences.java": {
+        "diameter": 30,
+        "pairs": {}
+    }},
+    "harmonic-real-114-onItemClick": {"app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java": {
+        "diameter": 47,
+        "pairs": {}
+    }},
+    "bug-18-onClick-ScheduleTimetableFragment": {"Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java": {
+        "diameter": 46,
+        "pairs": {}
+    }},
+    "realbug-160-onCreateOptionsMenu": {"AnkiDroid/src/main/java/com/ichi2/anki/Reviewer.java": {
+        "diameter": 33,
+        "pairs": {}
+    }},
+    "bug-71-doAction": {"app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java": {
+        "diameter": 34,
+        "pairs": {}
+    }},
+    "WiFiAnalyzer-92-real-findVendors-no-args": {"app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java": {
+        "diameter": 29,
+        "pairs": {}
+    }},
+    "urlcheck-real-447-buildBuiltIn": {"app/src/main/java/com/trianguloy/urlchecker/modules/companions/PatternCatalog.java": {
+        "diameter": 26,
+        "pairs": {}
+    }},
+    "realbug-1146-updateFilterView": {"GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java": {
+        "diameter": 36,
+        "pairs": {}
+    }},
+    "realbug-129-show": {"app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java": {
+        "diameter": 36,
+        "pairs": {"0_1": 7}
+    }},
+    "bug-1130-onFragmentLoaded-QueueFragment": {"app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java": {
+        "diameter": 38,
+        "pairs": {}
+    }},
+    "bug-1151-onCreate": {"GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java": {
+        "diameter": 42,
+        "pairs": {}
+    }},
+    "bug-130-flashWarning": {"app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java": {
+        "diameter": 35,
+        "pairs": {}
+    }},
+    "bug-275-isPolicyRespected": {"app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java": {
+        "diameter": 26,
+        "pairs": {}
+    }},
+    "realbug-1146-setStarted": {"GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java": {
+        "diameter": 36,
+        "pairs": {}
+    }},
+    "bug-1446-updateAllFishingSpots": {"AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java": {
+        "diameter": 31,
+        "pairs": {}
+    }},
+    "gpslogger-real-1138-handleIntent": {"gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java": {
+        "diameter": 43,
+        "pairs": {}
+    }},
+    "urlcheck-real-365-getQueryName": {"app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java": {
+        "diameter": 27,
+        "pairs": {}
+    }},
+    "bug-130-updateEncryptionType": {"app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java": {
+        "diameter": 35,
+        "pairs": {}
+    }},
+    "bug-1198-onClick-ViewFilesAdapter": {"app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java": {
+        "diameter": 40,
+        "pairs": {"0_1": 6}
+    }},
+    "bug-271-refresh": {"app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java": {
+        "diameter": 23,
+        "pairs": {}
+    }},
+    "bug-18-updatePeriodSelector": {"Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java": {
+        "diameter": 46,
+        "pairs": {"0_1": 26}
+    }},
+    "realbug-1568-finishFileOperation": {"app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java": {
+        "diameter": 65,
+        "pairs": {}
+    }},
+    "bug-1205-onBackPressed": {"app/src/main/java/swati4star/createpdf/activity/MainActivity.java": {
+        "diameter": 27,
+        "pairs": {}
+    }},
+    "bug-1215-afterTextChanged": {"app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java": {
+        "diameter": 36,
+        "pairs": {}
+    }},
+    "WiFiAnalyzer-92-real-findMacAddresses": {"app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java": {
+        "diameter": 29,
+        "pairs": {}
+    }},
+    "bug-18-showRecurrencePickerDialog": {"Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java": {
+        "diameter": 46,
+        "pairs": {}
+    }},
+    "bug-1202-onItemClick": {"app/src/main/java/swati4star/createpdf/activity/ImageEditor.java": {
+        "diameter": 31,
+        "pairs": {}
+    }},
+    "bug-1151-onResume": {"GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java": {
+        "diameter": 42,
+        "pairs": {}
+    }},
+    "bug-1213-setupForPasswordInput": {"app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java": {
+        "diameter": 36,
+        "pairs": {}
+    }},
+    "bug-192-onResume": {"app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java": {
+        "diameter": 29,
+        "pairs": {}
+    }},
+    "bug-275-onCreateView": {"app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java": {
+        "diameter": 26,
+        "pairs": {}
+    }},
+    "harmonic-real-181-loadAlgolia": {"app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java": {
+        "diameter": 41,
+        "pairs": {}
+    }},
+    "markor-53-real-makeDialog": {"app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java": {
+        "diameter": 33,
+        "pairs": {
+            "0_1": 3,
+            "0_2": 5,
+            "1_2": 6
+        }
+    }},
+    "bug-18-onClick-RoutineCreateOrEditFragment": {"Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/RoutineCreateOrEditFragment.java": {
+        "diameter": 31,
+        "pairs": {}
+    }}
+}

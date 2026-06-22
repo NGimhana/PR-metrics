@@ -1,0 +1,48 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 3e7d3830..08e7ef53 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -446,38 +456,36 @@ public class IntroScreenActivity extends IntroActivity {
+ 
+                 if (! password.isEmpty()) {
+                     if (password.length() < minLength) {
+-                        displayWarning(lengthWarning);
++                        updateWarning(lengthWarning);
+                         return false;
+                     } else {
+                         if (! confirm.isEmpty() && confirm.equals(password)) {
+                             hideWarning();
+                             return true;
+                         } else {
+-                            displayWarning(confirmPasswordWarning);
++                            updateWarning(confirmPasswordWarning);
+                             return false;
+                         }
+                     }
+                 } else {
+-                    displayWarning(noPasswordWarning);
++                    updateWarning(noPasswordWarning);
+                     return false;
+                 }
+             } else if (authMethod == Constants.AuthMethod.DEVICE) {
+                 KeyguardManager km = (KeyguardManager) getContext().getSystemService(KEYGUARD_SERVICE);
+ 
+                 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+-                    displayWarning(R.string.settings_toast_auth_device_pre_lollipop);
++                    updateWarning(R.string.settings_toast_auth_device_pre_lollipop);
+                     return false;
+                 } else if (! km.isKeyguardSecure()) {
+-                    displayWarning(R.string.settings_toast_auth_device_not_secure);
++                    updateWarning(R.string.settings_toast_auth_device_not_secure);
+                     return false;
+                 }
+ 
+                 hideWarning();
+-
+                 return true;
+             } else {
+                 hideWarning();
+-
+                 return true;
+             }
+         }

@@ -1,0 +1,20 @@
+diff --git a/app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java b/app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java
+index b996492..90482d5 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java
++++ b/app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java
+@@ -1471,7 +1635,16 @@ public class CommentsFragment extends Fragment implements CommentsRecyclerViewAd
+             }
+         });
+ 
++        CommentsRecyclerViewAdapter commentAdapter = this.adapter;
++        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
++            @Override
++            public void onDismiss(DialogInterface dialog) {
++                commentAdapter.disableCommentATagClick = false;
++            }
++        });
++
+         AlertDialog dialog = builder.create();
++        commentAdapter.disableCommentATagClick = true;
+         dialog.show();
+     } 

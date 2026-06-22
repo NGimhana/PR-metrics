@@ -1,0 +1,12 @@
+diff --git a/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java b/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java
+index 9db58604..16b816b3 100644
+--- a/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java
++++ b/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java
+@@ -192,6 +195,7 @@ public class GpsTestActivity extends AppCompatActivity
+         // Set theme
+         if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
+             setTheme(R.style.AppTheme_Dark_NoActionBar);
++            mUseDarkTheme = true;
+         }
+         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+         super.onCreate(savedInstanceState);

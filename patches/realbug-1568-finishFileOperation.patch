@@ -1,0 +1,13 @@
+diff --git a/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java b/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java
+index 2302bfd..9453f32 100644
+--- a/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java
+@@ -954,7 +971,7 @@ public class FileActivity extends ThemedAppCompatActivity {
+      */
+     public void finishFileOperation() {
+         Operation operation = fileOpContext.getFirst();
+-        ArrayList<FMFile> files = fileOpContext.getSecond();
++        CopyOnWriteArrayList<FMFile> files = fileOpContext.getSecond();
+         if (!operation.equals(NONE) && !files.isEmpty()) {
+             if (operation.equals(COPY)) {
+                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

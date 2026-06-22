@@ -1,0 +1,17 @@
+diff --git a/AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java b/android/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java
+index 6f6b3bf4..6dee7d91 100644
+--- a/AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java
++++ b/android/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java
+@@ -218,9 +222,9 @@ public class ManageLocationFragment extends ManageContentFragment {
+ 
+         // get all possible fishing spots to be used when adding a new spot
+         // this is purely for user convenience
+-        List<UserDefineObject> allPossibleFishingSpots = mFishingSpots;
+-        mFishingSpots.addAll(getNewLocation().getFishingSpots());
+-        fragment.setFishingSpots(allPossibleFishingSpots);
++        Set<UserDefineObject> allPossibleFishingSpots = new HashSet<>(mFishingSpots);
++        allPossibleFishingSpots.addAll(getNewLocation().getFishingSpots());
++        fragment.setFishingSpots(new ArrayList<>(allPossibleFishingSpots));
+ 
+         fragment.setOnVerifyInterface(new ManageFishingSpotFragment.OnVerifyInterface() {
+             @Override

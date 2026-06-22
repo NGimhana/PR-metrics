@@ -1,0 +1,16 @@
+bug_id,hunk_count,pair_count,avg_lexical,avg_ast,avg_file,avg_divergence
+Anki-Android-273-real-onCollectionLoaded,3,3,0.801467,0.217533,0.0,0.1764
+Anki-Android-273-real-onCreate,3,3,0.801467,0.217533,0.0,0.1764
+bug-1198-onClick-ViewFilesAdapter,2,1,0.9957,0.524,0.0,0.3617
+bug-1207-show,2,1,0.9999,0.7236,0.0,0.5015
+bug-1213-updateLayout,2,1,0.5552,0.5436,0.0,0.2092
+bug-18-updatePeriodSelector,2,1,0.0,0.856,0.0,0.0
+bug-275-showSetPasswordDialog,3,3,0.903167,0.746867,0.0,0.7423
+markor-53-real-makeDialog,3,3,0.878067,0.484333,0.0,0.4588
+markor-54-real-isEditorHistoryEnabled,3,3,0.948367,0.525167,0.0,0.5465
+pslab-real-2677-processDegreeInput,2,1,0.9066,0.5349,0.0,0.3362
+pslab-real-2678-processDegreeInput,2,1,0.9066,0.5349,0.0,0.3362
+realbug-129-show,2,1,0.3393,0.5759,0.0,0.1354
+realbug-1641-addScheduleToModel,2,1,1.0,0.0,0.0,0.0
+urlcheck-real-358-onDisplayUrl,3,3,0.753367,0.536167,0.0,0.4168
+urlcheck-real-382-onDisplayUrl,3,3,0.991167,0.543767,0.0,0.5919

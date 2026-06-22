@@ -1,0 +1,26 @@
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java b/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java
+index 84f3cf0..d9a2fde 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java
+@@ -39,14 +39,11 @@
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_general_training_schedule_editor);
+-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
++        Toolbar toolbar = findViewById(R.id.toolbar);
+         setSupportActionBar(toolbar);
+ 
+-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+-        fab.setOnClickListener(new View.OnClickListener() {
+-            @Override
+-            public void onClick(View view) {
+-                openNextActivity();
+-            }
+-        });
++        FloatingActionButton fab = findViewById(R.id.fab);
++        fab.setOnClickListener(view -> openNextActivity());
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
++        if(((ApplicationManager)getApplication()).getApplicationModel().activeSchedule()!=null){
++            decorateGuiWithActiveSchedule();
++        }
+     }

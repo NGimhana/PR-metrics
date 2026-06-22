@@ -1,0 +1,20 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 3e7d3830..08e7ef53 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -295,11 +297,14 @@ public class IntroScreenActivity extends IntroActivity {
+         public void flashWarning() {
+-            if (authWarnings.getVisibility() == View.VISIBLE) {
++            if (authWarnings.getText().toString().isEmpty()) {
++                authWarnings.setVisibility(View.GONE);
++            } else {
++                authWarnings.setVisibility(View.VISIBLE);
+                 ObjectAnimator animator = ObjectAnimator.ofInt(authWarnings, "backgroundColor",
+                         Color.TRANSPARENT, getResources().getColor(R.color.colorAccent), Color.TRANSPARENT);
+                 animator.setDuration(500);
+                 animator.setRepeatCount(0);
+                 animator.setInterpolator(new AccelerateDecelerateInterpolator());
+                 animator.setEvaluator(new ArgbEvaluator());
+                 animator.start();
+             }
+         }

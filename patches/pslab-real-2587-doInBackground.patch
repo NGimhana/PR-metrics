@@ -1,0 +1,27 @@
+diff --git a/app/src/main/java/io/pslab/fragment/ESPFragment.java b/app/src/main/java/io/pslab/fragment/ESPFragment.java
+index 3c13b32a..07e0e313 100644
+--- a/app/src/main/java/io/pslab/fragment/ESPFragment.java
++++ b/app/src/main/java/io/pslab/fragment/ESPFragment.java
+@@ -100,14 +93,15 @@ public class ESPFragment extends DialogFragment {
+                 Request request = new Request.Builder()
+                         .url("http://" + espIPAddress)
+                         .build();
+-                Response response = client.newCall(request).execute();
+-                if (response.code() == 200) {
+-                    ScienceLabCommon.setIsWifiConnected(true);
+-                    ScienceLabCommon.setEspBaseIP(espIPAddress);
++                try (Response response = client.newCall(request).execute()) {
++                    if (response.code() == 200) {
++                        ScienceLabCommon.setIsWifiConnected(true);
++                        ScienceLabCommon.setEspBaseIP(espIPAddress);
++                    }
++                    result = response.body().string();
+                 }
+-                result = response.body().string();
+-            } catch (IOException e) {
+-                e.printStackTrace();
++            } catch (IllegalArgumentException | IOException e) {
++                Log.e(TAG, "Unable to get data from " + espIPAddress, e);
+             }
+             return result;
+         }

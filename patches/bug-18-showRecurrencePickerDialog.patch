@@ -1,0 +1,13 @@
+diff --git a/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java b/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java
+index 3369cf9e..420cfd16 100644
+--- a/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java
++++ b/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java
+@@ -592,7 +592,7 @@ public class ScheduleTimetableFragment extends Fragment
+ 
+         dialog.setArguments(b);
+         dialog.setOnRecurrenceSetListener(this);
+-        dialog.show(getChildFragmentManager(), "REC");
++        dialog.show(getActivity().getSupportFragmentManager(), "REC");
+     }
+ 
+     void addTimetableEntries(int timesPerDay, List<Routine> routines) {

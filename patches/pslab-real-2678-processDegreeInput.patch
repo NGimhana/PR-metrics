@@ -1,0 +1,26 @@
+diff --git a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+index 8c44102f..64a4ad48 100644
+--- a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
++++ b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+@@ -479,11 +485,9 @@ public class RoboticArmActivity extends GuideActivity {
+         }
+     }
+     private void processDegreeInput(EditText degreeText, SeekArc seekArc) {
+-        int previousDegree = degree;
+         String degreeStr = degreeText.getText().toString().trim();
+-
+         if (degreeStr.isEmpty()) {
+-            degree = (degree == 0) ? (int) (seekArc.getProgress() * 3.6) : previousDegree;
++            degree =  Math.round(seekArc.getProgress() * 3.6f);
+         } else {
+             try {
+                 degree = Integer.parseInt(degreeStr);
+@@ -500,7 +504,7 @@ public class RoboticArmActivity extends GuideActivity {
+             seekArc.setProgress(0);
+             toastInvalidValueMessage();
+         } else {
+-            seekArc.setProgress((int) (degree / 3.6));
++            seekArc.setProgress((float) (degree/3.6));
+             editEnter = true;
+         }
+     }

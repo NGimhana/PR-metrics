@@ -1,0 +1,12 @@
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java
+index ec29f58..d37eabe 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java
+@@ -39,7 +39,7 @@
+ protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_exercise_view);
+-       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
++       Toolbar toolbar = findViewById(R.id.toolbar);
+         setSupportActionBar(toolbar);
+     }
