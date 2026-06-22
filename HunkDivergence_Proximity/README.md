@@ -122,19 +122,3 @@ The dataset evaluated in this workspace consists of 97 bugs across various open-
   - `skytube`: 1 bug
   - `ultrasonic`: 1 bug
 
----
-
-## 5. Summary of Definitions
-
-| Term | Definition |
-|---|---|
-| **Hunk** | Contiguous edit block with location, content, file, method, and package attributes. |
-| **Multi-hunk patch** | $\ge 2$ non-contiguous hunks fixing one atomic bug. |
-| **$D_{lex}$** | $1 - \text{BLEU}(T_i, T_j)$, lexical distance between hunks. |
-| **$D_{ast}$** | AST distance between hunks in a file normalized by the tree diameter; $= 1$ if hunks are in different files. |
-| **$D_{file}$** | Longest-common-prefix file-path distance; $= 0$ if hunks are in the same file. |
-| **$\gamma$** | Weighting factor: $1.0$ (same-file) or $2.0$ (cross-file). |
-| **Pairwise $Div(h_i, h_j)$** | Combined lexical, structural, and file-path divergence, bounded in $[0, 1]$. |
-| **Patch $Div(P)$** | $\ln(n) \times \text{mean pairwise divergence}$, bounded in $[0, \ln(n)]$. |
-| **Proximity Class** | Categorization of spatial dispersion (`Nucleus`, `Cluster`, `Orbit`, `Sprawl`, `Fragment`). |
-| **$\lambda$** | Directory-depth threshold, set to $3$. |
