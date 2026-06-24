@@ -42,7 +42,9 @@ The bracketed term represents the average pairwise divergence over all hunk pair
 
 The following table presents the median and mean values of the hunk divergence components computed over the 30 multi-hunk bugs in our dataset (from [`bugwise_average_divergence.csv`](https://github.com/NGimhana/PR-metrics/blob/main/HunkDivergence_Proximity/hunk_divergence/bugwise_average_divergence_MERGED.csv)):
 
+** Note
 
+- A higher value means The hunks are more divergent in terms of lexical, structural, and file-level differences.
 ---
 
 ## 3. Spatial Proximity
@@ -70,12 +72,10 @@ Based on these predicates, patches are classified into one of five categories:
 
 $\lambda$ is the directory depth threshold, set to $3$ in our analysis.
 
-### 3.3 Resultsf for Our Dataset
+### 3.3 Results of for Our Dataset
 
 The distribution of spatial proximity classes and their average hunk divergence in our dataset (derived from [`proximity_class.csv`](https://github.com/NGimhana/PR-metrics/blob/main/HunkDivergence_Proximity/proximity_class/proximity_class_MERGED.csv) and [`proximity_class_avg_hunk_divergence.csv`](https://github.com/NGimhana/PR-metrics/blob/main/HunkDivergence_Proximity/proximity_class/proximity_class_avg_hunk_divergence_MERGED.csv)):
 
-**Key Observations:**
+** Note
 
 - A higher value means The hunks are more spread out across the architecture of the codebase.
-
-
