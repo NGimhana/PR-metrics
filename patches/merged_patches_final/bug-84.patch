@@ -1,0 +1,18 @@
+diff --git a/ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java b/ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java
+index f9994f3b..b1d12eac 100644
+--- a/ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java
++++ b/ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java
+@@ -398,10 +398,9 @@ public class Util extends DownloadActivity
+ 		return builder.toString();
+ 	}
+ 
+-	public static SharedPreferences getPreferences(Context context)
+-	{
+-		return context.getSharedPreferences(Constants.PREFERENCES_FILE_NAME, 0);
+-	}
++    public static SharedPreferences getPreferences(Context context) {
++        return PreferenceManager.getDefaultSharedPreferences(context);
++    }
+ 
+ 	public static int getRemainingTrialDays(Context context)
+ 	{

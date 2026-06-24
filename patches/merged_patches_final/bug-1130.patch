@@ -1,0 +1,69 @@
+diff --git a/app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java b/app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java
+index ff7af97f6..5997d227a 100644
+--- a/app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java
++++ b/app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java
+@@ -341,11 +344,20 @@
+     private void onFragmentLoaded() {
+-        if (listAdapter == null) {
+-            MainActivity mainActivity = (MainActivity) getActivity();
+-            listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess,
+-                    new DefaultActionButtonCallback(mainActivity), showOnlyNewEpisodes());
+-            listAdapter.setHasStableIds(true);
+-            recyclerView.setAdapter(listAdapter);
++        if (episodes != null && episodes.size() > 0) {
++            if (listAdapter == null) {
++                MainActivity mainActivity = (MainActivity) getActivity();
++                listAdapter = new AllEpisodesRecycleAdapter(mainActivity, itemAccess,
++                        new DefaultActionButtonCallback(mainActivity), showOnlyNewEpisodes());
++                listAdapter.setHasStableIds(true);
++                recyclerView.setAdapter(listAdapter);
++            }
++            emptyView.setVisibility(View.GONE);
++            recyclerView.setVisibility(View.VISIBLE);
++        } else {
++            listAdapter = null;
++            recyclerView.setVisibility(View.GONE);
++            emptyView.setVisibility(View.VISIBLE);
+         }
++
+         listAdapter.notifyDataSetChanged();
+         restoreScrollPosition();
+         getActivity().supportInvalidateOptionsMenu();
+
+diff --git a/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java b/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
+index c6db974c1..763bc487b 100644
+--- a/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
++++ b/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
+@@ -503,19 +506,20 @@ public class QueueFragment extends Fragment {
+     }
+ 
+     private void onFragmentLoaded(final boolean restoreScrollPosition) {
+-        if (recyclerAdapter == null) {
+-            MainActivity activity = (MainActivity) getActivity();
+-            recyclerAdapter = new QueueRecyclerAdapter(activity, itemAccess,
+-                new DefaultActionButtonCallback(activity), itemTouchHelper);
+-            recyclerAdapter.setHasStableIds(true);
+-            recyclerView.setAdapter(recyclerAdapter);
+-        }
+-        if(queue == null || queue.size() == 0) {
+-            recyclerView.setVisibility(View.GONE);
+-            txtvEmpty.setVisibility(View.VISIBLE);
+-        } else {
+-            txtvEmpty.setVisibility(View.GONE);
++        if (queue != null && queue.size() > 0) {
++            if (recyclerAdapter == null) {
++                MainActivity activity = (MainActivity) getActivity();
++                recyclerAdapter = new QueueRecyclerAdapter(activity, itemAccess,
++                        new DefaultActionButtonCallback(activity), itemTouchHelper);
++                recyclerAdapter.setHasStableIds(true);
++                recyclerView.setAdapter(recyclerAdapter);
++            }
++            emptyView.setVisibility(View.GONE);
+             recyclerView.setVisibility(View.VISIBLE);
++        } else {
++            recyclerAdapter = null;
++            recyclerView.setVisibility(View.GONE);
++            emptyView.setVisibility(View.VISIBLE);
+         }
+ 
+         if (restoreScrollPosition) {

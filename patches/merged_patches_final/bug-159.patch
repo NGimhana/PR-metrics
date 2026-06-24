@@ -1,0 +1,11 @@
+diff --git a/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java b/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
+index 9f719f63b3..8556dbefe9 100644
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
+@@ -875,7 +863,7 @@ public class CardBrowser extends NavigationDrawerActivity implements
+         mActionBarMenu.findItem(R.id.action_select_all).setVisible(!hasSelectedAllCards());
+         //Note: Theoretically should not happen, as this should kick us back to the menu
+         mActionBarMenu.findItem(R.id.action_select_none).setVisible(hasSelectedCards());
+-        mActionBarMenu.findItem(R.id.action_edit_note).setVisible(hasSelectedSingleNoteId());
++        mActionBarMenu.findItem(R.id.action_edit_note).setVisible(canPerformMultiSelectEditNote());
+     }

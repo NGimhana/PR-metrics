@@ -40,19 +40,8 @@ The bracketed term represents the average pairwise divergence over all hunk pair
 
 ### 2.3 Results for our Dataset
 
-The following table presents the median and mean values of the hunk divergence components computed over the 15 multi-hunk bugs in our dataset (from [`bugwise_average_divergence.csv`](https://github.com/NGimhana/PR-metrics/blob/main/HunkDivergence_Proximity/hunk_divergence/bugwise_average_divergence.csv)):
+The following table presents the median and mean values of the hunk divergence components computed over the 30 multi-hunk bugs in our dataset (from [`bugwise_average_divergence.csv`](https://github.com/NGimhana/PR-metrics/blob/main/HunkDivergence_Proximity/hunk_divergence/bugwise_average_divergence_MERGED.csv)):
 
-| Component | Median | Mean |
-|---|---|---|
-| Lexical ($D_{lex}$) | 0.9032 | 0.7854 |
-| Structural ($D_{ast}$) | 0.5349 | 0.5043 |
-| File ($D_{file}$) | 0.0000 | 0.0000 |
-| **Overall $Div(P)$** | **0.3362** | **0.3326** |
-
-**Key Observations:**
-- **Overall Hunk Divergence** ranges from a minimum of **0.0000** to a maximum of **0.7423**, with a median of **0.3362** and a mean of **0.3326**.
-* A higher number mean greater internal heterogeneity (dissimilarity) among the changes within a patch. --> repair is difficult
-- **File Distance ($D_{file}$)** is **0.0000** for all bugs because all multi-hunk bugs in our dataset belong to the same file (`Cluster` class).
 
 ---
 
@@ -83,45 +72,10 @@ $\lambda$ is the directory depth threshold, set to $3$ in our analysis.
 
 ### 3.3 Resultsf for Our Dataset
 
-The distribution of spatial proximity classes and their average hunk divergence in our dataset (derived from [`proximity_class.csv`](https://github.com/NGimhana/PR-metrics/blob/main/HunkDivergence_Proximity/proximity_class/proximity_class.csv) and [`proximity_class_avg_hunk_divergence.csv`](https://github.com/NGimhana/PR-metrics/blob/main/HunkDivergence_Proximity/proximity_class/proximity_class_avg_hunk_divergence.csv)):
-
-| Proximity Class | Number of Bugs | Mean Hunk Divergence |
-|---|---|---|
-| **Nucleus** | 82 | N/A |
-| **Cluster** | 15 | 0.3326 |
-| **Orbit** | 0 | N/A |
-| **Sprawl** | 0 | N/A |
-| **Fragment** | 0 | N/A |
-| **Total** | **97** | **0.3326** (average over multi-hunk bugs) |
+The distribution of spatial proximity classes and their average hunk divergence in our dataset (derived from [`proximity_class.csv`](https://github.com/NGimhana/PR-metrics/blob/main/HunkDivergence_Proximity/proximity_class/proximity_class_MERGED.csv) and [`proximity_class_avg_hunk_divergence.csv`](https://github.com/NGimhana/PR-metrics/blob/main/HunkDivergence_Proximity/proximity_class/proximity_class_avg_hunk_divergence_MERGED.csv)):
 
 **Key Observations:**
 
 - A higher value means The hunks are more spread out across the architecture of the codebase.
-- **Nucleus** contains **82 bugs**. These are single-hunk patches where all changes are confined to a single method in a single file. Because they only contain one hunk, hunk divergence is not computed for them.
-- **Cluster** contains **15 bugs**. These are multi-hunk patches where hunks span multiple methods but are restricted to a single file. Their average hunk divergence is **0.3326**.
-- There are **no bugs** classified as **Orbit**, **Sprawl**, or **Fragment** in our current dataset, reflecting that all analysed bugs in this dataset are single-file modifications.
 
----
-
-## 4. Our Dataset
-
-The dataset evaluated in this workspace consists of 97 bugs across various open-source Android projects:
-
-- **Total Bugs:** 97
-- **Hunk Count Distribution:**
-  - **1 Hunk:** 82 bugs (84.5%) — classified as `Nucleus`.
-  - **2 Hunks:** 8 bugs (8.2%) — classified as `Cluster`.
-  - **3 Hunks:** 7 bugs (7.2%) — classified as `Cluster`.
-- **Project Breakdown:**
-  - `bug`: 49 bugs
-  - `realbug`: 18 bugs
-  - `pslab`: 7 bugs
-  - `harmonic`: 6 bugs
-  - `urlcheck`: 5 bugs
-  - `Anki` (AnkiDroid): 3 bugs
-  - `WiFiAnalyzer`: 3 bugs
-  - `gpslogger`: 2 bugs
-  - `markor`: 2 bugs
-  - `skytube`: 1 bug
-  - `ultrasonic`: 1 bug
 

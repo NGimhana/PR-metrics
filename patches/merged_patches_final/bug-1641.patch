@@ -1,0 +1,85 @@
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java b/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java
+index 84f3cf0..d9a2fde 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java
+@@ -79,12 +79,19 @@
+     private boolean addScheduleToModel() {
+         if (((EditText) findViewById(R.id.nameTextEdit)).getText().toString().isEmpty()) {
+-            ((EditText)findViewById(R.id.nameTextEdit)).setError("Please type a name in");
++            ((EditText) findViewById(R.id.nameTextEdit)).setError(getString(R.string.NoNameError));
+             return false;
+         }
+ 
+-        Schedule schedule = new Schedule(((EditText)findViewById(R.id.nameTextEdit)).getText().toString());
++        Schedule schedule;
++
++        if(((ApplicationManager)getApplication()).getApplicationModel().activeSchedule()!=null)
++            schedule = ((ApplicationManager)getApplication()).getApplicationModel().activeSchedule();
++        else
++            schedule = new Schedule(((EditText) findViewById(R.id.nameTextEdit)).getText().toString());
++
++        schedule.setTrainingsType(TrainingsTypes.values()[(int)((Spinner)findViewById(R.id.trainSpinner)).getSelectedItemId()]);
+ 
+         Integer reps = 0;
+@@ -114,9 +121,13 @@
+             schedule.setSpeed(speed);
+         }
+ 
+-        if (((ApplicationManager) getApplication()).getApplicationModel().activeSchedule() == null) {
++        if (((ApplicationManager) getApplication()).getApplicationModel().activeSchedule() == null) {
+             try {
+                 ((ApplicationManager) getApplication()).getApplicationModel().addSchedule(schedule);
++                ((ApplicationManager) getApplication()).getApplicationModel().setActiveSchedule(schedule);
+             } catch (ScheduleAvailableException e) {
+                 e.printStackTrace();
+             }
+             return true;
++        }else{
++            return true;
++        }
+     }
+ }
+
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java b/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java
+index 84f3cf0..d9a2fde 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java
+@@ -39,14 +39,11 @@
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_general_training_schedule_editor);
+-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
++        Toolbar toolbar = findViewById(R.id.toolbar);
+         setSupportActionBar(toolbar);
+ 
+-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+-        fab.setOnClickListener(new View.OnClickListener() {
+-            @Override
+-            public void onClick(View view) {
+-                openNextActivity();
+-            }
+-        });
++        FloatingActionButton fab = findViewById(R.id.fab);
++        fab.setOnClickListener(view -> openNextActivity());
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
++        if(((ApplicationManager)getApplication()).getApplicationModel().activeSchedule()!=null){
++            decorateGuiWithActiveSchedule();
++        }
+     }
+
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java
+index cd5e171..aab808a 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java
+@@ -59,10 +59,10 @@
+     protected void onStart() {
+         super.onStart();
+         TextView ScheduleInfo = findViewById(R.id.ScheduleInfo);
+ 
+         fragment = ExcersizeListFragment.newInstance(1, ActiveSchedule.getName(), Controller);
+         getSupportFragmentManager().beginTransaction().replace(R.id.execView, fragment).commit();
+ 
+-        String scheduleInfo = String.format(getResources().getString(R.string.ScheduleInfo), ActiveSchedule.getRepetitions(), ActiveSchedule.getPauseTime(), ActiveSchedule.getSets(), ActiveSchedule.getSpeed());
++        String scheduleInfo = String.format(getResources().getString(R.string.ScheduleInfo), ActiveSchedule.getRepetitions(), ActiveSchedule.getPauseTime(), ActiveSchedule.getSets(), ActiveSchedule.getSpeed(), ActiveSchedule.getTrainingsType().toString());
+         ScheduleInfo.setText(scheduleInfo);
+     }

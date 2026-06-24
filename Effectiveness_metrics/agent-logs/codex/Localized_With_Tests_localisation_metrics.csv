@@ -1,0 +1,51 @@
+bug_id,repair,all_tests,passed_tests_after,failed_tests_after,compile_pass,modified_java_files,num_of_modified_java_files,gt_files,num_of_gt_files,localization
+bug-18,1,5,5,0,1,"['MedicineCreateOrEditFragment.java', 'ScheduleImportFragment.java', 'ScheduleTimetableFragment.java']",3,"['MedicineCreateOrEditFragment.java', 'RoutineCreateOrEditFragment.java', 'ScheduleTimetableFragment.java']",3,0
+bug-1151,1,5,5,0,1,['Preferences.java'],1,"['GpsTestActivity.java', 'Preferences.java']",2,0
+bug-44,1,5,5,0,1,['TagsHelper.java'],1,['TagsHelper.java'],1,1
+bug-1568,1,0,0,0,1,['FileArrayAdapter.java'],1,"['ContextMenuUtil.java', 'FileActivity.java']",2,0
+bug-382,1,0,0,0,1,['UriPartsModule.java'],1,['UriPartsModule.java'],1,1
+bug-181,1,5,5,0,1,['StoriesFragment.java'],1,['StoriesFragment.java'],1,1
+bug-129,1,5,5,0,1,['ManualEntryDialog.java'],1,['ManualEntryDialog.java'],1,1
+bug-1446,1,5,5,0,1,['ManageLocationFragment.java'],1,['ManageLocationFragment.java'],1,1
+bug-1441,1,5,5,0,1,['ManageFishingSpotFragment.java'],1,['ManageFishingSpotFragment.java'],1,1
+bug-1645,1,0,0,0,1,['ExerciseDialog.java'],1,['ExerciseDialog.java'],1,1
+bug-2678,1,5,5,0,1,['RoboticArmActivity.java'],1,['RoboticArmActivity.java'],1,1
+bug-160,1,5,5,0,1,['Reviewer.java'],1,['Reviewer.java'],1,1
+bug-365,1,0,0,0,1,['RemoveQueriesModule.java'],1,['RemoveQueriesModule.java'],1,1
+bug-2677,1,5,5,0,1,['RoboticArmActivity.java'],1,['RoboticArmActivity.java'],1,1
+bug-1202,1,0,0,0,1,['ImageEditor.java'],1,['ImageEditor.java'],1,1
+bug-192,1,5,5,0,1,['DocumentEditFragment.java'],1,['DocumentEditFragment.java'],1,1
+bug-1205,0,5,4,1,1,['MainActivity.java'],1,['MainActivity.java'],1,1
+bug-159,1,5,5,0,1,['CardBrowser.java'],1,['CardBrowser.java'],1,1
+bug-275,1,5,5,0,1,"['Dialogs.java', 'CustomAuthenticatedSlide.java']",2,"['CustomAuthenticatedSlide.java', 'Dialogs.java']",2,1
+bug-92,1,5,5,0,1,"['VendorDB.java', 'VendorDBTest.java']",2,['VendorDB.java'],1,1
+bug-273,1,0,0,0,1,['Previewer.java'],1,['Previewer.java'],1,1
+bug-447,1,5,5,0,1,['PatternCatalog.java'],1,['PatternCatalog.java'],1,1
+bug-1563,1,0,0,0,1,['FileActivity.java'],1,['FileActivity.java'],1,1
+bug-1138,1,5,5,0,1,['GpsLoggingService.java'],1,['GpsLoggingService.java'],1,1
+bug-8,1,5,5,0,1,['TrickyTripperActivity.java'],1,['TrickyTripperActivity.java'],1,1
+bug-123451,1,5,5,0,1,['CustomStudyDialog.java'],1,['CustomStudyDialog.java'],1,1
+bug-1198,0,5,0,5,1,['ViewFilesAdapter.java'],1,['ViewFilesAdapter.java'],1,1
+bug-84,1,0,0,0,1,['Util.java'],1,['Util.java'],1,1
+bug-2587,1,5,5,0,1,['ESPFragment.java'],1,['ESPFragment.java'],1,1
+bug-1130,0,5,4,1,1,"['PreferenceController.java', 'AllEpisodesRecycleAdapter.java', 'QueueRecyclerAdapter.java']",3,"['QueueFragment.java', 'AllEpisodesFragment.java']",2,0
+bug-71,1,0,0,0,1,['ExperienceTweaks.java'],1,['ExperienceTweaks.java'],1,1
+bug-1640,1,0,0,0,1,['InfoActivity.java'],1,"['InfoActivity.java', 'ExerciseViewActivity.java']",2,0
+bug-171,1,5,5,0,1,['DialogUtils.java'],1,['DialogUtils.java'],1,1
+bug-1215,1,5,5,0,1,['ManualEntryDialog.java'],1,['ManualEntryDialog.java'],1,1
+bug-114,1,5,5,0,1,['CommentsRecyclerViewAdapter.java'],1,"['CommentsRecyclerViewAdapter.java', 'CommentsFragment.java']",2,0
+bug-1214,1,5,5,0,1,['IntroScreenActivity.java'],1,['IntroScreenActivity.java'],1,1
+bug-1445,1,5,5,0,0,"['LogbookTest.java', 'Logbook.java', 'LogbookTest.java', 'Logbook.java']",4,['Logbook.java'],1,1
+bug-1213,1,5,5,0,1,"['PasswordEncryptedPreference.java', 'CredentialsPreference.java', 'IntroScreenActivity.java', 'PasswordEntryDialog.java']",4,"['CredentialsPreference.java', 'PasswordEntryDialog.java', 'PasswordEncryptedPreference.java', 'IntroScreenActivity.java']",4,1
+bug-1641,1,5,5,0,1,"['XMLParser.java', 'GeneralTrainingScheduleEditor.java', 'ExerciseViewActivity.java']",3,"['GeneralTrainingScheduleEditor.java', 'ExerciseViewActivity.java']",2,1
+bug-130,1,5,5,0,1,['IntroScreenActivity.java'],1,['IntroScreenActivity.java'],1,1
+bug-1207,1,5,5,0,1,['ManualEntryDialog.java'],1,['ManualEntryDialog.java'],1,1
+bug-358,1,5,5,0,1,['UriPartsModule.java'],1,['UriPartsModule.java'],1,1
+bug-1255,1,5,5,0,1,"['YouTubeChannel.java', 'ChannelActionHandler.java']",2,['YouTubeChannel.java'],1,1
+bug-136,1,5,5,0,1,['ComposeActivity.java'],1,['ComposeActivity.java'],1,1
+bug-1299,1,0,0,0,1,"['ConfigActivity.java', 'ConfigActivity.java']",2,['ConfigActivity.java'],1,1
+bug-191,1,5,5,0,0,"['TowerInserter.java', 'TowerInserter.java']",2,"['TowerView.java', 'TowerInserter.java']",2,0
+bug-1146,1,5,5,0,1,['GpsStatusFragment.java'],1,['GpsStatusFragment.java'],1,1
+bug-54,1,5,5,0,0,"['DocumentIO.java', 'DocumentIO.java']",2,['AppSettings.java'],1,0
+bug-53,1,5,5,0,1,['NewFileDialog.java'],1,['NewFileDialog.java'],1,1
+bug-271,1,5,5,0,1,['TotpProgressBar.java'],1,['TotpProgressBar.java'],1,1

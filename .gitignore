@@ -1,2 +1,4 @@
 *checkout-bugs
 *venv*
+__pycache__
+.DS_Store

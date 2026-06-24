@@ -1,0 +1,51 @@
+bug_id,repair,all_tests,passed_tests_after,failed_tests_after,compile_pass,modified_java_files,num_of_modified_java_files,gt_files,num_of_gt_files,localization
+bug-18,0,0,0,0,1,['MedicineCreateOrEditFragment.java'],1,"['MedicineCreateOrEditFragment.java', 'RoutineCreateOrEditFragment.java', 'ScheduleTimetableFragment.java']",3,0
+bug-1151,0,0,0,0,0,['Preferences.java'],1,"['GpsTestActivity.java', 'Preferences.java']",2,0
+bug-44,0,0,0,0,1,"['TagsHelper.java', 'TagsHelperTest.java']",2,['TagsHelper.java'],1,1
+bug-1568,0,0,0,0,1,['FileArrayAdapter.java'],1,"['ContextMenuUtil.java', 'FileActivity.java']",2,0
+bug-382,0,0,0,0,1,['UriPartsModule.java'],1,['UriPartsModule.java'],1,1
+bug-181,0,0,0,0,1,['StoriesFragment.java'],1,['StoriesFragment.java'],1,1
+bug-129,0,0,0,0,1,['ManualEntryDialog.java'],1,['ManualEntryDialog.java'],1,1
+bug-1446,0,0,0,0,1,['ManageLocationFragment.java'],1,['ManageLocationFragment.java'],1,1
+bug-1441,0,0,0,0,1,['ManageFishingSpotFragment.java'],1,['ManageFishingSpotFragment.java'],1,1
+bug-1645,0,0,0,0,1,['ExerciseDialog.java'],1,['ExerciseDialog.java'],1,1
+bug-2678,0,0,0,0,1,['RoboticArmActivity.java'],1,['RoboticArmActivity.java'],1,1
+bug-160,0,0,0,0,1,['Reviewer.java'],1,['Reviewer.java'],1,1
+bug-365,0,0,0,0,1,['RemoveQueriesModule.java'],1,['RemoveQueriesModule.java'],1,1
+bug-2677,0,0,0,0,1,['RoboticArmActivity.java'],1,['RoboticArmActivity.java'],1,1
+bug-1202,0,0,0,0,0,['ImageEditor.java'],1,['ImageEditor.java'],1,1
+bug-192,0,0,0,0,1,['DocumentEditFragment.java'],1,['DocumentEditFragment.java'],1,1
+bug-1205,0,0,0,0,0,"['RemovePagesFragment.java', 'InvertPdfFragment.java', 'SplitFilesFragment.java', 'MergeFilesFragment.java', 'MainActivity.java', 'AddImagesFragment.java', 'PdfToImageFragment.java', 'RemoveDuplicatePagesFragment.java']",8,['MainActivity.java'],1,1
+bug-159,0,0,0,0,0,"['NoteEditor.java', 'CardBrowser.java']",2,['CardBrowser.java'],1,1
+bug-275,0,0,0,0,1,"['Dialogs.java', 'CustomAuthenticatedSlide.java']",2,"['CustomAuthenticatedSlide.java', 'Dialogs.java']",2,1
+bug-92,0,0,0,0,0,"['VendorDBTest.java', 'VendorDB.java', 'VendorDB.java', 'VendorDBTest.java']",4,['VendorDB.java'],1,1
+bug-273,0,0,0,0,1,['Previewer.java'],1,['Previewer.java'],1,1
+bug-447,0,0,0,0,1,"['PatternCatalog.java', 'urlcheck_bug447.java']",2,['PatternCatalog.java'],1,1
+bug-1563,0,0,0,0,1,['FileActivity.java'],1,['FileActivity.java'],1,1
+bug-1138,0,0,0,0,0,"['GpsMainActivity.java', 'ServiceEvents.java', 'GpsLoggingService.java']",3,['GpsLoggingService.java'],1,1
+bug-8,0,0,0,0,0,['ParticipantTabActivity.java'],1,['TrickyTripperActivity.java'],1,0
+bug-123451,0,0,0,0,0,['CustomStudyDialog.java'],1,['CustomStudyDialog.java'],1,1
+bug-1198,0,0,0,0,1,['ViewFilesAdapter.java'],1,['ViewFilesAdapter.java'],1,1
+bug-84,0,0,0,0,1,['Util.java'],1,['Util.java'],1,1
+bug-2587,0,0,0,0,1,['ESPFragment.java'],1,['ESPFragment.java'],1,1
+bug-1130,0,0,0,0,0,"['QueueRecyclerAdapter.java', 'AllEpisodesRecycleAdapter.java']",2,"['QueueFragment.java', 'AllEpisodesFragment.java']",2,0
+bug-71,0,0,0,0,1,['ExperienceTweaks.java'],1,['ExperienceTweaks.java'],1,1
+bug-1640,0,0,0,0,1,['InfoActivity.java'],1,"['InfoActivity.java', 'ExerciseViewActivity.java']",2,0
+bug-171,0,0,0,0,1,['DialogUtils.java'],1,['DialogUtils.java'],1,1
+bug-1215,0,0,0,0,1,['ManualEntryDialog.java'],1,['ManualEntryDialog.java'],1,1
+bug-114,0,0,0,0,1,['LocalLinkMovementMethod.java'],1,"['CommentsRecyclerViewAdapter.java', 'CommentsFragment.java']",2,0
+bug-1214,0,0,0,0,1,['IntroScreenActivity.java'],1,['IntroScreenActivity.java'],1,1
+bug-1445,0,0,0,0,1,"['ManageTripFragment.java', 'Logbook.java']",2,['Logbook.java'],1,1
+bug-1213,0,0,0,0,1,"['PasswordEntryDialog.java', 'PasswordEncryptedPreference.java', 'UIHelper.java', 'IntroScreenActivity.java', 'CredentialsPreference.java']",5,"['CredentialsPreference.java', 'PasswordEntryDialog.java', 'PasswordEncryptedPreference.java', 'IntroScreenActivity.java']",4,1
+bug-1641,0,0,0,0,0,"['MyScheduleRecyclerViewAdapter.java', 'GeneralTrainingScheduleEditor.java', 'XMLParser.java']",3,"['GeneralTrainingScheduleEditor.java', 'ExerciseViewActivity.java']",2,0
+bug-130,0,0,0,0,1,['IntroScreenActivity.java'],1,['IntroScreenActivity.java'],1,1
+bug-1207,0,0,0,0,1,"['Entry.java', 'ManualEntryDialog.java']",2,['ManualEntryDialog.java'],1,1
+bug-358,0,0,0,0,1,['UriPartsModule.java'],1,['UriPartsModule.java'],1,1
+bug-1255,0,0,0,0,1,['GridViewHolder.java'],1,['YouTubeChannel.java'],1,0
+bug-136,0,0,0,0,1,['ComposeActivity.java'],1,['ComposeActivity.java'],1,1
+bug-1299,0,0,0,0,1,"['CounterTraitLayout.java', 'CollectActivity.java']",2,['ConfigActivity.java'],1,0
+bug-191,0,0,0,0,1,"['TowerInserter.java', 'TowerView.java']",2,"['TowerView.java', 'TowerInserter.java']",2,1
+bug-1146,0,0,0,0,0,['GpsStatusFragment.java'],1,['GpsStatusFragment.java'],1,1
+bug-54,0,0,0,0,0,"['DocumentIO.java', 'DocumentTest.java']",2,['AppSettings.java'],1,0
+bug-53,0,0,0,0,1,['NewFileDialog.java'],1,['NewFileDialog.java'],1,1
+bug-271,0,0,0,0,0,['TotpProgressBar.java'],1,['TotpProgressBar.java'],1,1

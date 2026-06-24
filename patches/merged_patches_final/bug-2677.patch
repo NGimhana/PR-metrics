@@ -1,0 +1,104 @@
+diff --git a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+index 8c44102f..64a4ad48 100644
+--- a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
++++ b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+@@ -229,12 +229,12 @@ public class RoboticArmActivity extends GuideActivity {
+ 
+         seekArc1.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+-            public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
++            public void onProgressChanged(SeekArc seekArc, float progress, boolean b) {
+                 if (editEnter) {
+                     degreeText1.setText(String.valueOf(degree));
+                     editEnter = false;
+                 } else {
+-                    degreeText1.setText(String.valueOf((int) (i * 3.6)));
++                    degreeText1.setText(String.valueOf(Math.round(progress * 3.6f)));
+                 }
+                 degreeText1.setCursorVisible(false);
+             }
+
+diff --git a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+index 8c44102f..64a4ad48 100644
+--- a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
++++ b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+@@ -253,12 +253,12 @@ public class RoboticArmActivity extends GuideActivity {
+         seekArc2.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+-            public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
++            public void onProgressChanged(SeekArc seekArc, float progress, boolean b) {
+                 if (editEnter) {
+                     degreeText2.setText(String.valueOf(degree));
+                     editEnter = false;
+                 } else {
+-                    degreeText2.setText(String.valueOf((int) (i * 3.6)));
++                    degreeText2.setText(String.valueOf(Math.round(progress * 3.6f)));
+                 }
+                 degreeText2.setCursorVisible(false);
+             }
+
+diff --git a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+index 8c44102f..64a4ad48 100644
+--- a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
++++ b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+@@ -276,11 +276,12 @@ public class RoboticArmActivity extends GuideActivity {
+         seekArc3.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
++
+             @Override
+-            public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
++            public void onProgressChanged(SeekArc seekArc, float progress, boolean b) {
+                 if (editEnter) {
+                     degreeText3.setText(String.valueOf(degree));
+                     editEnter = false;
+                 } else {
+-                    degreeText3.setText(String.valueOf((int) (i * 3.6)));
++                    degreeText3.setText(String.valueOf(Math.round(progress * 3.6f)));
+                 }
+                 degreeText3.setCursorVisible(false);
+             }
+
+diff --git a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+index 8c44102f..64a4ad48 100644
+--- a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
++++ b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+@@ -300,11 +300,11 @@ public class RoboticArmActivity extends GuideActivity {
+         seekArc4.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+-            public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
++            public void onProgressChanged(SeekArc seekArc, float progress, boolean b) {
+                 if (editEnter) {
+                     degreeText4.setText(String.valueOf(degree));
+                     editEnter = false;
+                 } else {
+-                    degreeText4.setText(String.valueOf((int) (i * 3.6)));
++                    degreeText4.setText(String.valueOf(Math.round(progress * 3.6f)));
+                 }
+                 degreeText4.setCursorVisible(false);
+             }
+
+diff --git a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+index 8c44102f..64a4ad48 100644
+--- a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
++++ b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+@@ -479,11 +485,9 @@ public class RoboticArmActivity extends GuideActivity {
+         }
+     }
+     private void processDegreeInput(EditText degreeText, SeekArc seekArc) {
+-        int previousDegree = degree;
+         String degreeStr = degreeText.getText().toString().trim();
+-
+         if (degreeStr.isEmpty()) {
+-            degree = (degree == 0) ? (int) (seekArc.getProgress() * 3.6) : previousDegree;
++            degree =  Math.round(seekArc.getProgress() * 3.6f);
+         } else {
+             try {
+                 degree = Integer.parseInt(degreeStr);
+@@ -500,7 +504,7 @@ public class RoboticArmActivity extends GuideActivity {
+             seekArc.setProgress(0);
+             toastInvalidValueMessage();
+         } else {
+-            seekArc.setProgress((int) (degree / 3.6));
++            seekArc.setProgress((float) (degree/3.6));
+             editEnter = true;
+         }
+     }

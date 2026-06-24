@@ -1,0 +1,108 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 3e7d3830..08e7ef53 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -446,38 +456,36 @@ public class IntroScreenActivity extends IntroActivity {
+ 
+                 if (! password.isEmpty()) {
+                     if (password.length() < minLength) {
+-                        displayWarning(lengthWarning);
++                        updateWarning(lengthWarning);
+                         return false;
+                     } else {
+                         if (! confirm.isEmpty() && confirm.equals(password)) {
+                             hideWarning();
+                             return true;
+                         } else {
+-                            displayWarning(confirmPasswordWarning);
++                            updateWarning(confirmPasswordWarning);
+                             return false;
+                         }
+                     }
+                 } else {
+-                    displayWarning(noPasswordWarning);
++                    updateWarning(noPasswordWarning);
+                     return false;
+                 }
+             } else if (authMethod == Constants.AuthMethod.DEVICE) {
+                 KeyguardManager km = (KeyguardManager) getContext().getSystemService(KEYGUARD_SERVICE);
+ 
+                 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+-                    displayWarning(R.string.settings_toast_auth_device_pre_lollipop);
++                    updateWarning(R.string.settings_toast_auth_device_pre_lollipop);
+                     return false;
+                 } else if (! km.isKeyguardSecure()) {
+-                    displayWarning(R.string.settings_toast_auth_device_not_secure);
++                    updateWarning(R.string.settings_toast_auth_device_not_secure);
+                     return false;
+                 }
+ 
+                 hideWarning();
+-
+                 return true;
+             } else {
+                 hideWarning();
+-
+                 return true;
+             }
+         }
+
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 3e7d3830..08e7ef53 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -295,11 +297,14 @@ public class IntroScreenActivity extends IntroActivity {
+         public void flashWarning() {
+-            if (authWarnings.getVisibility() == View.VISIBLE) {
++            if (authWarnings.getText().toString().isEmpty()) {
++                authWarnings.setVisibility(View.GONE);
++            } else {
++                authWarnings.setVisibility(View.VISIBLE);
+                 ObjectAnimator animator = ObjectAnimator.ofInt(authWarnings, "backgroundColor",
+                         Color.TRANSPARENT, getResources().getColor(R.color.colorAccent), Color.TRANSPARENT);
+                 animator.setDuration(500);
+                 animator.setRepeatCount(0);
+                 animator.setInterpolator(new AccelerateDecelerateInterpolator());
+                 animator.setEvaluator(new ArgbEvaluator());
+                 animator.start();
+             }
+         }
+
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 3e7d3830..08e7ef53 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -291,3 +292,4 @@ public class IntroScreenActivity extends IntroActivity {
+         private void hideWarning() {
+             authWarnings.setVisibility(View.GONE);
++            authWarnings.setText(null);
+         }
+
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 3e7d3830..08e7ef53 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -405,6 +410,11 @@ public class IntroScreenActivity extends IntroActivity {
+                         UIHelper.hideKeyboard(getIntroActivity(), root);
+                     }
+ 
++                    passwordInput.setText(null);
++                    passwordConfirm.setText(null);
++
++                    authWarnings.setVisibility(View.GONE);
++
+                     updateNavigation();
+                 }
+
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 3e7d3830..08e7ef53 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -261,6 +261,8 @@ public class IntroScreenActivity extends IntroActivity {
+             if (desc != null) {
+                 if (encryptionType == Constants.EncryptionType.KEYSTORE) {
+                     desc.setText(R.string.intro_slide3_desc_keystore);
++
++                    selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.NONE));
+                 } else if (encryptionType == Constants.EncryptionType.PASSWORD) {
+                     desc.setText(R.string.intro_slide3_desc_password);

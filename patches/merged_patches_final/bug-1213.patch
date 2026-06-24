@@ -1,0 +1,80 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java
+index 1400f17e..dd0b535a 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java
+@@ -42,6 +43,7 @@ public class PasswordEntryDialog extends AppCompatDialog
+         TextInputLayout passwordLayout = findViewById(R.id.passwordInputLayout);
+         passwordInput = findViewById(R.id.passwordInput);
+         passwordConfirm = findViewById(R.id.passwordConfirm);
++        ConfirmedPasswordTransformationHelper.setup(passwordLayout, passwordInput, passwordConfirm);
+ 
+         if (blockAccessibility) {
+             passwordLayout.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java
+index 7302f8d3..6e089649 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java
+@@ -135,8 +136,7 @@ public class PasswordEncryptedPreference extends DialogPreference
+             passwordConfirm.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+         }
+ 
+-        passwordInput.setTransformationMethod(new PasswordTransformationMethod());
+-        passwordConfirm.setTransformationMethod(new PasswordTransformationMethod());
++        ConfirmedPasswordTransformationHelper.setup(passwordLayout, passwordInput, passwordConfirm);
+ 
+         passwordConfirm.addTextChangedListener(this);
+         passwordInput.addTextChangedListener(this);
+
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 31724ea9..28cbf504 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -380,7 +381,7 @@ public class IntroScreenActivity extends IntroActivity {
+                     passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                     passwordConfirm.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+ 
+-                    setPasswordTransformationMethod();
++                    ConfirmedPasswordTransformationHelper.setup(passwordLayout, passwordInput, passwordConfirm);
+ 
+                     minLength = Constants.AUTH_MIN_PASSWORD_LENGTH;
+                     lengthWarning = getString(R.string.settings_label_short_password, minLength);
+
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 31724ea9..28cbf504 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -433,7 +407,7 @@ public class IntroScreenActivity extends IntroActivity {
+                     passwordInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+                     passwordConfirm.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+ 
+-                    setPasswordTransformationMethod();
++                    ConfirmedPasswordTransformationHelper.setup(passwordLayout, passwordInput, passwordConfirm);
+ 
+                     minLength = Constants.AUTH_MIN_PIN_LENGTH;
+                     lengthWarning = getString(R.string.settings_label_short_pin, minLength);
+
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java
+index eae85ce2..f5992bed 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java
+@@ -256,8 +257,7 @@ public class CredentialsPreference extends DialogPreference
+             passwordLayout.setHint(getContext().getString(R.string.settings_hint_password));
+             passwordConfirm.setHint(R.string.settings_hint_password_confirm);
+ 
+-            passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+-            passwordConfirm.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
++            ConfirmedPasswordTransformationHelper.setup(passwordLayout, passwordInput, passwordConfirm);
+ 
+             passwordInput.setTransformationMethod(new PasswordTransformationMethod());
+             passwordConfirm.setTransformationMethod(new PasswordTransformationMethod());
+@@ -278,8 +278,7 @@ public class CredentialsPreference extends DialogPreference
+             passwordInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+             passwordConfirm.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+ 
+-            passwordInput.setTransformationMethod(new PasswordTransformationMethod());
+-            passwordConfirm.setTransformationMethod(new PasswordTransformationMethod());
++            ConfirmedPasswordTransformationHelper.setup(passwordLayout, passwordInput, passwordConfirm);
+ 
+             minLength = Constants.AUTH_MIN_PIN_LENGTH;
+             toShortWarning.setText(getContext().getString(R.string.settings_label_short_pin, minLength));

@@ -1,0 +1,39 @@
+diff --git a/app/src/main/java/io/lerk/lrkFM/activities/file/ContextMenuUtil.java b/app/src/main/java/io/lerk/lrkFM/activities/file/ContextMenuUtil.java
+index 94f3263..c507a06 100644
+--- a/app/src/main/java/io/lerk/lrkFM/activities/file/ContextMenuUtil.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/file/ContextMenuUtil.java
+@@ -254,7 +255,7 @@ public class ContextMenuUtil {
+      */
+     private void addCreateZipToMenu(FMFile f, ContextMenu menu) {
+ 
+-        EditablePair<Operation, ArrayList<FMFile>> fileOpContext = activity.getFileOpContext();
++        EditablePair<Operation, CopyOnWriteArrayList<FMFile>> fileOpContext = activity.getFileOpContext();
+ 
+         boolean zipFileReady = fileOpContext.getFirst().equals(CREATE_ZIP) && fileOpContext.getSecond().size() >= 1;
+
+diff --git a/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java b/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java
+index 2302bfd..9453f32 100644
+--- a/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java
+@@ -945,7 +962,7 @@ public class FileActivity extends ThemedAppCompatActivity {
+      */
+     public void clearFileOpCache() {
+         fileOpContext.setFirst(NONE);
+-        fileOpContext.setSecond(new ArrayList<>());
++        fileOpContext.setSecond(new CopyOnWriteArrayList<>());
+         reloadCurrentDirectory();
+     }
+
+diff --git a/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java b/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java
+index 2302bfd..9453f32 100644
+--- a/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/file/FileActivity.java
+@@ -954,7 +971,7 @@ public class FileActivity extends ThemedAppCompatActivity {
+      */
+     public void finishFileOperation() {
+         Operation operation = fileOpContext.getFirst();
+-        ArrayList<FMFile> files = fileOpContext.getSecond();
++        CopyOnWriteArrayList<FMFile> files = fileOpContext.getSecond();
+         if (!operation.equals(NONE) && !files.isEmpty()) {
+             if (operation.equals(COPY)) {
+                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
