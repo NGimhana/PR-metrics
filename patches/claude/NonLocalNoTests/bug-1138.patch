@@ -1,0 +1,16 @@
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+@@ -394,7 +394,12 @@
+         LOG.debug(".");
+         session.setAddNewTrackSegment(true);
+ 
+-
++        if(!Files.isAllowedToWriteTo(preferenceHelper.getGpsLoggerFolder())){
++            LOG.error("Can't write to folder: " + preferenceHelper.getGpsLoggerFolder());
++            stopLogging();
++            stopSelf();
++            return;
++        }
+ 
+         try {
+             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

@@ -1,0 +1,113 @@
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+@@ -1,7 +1,6 @@
+ package com.trianguloy.urlchecker.modules.list;
+ 
+ import android.net.Uri;
+-import android.net.UrlQuerySanitizer;
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.LinearLayout;
+@@ -19,6 +18,7 @@
+ import com.trianguloy.urlchecker.utilities.methods.Inflater;
+ import com.trianguloy.urlchecker.utilities.methods.JavaUtils;
+ import com.trianguloy.urlchecker.utilities.methods.JavaUtils.Supplier;
++import com.trianguloy.urlchecker.utilities.methods.UrlUtils;
+ 
+ import java.util.ArrayList;
+ import java.util.List;
+@@ -48,6 +48,20 @@
+ }
+ 
+ class UriPartsDialog extends AModuleDialog {
++
++    private static class QueryParameter {
++        final String encodedName;
++        final String encodedValue;
++        final String decodedName;
++        final String decodedValue;
++
++        QueryParameter(String encodedName, String encodedValue) {
++            this.encodedName = encodedName;
++            this.encodedValue = encodedValue;
++            decodedName = UrlUtils.decode(encodedName);
++            decodedValue = UrlUtils.decode(encodedValue);
++        }
++    }
+ 
+     private LinearLayout box;
+     private final List<String> expandedGroups = new ArrayList<>();
+@@ -73,15 +87,7 @@
+ 
+         // parse
+         var uri = Uri.parse(urlData.url);
+-        var urlQuerySanitizer = new UrlQuerySanitizer();
+-        // the default parseUrl doesn't remove the fragment
+-        if (uri.getQuery() != null) {
+-            urlQuerySanitizer.setAllowUnregisteredParamaters(true);
+-            urlQuerySanitizer.setUnregisteredParameterValueSanitizer(v -> v);
+-            urlQuerySanitizer.parseQuery(uri.getQuery()
+-                    // this will fix issues with the parser decoding twice
+-                    .replace("%", "%25"));
+-        }
++        var parameters = parseEncodedQuery(uri.getEncodedQuery());
+ 
+         // domain elements
+         if (uri.getAuthority() != null || uri.getScheme() != null) {
+@@ -112,19 +118,15 @@
+         }
+ 
+         // query parameters
+-        var parameters = urlQuerySanitizer.getParameterList();
+         if (!parameters.isEmpty()) {
+             var queries = addGroup("Parameters", parameters.size(), uri.buildUpon().query(null));
+             for (var i = 0; i < parameters.size(); i++) {
+                 int removeI = i;
+                 // append the parameter
+-                addPart(parameters.get(i).mParameter, parameters.get(i).mValue, queries, () -> {
++                addPart(parameters.get(i).decodedName, parameters.get(i).decodedValue, queries, () -> {
+                     // generate same url but without this parameter
+                     var builder = uri.buildUpon();
+-                    builder.query(null);
+-                    for (var newI = 0; newI < parameters.size(); newI++) {
+-                        if (newI != removeI) builder.appendQueryParameter(parameters.get(newI).mParameter, parameters.get(newI).mValue);
+-                    }
++                    builder.encodedQuery(buildEncodedQueryWithoutIndex(parameters, removeI));
+                     return builder.build().toString();
+                 });
+             }
+@@ -199,4 +201,34 @@
+         return true;
+     };
+ 
++    private static List<QueryParameter> parseEncodedQuery(String encodedQuery) {
++        var parameters = new ArrayList<QueryParameter>();
++        if (encodedQuery == null || encodedQuery.isEmpty()) return parameters;
++
++        for (var encodedPart : encodedQuery.split("&", -1)) {
++            var separator = encodedPart.indexOf('=');
++            if (separator < 0) {
++                parameters.add(new QueryParameter(encodedPart, ""));
++            } else {
++                parameters.add(new QueryParameter(
++                        encodedPart.substring(0, separator),
++                        encodedPart.substring(separator + 1)
++                ));
++            }
++        }
++        return parameters;
++    }
++
++    private static String buildEncodedQueryWithoutIndex(List<QueryParameter> parameters, int removeI) {
++        var builder = new StringBuilder();
++        for (var i = 0; i < parameters.size(); i++) {
++            if (i == removeI) continue;
++            if (builder.length() > 0) builder.append('&');
++            builder.append(parameters.get(i).encodedName);
++            builder.append('=');
++            builder.append(parameters.get(i).encodedValue);
++        }
++        return builder.length() == 0 ? null : builder.toString();
++    }
++
+ }

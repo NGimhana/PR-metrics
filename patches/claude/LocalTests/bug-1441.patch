@@ -1,0 +1,17 @@
+--- a/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
+@@ -124,7 +124,13 @@
+         FishingSpot fishingSpot = getNewFishingSpot();
+         fishingSpot.setName(mNameView.getInputText());
+ 
+-        if (mMap != null) {
++        double lat = validateCoordinateInput(mLatitudeView);
++        double lng = validateCoordinateInput(mLongitudeView);
++
++        if (lat != -1 && lng != -1) {
++            fishingSpot.setLatitude(lat);
++            fishingSpot.setLongitude(lng);
++        } else if (mMap != null) {
+             fishingSpot.setLatitude(mMap.getCameraPosition().target.latitude);
+             fishingSpot.setLongitude(mMap.getCameraPosition().target.longitude);
+         } else {

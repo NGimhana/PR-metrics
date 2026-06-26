@@ -1,0 +1,92 @@
+diff --git a/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java b/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
+index 9f719f6..50a8576 100644
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
+@@ -145,6 +145,7 @@ public class CardBrowser extends NavigationDrawerActivity implements
+     private Snackbar mUndoSnackbar;
+ 
+     public static Card sCardBrowserCard;
++    public static long[] sCardBrowserSelectedCardIds;
+ 
+     // card that was clicked (not marked)
+     private long mCurrentCardId;
+@@ -664,6 +665,7 @@ public class CardBrowser extends NavigationDrawerActivity implements
+     public void openNoteEditorForCard(long cardId) {
+         mCurrentCardId = cardId;
+         sCardBrowserCard = getCol().getCard(mCurrentCardId);
++        sCardBrowserSelectedCardIds = getSelectedCardIds();
+         // start note editor using the card we just loaded
+         Intent editCard = new Intent(this, NoteEditor.class);
+         editCard.putExtra(NoteEditor.EXTRA_CALLER, NoteEditor.CALLER_CARDBROWSER_EDIT);
+@@ -2177,6 +2179,7 @@ public class CardBrowser extends NavigationDrawerActivity implements
+     private void endMultiSelectMode() {
+         Timber.d("endMultiSelectMode()");
+         mCheckedCardPositions.clear();
++        sCardBrowserSelectedCardIds = null;
+         mInMultiSelectMode = false;
+         // If view which was originally selected when entering multi-select is visible then maintain its position
+         View view = mCardsListView.getChildAt(mLastSelectedPosition - mCardsListView.getFirstVisiblePosition());
+diff --git a/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java b/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java
+index 250538a..5fe7532 100644
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java
+@@ -92,10 +92,12 @@ import java.util.ArrayList;
+ import java.util.Arrays;
+ import java.util.Collections;
+ import java.util.HashMap;
++import java.util.HashSet;
+ import java.util.LinkedList;
+ import java.util.List;
+ import java.util.Map;
+ import java.util.Map.Entry;
++import java.util.Set;
+ 
+ import timber.log.Timber;
+ 
+@@ -176,6 +178,7 @@ public class NoteEditor extends AnkiActivity {
+     private List<String> mSelectedTags;
+     private long mCurrentDid;
+     private ArrayList<Long> mAllDeckIds;
++    private long[] mCardIds;
+     private ArrayList<Long> mAllModelIds;
+     private Map<Integer, Integer> mModelChangeFieldMap;
+     private Map<Integer, Integer> mModelChangeCardMap;
+@@ -436,6 +439,7 @@ public class NoteEditor extends AnkiActivity {
+                     return;
+                 }
+                 mEditorNote = mCurrentEditedCard.note();
++                mCardIds = CardBrowser.sCardBrowserSelectedCardIds;
+                 mAddNote = false;
+                 break;
+ 
+@@ -850,7 +854,20 @@ public class NoteEditor extends AnkiActivity {
+      * @throws ConfirmModSchemaException If a full sync will be required
+      */
+     private void changeNoteType(JSONObject oldModel, JSONObject newModel) throws ConfirmModSchemaException {
+-        final long [] nids = {mEditorNote.getId()};
++        long[] nids;
++        if (mCardIds != null && mCardIds.length > 0) {
++            Set<Long> nidSet = new HashSet<>();
++            for (long cardId : mCardIds) {
++                nidSet.add(getCol().getCard(cardId).getNid());
++            }
++            nids = new long[nidSet.size()];
++            int i = 0;
++            for (long nid : nidSet) {
++                nids[i++] = nid;
++            }
++        } else {
++            nids = new long[] {mEditorNote.getId()};
++        }
+         getCol().getModels().change(oldModel, nids, newModel, mModelChangeFieldMap, mModelChangeCardMap);
+         // refresh the note object to reflect the database changes
+         mEditorNote.load();
+@@ -871,6 +888,8 @@ public class NoteEditor extends AnkiActivity {
+         if (mUnmountReceiver != null) {
+             unregisterReceiver(mUnmountReceiver);
+         }
++        mCurrentEditedCard = null;
++        CardBrowser.sCardBrowserSelectedCardIds = null;
+     }
+ 
+ 

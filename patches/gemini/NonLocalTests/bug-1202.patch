@@ -1,0 +1,48 @@
+diff --git a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+index d26b1c3..465de0a 100644
+--- a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
++++ b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+@@ -128,7 +128,7 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+     @OnClick(R.id.nextimageButton)
+     void nextImg() {
+         //Proceed to next if Save Current has been clicked
+-        if (mClicked == mClickedFilter) {
++        if (mClicked || (!mClickedFilter && !mDoodleSelected)) {
+             next();
+             incrementImageCount();
+             mClicked = false;
+@@ -140,7 +140,7 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+     @OnClick(R.id.previousImageButton)
+     void previousImg() {
+         //move to previous if Save Current has been clicked
+-        if (mClicked == mClickedFilter) {
++        if (mClicked || (!mClickedFilter && !mDoodleSelected)) {
+             previous();
+             decrementImageCount();
+             mClicked = false;
+@@ -168,6 +168,9 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+                 .setImageBitmap(BitmapFactory.decodeFile(originalPath));
+         mPhotoEditor.clearAllViews();
+         mPhotoEditor.undo();
++        mClicked = false;
++        mClickedFilter = false;
++        mDoodleSelected = false;
+     }
+ 
+     /**
+@@ -318,6 +321,7 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+                 doodleSeekBar.setVisibility(View.VISIBLE);
+                 brushColorsView.setVisibility(View.VISIBLE);
+                 mDoodleSelected = true;
++                mClicked = false;
+             } else if (doodleSeekBar.getVisibility() == View.VISIBLE &&
+                     brushColorsView.getVisibility() == View.VISIBLE) {
+                 mPhotoEditor.setBrushDrawingMode(false);
+@@ -341,6 +345,7 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+             mPhotoEditor.setFilterEffect(filterType);
+             mFilterName = filterType.name();
+             mClickedFilter = filterType != PhotoFilter.NONE;
++            mClicked = false;
+         } catch (Exception e) {
+             e.printStackTrace();
+         }

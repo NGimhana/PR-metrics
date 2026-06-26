@@ -1,0 +1,11 @@
+--- a/app/src/main/java/io/pslab/fragment/ESPFragment.java
++++ b/app/src/main/java/io/pslab/fragment/ESPFragment.java
+@@ -106,7 +106,7 @@
+                     ScienceLabCommon.setEspBaseIP(espIPAddress);
+                 }
+                 result = response.body().string();
+-            } catch (IOException e) {
++            } catch (IOException | IllegalArgumentException e) {
+                 e.printStackTrace();
+             }
+             return result;

@@ -1,0 +1,126 @@
+--- a/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java
++++ b/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java
+@@ -277,6 +277,9 @@
+     private boolean validateData() {
+         final String strValue = etCurVal.getText().toString();
+         final TraitObject currentTrait = traitBox.getCurrentTrait();
++        if (currentTrait == null) {
++            return true;
++        }
+         final String trait = currentTrait.getTrait();
+ 
+         if (traitBox.existsNewTraits()
+@@ -326,6 +329,9 @@
+             @Override
+             public void onClick(View v) {
+                 TraitObject currentTrait = traitBox.getCurrentTrait();
++                if (currentTrait == null) {
++                    return;
++                }
+                 updateTrait(currentTrait.getTrait(), currentTrait.getFormat(), "NA");
+                 setNaText();
+             }
+@@ -338,6 +344,9 @@
+ 
+                 // if a brapi observation that has been synced, don't allow deleting
+                 TraitObject currentTrait = traitBox.getCurrentTrait();
++                if (currentTrait == null) {
++                    return;
++                }
+                 if (dt.isBrapiSynced(rangeBox.getPlotID(), currentTrait.getTrait())) {
+                     if (currentTrait.getFormat().equals("photo")) {
+                         // I want to use abstract method
+@@ -380,13 +389,17 @@
+ 
+         // trait is unique, format is not
+         String[] traits = dt.getVisibleTrait();
+-        if (traits != null) {
++        if (traits != null && traits.length > 0) {
+             ArrayAdapter<String> directionArrayAdapter = new ArrayAdapter<>(
+                     this, R.layout.custom_spinnerlayout, traits);
+             directionArrayAdapter
+                     .setDropDownViewResource(R.layout.custom_spinnerlayout);
+             traitBox.initTraitType(directionArrayAdapter, rangeSuppress);
+-
++        } else {
++            traitBox.clearTraitSelection();
++            traitLayouts.hideLayouts();
++            etCurVal.setVisibility(EditText.GONE);
++            etCurVal.setEnabled(false);
+         }
+     }
+ 
+@@ -1204,6 +1217,12 @@
+             return currentTrait;
+         }
+ 
++        void clearTraitSelection() {
++            currentTrait = null;
++            traitType.setAdapter(null);
++            traitDetails.setText("");
++        }
++
+         final String getCurrentFormat() {
+             return currentTrait.getFormat();
+         }
+@@ -1835,4 +1854,4 @@
+             rangeRight.performClick();
+         }
+     }
+-}
++}
+--- a/app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java
++++ b/app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java
+@@ -8,6 +8,7 @@
+ import android.widget.TextView;
+ 
+ import com.fieldbook.tracker.R;
++import com.fieldbook.tracker.objects.TraitObject;
+ 
+ public class CounterTraitLayout extends BaseTraitLayout {
+ 
+@@ -44,26 +45,34 @@
+         // Add counter
+         addCounterBtn.setOnClickListener(new OnClickListener() {
+             public void onClick(View arg0) {
++                TraitObject currentTrait = getCurrentTrait();
++                if (currentTrait == null) {
++                    return;
++                }
+                 //TODO NullPointerException
+-                if (getNewTraits().containsKey(getCurrentTrait().getTrait()) && getNewTraits().get(getCurrentTrait().getTrait()).toString().equals("NA")) {
++                if (getNewTraits().containsKey(currentTrait.getTrait()) && getNewTraits().get(currentTrait.getTrait()).toString().equals("NA")) {
+                     counterTv.setText("1");
+                 } else {
+                     counterTv.setText(Integer.toString(Integer.parseInt(counterTv.getText().toString()) + 1));
+                 }
+-                updateTrait(getCurrentTrait().getTrait(), "counter", counterTv.getText().toString());
++                updateTrait(currentTrait.getTrait(), "counter", counterTv.getText().toString());
+             }
+         });
+ 
+         // Minus counter
+         minusCounterBtn.setOnClickListener(new OnClickListener() {
+             public void onClick(View arg0) {
++                TraitObject currentTrait = getCurrentTrait();
++                if (currentTrait == null) {
++                    return;
++                }
+                 //TODO NullPointerException
+-                if (getNewTraits().containsKey(getCurrentTrait().getTrait()) && getNewTraits().get(getCurrentTrait().getTrait()).toString().equals("NA")) {
++                if (getNewTraits().containsKey(currentTrait.getTrait()) && getNewTraits().get(currentTrait.getTrait()).toString().equals("NA")) {
+                     counterTv.setText("-1");
+                 } else {
+                     counterTv.setText(Integer.toString(Integer.parseInt(counterTv.getText().toString()) - 1));
+                 }
+-                updateTrait(getCurrentTrait().getTrait(), "counter", counterTv.getText().toString());
++                updateTrait(currentTrait.getTrait(), "counter", counterTv.getText().toString());
+             }
+         });
+ 
+@@ -86,4 +95,4 @@
+         removeTrait(getCurrentTrait().getTrait());
+         counterTv.setText("0");
+     }
+-}
++}

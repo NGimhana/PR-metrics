@@ -1,0 +1,93 @@
+--- a/app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java
++++ b/app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java
+@@ -161,6 +161,7 @@
+         dt.open();
+ 
+         ep = getSharedPreferences("Settings", 0);
++        boolean tipsConfiguredAtLaunch = ep.getBoolean("TipsConfigured", false);
+ 
+         invalidateOptionsMenu();
+         loadScreen();
+@@ -169,7 +170,7 @@
+         ActivityCompat.requestPermissions(this, Constants.permissions, Constants.PERM_REQ);
+         createDirs();
+ 
+-        if (ep.getInt("UpdateVersion", -1) < Utils.getVersion(this)) {
++        if (tipsConfiguredAtLaunch && ep.getInt("UpdateVersion", -1) < Utils.getVersion(this)) {
+             ep.edit().putInt("UpdateVersion", Utils.getVersion(this)).apply();
+             showChangelog(true, false);
+         }
+@@ -282,6 +283,12 @@
+                     case 2:
+                         if (!ep.getBoolean("ImportFieldFinished", false)) {
+                             Utils.makeToast(getApplicationContext(),getString(R.string.warning_field_missing));
++                            return;
++                        }
++
++                        String[] visibleTraits = dt.getVisibleTrait();
++                        if (visibleTraits == null || visibleTraits.length == 0) {
++                            Utils.makeToast(getApplicationContext(),getString(R.string.warning_traits_missing));
+                             return;
+                         }
+ 
+@@ -339,7 +346,6 @@
+         if (!ep.getBoolean("TipsConfigured", false)) {
+             ed.putBoolean("TipsConfigured", true);
+             ed.apply();
+-            showTipsDialog();
+             loadSampleDataDialog();
+         }
+     }
+@@ -444,11 +450,6 @@
+                 dialog.dismiss();
+ 
+                 invalidateOptionsMenu();
+-
+-                Intent intent = new Intent();
+-                intent.setClassName(ConfigActivity.this,
+-                        ConfigActivity.class.getName());
+-                startActivity(intent);
+             }
+         });
+ 
+@@ -459,11 +460,6 @@
+                 ed.apply();
+ 
+                 dialog.dismiss();
+-
+-                Intent intent = new Intent();
+-                intent.setClassName(ConfigActivity.this,
+-                        ConfigActivity.class.getName());
+-                startActivity(intent);
+             }
+         });
+ 
+@@ -483,12 +479,14 @@
+                 // Load database with sample data
+                 mChosenFile = "sample.db";
+                 mHandler.post(importDB);
++                showTipsDialog();
+             }
+         });
+ 
+         builder.setNegativeButton(getString(R.string.dialog_no), new DialogInterface.OnClickListener() {
+             public void onClick(DialogInterface dialog, int which) {
+                 dialog.dismiss();
++                showTipsDialog();
+             }
+         });
+ 
+@@ -1250,6 +1248,7 @@
+         new MenuInflater(ConfigActivity.this).inflate(R.menu.menu_settings, menu);
+         systemMenu = menu;
+         systemMenu.findItem(R.id.help).setVisible(ep.getBoolean("Tips", false));
++        systemMenu.findItem(R.id.changelog).setVisible(false);
+         return true;
+     }
+ 
+@@ -1583,4 +1582,4 @@
+             CollectActivity.reloadData = true;
+         }
+     }
+-}
++}

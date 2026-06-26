@@ -1,0 +1,44 @@
+diff --git a/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java b/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
+index b7298fe..2bb958f 100644
+--- a/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
+@@ -124,13 +124,33 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
+         FishingSpot fishingSpot = getNewFishingSpot();
+         fishingSpot.setName(mNameView.getInputText());
+ 
+-        if (mMap != null) {
+-            fishingSpot.setLatitude(mMap.getCameraPosition().target.latitude);
+-            fishingSpot.setLongitude(mMap.getCameraPosition().target.longitude);
++        String latStr = mLatitudeView.getInputText();
++        String lngStr = mLongitudeView.getInputText();
++
++        if (latStr != null && lngStr != null) {
++            try {
++                double lat = Double.parseDouble(latStr.replace(',', '.'));
++                double lng = Double.parseDouble(lngStr.replace(',', '.'));
++
++                if (mMapFragment.isValid(new LatLng(lat, lng))) {
++                    fishingSpot.setLatitude(lat);
++                    fishingSpot.setLongitude(lng);
++                } else {
++                    AlertUtils.showError(getActivity(), R.string.msg_invalid_coordinate);
++                    return false;
++                }
++            } catch (NumberFormatException e) {
++                AlertUtils.showError(getActivity(), R.string.msg_invalid_coordinate);
++                return false;
++            }
+         } else {
+-            // in case Google Play Services isn't available, fishing spots can still be added and updated later
+-            fishingSpot.setLatitude(0.0);
+-            fishingSpot.setLongitude(0.0);
++            if (mMap != null) {
++                fishingSpot.setLatitude(mMap.getCameraPosition().target.latitude);
++                fishingSpot.setLongitude(mMap.getCameraPosition().target.longitude);
++            } else {
++                fishingSpot.setLatitude(0.0);
++                fishingSpot.setLongitude(0.0);
++            }
+         }
+ 
+         // name

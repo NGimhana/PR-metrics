@@ -1,0 +1,21 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java
+@@ -205,6 +205,10 @@
+             public void afterTextChanged(Editable editable) {
+                 if (TextUtils.isEmpty(labelInput.getText()) || TextUtils.isEmpty(secretInput.getText())) {
+                     positiveButton.setEnabled(false);
++                } else if (TextUtils.isEmpty(periodInput.getText()) || periodInput.getText().toString().equals("0")) {
++                    positiveButton.setEnabled(false);
++                } else if (TextUtils.isEmpty(digitsInput.getText()) || digitsInput.getText().toString().equals("0")) {
++                    positiveButton.setEnabled(false);
+                 } else {
+                     positiveButton.setEnabled(true);
+                 }
+@@ -213,5 +217,7 @@
+ 
+         labelInput.addTextChangedListener(watcher);
+         secretInput.addTextChangedListener(watcher);
++        periodInput.addTextChangedListener(watcher);
++        digitsInput.addTextChangedListener(watcher);
+     }
+ }

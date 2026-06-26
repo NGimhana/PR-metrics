@@ -1,0 +1,17 @@
+--- a/ultrasonic/src/main/java/org/moire/ultrasonic/fragment/ServerSettingsFragment.java
++++ b/ultrasonic/src/main/java/org/moire/ultrasonic/fragment/ServerSettingsFragment.java
+@@ -244,12 +244,14 @@
+                 final Context context = getActivity();
+                 previousInstance = Util.getActiveServer(context);
+                 Util.setActiveServer(context, serverId);
++                MusicServiceFactory.resetMusicService();
+                 try {
+                     MusicService musicService = MusicServiceFactory.getMusicService(context);
+                     musicService.ping(context, this);
+                     return musicService.isLicenseValid(context, null);
+                 } finally {
+                     Util.setActiveServer(context, previousInstance);
++                    MusicServiceFactory.resetMusicService();
+                 }
+             }
+ 

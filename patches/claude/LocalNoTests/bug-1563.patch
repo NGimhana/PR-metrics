@@ -1,0 +1,17 @@
+--- a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+@@ -612,8 +612,14 @@
+             errorText.setVisibility(GONE);
+             emptyText.setVisibility(GONE);
+ 
++            int index = fileListView.getFirstVisiblePosition();
++            View v = fileListView.getChildAt(0);
++            int top = (v == null) ? 0 : (v.getTop() - fileListView.getPaddingTop());
++
+             arrayAdapter = new FileArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()));
+             fileListView.setAdapter(arrayAdapter);
++
++            fileListView.setSelectionFromTop(index, top);
+         } catch (NoAccessException e) {
+             Log.w(TAG, "Can't read '" + path + "': Permission denied!");
+             fileListView.setVisibility(GONE);

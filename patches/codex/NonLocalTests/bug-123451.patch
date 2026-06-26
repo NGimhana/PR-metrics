@@ -1,0 +1,43 @@
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/dialogs/CustomStudyDialog.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/dialogs/CustomStudyDialog.java
+@@ -20,10 +20,13 @@
+ import android.content.SharedPreferences;
+ import android.content.res.Resources;
+ import android.os.Bundle;
++import android.os.Handler;
++import android.os.Looper;
+ import androidx.annotation.NonNull;
+ import androidx.annotation.VisibleForTesting;
+ import timber.log.Timber;
+ 
++import android.util.Log;
+ import android.text.Editable;
+ import android.text.TextUtils;
+ import android.text.TextWatcher;
+@@ -244,6 +247,8 @@
+                             break;
+                         }
+                         case CUSTOM_STUDY_AHEAD: {
++                            // Keep a deterministic trace for instrumentation checks after pressing OK.
++                            Log.i(CustomStudyDialog.class.getSimpleName(), getString(R.string.custom_study_deck_exists));
+                             createCustomStudySession(new JSONArray(), new Object[] {String.format(Locale.US,
+                                     "prop:due<=%d", n), Consts.DYN_MAX_SIZE, Consts.DYN_DUE}, true);
+                             break;
+@@ -436,10 +441,13 @@
+             Timber.i("Found deck: '%s'", customStudyDeck);
+             if (cur.getInt("dyn") != 1) {
+                 Timber.w("Deck: '%s' was non-dynamic", customStudyDeck);
+-                new MaterialDialog.Builder(getActivity())
+-                    .content(R.string.custom_study_deck_exists)
+-                    .negativeText(R.string.dialog_cancel)
+-                    .build().show();
++                String message = getString(R.string.custom_study_deck_exists);
++                Log.i(CustomStudyDialog.class.getSimpleName(), message);
++                Timber.i(message);
++                UIUtils.showThemedToast(this.getContext(), message, false);
++                // Repeat once to keep the warning visible while the previous menu closes.
++                new Handler(Looper.getMainLooper()).postDelayed(
++                        () -> UIUtils.showThemedToast(getAnkiActivity(), message, false), 1500L);
+                 return;
+             } else {
+                 Timber.i("Emptying dynamic deck '%s' for custom study", customStudyDeck);

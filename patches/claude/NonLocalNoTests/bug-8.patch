@@ -1,0 +1,10 @@
+--- a/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
++++ b/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
+@@ -75,6 +75,7 @@
+         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+         mDrawerList = (ListView) findViewById(R.id.drawer_drawer_list_view_trips);
+         mViewPager = (ViewPager) findViewById(R.id.drawer_content_pager);
++        mViewPager.setOffscreenPageLimit(2);
+ 
+         updatePagerAdapter();
+ 

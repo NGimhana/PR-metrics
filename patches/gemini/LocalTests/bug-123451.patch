@@ -1,0 +1,25 @@
+diff --git a/AnkiDroid/src/main/java/com/ichi2/anki/dialogs/CustomStudyDialog.java b/AnkiDroid/src/main/java/com/ichi2/anki/dialogs/CustomStudyDialog.java
+index 9617796..735df38 100644
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/dialogs/CustomStudyDialog.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/dialogs/CustomStudyDialog.java
+@@ -436,10 +436,8 @@ public class CustomStudyDialog extends AnalyticsDialogFragment {
+             Timber.i("Found deck: '%s'", customStudyDeck);
+             if (cur.getInt("dyn") != 1) {
+                 Timber.w("Deck: '%s' was non-dynamic", customStudyDeck);
+-                new MaterialDialog.Builder(getActivity())
+-                    .content(R.string.custom_study_deck_exists)
+-                    .negativeText(R.string.dialog_cancel)
+-                    .build().show();
++                UIUtils.showThemedToast(getActivity(), getString(R.string.custom_study_deck_exists), false);
++                activity.dismissAllDialogFragments();
+                 return;
+             } else {
+                 Timber.i("Emptying dynamic deck '%s' for custom study", customStudyDeck);
+@@ -461,6 +459,7 @@ public class CustomStudyDialog extends AnalyticsDialogFragment {
+             Timber.w("Invalid Dynamic Deck: %s", dyn);
+             AnkiDroidApp.sendExceptionReport("Custom Study Deck had no terms", "CustomStudyDialog - createCustomStudySession");
+             UIUtils.showThemedToast(this.getContext(), getString(R.string.custom_study_rebuild_deck_corrupt), false);
++            activity.dismissAllDialogFragments();
+             return;
+         }
+         // and then set various options

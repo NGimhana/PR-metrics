@@ -1,0 +1,18 @@
+diff --git a/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java b/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java
+index 95e2eb9..74f3841 100644
+--- a/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java
+@@ -918,9 +918,11 @@ public class Logbook {
+     public static boolean tripExists(Trip trip) {
+         ArrayList<UserDefineObject> trips = getTrips();
+ 
+-        for (UserDefineObject object : trips)
+-            if (trip.overlapsTrip((Trip)object))
++        for (UserDefineObject object : trips) {
++            Trip t = (Trip)object;
++            if (!trip.getId().equals(t.getId()) && trip.overlapsTrip(t))
+                 return true;
++        }
+ 
+         return false;
+     }

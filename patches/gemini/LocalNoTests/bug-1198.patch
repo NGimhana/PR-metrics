@@ -1,0 +1,87 @@
+diff --git a/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java b/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
+index 9d59829..33cca53 100644
+--- a/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
++++ b/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
+@@ -400,7 +400,9 @@ public class ViewFilesAdapter extends RecyclerView.Adapter<ViewFilesAdapter.View
+      * @param path Path of pdf file to be encrypted
+      */
+     private void doEncryption(String path) throws IOException, DocumentException {
+-        String finalOutputFile = path.replace(".pdf", mActivity.getString(R.string.encrypted_file));
++        int index = path.lastIndexOf(mActivity.getString(R.string.pdf_ext));
++        String finalOutputFile = path.substring(0, index) + mActivity.getString(R.string.encrypted_file);
++        finalOutputFile = mFileUtils.getUniqueFileName(finalOutputFile);
+         Log.e("Log", finalOutputFile);
+         PdfReader reader = new PdfReader(path);
+         PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(finalOutputFile));
+diff --git a/app/src/main/java/swati4star/createpdf/fragment/HomeFragment.java b/app/src/main/java/swati4star/createpdf/fragment/HomeFragment.java
+index 6cd9586..dd841b1 100644
+--- a/app/src/main/java/swati4star/createpdf/fragment/HomeFragment.java
++++ b/app/src/main/java/swati4star/createpdf/fragment/HomeFragment.java
+@@ -55,6 +55,7 @@ import swati4star.createpdf.R;
+ import swati4star.createpdf.adapter.EnhancementOptionsAdapter;
+ import swati4star.createpdf.adapter.ViewFilesAdapter;
+ import swati4star.createpdf.util.EnhancementOptionsEntity;
++import swati4star.createpdf.util.FileUtils;
+ import swati4star.createpdf.util.StringUtils;
+ 
+ import static java.util.Collections.singletonList;
+@@ -89,11 +90,13 @@ public class HomeFragment extends Fragment implements EnhancementOptionsAdapter.
+     private int mMorphCounter1 = 1;
+     private EnhancementOptionsAdapter mEnhancementOptionsAdapter;
+     private ArrayList<EnhancementOptionsEntity> mEnhancementOptionsEntityArrayList = new ArrayList<>();
++    private FileUtils mFileUtils;
+ 
+     @Override
+     public void onAttach(Context context) {
+         super.onAttach(context);
+         mActivity = (Activity) context;
++        mFileUtils = new FileUtils(mActivity);
+     }
+ 
+     @Override
+@@ -410,6 +413,7 @@ public class HomeFragment extends Fragment implements EnhancementOptionsAdapter.
+             }
+ 
+             mPath = mPath + mFilename + HomeFragment.this.getString(R.string.pdf_ext);
++            mPath = mFileUtils.getUniqueFileName(mPath);
+ 
+             Log.v("stage 1", "store the pdf in sd card");
+ 
+diff --git a/app/src/main/java/swati4star/createpdf/util/FileUtils.java b/app/src/main/java/swati4star/createpdf/util/FileUtils.java
+index 0aff9c5..c7b4ace 100644
+--- a/app/src/main/java/swati4star/createpdf/util/FileUtils.java
++++ b/app/src/main/java/swati4star/createpdf/util/FileUtils.java
+@@ -263,5 +263,31 @@ public class FileUtils {
+         }
+     }
+ 
+-
++    /**
++     * Returns a unique file name by appending a number if the file already exists.
++     *
++     * @param fileName The desired file name.
++     * @return A unique file name.
++     */
++    public String getUniqueFileName(String fileName) {
++        File file = new File(fileName);
++        if (!file.exists())
++            return fileName;
++
++        int count = 1;
++        int dotIndex = fileName.lastIndexOf(".");
++        String extension = "";
++        String baseName = fileName;
++        if (dotIndex != -1) {
++            extension = fileName.substring(dotIndex);
++            baseName = fileName.substring(0, dotIndex);
++        }
++        String resName = fileName;
++        while (file.exists()) {
++            resName = baseName + "(" + count + ")" + extension;
++            file = new File(resName);
++            count++;
++        }
++        return resName;
++    }
+ }
+\ No newline at end of file

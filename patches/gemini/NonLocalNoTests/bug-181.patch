@@ -1,0 +1,58 @@
+diff --git a/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java b/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
+index efe820f..2ff9a09 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
++++ b/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
+@@ -94,6 +94,12 @@ public class StoriesFragment extends Fragment {
+     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+         clickedIds = SettingsUtils.readIntSetFromSharedPreferences(requireContext(), Utils.KEY_SHARED_PREFERENCES_CLICKED_IDS);
+ 
++        filterWords = Utils.getFilterWords(getContext());
++        filterDomains = Utils.getFilterDomains(getContext());
++        hideJobs = SettingsUtils.shouldHideJobs(getContext());
++        hideClicked = SettingsUtils.shouldHideClicked(getContext());
++        alwaysOpenComments = SettingsUtils.shouldAlwaysOpenComments(getContext());
++
+         return super.onCreateView(inflater, container, savedInstanceState);
+     }
+ 
+@@ -736,6 +742,40 @@ public class StoriesFragment extends Fragment {
+ 
+                             if (hideClicked && story.clicked) {
+                                 iterator.remove();
++                                continue;
++                            }
++
++                            boolean removed = false;
++                            if (story.title != null && filterWords != null) {
++                                for (String phrase : filterWords) {
++                                    if (story.title.toLowerCase().contains(phrase.toLowerCase())) {
++                                        iterator.remove();
++                                        removed = true;
++                                        break;
++                                    }
++                                }
++                            }
++
++                            if (removed) {
++                                continue;
++                            }
++
++                            if (story.url != null && filterDomains != null) {
++                                for (String phrase : filterDomains) {
++                                    if (story.url.toLowerCase().contains(phrase.toLowerCase())) {
++                                        iterator.remove();
++                                        removed = true;
++                                        break;
++                                    }
++                                }
++                            }
++
++                            if (removed) {
++                                continue;
++                            }
++
++                            if (hideJobs && adapter.type != SettingsUtils.getJobsIndex(getResources()) && (story.isJob || (story.by != null && story.by.equals("whoishiring")))) {
++                                iterator.remove();
+                             }
+                         }
+ 

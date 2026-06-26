@@ -1,0 +1,46 @@
+--- a/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
++++ b/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
+@@ -400,7 +400,7 @@
+      * @param path Path of pdf file to be encrypted
+      */
+     private void doEncryption(String path) throws IOException, DocumentException {
+-        String finalOutputFile = path.replace(".pdf", mActivity.getString(R.string.encrypted_file));
++        String finalOutputFile = getUniqueEncryptedOutputFile(path);
+         Log.e("Log", finalOutputFile);
+         PdfReader reader = new PdfReader(path);
+         PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(finalOutputFile));
+@@ -411,8 +411,33 @@
+         mFileList.add(new File(finalOutputFile));
+     }
+ 
++    private String getUniqueEncryptedOutputFile(String path) {
++        File sourceFile = new File(path);
++        File parentFolder = sourceFile.getParentFile();
++        String sourceName = sourceFile.getName();
++        String extension = mActivity.getString(R.string.pdf_ext);
++        String encryptedSuffix = mActivity.getString(R.string.encrypted_file);
++        String encryptedBaseSuffix = encryptedSuffix.replace(extension, "");
++        String fileNameWithoutExtension = sourceName.endsWith(extension)
++                ? sourceName.substring(0, sourceName.length() - extension.length())
++                : sourceName;
++
++        File encryptedFile = new File(parentFolder, fileNameWithoutExtension + encryptedSuffix);
++        if (!encryptedFile.exists()) {
++            return encryptedFile.getAbsolutePath();
++        }
++
++        int index = 2;
++        while (encryptedFile.exists()) {
++            encryptedFile = new File(parentFolder, fileNameWithoutExtension
++                    + encryptedBaseSuffix + index + extension);
++            index++;
++        }
++        return encryptedFile.getAbsolutePath();
++    }
++
+     public interface EmptyStateChangeListener {
+         void setEmptyStateVisible();
+         void setEmptyStateGone();
+     }
+-}
++}

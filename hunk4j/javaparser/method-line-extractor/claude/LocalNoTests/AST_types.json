@@ -1,0 +1,922 @@
+[
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-8/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java",
+        "span_end": 89,
+        "name": "TrickyTripperActivity",
+        "start_line": 44,
+        "span_start": 81,
+        "bug_name": "bug-8",
+        "type": "class",
+        "end_line": 450
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-71/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java",
+        "span_end": 81,
+        "name": "ExperienceTweaks",
+        "start_line": 32,
+        "span_start": 80,
+        "bug_name": "bug-71",
+        "type": "class",
+        "end_line": 356
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-71/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java",
+        "span_end": 94,
+        "name": "ExperienceTweaks",
+        "start_line": 32,
+        "span_start": 93,
+        "bug_name": "bug-71",
+        "type": "class",
+        "end_line": 356
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1146/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java",
+        "span_end": 309,
+        "name": "GpsStatusFragment",
+        "start_line": 91,
+        "span_start": 309,
+        "bug_name": "bug-1146",
+        "type": "class",
+        "end_line": 1207
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-181/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java",
+        "span_end": 765,
+        "name": "StoriesFragment",
+        "start_line": 60,
+        "span_start": 739,
+        "bug_name": "bug-181",
+        "type": "class",
+        "end_line": 860
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-2677/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 232,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 232,
+        "bug_name": "bug-2677",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-2677/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 255,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 255,
+        "bug_name": "bug-2677",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-2677/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 278,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 278,
+        "bug_name": "bug-2677",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-2677/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 301,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 301,
+        "bug_name": "bug-2677",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-2677/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 486,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 486,
+        "bug_name": "bug-2677",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-2677/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 504,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 503,
+        "bug_name": "bug-2677",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-382/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+        "span_end": 81,
+        "name": "UriPartsDialog",
+        "start_line": 50,
+        "span_start": 81,
+        "bug_name": "bug-382",
+        "type": "class",
+        "end_line": 202
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-2678/app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+        "span_end": 485,
+        "name": "RoboticArmActivity",
+        "start_line": 56,
+        "span_start": 482,
+        "bug_name": "bug-2678",
+        "type": "class",
+        "end_line": 707
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-44/omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java",
+        "span_end": 93,
+        "name": "TagsHelper",
+        "start_line": 33,
+        "span_start": 91,
+        "bug_name": "bug-44",
+        "type": "class",
+        "end_line": 131
+    },
+    {
+        "javadoc": "/**\n * @author Sindre Mehus\n * @version $Id$\n */\n",
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-84/ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java",
+        "span_end": 403,
+        "name": "Util",
+        "start_line": 92,
+        "span_start": 403,
+        "bug_name": "bug-84",
+        "type": "class",
+        "end_line": 1666
+    },
+    {
+        "javadoc": "/**\n * Copied from http://stackoverflow.com/questions/8558732\n */\n",
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-114/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java",
+        "span_end": 68,
+        "name": "LocalLinkMovementMethod",
+        "start_line": 31,
+        "span_start": 65,
+        "bug_name": "bug-114",
+        "type": "class",
+        "end_line": 80
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1151/GPSTest/src/main/java/com/android/gpstest/Preferences.java",
+        "span_end": 146,
+        "name": "Preferences",
+        "start_line": 38,
+        "span_start": 138,
+        "bug_name": "bug-1151",
+        "type": "class",
+        "end_line": 191
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-159/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java",
+        "span_end": 129,
+        "name": "CardBrowser",
+        "start_line": 106,
+        "span_start": 129,
+        "bug_name": "bug-159",
+        "type": "class",
+        "end_line": 2313
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-159/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java",
+        "span_end": 393,
+        "name": "CardBrowser",
+        "start_line": 106,
+        "span_start": 393,
+        "bug_name": "bug-159",
+        "type": "class",
+        "end_line": 2313
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-159/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java",
+        "span_end": 1527,
+        "name": "CardBrowser",
+        "start_line": 106,
+        "span_start": 1527,
+        "bug_name": "bug-159",
+        "type": "class",
+        "end_line": 2313
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-358/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+        "span_end": 87,
+        "name": "UriPartsDialog",
+        "start_line": 51,
+        "span_start": 78,
+        "bug_name": "bug-358",
+        "type": "class",
+        "end_line": 206
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-191/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java",
+        "span_end": 102,
+        "name": "TowerInserter",
+        "start_line": 16,
+        "span_start": 98,
+        "bug_name": "bug-191",
+        "type": "class",
+        "end_line": 150
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-192/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java",
+        "span_end": 115,
+        "name": "DocumentEditFragment",
+        "start_line": 44,
+        "span_start": 112,
+        "bug_name": "bug-192",
+        "type": "class",
+        "end_line": 324
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-123451/AnkiDroid/src/main/java/com/ichi2/anki/dialogs/CustomStudyDialog.java",
+        "span_end": 440,
+        "name": "CustomStudyDialog",
+        "start_line": 66,
+        "span_start": 439,
+        "bug_name": "bug-123451",
+        "type": "class",
+        "end_line": 522
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-275/app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java",
+        "span_end": 100,
+        "name": "Dialogs",
+        "start_line": 35,
+        "span_start": 96,
+        "bug_name": "bug-275",
+        "type": "class",
+        "end_line": 228
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-275/app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java",
+        "span_end": 119,
+        "name": "Dialogs",
+        "start_line": 35,
+        "span_start": 119,
+        "bug_name": "bug-275",
+        "type": "class",
+        "end_line": 228
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-275/app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java",
+        "span_end": 144,
+        "name": "Dialogs",
+        "start_line": 35,
+        "span_start": 144,
+        "bug_name": "bug-275",
+        "type": "class",
+        "end_line": 228
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-275/app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java",
+        "span_end": 52,
+        "name": "CustomAuthenticatedSlide",
+        "start_line": 28,
+        "span_start": 48,
+        "bug_name": "bug-275",
+        "type": "class",
+        "end_line": 156
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-275/app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java",
+        "span_end": 116,
+        "name": "CustomAuthenticatedSlide",
+        "start_line": 28,
+        "span_start": 116,
+        "bug_name": "bug-275",
+        "type": "class",
+        "end_line": 156
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-275/app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java",
+        "span_end": 128,
+        "name": "CustomAuthenticatedSlide",
+        "start_line": 28,
+        "span_start": 128,
+        "bug_name": "bug-275",
+        "type": "class",
+        "end_line": 156
+    },
+    {
+        "javadoc": "/**\n * The previewer intent must supply an array of cards to show and the index in the list from where\n * to begin showing them. Special rules are applied if the list size is 1 (i.e., no scrolling\n * buttons will be shown).\n */\n",
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-273/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+        "span_end": 50,
+        "name": "Previewer",
+        "start_line": 34,
+        "span_start": 45,
+        "bug_name": "bug-273",
+        "type": "class",
+        "end_line": 179
+    },
+    {
+        "javadoc": "/**\n * The previewer intent must supply an array of cards to show and the index in the list from where\n * to begin showing them. Special rules are applied if the list size is 1 (i.e., no scrolling\n * buttons will be shown).\n */\n",
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-273/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+        "span_end": 66,
+        "name": "Previewer",
+        "start_line": 34,
+        "span_start": 60,
+        "bug_name": "bug-273",
+        "type": "class",
+        "end_line": 179
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-54/app/src/main/java/net/gsantner/markor/util/AppSettings.java",
+        "span_end": 306,
+        "name": "AppSettings",
+        "start_line": 31,
+        "span_start": 307,
+        "bug_name": "bug-54",
+        "type": "class",
+        "end_line": 309
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-92/app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java",
+        "span_end": 126,
+        "name": "VendorDB",
+        "start_line": 38,
+        "span_start": 121,
+        "bug_name": "bug-92",
+        "type": "class",
+        "end_line": 143
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-92/app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java",
+        "span_end": 126,
+        "name": "StringContains",
+        "start_line": 117,
+        "span_start": 121,
+        "bug_name": "bug-92",
+        "type": "class",
+        "end_line": 128
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-53/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java",
+        "span_end": 109,
+        "name": "NewFileDialog",
+        "start_line": 47,
+        "span_start": 96,
+        "bug_name": "bug-53",
+        "type": "class",
+        "end_line": 252
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-365/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java",
+        "span_end": 199,
+        "name": "RemoveQueriesDialog",
+        "start_line": 58,
+        "span_start": 191,
+        "bug_name": "bug-365",
+        "type": "class",
+        "end_line": 252
+    },
+    {
+        "javadoc": "/**\n * Manages the splitting, removing and merging of queries\n */\n",
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-365/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java",
+        "span_end": 199,
+        "name": "UrlParts",
+        "start_line": 156,
+        "span_start": 191,
+        "bug_name": "bug-365",
+        "type": "class",
+        "end_line": 237
+    },
+    {
+        "javadoc": "/**\n * Represents the catalog of the Pattern module\n */\n",
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-447/app/src/main/java/com/trianguloy/urlchecker/modules/companions/PatternCatalog.java",
+        "span_end": 68,
+        "name": "PatternCatalog",
+        "start_line": 16,
+        "span_start": 58,
+        "bug_name": "bug-447",
+        "type": "class",
+        "end_line": 85
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-129/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java",
+        "span_end": 228,
+        "name": "ManualEntryDialog",
+        "start_line": 57,
+        "span_start": 209,
+        "bug_name": "bug-129",
+        "type": "class",
+        "end_line": 338
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-160/AnkiDroid/src/main/java/com/ichi2/anki/Reviewer.java",
+        "span_end": 442,
+        "name": "Reviewer",
+        "start_line": 61,
+        "span_start": 435,
+        "bug_name": "bug-160",
+        "type": "class",
+        "end_line": 929
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1563/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java",
+        "span_end": 622,
+        "name": "FileActivity",
+        "start_line": 98,
+        "span_start": 615,
+        "bug_name": "bug-1563",
+        "type": "class",
+        "end_line": 1153
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1641/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Model/XMLParser.java",
+        "span_end": 96,
+        "name": "XMLParser",
+        "start_line": 47,
+        "span_start": 96,
+        "bug_name": "bug-1641",
+        "type": "class",
+        "end_line": 299
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1641/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Model/XMLParser.java",
+        "span_end": 223,
+        "name": "XMLParser",
+        "start_line": 47,
+        "span_start": 223,
+        "bug_name": "bug-1641",
+        "type": "class",
+        "end_line": 299
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1202/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java",
+        "span_end": 156,
+        "name": "ImageEditor",
+        "start_line": 48,
+        "span_start": 156,
+        "bug_name": "bug-1202",
+        "type": "class",
+        "end_line": 387
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1205/app/src/main/java/swati4star/createpdf/activity/MainActivity.java",
+        "span_end": 302,
+        "name": "MainActivity",
+        "start_line": 71,
+        "span_start": 276,
+        "bug_name": "bug-1205",
+        "type": "class",
+        "end_line": 442
+    },
+    {
+        "javadoc": "/**\n * Heavily abused ArrayAdapter that also adds menus and listeners.\n *\n * @author Lukas Fülling (lukas@k40s.net)\n */\n",
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1568/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java",
+        "span_end": 193,
+        "name": "FileArrayAdapter",
+        "start_line": 38,
+        "span_start": 189,
+        "bug_name": "bug-1568",
+        "type": "class",
+        "end_line": 195
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1645/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java",
+        "span_end": 63,
+        "name": "ExerciseDialog",
+        "start_line": 15,
+        "span_start": 63,
+        "bug_name": "bug-1645",
+        "type": "class",
+        "end_line": 85
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1207/app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java",
+        "span_end": 209,
+        "name": "ManualEntryDialog",
+        "start_line": 52,
+        "span_start": 206,
+        "bug_name": "bug-1207",
+        "type": "class",
+        "end_line": 217
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-136/app/src/main/java/com/simon/harmonichackernews/ComposeActivity.java",
+        "span_end": 218,
+        "name": "ComposeActivity",
+        "start_line": 50,
+        "span_start": 213,
+        "bug_name": "bug-136",
+        "type": "class",
+        "end_line": 308
+    },
+    {
+        "javadoc": "/**\n * Shows all items in the queue\n */\n",
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1130/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java",
+        "span_end": 520,
+        "name": "QueueFragment",
+        "start_line": 64,
+        "span_start": 518,
+        "bug_name": "bug-1130",
+        "type": "class",
+        "end_line": 652
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-171/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java",
+        "span_end": 18,
+        "name": "DialogUtils",
+        "start_line": 16,
+        "span_start": 16,
+        "bug_name": "bug-171",
+        "type": "class",
+        "end_line": 39
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-171/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java",
+        "span_end": 27,
+        "name": "DialogUtils",
+        "start_line": 16,
+        "span_start": 27,
+        "bug_name": "bug-171",
+        "type": "class",
+        "end_line": 39
+    },
+    {
+        "javadoc": "/**\n * A ViewHolder for the videos grid view.\n */\n",
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1255/app/src/main/java/free/rm/skytube/gui/businessobjects/adapters/GridViewHolder.java",
+        "span_end": 273,
+        "name": "GridViewHolder",
+        "start_line": 59,
+        "span_start": 260,
+        "bug_name": "bug-1255",
+        "type": "class",
+        "end_line": 318
+    },
+    {
+        "javadoc": "/**\n * Settings Screen\n */\n",
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1299/app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java",
+        "span_end": 288,
+        "name": "ConfigActivity",
+        "start_line": 83,
+        "span_start": 286,
+        "bug_name": "bug-1299",
+        "type": "class",
+        "end_line": 1019
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-2587/app/src/main/java/io/pslab/fragment/ESPFragment.java",
+        "span_end": 109,
+        "name": "ESPFragment",
+        "start_line": 32,
+        "span_start": 109,
+        "bug_name": "bug-2587",
+        "type": "class",
+        "end_line": 128
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-2587/app/src/main/java/io/pslab/fragment/ESPFragment.java",
+        "span_end": 109,
+        "name": "ESPTask",
+        "start_line": 87,
+        "span_start": 109,
+        "bug_name": "bug-2587",
+        "type": "class",
+        "end_line": 127
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-18/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/MedicineCreateOrEditFragment.java",
+        "span_end": 486,
+        "name": "MedicineCreateOrEditFragment",
+        "start_line": 93,
+        "span_start": 486,
+        "bug_name": "bug-18",
+        "type": "class",
+        "end_line": 728
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-18/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/RoutineCreateOrEditFragment.java",
+        "span_end": 122,
+        "name": "RoutineCreateOrEditFragment",
+        "start_line": 53,
+        "span_start": 122,
+        "bug_name": "bug-18",
+        "type": "class",
+        "end_line": 279
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-18/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleImportFragment.java",
+        "span_end": 530,
+        "name": "ScheduleImportFragment",
+        "start_line": 91,
+        "span_start": 530,
+        "bug_name": "bug-18",
+        "type": "class",
+        "end_line": 1488
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-18/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleImportFragment.java",
+        "span_end": 1056,
+        "name": "ScheduleImportFragment",
+        "start_line": 91,
+        "span_start": 1056,
+        "bug_name": "bug-18",
+        "type": "class",
+        "end_line": 1488
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-18/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleImportFragment.java",
+        "span_end": 1072,
+        "name": "ScheduleImportFragment",
+        "start_line": 91,
+        "span_start": 1072,
+        "bug_name": "bug-18",
+        "type": "class",
+        "end_line": 1488
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-18/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+        "span_end": 542,
+        "name": "ScheduleTimetableFragment",
+        "start_line": 95,
+        "span_start": 542,
+        "bug_name": "bug-18",
+        "type": "class",
+        "end_line": 1411
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-18/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+        "span_end": 1021,
+        "name": "ScheduleTimetableFragment",
+        "start_line": 95,
+        "span_start": 1021,
+        "bug_name": "bug-18",
+        "type": "class",
+        "end_line": 1411
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-18/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+        "span_end": 1037,
+        "name": "ScheduleTimetableFragment",
+        "start_line": 95,
+        "span_start": 1037,
+        "bug_name": "bug-18",
+        "type": "class",
+        "end_line": 1411
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1213/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java",
+        "span_end": 138,
+        "name": "PasswordEncryptedPreference",
+        "start_line": 51,
+        "span_start": 138,
+        "bug_name": "bug-1213",
+        "type": "class",
+        "end_line": 211
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1213/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 382,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 382,
+        "bug_name": "bug-1213",
+        "type": "class",
+        "end_line": 515
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1213/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 382,
+        "name": "AuthenticationFragment",
+        "start_line": 223,
+        "span_start": 382,
+        "bug_name": "bug-1213",
+        "type": "class",
+        "end_line": 514
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1213/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 389,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 390,
+        "bug_name": "bug-1213",
+        "type": "class",
+        "end_line": 515
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1213/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 389,
+        "name": "AuthenticationFragment",
+        "start_line": 223,
+        "span_start": 390,
+        "bug_name": "bug-1213",
+        "type": "class",
+        "end_line": 514
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1213/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 408,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 408,
+        "bug_name": "bug-1213",
+        "type": "class",
+        "end_line": 515
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1213/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 408,
+        "name": "AuthenticationFragment",
+        "start_line": 223,
+        "span_start": 408,
+        "bug_name": "bug-1213",
+        "type": "class",
+        "end_line": 514
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1213/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java",
+        "span_end": 69,
+        "name": "PasswordEntryDialog",
+        "start_line": 20,
+        "span_start": 69,
+        "bug_name": "bug-1213",
+        "type": "class",
+        "end_line": 95
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1213/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java",
+        "span_end": 261,
+        "name": "CredentialsPreference",
+        "start_line": 61,
+        "span_start": 261,
+        "bug_name": "bug-1213",
+        "type": "class",
+        "end_line": 315
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1213/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java",
+        "span_end": 279,
+        "name": "CredentialsPreference",
+        "start_line": 61,
+        "span_start": 279,
+        "bug_name": "bug-1213",
+        "type": "class",
+        "end_line": 315
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1214/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 247,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 246,
+        "bug_name": "bug-1214",
+        "type": "class",
+        "end_line": 482
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1214/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 247,
+        "name": "AuthenticationFragment",
+        "start_line": 223,
+        "span_start": 246,
+        "bug_name": "bug-1214",
+        "type": "class",
+        "end_line": 481
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1214/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 331,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 331,
+        "bug_name": "bug-1214",
+        "type": "class",
+        "end_line": 482
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1214/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 331,
+        "name": "AuthenticationFragment",
+        "start_line": 223,
+        "span_start": 331,
+        "bug_name": "bug-1214",
+        "type": "class",
+        "end_line": 481
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1214/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 370,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 370,
+        "bug_name": "bug-1214",
+        "type": "class",
+        "end_line": 482
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1214/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 370,
+        "name": "AuthenticationFragment",
+        "start_line": 223,
+        "span_start": 370,
+        "bug_name": "bug-1214",
+        "type": "class",
+        "end_line": 481
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1214/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 391,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 391,
+        "bug_name": "bug-1214",
+        "type": "class",
+        "end_line": 482
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1214/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 391,
+        "name": "AuthenticationFragment",
+        "start_line": 223,
+        "span_start": 391,
+        "bug_name": "bug-1214",
+        "type": "class",
+        "end_line": 481
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1138/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java",
+        "span_end": 1095,
+        "name": "GpsLoggingService",
+        "start_line": 55,
+        "span_start": 1095,
+        "bug_name": "bug-1138",
+        "type": "class",
+        "end_line": 1208
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1138/gpslogger/src/main/java/com/mendhak/gpslogger/GpsMainActivity.java",
+        "span_end": 1788,
+        "name": "GpsMainActivity",
+        "start_line": 128,
+        "span_start": 1786,
+        "bug_name": "bug-1138",
+        "type": "class",
+        "end_line": 1806
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1138/gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java",
+        "span_end": 90,
+        "name": "ServiceEvents",
+        "start_line": 25,
+        "span_start": 85,
+        "bug_name": "bug-1138",
+        "type": "class",
+        "end_line": 94
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-1215/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java",
+        "span_end": 305,
+        "name": "ManualEntryDialog",
+        "start_line": 57,
+        "span_start": 279,
+        "bug_name": "bug-1215",
+        "type": "class",
+        "end_line": 352
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-130/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 267,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 264,
+        "bug_name": "bug-130",
+        "type": "class",
+        "end_line": 485
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-130/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 267,
+        "name": "AuthenticationFragment",
+        "start_line": 231,
+        "span_start": 264,
+        "bug_name": "bug-130",
+        "type": "class",
+        "end_line": 484
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-130/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 444,
+        "name": "IntroScreenActivity",
+        "start_line": 61,
+        "span_start": 439,
+        "bug_name": "bug-130",
+        "type": "class",
+        "end_line": 485
+    },
+    {
+        "file": "/Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final/bug-130/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+        "span_end": 444,
+        "name": "AuthenticationFragment",
+        "start_line": 231,
+        "span_start": 439,
+        "bug_name": "bug-130",
+        "type": "class",
+        "end_line": 484
+    }
+]

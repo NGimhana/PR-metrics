@@ -1,0 +1,17 @@
+--- a/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
++++ b/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
+@@ -99,6 +99,14 @@
+ 
+         fileNameEdit.setFilters(new InputFilter[]{ContextUtils.INPUTFILTER_FILENAME});
+         fileExtEdit.setFilters(fileNameEdit.getFilters());
++
++        final String lastUsedExtension = appSettings.getNewFileDialogLastUsedExtension();
++        for (int i = 0; i < typeSpinnerToExtension.length; i++) {
++            if (typeSpinnerToExtension[i].equals(lastUsedExtension)) {
++                typeSpinner.setSelection(i);
++                break;
++            }
++        }
+ 
+         final AtomicBoolean typeSpinnerNoTriggerOnFirst = new AtomicBoolean(true);
+         typeSpinner.setOnItemSelectedListener(new AndroidSpinnerOnItemSelectedAdapter(pos -> {

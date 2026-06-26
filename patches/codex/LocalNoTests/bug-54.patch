@@ -1,0 +1,16 @@
+--- a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
++++ b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+@@ -230,8 +230,13 @@
+             document.setDoHistory(appSettings.isEditorHistoryEnabled());
+         }
+         if (document.getHistory().isEmpty()) {
++            // Always keep one baseline snapshot for save/rename comparisons.
++            // This must work even when editor history is disabled.
++            boolean doHistory = document.isDoHistory();
++            document.setDoHistory(true);
+             document.forceAddNextChangeToHistory();
+             document.addToHistory();
++            document.setDoHistory(doHistory);
+         }
+ 
+         return document;

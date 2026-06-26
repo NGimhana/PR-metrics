@@ -1,0 +1,98 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
+@@ -55,6 +55,32 @@
+ import java.util.concurrent.Callable;
+ 
+ public class ManualEntryDialog {
++    private static Integer parsePositiveInt(EditText input) {
++        if (TextUtils.isEmpty(input.getText())) {
++            return null;
++        }
++
++        try {
++            int value = Integer.parseInt(input.getText().toString());
++            return value > 0 ? value : null;
++        } catch (NumberFormatException ignored) {
++            return null;
++        }
++    }
++
++    private static Long parseNonNegativeLong(EditText input) {
++        if (TextUtils.isEmpty(input.getText())) {
++            return null;
++        }
++
++        try {
++            long value = Long.parseLong(input.getText().toString());
++            return value >= 0 ? value : null;
++        } catch (NumberFormatException ignored) {
++            return null;
++        }
++    }
++
+     public static void show(final MainActivity callingActivity, Settings settings, final EntriesCardAdapter adapter) {
+         show(callingActivity, settings, adapter, null);
+     }
+@@ -218,13 +244,21 @@
+ 
+                 Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
+                 TokenCalculator.HashAlgorithm algorithm = (TokenCalculator.HashAlgorithm) algorithmInput.getSelectedItem();
+-                int digits = Integer.parseInt(digitsInput.getText().toString());
++                Integer digits = parsePositiveInt(digitsInput);
++                if (digits == null) {
++                    positiveButton.setEnabled(false);
++                    return;
++                }
+ 
+                 String issuer = issuerInput.getText().toString();
+                 String label = labelInput.getText().toString();
+ 
+                 if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+-                    int period = Integer.parseInt(periodInput.getText().toString());
++                    Integer period = parsePositiveInt(periodInput);
++                    if (period == null) {
++                        positiveButton.setEnabled(false);
++                        return;
++                    }
+ 
+                     if (oldEntry == null) {
+                         Entry e = new Entry(type, secret, period, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
+@@ -242,7 +276,11 @@
+ 
+                     callingActivity.refreshTags();
+                 } else if (type == Entry.OTPType.HOTP) {
+-                    long counter = Long.parseLong(counterInput.getText().toString());
++                    Long counter = parseNonNegativeLong(counterInput);
++                    if (counter == null) {
++                        positiveButton.setEnabled(false);
++                        return;
++                    }
+ 
+                     if (oldEntry == null) {
+                         Entry e = new Entry(type, secret, counter, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
+@@ -276,21 +314,21 @@
+ 
+             @Override
+             public void afterTextChanged(Editable editable) {
++                Integer digits = parsePositiveInt(digitsInput);
+                 if ((TextUtils.isEmpty(labelInput.getText()) && TextUtils.isEmpty(issuerInput.getText())) ||
+                         (TextUtils.isEmpty(secretInput.getText()) && isNewEntry) ||
+-                        TextUtils.isEmpty(digitsInput.getText()) ||
+-                        Integer.parseInt(digitsInput.getText().toString()) == 0) {
++                        digits == null) {
+                     positiveButton.setEnabled(false);
+                 } else {
+                     Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
+                     if (type == Entry.OTPType.HOTP) {
+-                        if (TextUtils.isEmpty(counterInput.getText())) {
++                        if (parseNonNegativeLong(counterInput) == null) {
+                             positiveButton.setEnabled(false);
+                         } else {
+                             positiveButton.setEnabled(true);
+                         }
+                     } else if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+-                        if (TextUtils.isEmpty(periodInput.getText()) || Integer.parseInt(periodInput.getText().toString()) == 0) {
++                        if (parsePositiveInt(periodInput) == null) {
+                             positiveButton.setEnabled(false);
+                         } else {
+                             positiveButton.setEnabled(true);

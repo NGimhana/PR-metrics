@@ -1,0 +1,50 @@
+--- a/omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java
++++ b/omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java
+@@ -28,6 +28,7 @@
+ import java.util.HashMap;
+ import java.util.List;
+ import java.util.regex.Matcher;
++import java.util.regex.Pattern;
+ 
+ 
+ public class TagsHelper {
+@@ -40,7 +41,12 @@
+ 
+         public static HashMap<String, Integer> retrieveTags(Note note) {
+                 HashMap<String, Integer> tagsMap = new HashMap<>();
+-                for (String token : (note.getTitle() + " " + note.getContent()).replaceAll("\n", " ").trim().split(" ")) {
++        String noteText = (note.getTitle() + " " + note.getContent()).trim();
++                for (String token : noteText.split("\\s+")) {
++            int hashIndex = token.indexOf('#');
++            if (hashIndex > 0) {
++                token = token.substring(hashIndex);
++            }
+                         if (RegexPatternsConstants.HASH_TAG.matcher(token).matches()) {
+                                 int count = tagsMap.get(token) == null ? 0 : tagsMap.get(token);
+                                 tagsMap.put(token, ++count);
+@@ -87,10 +93,23 @@
+     public static Pair<String, String> removeTag(String noteTitle, String noteContent, List<Tag> tagsToRemove) {
+         String title = noteTitle, content = noteContent;
+         for (Tag tagToRemove : tagsToRemove) {
+-            title = title.replaceAll(tagToRemove.getText(), "");
+-            content = content.replaceAll(tagToRemove.getText(), "");
++            title = removeTagToken(title, tagToRemove.getText());
++            content = removeTagToken(content, tagToRemove.getText());
+         }
+         return new Pair<>(title, content);
++    }
++
++
++    private static String removeTagToken(String text, String tagText) {
++        String normalizedTag = tagText.startsWith("#") ? tagText : "#" + tagText;
++        String escapedTag = Pattern.quote(normalizedTag);
++
++        // Remove tag lines (including trailing newline) so the first line doesn't become empty.
++        String cleanedText = text.replaceAll("(?m)^\\h*" + escapedTag + "(?:\\h*\\R|\\h*$)", "");
++
++        // Remove inline occurrences of the same whole tag token.
++        String inlinePattern = "(?<!\\S)" + escapedTag + "(?![\\p{L}\\p{N}_])";
++        return cleanedText.replaceAll(inlinePattern, Matcher.quoteReplacement(""));
+     }
+ 
+ 

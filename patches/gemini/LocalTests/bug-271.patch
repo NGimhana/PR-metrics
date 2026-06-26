@@ -1,0 +1,53 @@
+diff --git a/Repro.java b/Repro.java
+new file mode 100644
+index 0000000..09dac63
+--- /dev/null
++++ b/Repro.java
+@@ -0,0 +1,19 @@
++
++public class Repro {
++    public static void main(String[] args) {
++        int _period = 9999;
++        int maxProgress = 5000;
++        float _animDurationScale = 1.0f;
++
++        long millisTillRotation = 9999000; // Example
++        int currentProgress = (int) (maxProgress * ((float) millisTillRotation / (_period * 1000)));
++
++        System.out.println("currentProgress: " + currentProgress);
++
++        int animPart = maxProgress / _period;
++        System.out.println("animPart: " + animPart);
++        
++        int animEnd = (currentProgress / animPart) * animPart;
++        System.out.println("animEnd: " + animEnd);
++    }
++}
+diff --git a/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java b/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
+index 6a9c567..d941ddd 100644
+--- a/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
++++ b/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
+@@ -66,9 +66,21 @@ public class TotpProgressBar extends ProgressBar {
+ 
+         // start progress animation, compensating for any changes to the animator duration scale settings
+         int animPart = maxProgress / _period;
+-        int animEnd = (currentProgress / animPart) * animPart;
++        int animEnd;
++        float animDurationFraction;
++        if (animPart > 0) {
++            animEnd = (currentProgress / animPart) * animPart;
++            animDurationFraction = (float) (currentProgress - animEnd) / animPart;
++        } else {
++            animEnd = 0;
++            animDurationFraction = (float) millisTillRotation / (_period * 1000);
++            if (animDurationFraction > 1.0f) {
++                animDurationFraction = 1.0f;
++                animEnd = (int) (maxProgress * ((float) (millisTillRotation - 1000) / (_period * 1000)));
++            }
++        }
++
+         int animPartDuration = (int) (1000 / _animDurationScale);
+-        float animDurationFraction = (float) (currentProgress - animEnd) / animPart;
+         int realAnimDuration =  (int) (1000 * animDurationFraction);
+         int animDuration =  (int) (animPartDuration * animDurationFraction);
+         ObjectAnimator animation = ObjectAnimator.ofInt(this, "progress", currentProgress, animEnd);

@@ -1,0 +1,65 @@
+--- a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+@@ -602,6 +602,10 @@
+      */
+     @SuppressWarnings("DeprecatedIsStillUsed") // see above
+     private void loadDirectory(String path) {
++        int[] previousScrollState = null;
++        if (path.equals(currentDirectory)) {
++            previousScrollState = getCurrentListScrollState();
++        }
+         ArrayList<FMFile> files;
+         FileLoader fileLoader = new FileLoader(path);
+         View errorText = findViewById(R.id.unableToLoadText);
+@@ -614,6 +618,7 @@
+ 
+             arrayAdapter = new FileArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()));
+             fileListView.setAdapter(arrayAdapter);
++            restoreListScrollState(previousScrollState);
+         } catch (NoAccessException e) {
+             Log.w(TAG, "Can't read '" + path + "': Permission denied!");
+             fileListView.setVisibility(GONE);
+@@ -643,6 +648,10 @@
+      */
+     @SuppressWarnings("DeprecatedIsStillUsed") // see above
+     private void loadArchive(String path, FMArchive archive) {
++        int[] previousScrollState = null;
++        if (path.equals(currentDirectory)) {
++            previousScrollState = getCurrentListScrollState();
++        }
+         ArrayList<FMFile> files;
+         ArchiveLoader loader = new ArchiveLoader(archive, path);
+         View errorText = findViewById(R.id.unableToLoadText);
+@@ -655,11 +664,32 @@
+ 
+         arrayAdapter = new ArchiveArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()), archive);
+         fileListView.setAdapter(arrayAdapter);
++        restoreListScrollState(previousScrollState);
+ 
+         currentDirectory = path;
+         historyMap.put(historyCounter++, new HistoryEntry(currentDirectory, archive));
+         setToolbarText();
+         setFreeSpaceText();
++    }
++
++    @Nullable
++    private int[] getCurrentListScrollState() {
++        if (fileListView == null) {
++            return null;
++        }
++        int firstVisiblePosition = fileListView.getFirstVisiblePosition();
++        View firstChild = fileListView.getChildAt(0);
++        int top = firstChild == null ? 0 : firstChild.getTop() - fileListView.getPaddingTop();
++        return new int[]{firstVisiblePosition, top};
++    }
++
++    private void restoreListScrollState(@Nullable int[] scrollState) {
++        if (scrollState == null || fileListView == null || arrayAdapter == null || arrayAdapter.getCount() == 0) {
++            return;
++        }
++        int maxPosition = arrayAdapter.getCount() - 1;
++        int positionToRestore = Math.min(scrollState[0], maxPosition);
++        fileListView.setSelectionFromTop(positionToRestore, scrollState[1]);
+     }
+ 
+     /**

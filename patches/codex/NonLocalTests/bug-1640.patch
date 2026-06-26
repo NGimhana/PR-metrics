@@ -1,0 +1,49 @@
+--- a/app/src/main/res/layout/content_info.xml
++++ b/app/src/main/res/layout/content_info.xml
+@@ -8,10 +8,31 @@
+     tools:context=".InfoActivity"
+     tools:showIn="@layout/activity_info">
+ 
+-    <TextView
+-        android:layout_width="wrap_content"
++    <LinearLayout
++        android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_margin="@dimen/text_margin"
+-        android:text="@string/large_text" />
++        android:orientation="vertical">
+ 
+-</android.support.v4.widget.NestedScrollView>
++        <Button
++            android:id="@+id/license_link_button"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="@string/license_link_button_text" />
++
++        <TextView
++            android:id="@+id/license_link_text"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="8dp"
++            android:text="@string/license_link_url" />
++
++        <TextView
++            android:id="@+id/license_text"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="16dp"
++            android:text="@string/large_text" />
++    </LinearLayout>
++
++</android.support.v4.widget.NestedScrollView>
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -15,6 +15,8 @@
+     <string name="action_settings">Settings</string>
+     <string name="title_activity_trainings_schedule">Trainings Schedule</string>
+     <string name="title_activity_info">Info</string>
++    <string name="license_link_button_text">TAKE ME TO LICENSE</string>
++    <string name="license_link_url">https://www.gnu.org/licenses/gpl-3.0-standalone.html</string>
+     <string name="large_text">
+         "License - GPL V 3.0\n\n"
+ 

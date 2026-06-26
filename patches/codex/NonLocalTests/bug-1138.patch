@@ -1,0 +1,75 @@
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+@@ -56,9 +56,12 @@
+ public class GpsLoggingService extends Service  {
+     private static NotificationManager notificationManager;
+     private static int NOTIFICATION_ID = 8675309;
++    private static final int WRITE_FAILURE_NOTIFICATION_ID = 8675310;
++    private static final String ERROR_NOTIFICATION_CHANNEL_ID = "gpslogger_errors";
+     private final IBinder binder = new GpsLoggingBinder();
+     AlarmManager nextPointAlarmManager;
+     private NotificationCompat.Builder nfc;
++    private boolean hasShownWriteFailureNotification = false;
+ 
+     private static final Logger LOG = Logs.of(GpsLoggingService.class);
+ 
+@@ -584,6 +587,43 @@
+         notificationManager.notify(NOTIFICATION_ID, notif);
+     }
+ 
++    private void showWriteFailureNotification() {
++        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
++
++        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
++            NotificationChannel channel = new NotificationChannel(
++                    ERROR_NOTIFICATION_CHANNEL_ID,
++                    getString(R.string.error),
++                    NotificationManager.IMPORTANCE_HIGH);
++            channel.enableLights(true);
++            channel.enableVibration(true);
++            manager.createNotificationChannel(channel);
++        }
++
++        Intent contentIntent = new Intent(this, GpsMainActivity.class);
++        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
++        stackBuilder.addNextIntent(contentIntent);
++        PendingIntent pending = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
++
++        NotificationCompat.Builder builder = new NotificationCompat.Builder(
++                getApplicationContext(),
++                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? ERROR_NOTIFICATION_CHANNEL_ID : "gpslogger")
++                .setSmallIcon(R.drawable.notification)
++                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.gpsloggericon3))
++                .setContentTitle(getString(R.string.error))
++                .setContentText(getString(R.string.could_not_write_to_file))
++                .setStyle(new NotificationCompat.BigTextStyle().bigText(getString(R.string.could_not_write_to_file)))
++                .setCategory(NotificationCompat.CATEGORY_ERROR)
++                .setAutoCancel(true)
++                .setContentIntent(pending);
++
++        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
++            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
++        }
++
++        manager.notify(WRITE_FAILURE_NOTIFICATION_ID, builder.build());
++    }
++
+     @SuppressWarnings("ResourceType")
+     private void startPassiveManager() {
+         if(preferenceHelper.shouldLogPassiveLocations()){
+@@ -1089,9 +1129,15 @@
+                 LOG.info("Writing annotation: " + session.getDescription());
+                 FileLoggerFactory.annotate(getApplicationContext(), session.getDescription(), loc);
+             }
++
++            hasShownWriteFailureNotification = false;
+         }
+         catch(Exception e){
+              LOG.error(getString(R.string.could_not_write_to_file), e);
++             if (!hasShownWriteFailureNotification) {
++                 showWriteFailureNotification();
++                 hasShownWriteFailureNotification = true;
++             }
+         }
+ 
+         session.clearDescription();

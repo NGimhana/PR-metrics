@@ -1,0 +1,58 @@
+diff --git a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java
+index e723c49..544f386 100644
+--- a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java
++++ b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java
+@@ -326,7 +326,7 @@ public class YouTubeChannel extends CardData implements Serializable {
+ 
+ 	public String getChannelUrl() {
+ 		try {
+-			return YoutubeChannelLinkHandlerFactory.getInstance().getUrl(getId());
++			return YoutubeChannelLinkHandlerFactory.getInstance().getUrl(getChannelId().getRawId());
+ 		} catch (ParsingException p) {
+ 			Logger.e(this, "getChannel URL for " + getId() + ", error:" + p.getMessage(), p);
+ 			return id;
+diff --git a/app/src/main/java/free/rm/skytube/gui/businessobjects/adapters/GridViewHolder.java b/app/src/main/java/free/rm/skytube/gui/businessobjects/adapters/GridViewHolder.java
+index 2b389f7..2acf9a4 100644
+--- a/app/src/main/java/free/rm/skytube/gui/businessobjects/adapters/GridViewHolder.java
++++ b/app/src/main/java/free/rm/skytube/gui/businessobjects/adapters/GridViewHolder.java
+@@ -221,9 +221,20 @@ public class GridViewHolder extends RecyclerView.ViewHolder implements Serializa
+ 		final PopupMenu popupMenu = createPopup(R.menu.channel_options_menu, view);
+ 		Menu menu = popupMenu.getMenu();
+ 		actionHandler.updateSubscribeMenuItem(channel.getChannelId(), menu);
+-		popupMenu.setOnMenuItemClickListener(item ->
+-			actionHandler.handleChannelActions(context, channel, item.getItemId())
+-		);
++		popupMenu.setOnMenuItemClickListener(item -> {
++			if (actionHandler.handleChannelActions(context, channel, item.getItemId())) {
++				return true;
++			}
++			switch (item.getItemId()) {
++				case R.id.share:
++					SkyTubeApp.shareUrl(context, channel.getChannelUrl());
++					return true;
++				case R.id.copyurl:
++					SkyTubeApp.copyUrl(context, "Channel URL", channel.getChannelUrl());
++					return true;
++			}
++			return false;
++		});
+ 		popupMenu.show();
+ 	}
+ 
+diff --git a/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java b/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java
+index 5fb8965..fe27796 100644
+--- a/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java
++++ b/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java
+@@ -56,12 +56,6 @@ public class ChannelActionHandler {
+             case R.id.unblock_channel:
+                 compositeDisposable.add(channel.unblockChannel().subscribe());
+                 return true;
+-            case R.id.share:
+-                SkyTubeApp.shareUrl(context, channel.getChannelUrl());
+-                return true;
+-            case R.id.copyurl:
+-                SkyTubeApp.copyUrl(context, "Channel URL", channel.getChannelUrl());
+-                return true;
+ 
+         }
+         return false;

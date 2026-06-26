@@ -1,0 +1,14 @@
+--- a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+@@ -567,7 +567,11 @@
+      * F5
+      */
+     public void reloadCurrentDirectory() {
++        int index = fileListView.getFirstVisiblePosition();
++        View v = fileListView.getChildAt(0);
++        int top = (v == null) ? 0 : (v.getTop() - fileListView.getPaddingTop());
+         loadPath(currentDirectory);
++        fileListView.setSelectionFromTop(index, top);
+     }
+ 
+     @SuppressWarnings("deprecation")

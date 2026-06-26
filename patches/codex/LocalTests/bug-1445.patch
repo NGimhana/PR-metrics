@@ -1,0 +1,21 @@
+--- a/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java
+@@ -918,9 +918,16 @@
+     public static boolean tripExists(Trip trip) {
+         ArrayList<UserDefineObject> trips = getTrips();
+ 
+-        for (UserDefineObject object : trips)
+-            if (trip.overlapsTrip((Trip)object))
++        for (UserDefineObject object : trips) {
++            Trip existingTrip = (Trip)object;
++
++            // Ignore the trip currently being edited.
++            if (existingTrip.getId().equals(trip.getId()))
++                continue;
++
++            if (trip.overlapsTrip(existingTrip))
+                 return true;
++        }
+ 
+         return false;
+     }

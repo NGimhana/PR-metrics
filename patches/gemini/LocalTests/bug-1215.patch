@@ -1,0 +1,122 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
+index 0dbe619..98b2030 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
+@@ -218,13 +218,24 @@ public class ManualEntryDialog {
+ 
+                 Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
+                 TokenCalculator.HashAlgorithm algorithm = (TokenCalculator.HashAlgorithm) algorithmInput.getSelectedItem();
+-                int digits = Integer.parseInt(digitsInput.getText().toString());
++
++                int digits;
++                try {
++                    digits = Integer.parseInt(digitsInput.getText().toString());
++                } catch (NumberFormatException e) {
++                    digits = TokenCalculator.TOTP_DEFAULT_DIGITS;
++                }
+ 
+                 String issuer = issuerInput.getText().toString();
+                 String label = labelInput.getText().toString();
+ 
+                 if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+-                    int period = Integer.parseInt(periodInput.getText().toString());
++                    int period;
++                    try {
++                        period = Integer.parseInt(periodInput.getText().toString());
++                    } catch (NumberFormatException e) {
++                        period = TokenCalculator.TOTP_DEFAULT_PERIOD;
++                    }
+ 
+                     if (oldEntry == null) {
+                         Entry e = new Entry(type, secret, period, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
+@@ -242,7 +253,12 @@ public class ManualEntryDialog {
+ 
+                     callingActivity.refreshTags();
+                 } else if (type == Entry.OTPType.HOTP) {
+-                    long counter = Long.parseLong(counterInput.getText().toString());
++                    long counter;
++                    try {
++                        counter = Long.parseLong(counterInput.getText().toString());
++                    } catch (NumberFormatException e) {
++                        counter = TokenCalculator.HOTP_INITIAL_COUNTER;
++                    }
+ 
+                     if (oldEntry == null) {
+                         Entry e = new Entry(type, secret, counter, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
+@@ -276,29 +292,48 @@ public class ManualEntryDialog {
+ 
+             @Override
+             public void afterTextChanged(Editable editable) {
++                boolean valid = true;
++
+                 if ((TextUtils.isEmpty(labelInput.getText()) && TextUtils.isEmpty(issuerInput.getText())) ||
+                         (TextUtils.isEmpty(secretInput.getText()) && isNewEntry) ||
+-                        TextUtils.isEmpty(digitsInput.getText()) ||
+-                        Integer.parseInt(digitsInput.getText().toString()) == 0) {
+-                    positiveButton.setEnabled(false);
++                        TextUtils.isEmpty(digitsInput.getText())) {
++                    valid = false;
+                 } else {
++                    try {
++                        int digits = Integer.parseInt(digitsInput.getText().toString());
++                        if (digits == 0) valid = false;
++                    } catch (NumberFormatException e) {
++                        valid = false;
++                    }
++                }
++
++                if (valid) {
+                     Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
+                     if (type == Entry.OTPType.HOTP) {
+                         if (TextUtils.isEmpty(counterInput.getText())) {
+-                            positiveButton.setEnabled(false);
++                            valid = false;
+                         } else {
+-                            positiveButton.setEnabled(true);
++                            try {
++                                Long.parseLong(counterInput.getText().toString());
++                            } catch (NumberFormatException e) {
++                                valid = false;
++                            }
+                         }
+                     } else if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+-                        if (TextUtils.isEmpty(periodInput.getText()) || Integer.parseInt(periodInput.getText().toString()) == 0) {
+-                            positiveButton.setEnabled(false);
++                        if (TextUtils.isEmpty(periodInput.getText())) {
++                            valid = false;
+                         } else {
+-                            positiveButton.setEnabled(true);
++                            try {
++                                int period = Integer.parseInt(periodInput.getText().toString());
++                                if (period == 0) valid = false;
++                            } catch (NumberFormatException e) {
++                                valid = false;
++                            }
+                         }
+-                    } else {
+-                        positiveButton.setEnabled(true);
+                     }
+                 }
++
++                positiveButton.setEnabled(valid);
+             }
+         };
+ 
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/View/EntriesCardAdapter.java b/app/src/main/java/org/shadowice/flocke/andotp/View/EntriesCardAdapter.java
+index 7ffe389..4fb3749 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/View/EntriesCardAdapter.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/View/EntriesCardAdapter.java
+@@ -440,7 +440,12 @@ public class EntriesCardAdapter extends RecyclerView.Adapter<EntryViewHolder>
+                     @Override
+                     public void onClick(DialogInterface dialogInterface, int i) {
+                         int realIndex = getRealIndex(pos);
+-                        long newCounter = Long.parseLong(input.getEditableText().toString());
++                        long newCounter;
++                        try {
++                            newCounter = Long.parseLong(input.getEditableText().toString());
++                        } catch (NumberFormatException e) {
++                            newCounter = displayedEntries.get(pos).getCounter();
++                        }
+ 
+                         displayedEntries.get(pos).setCounter(newCounter);
+                         notifyItemChanged(pos);

@@ -1,0 +1,43 @@
+diff --git a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+index cd2414b..52459e9 100644
+--- a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+@@ -612,8 +612,18 @@ public class FileActivity extends AppCompatActivity
+             errorText.setVisibility(GONE);
+             emptyText.setVisibility(GONE);
+ 
++            // SAVE
++            int index = fileListView.getFirstVisiblePosition();
++            View v = fileListView.getChildAt(0);
++            int top = (v == null) ? 0 : (v.getTop() - fileListView.getPaddingTop());
++
+             arrayAdapter = new FileArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()));
+             fileListView.setAdapter(arrayAdapter);
++
++            // RESTORE
++            if (path.equals(currentDirectory)) {
++                fileListView.setSelectionFromTop(index, top);
++            }
+         } catch (NoAccessException e) {
+             Log.w(TAG, "Can't read '" + path + "': Permission denied!");
+             fileListView.setVisibility(GONE);
+@@ -653,9 +663,19 @@ public class FileActivity extends AppCompatActivity
+         errorText.setVisibility(GONE);
+         emptyText.setVisibility(GONE);
+ 
++        // SAVE
++        int index = fileListView.getFirstVisiblePosition();
++        View v = fileListView.getChildAt(0);
++        int top = (v == null) ? 0 : (v.getTop() - fileListView.getPaddingTop());
++
+         arrayAdapter = new ArchiveArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()), archive);
+         fileListView.setAdapter(arrayAdapter);
+ 
++        // RESTORE
++        if (path.equals(currentDirectory)) {
++            fileListView.setSelectionFromTop(index, top);
++        }
++
+         currentDirectory = path;
+         historyMap.put(historyCounter++, new HistoryEntry(currentDirectory, archive));
+         setToolbarText();

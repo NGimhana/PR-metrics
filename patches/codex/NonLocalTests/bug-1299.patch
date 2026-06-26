@@ -1,0 +1,97 @@
+--- a/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java
++++ b/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java
+@@ -277,6 +277,9 @@
+     private boolean validateData() {
+         final String strValue = etCurVal.getText().toString();
+         final TraitObject currentTrait = traitBox.getCurrentTrait();
++        if (currentTrait == null) {
++            return true;
++        }
+         final String trait = currentTrait.getTrait();
+ 
+         if (traitBox.existsNewTraits()
+@@ -326,6 +329,9 @@
+             @Override
+             public void onClick(View v) {
+                 TraitObject currentTrait = traitBox.getCurrentTrait();
++                if (currentTrait == null) {
++                    return;
++                }
+                 updateTrait(currentTrait.getTrait(), currentTrait.getFormat(), "NA");
+                 setNaText();
+             }
+@@ -338,6 +344,9 @@
+ 
+                 // if a brapi observation that has been synced, don't allow deleting
+                 TraitObject currentTrait = traitBox.getCurrentTrait();
++                if (currentTrait == null) {
++                    return;
++                }
+                 if (dt.isBrapiSynced(rangeBox.getPlotID(), currentTrait.getTrait())) {
+                     if (currentTrait.getFormat().equals("photo")) {
+                         // I want to use abstract method
+@@ -967,6 +976,9 @@
+ 
+     public boolean existsTrait(final int ID) {
+         final TraitObject trait = traitBox.getCurrentTrait();
++        if (trait == null) {
++            return false;
++        }
+         return dt.getTraitExists(ID, trait.getTrait(), trait.getFormat());
+     }
+ 
+@@ -1205,11 +1217,11 @@
+         }
+ 
+         final String getCurrentFormat() {
+-            return currentTrait.getFormat();
++            return currentTrait != null ? currentTrait.getFormat() : "";
+         }
+ 
+         boolean existsTrait() {
+-            return newTraits.containsKey(currentTrait.getTrait());
++            return currentTrait != null && newTraits.containsKey(currentTrait.getTrait());
+         }
+ 
+         final String createSummaryText(final String plotID) {
+@@ -1835,4 +1847,4 @@
+             rangeRight.performClick();
+         }
+     }
+-}
++}
+--- a/app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java
++++ b/app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java
+@@ -265,6 +265,11 @@
+ 
+         settingsList.setOnItemClickListener(new OnItemClickListener() {
+             public void onItemClick(AdapterView<?> av, View arg1, int position, long arg3) {
++                if (dt == null) {
++                    dt = new DataHelper(ConfigActivity.this);
++                }
++                dt.open();
++
+                 Intent intent = new Intent();
+                 switch (position) {
+                     case 0:
+@@ -282,6 +287,14 @@
+                     case 2:
+                         if (!ep.getBoolean("ImportFieldFinished", false)) {
+                             Utils.makeToast(getApplicationContext(),getString(R.string.warning_field_missing));
++                            return;
++                        }
++                        if (dt.isTableEmpty(DataHelper.RANGE)) {
++                            Utils.makeToast(getApplicationContext(), getString(R.string.warning_field_missing));
++                            return;
++                        }
++                        if (dt.getTraitColumnsAsString() == null) {
++                            Utils.makeToast(getApplicationContext(), getString(R.string.warning_traits_missing));
+                             return;
+                         }
+ 
+@@ -1583,4 +1596,4 @@
+             CollectActivity.reloadData = true;
+         }
+     }
+-}
++}

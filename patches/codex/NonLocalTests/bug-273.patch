@@ -1,0 +1,55 @@
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java
+@@ -32,6 +32,10 @@
+  * buttons will be shown).
+  */
+ public class Previewer extends AbstractFlashcardViewer {
++    private static final String STATE_CARD_LIST = "stateCardList";
++    private static final String STATE_INDEX = "stateIndex";
++    private static final String STATE_SHOWING_ANSWER = "stateShowingAnswer";
++
+     private long[] mCardList;
+     private int mIndex;
+     private boolean mShowingAnswer;
+@@ -41,9 +45,16 @@
+         Timber.d("onCreate()");
+         super.onCreate(savedInstanceState);
+ 
+-        mCardList = getIntent().getLongArrayExtra("cardList");
+-        mIndex = getIntent().getIntExtra("index", -1);
+-        if (mCardList.length == 0 || mIndex < 0 || mIndex > mCardList.length - 1) {
++        if (savedInstanceState != null) {
++            mCardList = savedInstanceState.getLongArray(STATE_CARD_LIST);
++            mIndex = savedInstanceState.getInt(STATE_INDEX, -1);
++            mShowingAnswer = savedInstanceState.getBoolean(STATE_SHOWING_ANSWER, false);
++        } else {
++            mCardList = getIntent().getLongArrayExtra("cardList");
++            mIndex = getIntent().getIntExtra("index", -1);
++            mShowingAnswer = false;
++        }
++        if (mCardList == null || mCardList.length == 0 || mIndex < 0 || mIndex > mCardList.length - 1) {
+             Timber.e("Previewer started with empty card list or invalid index");
+             finishWithoutAnimation();
+             return;
+@@ -58,8 +69,20 @@
+     protected void onCollectionLoaded(Collection col) {
+         super.onCollectionLoaded(col);
+         mCurrentCard = col.getCard(mCardList[mIndex]);
+-        displayCardQuestion();
++        if (mShowingAnswer) {
++            displayCardAnswer();
++        } else {
++            displayCardQuestion();
++        }
+         showBackIcon();
++    }
++
++    @Override
++    protected void onSaveInstanceState(Bundle outState) {
++        outState.putLongArray(STATE_CARD_LIST, mCardList);
++        outState.putInt(STATE_INDEX, mIndex);
++        outState.putBoolean(STATE_SHOWING_ANSWER, mShowingAnswer);
++        super.onSaveInstanceState(outState);
+     }
+ 
+ 

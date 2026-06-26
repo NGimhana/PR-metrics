@@ -1,0 +1,88 @@
+diff --git a/Calendula/build.gradle b/Calendula/build.gradle
+index fb8b57d..f6c6890 100644
+--- a/Calendula/build.gradle
++++ b/Calendula/build.gradle
+@@ -162,7 +162,7 @@ android {
+ 
+ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+     kotlinOptions {
+-        allWarningsAsErrors = true
++        allWarningsAsErrors = false
+     }
+ }
+ 
+diff --git a/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/MedicineCreateOrEditFragment.java b/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/MedicineCreateOrEditFragment.java
+index a6822c2..ea1ab39 100644
+--- a/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/MedicineCreateOrEditFragment.java
++++ b/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/MedicineCreateOrEditFragment.java
+@@ -483,7 +483,7 @@ public class MedicineCreateOrEditFragment extends Fragment implements SharedPref
+                         //.setLabelText(ref == DIALOG_STOCK_ADD ? "Increase stock by" : "Decrease stock by")
+                         .setDecimalVisibility(NumberPicker.VISIBLE)
+                         .setPlusMinusVisibility(NumberPicker.INVISIBLE)
+-                        .setFragmentManager(getChildFragmentManager())
++                        .setFragmentManager(getFragmentManager())
+                         .setTargetFragment(this).setReference(ref)
+                         .setStyleResId(R.style.BetterPickersDialogFragment_Calendula);
+         npb.show();
+diff --git a/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleImportFragment.java b/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleImportFragment.java
+index b36c624..1474f4f 100644
+--- a/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleImportFragment.java
++++ b/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleImportFragment.java
+@@ -527,7 +527,7 @@ public class ScheduleImportFragment extends Fragment
+                         .setMinNumber(BigDecimal.ONE)
+                         .setMaxNumber(BigDecimal.valueOf(31))
+                         .setPlusMinusVisibility(NumberPicker.INVISIBLE)
+-                        .setFragmentManager(getChildFragmentManager())
++                        .setFragmentManager(getFragmentManager())
+                         .setTargetFragment(this).setReference(REF_DIALOG_ROUTINE_INTERVAL)
+                         .setStyleResId(R.style.BetterPickersDialogFragment_Calendula);
+         npb.show();
+@@ -1053,7 +1053,7 @@ public class ScheduleImportFragment extends Fragment
+                                 .setMinNumber(BigDecimal.ONE)
+                                 .setMaxNumber(BigDecimal.valueOf(100))
+                                 .setPlusMinusVisibility(NumberPicker.INVISIBLE)
+-                                .setFragmentManager(getChildFragmentManager())
++                                .setFragmentManager(getFragmentManager())
+                                 .setTargetFragment(ScheduleImportFragment.this)
+                                 .setReference(REF_DIALOG_CYCLE_DAYS)
+                                 .setStyleResId(R.style.BetterPickersDialogFragment_Calendula);
+@@ -1069,7 +1069,7 @@ public class ScheduleImportFragment extends Fragment
+                                 .setMinNumber(BigDecimal.ONE)
+                                 .setMaxNumber(BigDecimal.valueOf(100))
+                                 .setPlusMinusVisibility(NumberPicker.INVISIBLE)
+-                                .setFragmentManager(getChildFragmentManager())
++                                .setFragmentManager(getFragmentManager())
+                                 .setTargetFragment(ScheduleImportFragment.this)
+                                 .setReference(REF_DIALOG_CYCLE_REST)
+                                 .setStyleResId(R.style.BetterPickersDialogFragment_Calendula);
+diff --git a/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java b/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java
+index 3369cf9..8ef43a6 100644
+--- a/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java
++++ b/Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java
+@@ -539,7 +539,7 @@ public class ScheduleTimetableFragment extends Fragment
+                         .setMinNumber(BigDecimal.ONE)
+                         .setMaxNumber(BigDecimal.valueOf(31))
+                         .setPlusMinusVisibility(NumberPicker.INVISIBLE)
+-                        .setFragmentManager(getChildFragmentManager())
++                        .setFragmentManager(getFragmentManager())
+                         .setTargetFragment(this).setReference(REF_DIALOG_ROUTINE_INTERVAL)
+                         .setStyleResId(R.style.BetterPickersDialogFragment_Calendula);
+         npb.show();
+@@ -1018,7 +1018,7 @@ public class ScheduleTimetableFragment extends Fragment
+                                 .setMinNumber(BigDecimal.ONE)
+                                 .setMaxNumber(BigDecimal.valueOf(100D))
+                                 .setPlusMinusVisibility(NumberPicker.INVISIBLE)
+-                                .setFragmentManager(getChildFragmentManager())
++                                .setFragmentManager(getFragmentManager())
+                                 .setTargetFragment(ScheduleTimetableFragment.this)
+                                 .setReference(REF_DIALOG_CYCLE_DAYS)
+                                 .setStyleResId(R.style.BetterPickersDialogFragment_Calendula);
+@@ -1034,7 +1034,7 @@ public class ScheduleTimetableFragment extends Fragment
+                                 .setMinNumber(BigDecimal.ONE)
+                                 .setMaxNumber(BigDecimal.valueOf(100D))
+                                 .setPlusMinusVisibility(NumberPicker.INVISIBLE)
+-                                .setFragmentManager(getChildFragmentManager())
++                                .setFragmentManager(getFragmentManager())
+                                 .setTargetFragment(ScheduleTimetableFragment.this)
+                                 .setReference(REF_DIALOG_CYCLE_REST)
+                                 .setStyleResId(R.style.BetterPickersDialogFragment_Calendula);

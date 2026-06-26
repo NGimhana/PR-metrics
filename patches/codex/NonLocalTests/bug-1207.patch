@@ -1,0 +1,68 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java
+@@ -50,6 +50,20 @@
+ import java.util.concurrent.Callable;
+ 
+ public class ManualEntryDialog {
++    private static boolean isValidPositiveInteger(EditText editText) {
++        String value = editText.getText().toString().trim();
++
++        if (TextUtils.isEmpty(value)) {
++            return false;
++        }
++
++        try {
++            return Integer.parseInt(value) > 0;
++        } catch (NumberFormatException e) {
++            return false;
++        }
++    }
++
+     public static void show(final MainActivity callingActivity, Settings settings, final EntriesCardAdapter adapter) {
+         ViewGroup container = callingActivity.findViewById(R.id.main_content);
+         View inputView = callingActivity.getLayoutInflater().inflate(R.layout.dialog_manual_entry, container, false);
+@@ -169,8 +183,19 @@
+                         if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+                             String label = labelInput.getText().toString();
+                             String secret = secretInput.getText().toString();
+-                            int period = Integer.parseInt(periodInput.getText().toString());
+-                            int digits = Integer.parseInt(digitsInput.getText().toString());
++                            int period;
++                            int digits;
++
++                            try {
++                                period = Integer.parseInt(periodInput.getText().toString().trim());
++                                digits = Integer.parseInt(digitsInput.getText().toString().trim());
++                            } catch (NumberFormatException e) {
++                                return;
++                            }
++
++                            if (period <= 0 || digits <= 0) {
++                                return;
++                            }
+ 
+                             Entry e = new Entry(type, secret, period, digits, label, algorithm, tagsAdapter.getActiveTags());
+                             e.updateOTP();
+@@ -203,15 +228,17 @@
+ 
+             @Override
+             public void afterTextChanged(Editable editable) {
+-                if (TextUtils.isEmpty(labelInput.getText()) || TextUtils.isEmpty(secretInput.getText())) {
+-                    positiveButton.setEnabled(false);
+-                } else {
+-                    positiveButton.setEnabled(true);
+-                }
++                boolean hasRequiredText = !TextUtils.isEmpty(labelInput.getText()) && !TextUtils.isEmpty(secretInput.getText());
++                boolean hasValidPeriod = isValidPositiveInteger(periodInput);
++                boolean hasValidDigits = isValidPositiveInteger(digitsInput);
++
++                positiveButton.setEnabled(hasRequiredText && hasValidPeriod && hasValidDigits);
+             }
+         };
+ 
+         labelInput.addTextChangedListener(watcher);
+         secretInput.addTextChangedListener(watcher);
++        periodInput.addTextChangedListener(watcher);
++        digitsInput.addTextChangedListener(watcher);
+     }
+ }

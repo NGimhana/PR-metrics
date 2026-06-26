@@ -1,0 +1,40 @@
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
+@@ -387,9 +387,21 @@
+         }
+         //copy to array to ensure threadsafe iteration
+         Integer[] checkedPositions = mCheckedCardPositions.toArray(new Integer[0]);
+-        HashSet<String> notes = new HashSet<>();
++        HashSet<Long> notes = new HashSet<>();
+         for (Integer position : checkedPositions) {
+-            String noteId = mCards.get(position).get(NOTE);
++            String cardId = mCards.get(position).get(ID);
++            if (TextUtils.isEmpty(cardId)) {
++                return false;
++            }
++
++            long noteId;
++            try {
++                noteId = getCol().getCard(Long.parseLong(cardId)).getNid();
++            } catch (Exception e) {
++                Timber.w(e, "Unable to resolve note id from selected card");
++                return false;
++            }
++
+             if (notes.add(noteId) && notes.size() > 1) {
+                 return false;
+             }
+@@ -2219,6 +2231,13 @@
+     }
+ 
+     @VisibleForTesting(otherwise = VisibleForTesting.NONE)
++    boolean isShowingEditNote() {
++        return mActionBarMenu != null
++                && mActionBarMenu.findItem(R.id.action_edit_note) != null
++                && mActionBarMenu.findItem(R.id.action_edit_note).isVisible();
++    }
++
++    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+     void clearCardData(int position) {
+         String id = mCards.get(position).get(ID);
+         mCards.get(position).clear();

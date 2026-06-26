@@ -1,0 +1,134 @@
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+@@ -56,6 +56,7 @@
+ public class GpsLoggingService extends Service  {
+     private static NotificationManager notificationManager;
+     private static int NOTIFICATION_ID = 8675309;
++    private static int FILE_WRITE_FAILURE_NOTIFICATION_ID = 8675310;
+     private final IBinder binder = new GpsLoggingBinder();
+     AlarmManager nextPointAlarmManager;
+     private NotificationCompat.Builder nfc;
+@@ -405,6 +406,19 @@
+             }
+         } catch (Exception ex) {
+             LOG.error("Could not start GPSLoggingService in foreground. ", ex);
++        }
++
++        try {
++            ensureConfiguredLogFolderWritable();
++        }
++        catch (Exception ex){
++            notifyFileWriteFailure(ex);
++            session.setStarted(false);
++            notifyClientsStarted(false);
++            stopForeground(true);
++            removeNotification();
++            stopSelf();
++            return;
+         }
+ 
+         session.setStarted(true);
+@@ -1092,10 +1106,70 @@
+         }
+         catch(Exception e){
+              LOG.error(getString(R.string.could_not_write_to_file), e);
++             notifyFileWriteFailure(e);
++             stopLogging();
++             return;
+         }
+ 
+         session.clearDescription();
+         EventBus.getDefault().post(new ServiceEvents.AnnotationStatus(true));
++    }
++
++    private void ensureConfiguredLogFolderWritable() throws IOException {
++
++        boolean writesAnyFile =
++                preferenceHelper.shouldLogToGpx()
++                        || preferenceHelper.shouldLogToKml()
++                        || preferenceHelper.shouldLogToCSV()
++                        || preferenceHelper.shouldLogToGeoJSON()
++                        || preferenceHelper.shouldLogToNmea();
++
++        if (!writesAnyFile) {
++            return;
++        }
++
++        String gpsLoggerFolder = preferenceHelper.getGpsLoggerFolder();
++        if (Strings.isNullOrEmpty(gpsLoggerFolder)) {
++            throw new IOException("GPSLogger folder is empty");
++        }
++
++        File folder = new File(gpsLoggerFolder);
++
++        if(!folder.exists() && !folder.mkdirs()){
++            throw new IOException("Could not create logging folder: " + gpsLoggerFolder);
++        }
++
++        if(!folder.canWrite()){
++            throw new IOException("Logging folder is not writable: " + gpsLoggerFolder);
++        }
++
++        File probeFile = File.createTempFile("gpslogger_write_test_", ".tmp", folder);
++        if(!probeFile.delete()){
++            LOG.warn("Could not delete temporary file {}", probeFile.getAbsolutePath());
++        }
++    }
++
++    private void notifyFileWriteFailure(Exception ex) {
++        LOG.error(getString(R.string.could_not_write_to_file), ex);
++        EventBus.getDefault().post(new ServiceEvents.FileWriteFailed(preferenceHelper.getGpsLoggerFolder()));
++
++        Intent contentIntent = new Intent(this, GpsMainActivity.class);
++        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, contentIntent, 0);
++
++        NotificationCompat.Builder writeFailureNotification = new NotificationCompat.Builder(getApplicationContext(), "gpslogger")
++                .setSmallIcon(R.drawable.notification)
++                .setCategory(NotificationCompat.CATEGORY_ERROR)
++                .setAutoCancel(true)
++                .setPriority(NotificationCompat.PRIORITY_HIGH)
++                .setContentIntent(pendingIntent)
++                .setContentTitle(getString(R.string.could_not_write_to_file))
++                .setContentText(preferenceHelper.getGpsLoggerFolder())
++                .setStyle(new NotificationCompat.BigTextStyle().bigText(
++                        getString(R.string.pref_logging_file_no_permissions) + " " + preferenceHelper.getGpsLoggerFolder()
++                ));
++
++        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
++        notificationManager.notify(FILE_WRITE_FAILURE_NOTIFICATION_ID, writeFailureNotification.build());
+     }
+ 
+     /**
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsMainActivity.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsMainActivity.java
+@@ -1704,6 +1704,13 @@
+     }
+ 
+     @EventBusHook
++    public void onEventMainThread(ServiceEvents.FileWriteFailed fileWriteFailed){
++        Dialogs.alert(getString(R.string.error),
++                getString(R.string.pref_logging_file_no_permissions) + "<br />" + fileWriteFailed.folderPath,
++                this);
++    }
++
++    @EventBusHook
+     public void onEventMainThread(ProfileEvents.CreateNewProfile createProfileEvent){
+ 
+         LOG.debug("Creating profile: " + createProfileEvent.newProfileName);
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java
+@@ -91,4 +91,14 @@
+         }
+     }
+ 
++    /**
++     * Writing to the configured logging folder failed
++     */
++    public static class FileWriteFailed {
++        public String folderPath;
++        public FileWriteFailed(String folderPath) {
++            this.folderPath = folderPath;
++        }
++    }
++
+ }

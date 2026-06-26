@@ -1,0 +1,100 @@
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+@@ -1,7 +1,6 @@
+ package com.trianguloy.urlchecker.modules.list;
+ 
+ import android.net.Uri;
+-import android.net.UrlQuerySanitizer;
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.LinearLayout;
+@@ -74,13 +73,7 @@
+ 
+         // parse
+         var uri = Uri.parse(urlData.url);
+-        var urlQuerySanitizer = new UrlQuerySanitizer();
+-        // the default parseUrl doesn't remove the fragment
+-        if (uri.getQuery() != null) {
+-            urlQuerySanitizer.setAllowUnregisteredParamaters(true);
+-            urlQuerySanitizer.setUnregisteredParameterValueSanitizer(v -> v);
+-            urlQuerySanitizer.parseQuery(uri.getQuery());
+-        }
++        var parameters = parseQuery(uri.getEncodedQuery());
+ 
+         // domain elements
+         if (uri.getAuthority() != null || uri.getScheme() != null) {
+@@ -108,7 +101,6 @@
+         }
+ 
+         // query parameters
+-        var parameters = urlQuerySanitizer.getParameterList();
+         if (parameters.size() > 0) {
+             var queries = addGroup("Parameters", parameters.size(), uri.buildUpon().query(null));
+             for (var i = 0; i < parameters.size(); i++) {
+@@ -116,10 +108,10 @@
+                 var builder = uri.buildUpon();
+                 builder.query(null);
+                 for (var j = 0; j < parameters.size(); j++) {
+-                    if (i != j) builder.appendQueryParameter(parameters.get(j).mParameter, parameters.get(j).mValue);
++                    if (i != j) builder.appendQueryParameter(parameters.get(j).name, parameters.get(j).value);
+                 }
+                 // append the parameter
+-                addPart(parameters.get(i).mParameter, parameters.get(i).mValue, queries, builder);
++                addPart(parameters.get(i).name, parameters.get(i).value, queries, builder);
+             }
+         }
+ 
+@@ -203,4 +195,53 @@
+         return true;
+     };
+ 
++    /**
++     * Extracts query parameters from an encoded query string.
++     */
++    private static List<QueryParameter> parseQuery(String encodedQuery) {
++        var parameters = new ArrayList<QueryParameter>();
++        if (encodedQuery == null) return parameters;
++
++        int start = 0;
++        do {
++            int next = encodedQuery.indexOf('&', start);
++            int end = next == -1 ? encodedQuery.length() : next;
++            if (end > start) {
++                int separator = encodedQuery.indexOf('=', start);
++                if (separator == -1 || separator > end) separator = end;
++
++                parameters.add(new QueryParameter(
++                        decodeQueryPart(encodedQuery.substring(start, separator)),
++                        separator == end ? "" : decodeQueryPart(encodedQuery.substring(separator + 1, end))
++                ));
++            }
++            start = end + 1;
++        } while (start < encodedQuery.length());
++
++        return parameters;
++    }
++
++    /**
++     * Decodes a query name/value as UTF-8, including values that contain encoded percent signs.
++     */
++    private static String decodeQueryPart(String encodedPart) {
++        var decoded = Uri.decode(encodedPart.replace("+", "%20"));
++        for (int i = 0; i < 5 && decoded.contains("%"); i++) {
++            var next = Uri.decode(decoded);
++            if (next.equals(decoded)) break;
++            decoded = next;
++        }
++        return decoded;
++    }
++
++    private static class QueryParameter {
++        private final String name;
++        private final String value;
++
++        private QueryParameter(String name, String value) {
++            this.name = name;
++            this.value = value;
++        }
++    }
++
+ }

@@ -1,0 +1,56 @@
+--- a/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
++++ b/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
+@@ -9,6 +9,7 @@
+ import android.os.Bundle;
+ import android.preference.PreferenceManager;
+ import android.support.annotation.NonNull;
++import android.support.design.widget.BottomSheetBehavior;
+ import android.support.design.widget.NavigationView;
+ import android.support.v4.app.Fragment;
+ import android.support.v4.app.FragmentManager;
+@@ -19,6 +20,8 @@
+ import android.support.v7.app.AppCompatActivity;
+ import android.support.v7.widget.Toolbar;
+ import android.view.MenuItem;
++import android.view.View;
++import android.widget.LinearLayout;
+ import android.widget.Toast;
+ 
+ import java.util.ArrayList;
+@@ -270,9 +273,33 @@
+             if (currentFragment instanceof HomeFragment) {
+                 checkDoubleBackPress();
+             } else {
+-                Fragment fragment = new HomeFragment();
+-                getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
+-                setDefaultMenuSelected(0);
++                if (isBottomSheetExpanded(currentFragment)) {
++                    collapseBottomSheet(currentFragment);
++                } else {
++                    Fragment fragment = new HomeFragment();
++                    getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
++                    setDefaultMenuSelected(0);
++                }
++            }
++        }
++    }
++
++    private boolean isBottomSheetExpanded(Fragment fragment) {
++        if (fragment != null && fragment.getView() != null) {
++            LinearLayout bottomSheet = fragment.getView().findViewById(R.id.bottom_sheet);
++            if (bottomSheet != null) {
++                BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
++                return behavior.getState() == BottomSheetBehavior.STATE_EXPANDED;
++            }
++        }
++        return false;
++    }
++
++    private void collapseBottomSheet(Fragment fragment) {
++        if (fragment != null && fragment.getView() != null) {
++            LinearLayout bottomSheet = fragment.getView().findViewById(R.id.bottom_sheet);
++            if (bottomSheet != null) {
++                BottomSheetBehavior.from(bottomSheet).setState(BottomSheetBehavior.STATE_COLLAPSED);
+             }
+         }
+     }

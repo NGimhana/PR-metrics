@@ -1,0 +1,270 @@
+--- a/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java
++++ b/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java
+@@ -277,6 +277,9 @@
+     private boolean validateData() {
+         final String strValue = etCurVal.getText().toString();
+         final TraitObject currentTrait = traitBox.getCurrentTrait();
++        if (currentTrait == null) {
++            return true;
++        }
+         final String trait = currentTrait.getTrait();
+ 
+         if (traitBox.existsNewTraits()
+@@ -306,13 +309,17 @@
+     private void setNaText() {
+         etCurVal.setText("NA");
+ 
+-        traitLayouts.setNaTraitsText(traitBox.getCurrentFormat());
++        if (traitBox.getCurrentTrait() != null) {
++            traitLayouts.setNaTraitsText(traitBox.getCurrentFormat());
++        }
+     }
+ 
+     private void setNaTextBrapiEmptyField() {
+         etCurVal.setHint("NA");
+ 
+-        traitLayouts.setNaTraitsText(traitBox.getCurrentFormat());
++        if (traitBox.getCurrentTrait() != null) {
++            traitLayouts.setNaTraitsText(traitBox.getCurrentFormat());
++        }
+     }
+ 
+     private void initToolbars() {
+@@ -326,6 +333,9 @@
+             @Override
+             public void onClick(View v) {
+                 TraitObject currentTrait = traitBox.getCurrentTrait();
++                if (currentTrait == null) {
++                    return;
++                }
+                 updateTrait(currentTrait.getTrait(), currentTrait.getFormat(), "NA");
+                 setNaText();
+             }
+@@ -338,6 +348,9 @@
+ 
+                 // if a brapi observation that has been synced, don't allow deleting
+                 TraitObject currentTrait = traitBox.getCurrentTrait();
++                if (currentTrait == null) {
++                    return;
++                }
+                 if (dt.isBrapiSynced(rangeBox.getPlotID(), currentTrait.getTrait())) {
+                     if (currentTrait.getFormat().equals("photo")) {
+                         // I want to use abstract method
+@@ -380,13 +393,17 @@
+ 
+         // trait is unique, format is not
+         String[] traits = dt.getVisibleTrait();
+-        if (traits != null) {
++        if (traits != null && traits.length > 0) {
++            setTraitInputEnabled(true);
+             ArrayAdapter<String> directionArrayAdapter = new ArrayAdapter<>(
+                     this, R.layout.custom_spinnerlayout, traits);
+             directionArrayAdapter
+                     .setDropDownViewResource(R.layout.custom_spinnerlayout);
+             traitBox.initTraitType(directionArrayAdapter, rangeSuppress);
+-
++        } else {
++            setTraitInputEnabled(false);
++            traitLayouts.hideLayouts();
++            traitBox.clearCurrentTrait();
+         }
+     }
+ 
+@@ -580,6 +597,9 @@
+     private void brapiDelete(String parent, Boolean hint) {
+         Toast.makeText(getApplicationContext(), getString(R.string.brapi_delete_message), Toast.LENGTH_LONG).show();
+         TraitObject trait = traitBox.getCurrentTrait();
++        if (trait == null) {
++            return;
++        }
+         updateTrait(parent, trait.getFormat(), getString(R.string.brapi_na));
+         if (hint) {
+             setNaTextBrapiEmptyField();
+@@ -595,6 +615,9 @@
+         }
+ 
+         TraitObject trait = traitBox.getCurrentTrait();
++        if (trait == null) {
++            return;
++        }
+         if (dt.isBrapiSynced(rangeBox.getPlotID(), trait.getTrait())) {
+             brapiDelete(parent, true);
+         } else {
+@@ -606,8 +629,28 @@
+ 
+     // for format without specific control
+     public void removeTrait() {
+-        traitBox.remove(traitBox.getCurrentTrait(), rangeBox.getPlotID());
++        TraitObject currentTrait = traitBox.getCurrentTrait();
++        if (currentTrait == null) {
++            return;
++        }
++        traitBox.remove(currentTrait, rangeBox.getPlotID());
+         etCurVal.setText("");
++    }
++
++    private void setTraitInputEnabled(boolean enabled) {
++        if (missingValue != null) {
++            missingValue.setEnabled(enabled);
++        }
++        if (deleteValue != null) {
++            deleteValue.setEnabled(enabled);
++        }
++        traitBox.setInputEnabled(enabled);
++
++        if (!enabled) {
++            etCurVal.setText("");
++            etCurVal.setVisibility(EditText.GONE);
++            etCurVal.setEnabled(false);
++        }
+     }
+ 
+     private void customizeToolbarIcons() {
+@@ -967,6 +1010,9 @@
+ 
+     public boolean existsTrait(final int ID) {
+         final TraitObject trait = traitBox.getCurrentTrait();
++        if (trait == null) {
++            return false;
++        }
+         return dt.getTraitExists(ID, trait.getTrait(), trait.getFormat());
+     }
+ 
+@@ -1158,6 +1204,17 @@
+             });
+ 
+             traitBox.setSelection(traitPosition);
++        }
++
++        void setInputEnabled(boolean enabled) {
++            traitType.setEnabled(enabled);
++            traitLeft.setEnabled(enabled);
++            traitRight.setEnabled(enabled);
++        }
++
++        void clearCurrentTrait() {
++            currentTrait = null;
++            traitDetails.setText("");
+         }
+ 
+         public Map getNewTraits() {
+@@ -1835,4 +1892,4 @@
+             rangeRight.performClick();
+         }
+     }
+-}
++}
+--- a/app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java
++++ b/app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java
+@@ -8,6 +8,7 @@
+ import android.widget.TextView;
+ 
+ import com.fieldbook.tracker.R;
++import com.fieldbook.tracker.objects.TraitObject;
+ 
+ public class CounterTraitLayout extends BaseTraitLayout {
+ 
+@@ -44,26 +45,36 @@
+         // Add counter
+         addCounterBtn.setOnClickListener(new OnClickListener() {
+             public void onClick(View arg0) {
+-                //TODO NullPointerException
+-                if (getNewTraits().containsKey(getCurrentTrait().getTrait()) && getNewTraits().get(getCurrentTrait().getTrait()).toString().equals("NA")) {
++                TraitObject currentTrait = getCurrentTrait();
++                if (currentTrait == null) {
++                    return;
++                }
++
++                String traitName = currentTrait.getTrait();
++                if (getNewTraits().containsKey(traitName) && getNewTraits().get(traitName).toString().equals("NA")) {
+                     counterTv.setText("1");
+                 } else {
+-                    counterTv.setText(Integer.toString(Integer.parseInt(counterTv.getText().toString()) + 1));
++                    counterTv.setText(Integer.toString(parseCounterValue(counterTv.getText().toString()) + 1));
+                 }
+-                updateTrait(getCurrentTrait().getTrait(), "counter", counterTv.getText().toString());
++                updateTrait(traitName, "counter", counterTv.getText().toString());
+             }
+         });
+ 
+         // Minus counter
+         minusCounterBtn.setOnClickListener(new OnClickListener() {
+             public void onClick(View arg0) {
+-                //TODO NullPointerException
+-                if (getNewTraits().containsKey(getCurrentTrait().getTrait()) && getNewTraits().get(getCurrentTrait().getTrait()).toString().equals("NA")) {
++                TraitObject currentTrait = getCurrentTrait();
++                if (currentTrait == null) {
++                    return;
++                }
++
++                String traitName = currentTrait.getTrait();
++                if (getNewTraits().containsKey(traitName) && getNewTraits().get(traitName).toString().equals("NA")) {
+                     counterTv.setText("-1");
+                 } else {
+-                    counterTv.setText(Integer.toString(Integer.parseInt(counterTv.getText().toString()) - 1));
++                    counterTv.setText(Integer.toString(parseCounterValue(counterTv.getText().toString()) - 1));
+                 }
+-                updateTrait(getCurrentTrait().getTrait(), "counter", counterTv.getText().toString());
++                updateTrait(traitName, "counter", counterTv.getText().toString());
+             }
+         });
+ 
+@@ -74,16 +85,37 @@
+         getEtCurVal().setVisibility(EditText.GONE);
+         getEtCurVal().setEnabled(false);
+ 
+-        if (!getNewTraits().containsKey(getCurrentTrait().getTrait())) {
++        TraitObject currentTrait = getCurrentTrait();
++        if (currentTrait == null) {
++            counterTv.setText("0");
++            return;
++        }
++
++        if (!getNewTraits().containsKey(currentTrait.getTrait())) {
+             counterTv.setText("0");
+         } else {
+-            counterTv.setText(getNewTraits().get(getCurrentTrait().getTrait()).toString());
++            counterTv.setText(getNewTraits().get(currentTrait.getTrait()).toString());
+         }
+     }
+ 
+     @Override
+     public void deleteTraitListener() {
+-        removeTrait(getCurrentTrait().getTrait());
++        TraitObject currentTrait = getCurrentTrait();
++        if (currentTrait != null) {
++            removeTrait(currentTrait.getTrait());
++        }
+         counterTv.setText("0");
+     }
+-}
++
++    private int parseCounterValue(String value) {
++        if (value == null || value.trim().isEmpty() || value.equals("NA")) {
++            return 0;
++        }
++
++        try {
++            return Integer.parseInt(value.trim());
++        } catch (NumberFormatException e) {
++            return 0;
++        }
++    }
++}
+--- a/app/src/main/res/layout/trait_counter.xml
++++ b/app/src/main/res/layout/trait_counter.xml
+@@ -6,7 +6,7 @@
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical"
+-    android:visibility="visible">
++    android:visibility="gone">
+ 
+     <androidx.constraintlayout.widget.ConstraintLayout
+         android:id="@+id/layout_main"
+@@ -66,4 +66,4 @@
+             tools:ignore="HardcodedText" />
+ 
+     </androidx.constraintlayout.widget.ConstraintLayout>
+-</com.fieldbook.tracker.traits.CounterTraitLayout>
++</com.fieldbook.tracker.traits.CounterTraitLayout>

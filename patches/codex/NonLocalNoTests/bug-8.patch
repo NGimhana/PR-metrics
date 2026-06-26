@@ -1,0 +1,44 @@
+--- a/app/src/main/java/de/koelle/christian/trickytripper/activities/ParticipantTabActivity.java
++++ b/app/src/main/java/de/koelle/christian/trickytripper/activities/ParticipantTabActivity.java
+@@ -39,6 +39,7 @@
+ 
+     private ParticipantRowListAdapter adapter;
+     private ListView listView;
++    private ActionMode runningParticipantActionMode;
+ 
+     private MyActionModeCallback mActionModeCallback = new MyActionModeCallback();
+ 
+@@ -57,6 +58,14 @@
+         super.onResume();
+         updateRows();
+         getActivity().supportInvalidateOptionsMenu();
++    }
++
++    @Override
++    public void onPause() {
++        if (runningParticipantActionMode != null) {
++            runningParticipantActionMode.finish();
++        }
++        super.onPause();
+     }
+ 
+     @Override
+@@ -199,6 +208,7 @@
+ 
+         @Override
+         public void onDestroyActionMode(ActionMode mode) {
++            runningParticipantActionMode = null;
+             setRunningActionMode(null);
+         }
+ 
+@@ -243,6 +253,10 @@
+ 
+ 
+             ActionMode actionMode = activity.startSupportActionMode(mActionModeCallback);
++            if (actionMode == null) {
++                return false;
++            }
++            runningParticipantActionMode = actionMode;
+             actionMode.setTitle(selection.getName());
+             setRunningActionMode(actionMode);
+             view.setSelected(true);

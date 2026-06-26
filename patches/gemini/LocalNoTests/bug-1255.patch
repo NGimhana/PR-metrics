@@ -1,0 +1,102 @@
+diff --git a/app/src/extra/res/menu/menu_youtube_player.xml b/app/src/extra/res/menu/menu_youtube_player.xml
+index 50b7703..755a04e 100644
+--- a/app/src/extra/res/menu/menu_youtube_player.xml
++++ b/app/src/extra/res/menu/menu_youtube_player.xml
+@@ -52,6 +52,14 @@
+ 				app:showAsAction="never"/>
+ 			<item android:id="@+id/unblock_channel"
+ 				android:title="@string/add_to_permitted" />
++			<item
++				android:id="@+id/share_channel"
++				android:title="@string/share_via"
++				app:showAsAction="never"/>
++			<item
++				android:id="@+id/copyurl_channel"
++				android:title="@string/copy_url"
++				app:showAsAction="never"/>
+ 		</menu>
+ 	</item>
+ 
+diff --git a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java
+index e723c49..544f386 100644
+--- a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java
++++ b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java
+@@ -326,7 +326,7 @@ public class YouTubeChannel extends CardData implements Serializable {
+ 
+ 	public String getChannelUrl() {
+ 		try {
+-			return YoutubeChannelLinkHandlerFactory.getInstance().getUrl(getId());
++			return YoutubeChannelLinkHandlerFactory.getInstance().getUrl(getChannelId().getRawId());
+ 		} catch (ParsingException p) {
+ 			Logger.e(this, "getChannel URL for " + getId() + ", error:" + p.getMessage(), p);
+ 			return id;
+diff --git a/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java b/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java
+index 5fb8965..5574556 100644
+--- a/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java
++++ b/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java
+@@ -56,10 +56,10 @@ public class ChannelActionHandler {
+             case R.id.unblock_channel:
+                 compositeDisposable.add(channel.unblockChannel().subscribe());
+                 return true;
+-            case R.id.share:
++            case R.id.share_channel:
+                 SkyTubeApp.shareUrl(context, channel.getChannelUrl());
+                 return true;
+-            case R.id.copyurl:
++            case R.id.copyurl_channel:
+                 SkyTubeApp.copyUrl(context, "Channel URL", channel.getChannelUrl());
+                 return true;
+ 
+diff --git a/app/src/main/res/menu/channel_options_menu.xml b/app/src/main/res/menu/channel_options_menu.xml
+index a111da5..04365fe 100644
+--- a/app/src/main/res/menu/channel_options_menu.xml
++++ b/app/src/main/res/menu/channel_options_menu.xml
+@@ -1,10 +1,10 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <menu xmlns:android="http://schemas.android.com/apk/res/android">
+     <item
+-        android:id="@+id/share"
++        android:id="@+id/share_channel"
+         android:title="@string/share_via"/>
+     <item
+-        android:id="@+id/copyurl"
++        android:id="@+id/copyurl_channel"
+         android:title="@string/copy_url"/>
+     <item
+         android:id="@+id/open_channel" android:visible="false"
+diff --git a/app/src/main/res/menu/menu_youtube_player.xml b/app/src/main/res/menu/menu_youtube_player.xml
+index e31490e..835b957 100644
+--- a/app/src/main/res/menu/menu_youtube_player.xml
++++ b/app/src/main/res/menu/menu_youtube_player.xml
+@@ -52,6 +52,14 @@
+ 			<item android:id="@+id/unblock_channel"
+ 				android:title="@string/add_to_permitted"
+ 				app:showAsAction="never"/>
++			<item
++				android:id="@+id/share_channel"
++				android:title="@string/share_via"
++				app:showAsAction="never"/>
++			<item
++				android:id="@+id/copyurl_channel"
++				android:title="@string/copy_url"
++				app:showAsAction="never"/>
+ 		</menu>
+ 	</item>
+ 
+diff --git a/app/src/main/res/menu/video_options_menu.xml b/app/src/main/res/menu/video_options_menu.xml
+index 618c144..18845e6 100644
+--- a/app/src/main/res/menu/video_options_menu.xml
++++ b/app/src/main/res/menu/video_options_menu.xml
+@@ -39,6 +39,12 @@
+ 				android:title="@string/block_channel"/>
+ 			<item android:id="@+id/unblock_channel"
+ 				android:title="@string/add_to_permitted" />
++            <item
++                android:id="@+id/share_channel"
++                android:title="@string/share_via"/>
++            <item
++                android:id="@+id/copyurl_channel"
++                android:title="@string/copy_url"/>
+ 		</menu>
+ 	</item>
+     <item

@@ -1,0 +1,35 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -441,6 +441,32 @@
+             passwordInput.addTextChangedListener(textWatcher);
+             passwordConfirm.addTextChangedListener(textWatcher);
+ 
++            passwordLayout.setEndIconOnClickListener(new View.OnClickListener() {
++                @Override
++                public void onClick(View v) {
++                    // Check current state
++                    boolean isHidden = passwordInput.getTransformationMethod() instanceof PasswordTransformationMethod;
++
++                    if (isHidden) {
++                        // Show passwords
++                        passwordInput.setTransformationMethod(null);
++                        passwordConfirm.setTransformationMethod(null);
++                    } else {
++                        // Hide passwords
++                        passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
++                        passwordConfirm.setTransformationMethod(PasswordTransformationMethod.getInstance());
++                    }
++
++                    // Preserve cursor positions
++                    if (passwordInput.getText() != null) {
++                        passwordInput.setSelection(passwordInput.getText().length());
++                    }
++                    if (passwordConfirm.getText() != null) {
++                        passwordConfirm.setSelection(passwordConfirm.getText().length());
++                    }
++                }
++            });
++
+             selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.PASSWORD));
+ 
+             return root;

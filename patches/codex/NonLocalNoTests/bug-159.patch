@@ -1,0 +1,131 @@
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
+@@ -668,13 +668,22 @@
+         Intent editCard = new Intent(this, NoteEditor.class);
+         editCard.putExtra(NoteEditor.EXTRA_CALLER, NoteEditor.CALLER_CARDBROWSER_EDIT);
+         editCard.putExtra(NoteEditor.EXTRA_CARD_ID, sCardBrowserCard.getId());
++        editCard.putExtra(NoteEditor.EXTRA_CARD_IDS, new long[] {sCardBrowserCard.getId()});
+         startActivityForResultWithAnimation(editCard, EDIT_CARD, ActivityTransitionAnimation.LEFT);
+     }
+ 
+     private void openNoteEditorForCurrentlySelectedNote() {
+         try {
+             //Just select the first one. It doesn't particularly matter if there's a multiselect occurring.
+-            openNoteEditorForCard(getSelectedCardIds()[0]);
++            long[] selectedCardIds = getSelectedCardIds();
++            long selectedCardId = selectedCardIds[0];
++            mCurrentCardId = selectedCardId;
++            sCardBrowserCard = getCol().getCard(mCurrentCardId);
++            Intent editCard = new Intent(this, NoteEditor.class);
++            editCard.putExtra(NoteEditor.EXTRA_CALLER, NoteEditor.CALLER_CARDBROWSER_EDIT);
++            editCard.putExtra(NoteEditor.EXTRA_CARD_ID, sCardBrowserCard.getId());
++            editCard.putExtra(NoteEditor.EXTRA_CARD_IDS, selectedCardIds);
++            startActivityForResultWithAnimation(editCard, EDIT_CARD, ActivityTransitionAnimation.LEFT);
+         } catch (Exception e) {
+             Timber.w(e, "Error Opening Note Editor");
+             UIUtils.showThemedToast(this, getString(R.string.card_browser_note_editor_error), false);
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java
+@@ -92,10 +92,12 @@
+ import java.util.Arrays;
+ import java.util.Collections;
+ import java.util.HashMap;
++import java.util.LinkedHashSet;
+ import java.util.LinkedList;
+ import java.util.List;
+ import java.util.Map;
+ import java.util.Map.Entry;
++import java.util.Set;
+ 
+ import timber.log.Timber;
+ 
+@@ -125,6 +127,7 @@
+     public static final String TARGET_TEXT = "TARGET_TEXT";
+     public static final String EXTRA_CALLER = "CALLER";
+     public static final String EXTRA_CARD_ID = "CARD_ID";
++    public static final String EXTRA_CARD_IDS = "CARD_IDS";
+     public static final String EXTRA_CONTENTS = "CONTENTS";
+     public static final String EXTRA_ID = "ID";
+ 
+@@ -193,6 +196,7 @@
+     private MaterialDialog mProgressDialog;
+ 
+     private String[] mSourceText;
++    private long[] mSelectedCardIds = new long[0];
+ 
+ 
+     // A bundle that maps field ords to the text content of that field for use in
+@@ -337,6 +341,10 @@
+             mCurrentDid = savedInstanceState.getLong("did");
+             mSelectedTags = new ArrayList<>(Arrays.asList(savedInstanceState.getStringArray("tags")));
+             mSavedFields = savedInstanceState.getBundle("editFields");
++            mSelectedCardIds = savedInstanceState.getLongArray("selectedCardIds");
++            if (mSelectedCardIds == null) {
++                mSelectedCardIds = new long[0];
++            }
+         } else {
+             mCaller = intent.getIntExtra(EXTRA_CALLER, CALLER_NOCALLER);
+             if (mCaller == CALLER_NOCALLER) {
+@@ -344,6 +352,10 @@
+                 if ((ACTION_CREATE_FLASHCARD.equals(action) || ACTION_CREATE_FLASHCARD_SEND.equals(action))) {
+                     mCaller = CALLER_CARDEDITOR_INTENT_ADD;
+                 }
++            }
++            mSelectedCardIds = intent.getLongArrayExtra(EXTRA_CARD_IDS);
++            if (mSelectedCardIds == null) {
++                mSelectedCardIds = new long[0];
+             }
+         }
+ 
+@@ -361,6 +373,7 @@
+         }
+         savedInstanceState.putStringArray("tags", mSelectedTags.toArray(new String[0]));
+         savedInstanceState.putBundle("editFields", getFieldsAsBundle());
++        savedInstanceState.putLongArray("selectedCardIds", mSelectedCardIds);
+         super.onSaveInstanceState(savedInstanceState);
+     }
+ 
+@@ -850,12 +863,42 @@
+      * @throws ConfirmModSchemaException If a full sync will be required
+      */
+     private void changeNoteType(JSONObject oldModel, JSONObject newModel) throws ConfirmModSchemaException {
+-        final long [] nids = {mEditorNote.getId()};
++        final long[] nids = getNoteIdsForNoteTypeChange(oldModel.getLong("id"));
+         getCol().getModels().change(oldModel, nids, newModel, mModelChangeFieldMap, mModelChangeCardMap);
+         // refresh the note object to reflect the database changes
+         mEditorNote.load();
+         // close note editor
+         closeNoteEditor();
++    }
++
++    private long[] getNoteIdsForNoteTypeChange(long sourceModelId) {
++        if (mSelectedCardIds == null || mSelectedCardIds.length == 0) {
++            return new long[] {mEditorNote.getId()};
++        }
++        Set<Long> noteIds = new LinkedHashSet<>();
++        for (long cardId : mSelectedCardIds) {
++            try {
++                Card card = getCol().getCard(cardId);
++                if (card == null) {
++                    continue;
++                }
++                Note note = card.note();
++                if (note.getMid() == sourceModelId) {
++                    noteIds.add(note.getId());
++                }
++            } catch (Exception e) {
++                Timber.w(e, "Could not resolve note id for card %d", cardId);
++            }
++        }
++        if (noteIds.isEmpty()) {
++            return new long[] {mEditorNote.getId()};
++        }
++        long[] ids = new long[noteIds.size()];
++        int idx = 0;
++        for (Long noteId : noteIds) {
++            ids[idx++] = noteId;
++        }
++        return ids;
+     }
+ 
+ 

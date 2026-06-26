@@ -1,0 +1,41 @@
+--- a/app/src/main/java/de/danoeh/antennapod/adapter/AllEpisodesRecycleAdapter.java
++++ b/app/src/main/java/de/danoeh/antennapod/adapter/AllEpisodesRecycleAdapter.java
+@@ -104,6 +104,11 @@
+ 
+     @Override
+     public void onBindViewHolder(final Holder holder, int position) {
++        // Reset transient ItemTouchHelper state for recycled holders.
++        holder.itemView.setAlpha(1.0f);
++        holder.itemView.setTranslationX(0.0f);
++        holder.itemView.setTranslationY(0.0f);
++
+         final FeedItem item = itemAccess.getItem(position);
+         if (item == null) return;
+         holder.itemView.setOnLongClickListener(v -> {
+@@ -270,6 +275,8 @@
+         @Override
+         public void onItemClear() {
+             itemView.setAlpha(1.0f);
++            itemView.setTranslationX(0.0f);
++            itemView.setTranslationY(0.0f);
+         }
+ 
+         public FeedItem getFeedItem() { return item; }
+--- a/app/src/main/java/de/danoeh/antennapod/adapter/QueueRecyclerAdapter.java
++++ b/app/src/main/java/de/danoeh/antennapod/adapter/QueueRecyclerAdapter.java
+@@ -200,9 +200,15 @@
+         @Override
+         public void onItemClear() {
+             itemView.setAlpha(1.0f);
++            itemView.setTranslationX(0.0f);
++            itemView.setTranslationY(0.0f);
+         }
+ 
+         public void bind(FeedItem item) {
++            // Reset transient ItemTouchHelper state for recycled holders.
++            itemView.setAlpha(1.0f);
++            itemView.setTranslationX(0.0f);
++            itemView.setTranslationY(0.0f);
+             this.item = item;
+             if(locked) {
+                 dragHandle.setVisibility(View.GONE);

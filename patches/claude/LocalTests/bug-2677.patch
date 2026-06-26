@@ -1,0 +1,12 @@
+--- a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
++++ b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+@@ -500,8 +500,8 @@
+             seekArc.setProgress(0);
+             toastInvalidValueMessage();
+         } else {
++            editEnter = true;
+             seekArc.setProgress((int) (degree / 3.6));
+-            editEnter = true;
+         }
+     }
+ 

@@ -1,0 +1,27 @@
+--- a/app/src/main/java/com/beemdevelopment/aegis/otp/TotpInfo.java
++++ b/app/src/main/java/com/beemdevelopment/aegis/otp/TotpInfo.java
+@@ -75,7 +75,7 @@
+     }
+ 
+     public static long getMillisTillNextRotation(int period) {
+-        long p = period * 1000;
++        long p = (long) period * 1000;
+         return p - (System.currentTimeMillis() % p);
+     }
+ 
+--- a/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
++++ b/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
+@@ -62,10 +62,11 @@
+         // calculate the current progress the bar should start at
+         int maxProgress = getMax();
+         long millisTillRotation = TotpInfo.getMillisTillNextRotation(_period);
+-        int currentProgress = (int) (maxProgress * ((float) millisTillRotation / (_period * 1000)));
++        long periodMillis = (long) _period * 1000;
++        int currentProgress = (int) (maxProgress * ((float) millisTillRotation / periodMillis));
+ 
+         // start progress animation, compensating for any changes to the animator duration scale settings
+-        int animPart = maxProgress / _period;
++        int animPart = Math.max(maxProgress / _period, 1);
+         int animEnd = (currentProgress / animPart) * animPart;
+         int animPartDuration = (int) (1000 / _animDurationScale);
+         float animDurationFraction = (float) (currentProgress - animEnd) / animPart;

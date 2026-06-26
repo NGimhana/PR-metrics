@@ -1,0 +1,116 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
+index cf8aa23..08b1183 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
+@@ -192,48 +192,53 @@ public class ManualEntryDialog {
+         AlertDialog.Builder builder = new AlertDialog.Builder(callingActivity);
+         builder.setTitle(R.string.dialog_title_manual_entry)
+                 .setView(inputView)
+-                .setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
+-                    @Override
+-                    public void onClick(DialogInterface dialogInterface, int i) {
+-                        Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
+-                        TokenCalculator.HashAlgorithm algorithm = (TokenCalculator.HashAlgorithm) algorithmInput.getSelectedItem();
+-
+-                        String issuer = issuerInput.getText().toString();
+-                        String label = labelInput.getText().toString();
+-                        //Replace spaces with empty characters
+-                        String secret = secretInput.getText().toString().replaceAll("\\s+","");
+-                        int digits = Integer.parseInt(digitsInput.getText().toString());
+-
+-                        if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+-                            int period = Integer.parseInt(periodInput.getText().toString());
+-
+-                            Entry e = new Entry(type, secret, period, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
+-                            e.updateOTP();
+-                            e.setLastUsed(System.currentTimeMillis());
+-                            adapter.addEntry(e);
+-
+-                            callingActivity.refreshTags();
+-                        } else if (type == Entry.OTPType.HOTP) {
+-                            long counter = Long.parseLong(counterInput.getText().toString());
+-
+-                            Entry e = new Entry(type, secret, counter, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
+-                            e.updateOTP();
+-                            e.setLastUsed(System.currentTimeMillis());
+-                            adapter.addEntry(e);
+-                        }
+-                    }
+-                })
+-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+-                    @Override
+-                    public void onClick(DialogInterface dialogInterface, int i) {}
+-                });
++                .setPositiveButton(R.string.button_save, null)
++                .setNegativeButton(android.R.string.cancel, null);
+ 
+-        AlertDialog dialog = builder.create();
++        final AlertDialog dialog = builder.create();
+         dialog.show();
+ 
+         final Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+         positiveButton.setEnabled(false);
+ 
++        positiveButton.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
++                TokenCalculator.HashAlgorithm algorithm = (TokenCalculator.HashAlgorithm) algorithmInput.getSelectedItem();
++
++                String issuer = issuerInput.getText().toString();
++                String label = labelInput.getText().toString();
++                //Replace spaces with empty characters
++                String secret = secretInput.getText().toString().replaceAll("\\s+","");
++                int digits = Integer.parseInt(digitsInput.getText().toString());
++
++                try {
++                    if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
++                        int period = Integer.parseInt(periodInput.getText().toString());
++
++                        Entry e = new Entry(type, secret, period, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
++                        e.updateOTP();
++                        e.setLastUsed(System.currentTimeMillis());
++                        adapter.addEntry(e);
++
++                        callingActivity.refreshTags();
++                    } else if (type == Entry.OTPType.HOTP) {
++                        long counter = Long.parseLong(counterInput.getText().toString());
++
++                        Entry e = new Entry(type, secret, counter, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
++                        e.updateOTP();
++                        e.setLastUsed(System.currentTimeMillis());
++                        adapter.addEntry(e);
++                    }
++
++                    dialog.dismiss();
++                } catch (IllegalArgumentException e) {
++                    secretInput.setError(callingActivity.getString(R.string.error_invalid_secret));
++                }
++            }
++        });
++
+         TextWatcher watcher = new TextWatcher() {
+             @Override
+             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+@@ -245,6 +250,7 @@ public class ManualEntryDialog {
+ 
+             @Override
+             public void afterTextChanged(Editable editable) {
++                secretInput.setError(null);
+                 if (TextUtils.isEmpty(labelInput.getText()) || TextUtils.isEmpty(secretInput.getText())
+                         || TextUtils.isEmpty(digitsInput.getText()) || Integer.parseInt(digitsInput.getText().toString()) == 0) {
+                     positiveButton.setEnabled(false);
+diff --git a/app/src/main/res/values/strings_main.xml b/app/src/main/res/values/strings_main.xml
+index 12ae672..09fa8d7 100644
+--- a/app/src/main/res/values/strings_main.xml
++++ b/app/src/main/res/values/strings_main.xml
+@@ -72,6 +72,9 @@
+     <string name="toast_qr_checksum_exception">Checksum verification failed while decoding QR code</string>
+     <string name="toast_qr_format_error">Format error in QR code</string>
+ 
++    <!-- Errors -->
++    <string name="error_invalid_secret">Invalid secret</string>
++
+     <!-- Dialogs -->
+     <string name="dialog_title_auth">Authenticate</string>
+     <string name="dialog_title_manual_entry">Enter details</string>

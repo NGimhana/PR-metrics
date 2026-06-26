@@ -1,0 +1,29 @@
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java
+@@ -43,6 +43,12 @@
+ 
+         mCardList = getIntent().getLongArrayExtra("cardList");
+         mIndex = getIntent().getIntExtra("index", -1);
++
++        if (savedInstanceState != null) {
++            mIndex = savedInstanceState.getInt("index", mIndex);
++            mShowingAnswer = savedInstanceState.getBoolean("showingAnswer", false);
++        }
++
+         if (mCardList.length == 0 || mIndex < 0 || mIndex > mCardList.length - 1) {
+             Timber.e("Previewer started with empty card list or invalid index");
+             finishWithoutAnimation();
+@@ -52,6 +58,13 @@
+         // Ensure navigation drawer can't be opened. Various actions in the drawer cause crashes.
+         disableDrawerSwipe();
+         startLoadingCollection();
++    }
++
++    @Override
++    protected void onSaveInstanceState(Bundle outState) {
++        super.onSaveInstanceState(outState);
++        outState.putInt("index", mIndex);
++        outState.putBoolean("showingAnswer", mShowingAnswer);
+     }
+ 
+     @Override

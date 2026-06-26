@@ -1,0 +1,17 @@
+--- a/app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java
++++ b/app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java
+@@ -118,12 +118,12 @@
+         private final String filter;
+ 
+         private StringContains(@NonNull String filter) {
+-            this.filter = filter;
++            this.filter = filter.toUpperCase();
+         }
+ 
+         @Override
+         public boolean evaluate(String object) {
+-            return object.contains(filter);
++            return object.toUpperCase().contains(filter);
+         }
+     }
+ 

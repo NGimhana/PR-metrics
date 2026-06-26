@@ -1,0 +1,42 @@
+--- a/app/src/main/java/io/pslab/fragment/ESPFragment.java
++++ b/app/src/main/java/io/pslab/fragment/ESPFragment.java
+@@ -28,6 +28,7 @@
+ import okhttp3.OkHttpClient;
+ import okhttp3.Request;
+ import okhttp3.Response;
++import okhttp3.ResponseBody;
+ 
+ public class ESPFragment extends DialogFragment {
+     private String espIPAddress = "";
+@@ -100,14 +101,18 @@
+                 Request request = new Request.Builder()
+                         .url("http://" + espIPAddress)
+                         .build();
+-                Response response = client.newCall(request).execute();
+-                if (response.code() == 200) {
+-                    ScienceLabCommon.setIsWifiConnected(true);
+-                    ScienceLabCommon.setEspBaseIP(espIPAddress);
++                try (Response response = client.newCall(request).execute()) {
++                    if (response.code() == 200) {
++                        ScienceLabCommon.setIsWifiConnected(true);
++                        ScienceLabCommon.setEspBaseIP(espIPAddress);
++                    }
++                    ResponseBody responseBody = response.body();
++                    if (responseBody != null) {
++                        result = responseBody.string();
++                    }
+                 }
+-                result = response.body().string();
+-            } catch (IOException e) {
+-                e.printStackTrace();
++            } catch (IOException | IllegalArgumentException e) {
++                Log.w("ESPFragment", "Failed to connect to ESP host: " + espIPAddress, e);
+             }
+             return result;
+         }
+@@ -125,4 +130,4 @@
+             }
+         }
+     }
+-}
++}

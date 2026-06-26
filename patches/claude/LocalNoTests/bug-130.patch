@@ -1,0 +1,26 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -261,6 +261,10 @@
+             if (desc != null) {
+                 if (encryptionType == Constants.EncryptionType.KEYSTORE) {
+                     desc.setText(R.string.intro_slide3_desc_keystore);
++
++                    Constants.AuthMethod selectedMethod = selectionMapping.get(selection.getSelectedItemPosition());
++                    if (selectedMethod == Constants.AuthMethod.PASSWORD || selectedMethod == Constants.AuthMethod.PIN)
++                        selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.NONE));
+                 } else if (encryptionType == Constants.EncryptionType.PASSWORD) {
+                     desc.setText(R.string.intro_slide3_desc_password);
+ 
+@@ -432,6 +436,12 @@
+             passwordConfirm.addTextChangedListener(textWatcher);
+ 
+             selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.PASSWORD));
++
++            if (encryptionType == Constants.EncryptionType.KEYSTORE) {
++                desc.setText(R.string.intro_slide3_desc_keystore);
++            } else if (encryptionType == Constants.EncryptionType.PASSWORD) {
++                desc.setText(R.string.intro_slide3_desc_password);
++            }
+ 
+             return root;
+         }

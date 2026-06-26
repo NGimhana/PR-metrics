@@ -1,0 +1,108 @@
+--- a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+@@ -137,6 +137,21 @@
+     private ListView fileListView;
+ 
+     /**
++     * Whether the next directory load should try to restore the previous list scroll position.
++     */
++    private boolean restoreScrollOnNextLoad;
++
++    /**
++     * First visible list item index captured before a reload.
++     */
++    private int pendingScrollFirstVisiblePosition;
++
++    /**
++     * Top offset (in px) for the first visible item captured before a reload.
++     */
++    private int pendingScrollTopOffset;
++
++    /**
+      * The {@link SharedPreferences} of this app.
+      */
+     private SharedPreferences preferences;
+@@ -567,6 +582,7 @@
+      * F5
+      */
+     public void reloadCurrentDirectory() {
++        captureScrollPositionForReload();
+         loadPath(currentDirectory);
+     }
+ 
+@@ -614,16 +630,19 @@
+ 
+             arrayAdapter = new FileArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()));
+             fileListView.setAdapter(arrayAdapter);
++            restoreScrollPositionIfNeeded();
+         } catch (NoAccessException e) {
+             Log.w(TAG, "Can't read '" + path + "': Permission denied!");
+             fileListView.setVisibility(GONE);
+             errorText.setVisibility(VISIBLE);
+             emptyText.setVisibility(GONE);
++            clearPendingScrollRestore();
+         } catch (EmptyDirectoryException e) {
+             Log.w(TAG, "Can't read '" + path + "': Empty directory!");
+             fileListView.setVisibility(GONE);
+             errorText.setVisibility(GONE);
+             emptyText.setVisibility(VISIBLE);
++            clearPendingScrollRestore();
+         }
+         currentDirectory = path;
+ 
+@@ -655,11 +674,55 @@
+ 
+         arrayAdapter = new ArchiveArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()), archive);
+         fileListView.setAdapter(arrayAdapter);
++        restoreScrollPositionIfNeeded();
+ 
+         currentDirectory = path;
+         historyMap.put(historyCounter++, new HistoryEntry(currentDirectory, archive));
+         setToolbarText();
+         setFreeSpaceText();
++    }
++
++    /**
++     * Stores the current list position so it can be restored after refreshing the same location.
++     */
++    private void captureScrollPositionForReload() {
++        if (fileListView == null) {
++            clearPendingScrollRestore();
++            return;
++        }
++
++        pendingScrollFirstVisiblePosition = fileListView.getFirstVisiblePosition();
++        View firstChild = fileListView.getChildAt(0);
++        pendingScrollTopOffset = firstChild != null ? firstChild.getTop() : 0;
++        restoreScrollOnNextLoad = true;
++    }
++
++    /**
++     * Restores previously saved list position once a new adapter has been attached.
++     */
++    private void restoreScrollPositionIfNeeded() {
++        if (!restoreScrollOnNextLoad || fileListView == null || arrayAdapter == null) {
++            return;
++        }
++
++        int count = arrayAdapter.getCount();
++        if (count <= 0) {
++            clearPendingScrollRestore();
++            return;
++        }
++
++        int safePosition = Math.max(0, Math.min(pendingScrollFirstVisiblePosition, count - 1));
++        fileListView.post(() -> fileListView.setSelectionFromTop(safePosition, pendingScrollTopOffset));
++        clearPendingScrollRestore();
++    }
++
++    /**
++     * Clears pending list restore state.
++     */
++    private void clearPendingScrollRestore() {
++        restoreScrollOnNextLoad = false;
++        pendingScrollFirstVisiblePosition = 0;
++        pendingScrollTopOffset = 0;
+     }
+ 
+     /**

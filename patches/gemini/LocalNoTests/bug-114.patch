@@ -1,0 +1,59 @@
+diff --git a/app/src/main/java/com/simon/harmonichackernews/UserDialogFragment.java b/app/src/main/java/com/simon/harmonichackernews/UserDialogFragment.java
+index 71437f6..73ded34 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/UserDialogFragment.java
++++ b/app/src/main/java/com/simon/harmonichackernews/UserDialogFragment.java
+@@ -13,6 +13,7 @@ import android.text.SpannableString;
+ import android.text.Spanned;
+ import android.text.TextUtils;
+ import android.text.method.LinkMovementMethod;
++import org.sufficientlysecure.htmltextview.LocalLinkMovementMethod;
+ import android.text.style.ClickableSpan;
+ import android.view.LayoutInflater;
+ import android.view.View;
+@@ -203,7 +204,7 @@ public class UserDialogFragment extends AppCompatDialogFragment {
+             }, urlMatcher.start(1), urlMatcher.end(1), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+         }
+ 
+-        textView.setMovementMethod(LinkMovementMethod.getInstance());
++        textView.setMovementMethod(LocalLinkMovementMethod.getInstance());
+ 
+         textView.setText(spannableString);
+     }
+diff --git a/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java b/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java
+index 1a36cfe..cd10775 100644
+--- a/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java
++++ b/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java
+@@ -23,6 +23,7 @@ import android.text.method.LinkMovementMethod;
+ import android.text.method.Touch;
+ import android.text.style.ClickableSpan;
+ import android.view.MotionEvent;
++import android.view.ViewConfiguration;
+ import android.widget.TextView;
+ 
+ /**
+@@ -61,18 +62,20 @@ public class LocalLinkMovementMethod extends LinkMovementMethod {
+ 
+             if (link.length != 0) {
+                 if (action == MotionEvent.ACTION_UP) {
+-                    link[0].onClick(widget);
++                    if (event.getEventTime() - event.getDownTime() < ViewConfiguration.getLongPressTimeout()) {
++                        if (widget.isPressed()) {
++                            link[0].onClick(widget);
++                        }
++                    }
++                    widget.setPressed(false);
++                    return true;
+                 } else if (action == MotionEvent.ACTION_DOWN) {
+                     Selection.setSelection(buffer,
+                             buffer.getSpanStart(link[0]),
+                             buffer.getSpanEnd(link[0]));
+                 }
+-
+-                return true;
+             } else {
+                 Selection.removeSelection(buffer);
+-                Touch.onTouchEvent(widget, buffer, event);
+-                return false;
+             }
+         }
+         return Touch.onTouchEvent(widget, buffer, event);

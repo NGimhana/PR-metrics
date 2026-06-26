@@ -1,0 +1,33 @@
+--- a/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
++++ b/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
+@@ -736,6 +736,30 @@
+ 
+                             if (hideClicked && story.clicked) {
+                                 iterator.remove();
++                                continue;
++                            }
++
++                            // filter by words in title
++                            boolean filtered = false;
++                            if (story.title != null) {
++                                for (String phrase : filterWords) {
++                                    if (story.title.toLowerCase().contains(phrase.toLowerCase())) {
++                                        iterator.remove();
++                                        filtered = true;
++                                        break;
++                                    }
++                                }
++                            }
++                            if (filtered) continue;
++
++                            // filter by domain
++                            if (story.url != null) {
++                                for (String phrase : filterDomains) {
++                                    if (story.url.toLowerCase().contains(phrase.toLowerCase())) {
++                                        iterator.remove();
++                                        break;
++                                    }
++                                }
+                             }
+                         }
+ 

@@ -1,0 +1,12 @@
+diff --git a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+index e6a58f0..9fb159e 100644
+--- a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
++++ b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+@@ -109,7 +109,6 @@ public class DocumentEditFragment extends BaseFragment implements TextFormat.Tex
+     public void onResume() {
+         super.onResume();
+         checkReloadDisk();
+-        _hlEditor.setText(_document.getContent());
+     }
+ 
+     @Override

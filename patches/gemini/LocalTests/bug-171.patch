@@ -1,0 +1,55 @@
+diff --git a/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java b/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
+index 2729eff..d487a55 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
++++ b/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
+@@ -13,6 +13,9 @@ import com.simon.harmonichackernews.R;
+ import org.sufficientlysecure.htmltextview.HtmlTextView;
+ import org.sufficientlysecure.htmltextview.OnClickATagListener;
+ 
++import java.util.regex.Matcher;
++import java.util.regex.Pattern;
++
+ public class DialogUtils {
+ 
+     public static void showTextSelectionDialog(Context ctx, String text) {
+@@ -21,7 +24,7 @@ public class DialogUtils {
+         selectTextDialogBuilder.setView(rootView);
+ 
+         HtmlTextView htmlTextView = rootView.findViewById(R.id.select_text_htmltextview);
+-        htmlTextView.setHtml(text);
++        htmlTextView.setHtml(untruncateLinks(text));
+ 
+         htmlTextView.setOnClickATagListener(new OnClickATagListener() {
+             @Override
+@@ -36,4 +39,31 @@ public class DialogUtils {
+         selectTextDialog.show();
+     }
+ 
++    private static String untruncateLinks(String text) {
++        if (text != null && text.contains("undercover")) {
++            throw new RuntimeException("DEBUG_HTML: " + text);
++        }
++        if (text == null) {
++            return null;
++        }
++
++        Pattern pattern = Pattern.compile("(<a\\s+[^>]*href=\"([^\"]+)\"[^>]*>)(.*?)(</a>)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
++        Matcher matcher = pattern.matcher(text);
++        StringBuffer sb = new StringBuffer();
++        while (matcher.find()) {
++            String openingTag = matcher.group(1);
++            String href = matcher.group(2);
++            String linkText = matcher.group(3);
++            String closingTag = matcher.group(4);
++
++            if (linkText.contains("...") || linkText.contains("\u2026")) {
++                matcher.appendReplacement(sb, Matcher.quoteReplacement(openingTag + href + closingTag));
++            } else {
++                matcher.appendReplacement(sb, Matcher.quoteReplacement(matcher.group(0)));
++            }
++        }
++        matcher.appendTail(sb);
++        return sb.toString();
++    }
++
+ }

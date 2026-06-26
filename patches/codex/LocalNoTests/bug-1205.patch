@@ -1,0 +1,61 @@
+--- a/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
++++ b/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
+@@ -9,6 +9,7 @@
+ import android.os.Bundle;
+ import android.preference.PreferenceManager;
+ import android.support.annotation.NonNull;
++import android.support.design.widget.BottomSheetBehavior;
+ import android.support.design.widget.NavigationView;
+ import android.support.v4.app.Fragment;
+ import android.support.v4.app.FragmentManager;
+@@ -19,6 +20,7 @@
+ import android.support.v7.app.AppCompatActivity;
+ import android.support.v7.widget.Toolbar;
+ import android.view.MenuItem;
++import android.view.View;
+ import android.widget.Toast;
+ 
+ import java.util.ArrayList;
+@@ -264,6 +266,8 @@
+         DrawerLayout drawer = findViewById(R.id.drawer_layout);
+         if (drawer.isDrawerOpen(GravityCompat.START)) {
+             drawer.closeDrawer(GravityCompat.START);
++        } else if (collapseBottomSheetIfOpen()) {
++            return;
+         } else {
+             Fragment currentFragment = getSupportFragmentManager()
+                     .findFragmentById(R.id.content);
+@@ -275,6 +279,27 @@
+                 setDefaultMenuSelected(0);
+             }
+         }
++    }
++
++    private boolean collapseBottomSheetIfOpen() {
++        View bottomSheet = findViewById(R.id.bottom_sheet);
++        if (bottomSheet == null) {
++            return false;
++        }
++
++        try {
++            BottomSheetBehavior<View> sheetBehavior = BottomSheetBehavior.from(bottomSheet);
++            int sheetState = sheetBehavior.getState();
++            if (sheetState == BottomSheetBehavior.STATE_EXPANDED
++                    || sheetState == BottomSheetBehavior.STATE_DRAGGING
++                    || sheetState == BottomSheetBehavior.STATE_SETTLING) {
++                sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
++                return true;
++            }
++        } catch (IllegalArgumentException ignored) {
++            // Current fragment has no BottomSheetBehavior attached to R.id.bottom_sheet.
++        }
++        return false;
+     }
+ 
+     /**
+@@ -416,4 +441,4 @@
+         }
+         return true;
+     }
+-}
++}

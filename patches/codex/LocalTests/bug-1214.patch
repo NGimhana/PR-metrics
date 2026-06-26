@@ -1,0 +1,44 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -317,6 +317,27 @@
+             return passwordInput.getText().toString();
+         }
+ 
++        private void togglePasswordVisibility() {
++            if (passwordInput.getTransformationMethod() instanceof PasswordTransformationMethod) {
++                passwordInput.setTransformationMethod(null);
++                passwordConfirm.setTransformationMethod(null);
++            } else {
++                PasswordTransformationMethod transformationMethod = new PasswordTransformationMethod();
++                passwordInput.setTransformationMethod(transformationMethod);
++                passwordConfirm.setTransformationMethod(transformationMethod);
++            }
++
++            Editable passwordText = passwordInput.getText();
++            if (passwordText != null) {
++                passwordInput.setSelection(passwordText.length());
++            }
++
++            Editable confirmText = passwordConfirm.getText();
++            if (confirmText != null) {
++                passwordConfirm.setSelection(confirmText.length());
++            }
++        }
++
+         @Override
+         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                                  Bundle savedInstanceState) {
+@@ -329,6 +350,13 @@
+             passwordLayout = root.findViewById(R.id.introPasswordLayout);
+             passwordInput = root.findViewById(R.id.introPasswordEdit);
+             passwordConfirm = root.findViewById(R.id.introPasswordConfirm);
++
++            passwordLayout.post(() -> {
++                View passwordToggle = passwordLayout.findViewById(R.id.text_input_end_icon);
++                if (passwordToggle != null) {
++                    passwordToggle.setOnClickListener(v -> togglePasswordVisibility());
++                }
++            });
+ 
+             generateSelectionMapping();
+ 

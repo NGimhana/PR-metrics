@@ -1,0 +1,88 @@
+--- a/app/src/main/java/de/danoeh/antennapod/adapter/AllEpisodesRecycleAdapter.java
++++ b/app/src/main/java/de/danoeh/antennapod/adapter/AllEpisodesRecycleAdapter.java
+@@ -106,6 +106,8 @@
+     public void onBindViewHolder(final Holder holder, int position) {
+         final FeedItem item = itemAccess.getItem(position);
+         if (item == null) return;
++        holder.itemView.setTranslationX(0f);
++        holder.itemView.setTranslationY(0f);
+         holder.itemView.setOnLongClickListener(v -> {
+             this.position = holder.getAdapterPosition();
+             return false;
+@@ -270,6 +272,8 @@
+         @Override
+         public void onItemClear() {
+             itemView.setAlpha(1.0f);
++            itemView.setTranslationX(0f);
++            itemView.setTranslationY(0f);
+         }
+ 
+         public FeedItem getFeedItem() { return item; }
+--- a/app/src/main/java/de/danoeh/antennapod/adapter/QueueRecyclerAdapter.java
++++ b/app/src/main/java/de/danoeh/antennapod/adapter/QueueRecyclerAdapter.java
+@@ -92,6 +92,8 @@
+ 
+     public void onBindViewHolder(ViewHolder holder, int pos) {
+         FeedItem item = itemAccess.getItem(pos);
++        holder.itemView.setTranslationX(0f);
++        holder.itemView.setTranslationY(0f);
+         holder.bind(item);
+         holder.itemView.setOnLongClickListener(v -> {
+             selectedItem = item;
+@@ -200,6 +202,8 @@
+         @Override
+         public void onItemClear() {
+             itemView.setAlpha(1.0f);
++            itemView.setTranslationX(0f);
++            itemView.setTranslationY(0f);
+         }
+ 
+         public void bind(FeedItem item) {
+--- a/app/src/main/java/de/danoeh/antennapod/preferences/PreferenceController.java
++++ b/app/src/main/java/de/danoeh/antennapod/preferences/PreferenceController.java
+@@ -557,31 +557,24 @@
+         config.setFragmentContainerViewId(R.id.content);
+         config.setBreadcrumbsEnabled(true);
+ 
+-        config.index()
+-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_user_interface))
+-                .addFile(R.xml.preferences_user_interface);
+-        config.index()
+-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_playback))
+-                .addFile(R.xml.preferences_playback);
+-        config.index()
+-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_network))
+-                .addFile(R.xml.preferences_network);
+-        config.index()
+-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_storage))
+-                .addFile(R.xml.preferences_storage);
+-        config.index()
++        config.index(R.xml.preferences_user_interface)
++                .addBreadcrumb(getTitleOfPage(R.xml.preferences_user_interface));
++        config.index(R.xml.preferences_playback)
++                .addBreadcrumb(getTitleOfPage(R.xml.preferences_playback));
++        config.index(R.xml.preferences_network)
++                .addBreadcrumb(getTitleOfPage(R.xml.preferences_network));
++        config.index(R.xml.preferences_storage)
++                .addBreadcrumb(getTitleOfPage(R.xml.preferences_storage));
++        config.index(R.xml.preferences_autodownload)
+                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_network))
+                 .addBreadcrumb(R.string.automation)
+-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_autodownload))
+-                .addFile(R.xml.preferences_autodownload);
+-        config.index()
++                .addBreadcrumb(getTitleOfPage(R.xml.preferences_autodownload));
++        config.index(R.xml.preferences_gpodder)
+                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
+-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_gpodder))
+-                .addFile(R.xml.preferences_gpodder);
+-        config.index()
++                .addBreadcrumb(getTitleOfPage(R.xml.preferences_gpodder));
++        config.index(R.xml.preferences_flattr)
+                 .addBreadcrumb(getTitleOfPage(R.xml.preferences_integrations))
+-                .addBreadcrumb(getTitleOfPage(R.xml.preferences_flattr))
+-                .addFile(R.xml.preferences_flattr);
++                .addBreadcrumb(getTitleOfPage(R.xml.preferences_flattr));
+     }
+ 
+     public PreferenceFragmentCompat openScreen(int preferences, AppCompatActivity activity) {

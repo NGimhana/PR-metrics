@@ -1,0 +1,65 @@
+diff --git a/app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java b/app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java
+index ff7af97..58b0edc 100644
+--- a/app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java
++++ b/app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java
+@@ -320,7 +320,6 @@ public class AllEpisodesFragment extends Fragment {
+         }
+         layoutManager = new LinearLayoutManager(getActivity());
+         recyclerView.setLayoutManager(layoutManager);
+-        recyclerView.setHasFixedSize(true);
+         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+ 
+         progLoading = root.findViewById(R.id.progLoading);
+diff --git a/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java b/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
+index c6db974..e0b4bd4 100644
+--- a/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
++++ b/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
+@@ -131,31 +131,37 @@ public class QueueFragment extends Fragment {
+         switch(event.action) {
+             case ADDED:
+                 queue.add(event.position, event.item);
++                onFragmentLoaded(false);
+                 recyclerAdapter.notifyItemInserted(event.position);
+                 break;
+             case SET_QUEUE:
+                 queue = event.items;
++                onFragmentLoaded(false);
+                 recyclerAdapter.notifyDataSetChanged();
+                 break;
+             case REMOVED:
+             case IRREVERSIBLE_REMOVED:
+                 int position = FeedItemUtil.indexOfItemWithId(queue, event.item.getId());
+-                queue.remove(position);
+-                recyclerAdapter.notifyItemRemoved(position);
++                if (position >= 0) {
++                    queue.remove(position);
++                    recyclerAdapter.notifyItemRemoved(position);
++                }
++                onFragmentLoaded(false);
+                 break;
+             case CLEARED:
+                 queue.clear();
++                onFragmentLoaded(false);
+                 recyclerAdapter.notifyDataSetChanged();
+                 break;
+             case SORTED:
+                 queue = event.items;
++                onFragmentLoaded(false);
+                 recyclerAdapter.notifyDataSetChanged();
+                 break;
+             case MOVED:
+                 return;
+         }
+         saveScrollPosition();
+-        onFragmentLoaded(false);
+     }
+ 
+     public void onEventMainThread(FeedItemEvent event) {
+@@ -389,7 +395,6 @@ public class QueueFragment extends Fragment {
+         layoutManager = new LinearLayoutManager(getActivity());
+         recyclerView.setLayoutManager(layoutManager);
+         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+-        recyclerView.setHasFixedSize(true);
+         registerForContextMenu(recyclerView);
+ 
+         itemTouchHelper = new ItemTouchHelper(

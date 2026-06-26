@@ -1,0 +1,52 @@
+diff --git a/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java b/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
+index 3499e3e..211f7ab 100644
+--- a/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
++++ b/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
+@@ -15,6 +15,7 @@ import android.widget.TextView;
+ import android.widget.Toast;
+ 
+ import java.text.SimpleDateFormat;
++import java.util.Iterator;
+ import java.util.List;
+ import java.util.Objects;
+ 
+@@ -162,13 +163,11 @@ public class FileArrayAdapter extends BaseArrayAdapter {
+                 contextButton.setVisibility(View.GONE);
+             }
+ 
+-            for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
+-                if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+-                    v.setBackgroundColor(activity.getColorByAttr(R.attr.colorPrimary));
+-                    checkBox.setChecked(true);
+-                } else {
+-                    checkBox.setChecked(false);
+-                }
++            if (isInContext(f)) {
++                v.setBackgroundColor(activity.getColorByAttr(R.attr.colorPrimary));
++                checkBox.setChecked(true);
++            } else {
++                checkBox.setChecked(false);
+             }
+         }
+         return v;
+@@ -179,15 +178,18 @@ public class FileArrayAdapter extends BaseArrayAdapter {
+         for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
+             if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+                 res = true;
++                break;
+             }
+         }
+         return res;
+     }
+ 
+     private void removeFromContext(FMFile f) {
+-        for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
++        Iterator<FMFile> iterator = activity.getFileOpContext().getSecond().iterator();
++        while (iterator.hasNext()) {
++            FMFile contextFile = iterator.next();
+             if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+-                activity.getFileOpContext().getSecond().remove(contextFile);
++                iterator.remove();
+             }
+         }
+     }

@@ -1,0 +1,10 @@
+--- a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
++++ b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+@@ -109,7 +109,6 @@
+     public void onResume() {
+         super.onResume();
+         checkReloadDisk();
+-        _hlEditor.setText(_document.getContent());
+     }
+ 
+     @Override

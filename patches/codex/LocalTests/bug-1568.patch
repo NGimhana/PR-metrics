@@ -1,0 +1,40 @@
+--- a/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
++++ b/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
+@@ -146,6 +146,8 @@
+             });
+ 
+             CheckBox checkBox = v.findViewById(R.id.fileCheckBox);
++            checkBox.setOnCheckedChangeListener(null);
++            checkBox.setChecked(isInContext(f));
+             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                 if (isChecked && !isInContext(f)) {
+                     activity.getFileOpContext().getSecond().add(f);
+@@ -162,13 +164,8 @@
+                 contextButton.setVisibility(View.GONE);
+             }
+ 
+-            for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
+-                if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+-                    v.setBackgroundColor(activity.getColorByAttr(R.attr.colorPrimary));
+-                    checkBox.setChecked(true);
+-                } else {
+-                    checkBox.setChecked(false);
+-                }
++            if (isInContext(f)) {
++                v.setBackgroundColor(activity.getColorByAttr(R.attr.colorPrimary));
+             }
+         }
+         return v;
+@@ -185,9 +182,10 @@
+     }
+ 
+     private void removeFromContext(FMFile f) {
+-        for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
++        for (int i = activity.getFileOpContext().getSecond().size() - 1; i >= 0; i--) {
++            FMFile contextFile = activity.getFileOpContext().getSecond().get(i);
+             if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+-                activity.getFileOpContext().getSecond().remove(contextFile);
++                activity.getFileOpContext().getSecond().remove(i);
+             }
+         }
+     }

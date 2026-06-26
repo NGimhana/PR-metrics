@@ -1,0 +1,85 @@
+--- a/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
+@@ -124,20 +124,30 @@
+         FishingSpot fishingSpot = getNewFishingSpot();
+         fishingSpot.setName(mNameView.getInputText());
+ 
+-        if (mMap != null) {
+-            fishingSpot.setLatitude(mMap.getCameraPosition().target.latitude);
+-            fishingSpot.setLongitude(mMap.getCameraPosition().target.longitude);
+-        } else {
+-            // in case Google Play Services isn't available, fishing spots can still be added and updated later
+-            fishingSpot.setLatitude(0.0);
+-            fishingSpot.setLongitude(0.0);
+-        }
+-
+         // name
+         if (fishingSpot.isNameNull()) {
+             AlertUtils.showError(getActivity(), R.string.error_name);
+             return false;
+         }
++
++        String latitudeText = mLatitudeView.getInputText();
++        String longitudeText = mLongitudeView.getInputText();
++
++        Double latitude = getCoordinateFromInput(latitudeText);
++        Double longitude = getCoordinateFromInput(longitudeText);
++        if (latitude == null || longitude == null) {
++            AlertUtils.showError(getActivity(), R.string.msg_invalid_coordinate);
++            return false;
++        }
++
++        LatLng coordinates = new LatLng(latitude, longitude);
++        if (!mMapFragment.isValid(coordinates)) {
++            AlertUtils.showError(getActivity(), R.string.msg_invalid_coordinate);
++            return false;
++        }
++
++        fishingSpot.setLatitude(latitude);
++        fishingSpot.setLongitude(longitude);
+ 
+         // duplicate name
+         if (!isEditing() && mOnVerifyInterface.isDuplicate(fishingSpot)) {
+@@ -278,7 +288,10 @@
+ 
+         try {
+             inputText = inputText.replace(',', '.'); // some countries/keyboard use ',' in place of '.'
+-            return (double) Utils.asFloat(inputText, 0);
++            if (inputText.isEmpty() || (inputText.length() == 1 && inputText.equals(".")))
++                return 0.0;
++
++            return Double.parseDouble(inputText);
+         } catch (NumberFormatException e) {
+             e.printStackTrace();
+             Utils.showToast(getContext(), R.string.msg_invalid_coordinate);
+@@ -286,6 +299,30 @@
+         }
+ 
+         return -1;
++    }
++
++    /**
++     * Parses user input for save-time coordinate validation.
++     *
++     * @return Parsed coordinate, 0.0 for empty input, or null if invalid.
++     */
++    private Double getCoordinateFromInput(String inputText) {
++        if (inputText == null || inputText.isEmpty())
++            return 0.0;
++
++        if (inputText.length() == 1 && inputText.equals("-"))
++            return null;
++
++        inputText = inputText.replace(',', '.'); // some countries/keyboard use ',' in place of '.'
++
++        if (inputText.length() == 1 && inputText.equals("."))
++            return 0.0;
++
++        try {
++            return Double.parseDouble(inputText);
++        } catch (NumberFormatException e) {
++            return null;
++        }
+     }
+ 
+     private void initMapFragment() {

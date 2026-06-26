@@ -1,0 +1,40 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java b/app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java
+index 88e404d..bd52804 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java
+@@ -203,15 +203,31 @@ public class ManualEntryDialog {
+ 
+             @Override
+             public void afterTextChanged(Editable editable) {
+-                if (TextUtils.isEmpty(labelInput.getText()) || TextUtils.isEmpty(secretInput.getText())) {
+-                    positiveButton.setEnabled(false);
+-                } else {
+-                    positiveButton.setEnabled(true);
++                String label = labelInput.getText().toString();
++                String secret = secretInput.getText().toString();
++                String period = periodInput.getText().toString();
++                String digits = digitsInput.getText().toString();
++
++                boolean enabled = !label.isEmpty() && !secret.isEmpty() && !period.isEmpty() && !digits.isEmpty();
++
++                if (enabled) {
++                    try {
++                        int p = Integer.parseInt(period);
++                        int d = Integer.parseInt(digits);
++                        if (p <= 0 || d <= 0)
++                            enabled = false;
++                    } catch (NumberFormatException e) {
++                        enabled = false;
++                    }
+                 }
++
++                positiveButton.setEnabled(enabled);
+             }
+         };
+ 
+         labelInput.addTextChangedListener(watcher);
+         secretInput.addTextChangedListener(watcher);
++        periodInput.addTextChangedListener(watcher);
++        digitsInput.addTextChangedListener(watcher);
+     }
+ }

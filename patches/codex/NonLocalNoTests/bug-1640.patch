@@ -1,0 +1,58 @@
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java
+@@ -6,6 +6,12 @@
+ import android.support.v7.app.AppCompatActivity;
+ import android.support.v7.widget.Toolbar;
+ import android.view.View;
++import android.widget.TextView;
++
++import java.io.BufferedReader;
++import java.io.IOException;
++import java.io.InputStream;
++import java.io.InputStreamReader;
+ 
+ public class InfoActivity extends AppCompatActivity {
+ 
+@@ -15,6 +21,8 @@
+         setContentView(R.layout.activity_info);
+         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+         setSupportActionBar(toolbar);
++        TextView licenseText = (TextView) findViewById(R.id.license_text);
++        licenseText.setText(readLicenseFromAssets());
+ 
+         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+         fab.setOnClickListener(new View.OnClickListener() {
+@@ -26,4 +34,18 @@
+         });
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+     }
++
++    private String readLicenseFromAssets() {
++        StringBuilder content = new StringBuilder();
++        try (InputStream inputStream = getAssets().open("LICENSE");
++             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
++            String line;
++            while ((line = reader.readLine()) != null) {
++                content.append(line).append('\n');
++            }
++        } catch (IOException e) {
++            return getString(R.string.large_text);
++        }
++        return content.toString();
++    }
+ }
+--- a/app/src/main/res/layout/content_info.xml
++++ b/app/src/main/res/layout/content_info.xml
+@@ -9,9 +9,10 @@
+     tools:showIn="@layout/activity_info">
+ 
+     <TextView
+-        android:layout_width="wrap_content"
++        android:id="@+id/license_text"
++        android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_margin="@dimen/text_margin"
+         android:text="@string/large_text" />
+ 
+-</android.support.v4.widget.NestedScrollView>
++</android.support.v4.widget.NestedScrollView>

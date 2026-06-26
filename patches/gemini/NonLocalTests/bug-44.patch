@@ -1,0 +1,16 @@
+diff --git a/omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java b/omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java
+index ac68bb5..ebe156c 100644
+--- a/omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java
++++ b/omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java
+@@ -87,8 +87,9 @@ public class TagsHelper {
+     public static Pair<String, String> removeTag(String noteTitle, String noteContent, List<Tag> tagsToRemove) {
+         String title = noteTitle, content = noteContent;
+         for (Tag tagToRemove : tagsToRemove) {
+-            title = title.replaceAll(tagToRemove.getText(), "");
+-            content = content.replaceAll(tagToRemove.getText(), "");
++            String regex = "(?<=^|\\s)" + java.util.regex.Pattern.quote(tagToRemove.getText()) + "(?:\\s|$)";
++            title = title.replaceAll(regex, "");
++            content = content.replaceAll(regex, "");
+         }
+         return new Pair<>(title, content);
+     }

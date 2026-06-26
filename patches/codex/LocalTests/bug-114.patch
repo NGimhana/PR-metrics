@@ -1,0 +1,69 @@
+--- a/app/src/main/java/com/simon/harmonichackernews/CommentsRecyclerViewAdapter.java
++++ b/app/src/main/java/com/simon/harmonichackernews/CommentsRecyclerViewAdapter.java
+@@ -8,9 +8,12 @@
+ import android.text.Spanned;
+ import android.text.TextUtils;
+ import android.text.style.ImageSpan;
++import android.os.SystemClock;
+ import android.util.DisplayMetrics;
++import android.view.MotionEvent;
+ import android.view.LayoutInflater;
+ import android.view.View;
++import android.view.ViewConfiguration;
+ import android.view.ViewGroup;
+ import android.widget.Button;
+ import android.widget.ImageView;
+@@ -411,6 +414,8 @@
+         public final View commentIndentIndicator;
+ 
+         public Comment comment;
++        private long suppressLinkClickUntilMs = 0L;
++        private long touchDownAtMs = 0L;
+ 
+         public ItemViewHolder(View view) {
+             super(view);
+@@ -421,11 +426,13 @@
+             commentIndentIndicator = view.findViewById(R.id.comment_indent_indicator);
+ 
+             itemView.setOnLongClickListener(v -> {
++                suppressLinkClickUntilMs = SystemClock.uptimeMillis() + 750;
+                 commentLongClickListener.onItemClick(comment, getAbsoluteAdapterPosition(), v);
+                 return true;
+             });
+ 
+             commentBody.setOnLongClickListener(v -> {
++                suppressLinkClickUntilMs = SystemClock.uptimeMillis() + 750;
+                 commentLongClickListener.onItemClick(comment, getAbsoluteAdapterPosition(), v);
+                 return true;
+             });
+@@ -439,9 +446,30 @@
+             commentBody.setOnClickATagListener(new OnClickATagListener() {
+                 @Override
+                 public boolean onClick(View widget, String spannedText, @Nullable String href) {
++                    if (SystemClock.uptimeMillis() < suppressLinkClickUntilMs) {
++                        return true;
++                    }
+                     Utils.openLinkMaybeHN(widget.getContext(), href);
+                     return true;
+                 }
++            });
++
++            commentBody.setOnTouchListener((v, event) -> {
++                if (event == null) {
++                    return false;
++                }
++
++                int action = event.getActionMasked();
++                if (action == MotionEvent.ACTION_DOWN) {
++                    touchDownAtMs = SystemClock.uptimeMillis();
++                } else if (action == MotionEvent.ACTION_UP) {
++                    long touchDurationMs = SystemClock.uptimeMillis() - touchDownAtMs;
++                    if (touchDurationMs >= ViewConfiguration.getLongPressTimeout()) {
++                        suppressLinkClickUntilMs = SystemClock.uptimeMillis() + 750;
++                        return true;
++                    }
++                }
++                return false;
+             });
+         }
+     }

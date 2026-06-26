@@ -1,0 +1,82 @@
+--- a/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
++++ b/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
+@@ -4,6 +4,7 @@
+ import android.content.ActivityNotFoundException;
+ import android.content.Context;
+ import android.content.Intent;
++import android.graphics.Color;
+ import android.net.Uri;
+ import android.os.Vibrator;
+ import android.view.LayoutInflater;
+@@ -15,6 +16,7 @@
+ import android.widget.Toast;
+ 
+ import java.text.SimpleDateFormat;
++import java.util.Iterator;
+ import java.util.List;
+ import java.util.Objects;
+ 
+@@ -146,13 +148,6 @@
+             });
+ 
+             CheckBox checkBox = v.findViewById(R.id.fileCheckBox);
+-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+-                if (isChecked && !isInContext(f)) {
+-                    activity.getFileOpContext().getSecond().add(f);
+-                } else if (!isChecked && isInContext(f)) {
+-                    removeFromContext(f);
+-                }
+-            });
+ 
+             if (new Pref<Boolean>(SHOW_MENU_BUTTON_INSTEAD_OF_CHECKBOX).getValue()) {
+                 checkBox.setVisibility(View.INVISIBLE);
+@@ -162,32 +157,37 @@
+                 contextButton.setVisibility(View.GONE);
+             }
+ 
+-            for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
+-                if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+-                    v.setBackgroundColor(activity.getColorByAttr(R.attr.colorPrimary));
+-                    checkBox.setChecked(true);
+-                } else {
+-                    checkBox.setChecked(false);
++            boolean isSelected = isInContext(f);
++            v.setBackgroundColor(isSelected ? activity.getColorByAttr(R.attr.colorPrimary) : Color.TRANSPARENT);
++            checkBox.setOnCheckedChangeListener(null);
++            checkBox.setChecked(isSelected);
++            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
++                if (isChecked && !isInContext(f)) {
++                    activity.getFileOpContext().getSecond().add(f);
++                } else if (!isChecked && isInContext(f)) {
++                    removeFromContext(f);
+                 }
+-            }
++            });
+         }
+         return v;
+     }
+ 
+     private boolean isInContext(FMFile f) {
+-        boolean res = false;
+         for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
+             if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+-                res = true;
++                return true;
+             }
+         }
+-        return res;
++        return false;
+     }
+ 
+     private void removeFromContext(FMFile f) {
+-        for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
++        Iterator<FMFile> contextIterator = activity.getFileOpContext().getSecond().iterator();
++        while (contextIterator.hasNext()) {
++            FMFile contextFile = contextIterator.next();
+             if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+-                activity.getFileOpContext().getSecond().remove(contextFile);
++                contextIterator.remove();
++                break;
+             }
+         }
+     }

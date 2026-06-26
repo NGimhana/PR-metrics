@@ -1,0 +1,10 @@
+--- a/app/src/main/java/net/gsantner/markor/util/AppSettings.java
++++ b/app/src/main/java/net/gsantner/markor/util/AppSettings.java
+@@ -304,6 +304,6 @@
+     }
+ 
+     public boolean isEditorHistoryEnabled() {
+-        return getBool(R.string.pref_key__editor_history_enabled, false);
++        return getBool(R.string.pref_key__editor_history_enabled, true);
+     }
+ }

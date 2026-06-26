@@ -1,0 +1,36 @@
+--- a/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
++++ b/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
+@@ -62,15 +62,26 @@
+         // calculate the current progress the bar should start at
+         int maxProgress = getMax();
+         long millisTillRotation = TotpInfo.getMillisTillNextRotation(_period);
+-        int currentProgress = (int) (maxProgress * ((float) millisTillRotation / (_period * 1000)));
++        long periodMillis = (long) _period * 1000;
++        int currentProgress = (int) (maxProgress * ((float) millisTillRotation / periodMillis));
+ 
+         // start progress animation, compensating for any changes to the animator duration scale settings
+-        int animPart = maxProgress / _period;
+-        int animEnd = (currentProgress / animPart) * animPart;
+-        int animPartDuration = (int) (1000 / _animDurationScale);
+-        float animDurationFraction = (float) (currentProgress - animEnd) / animPart;
+-        int realAnimDuration =  (int) (1000 * animDurationFraction);
+-        int animDuration =  (int) (animPartDuration * animDurationFraction);
++        int animEnd;
++        int animDuration;
++        int realAnimDuration;
++        long animPart = (long) maxProgress * 1000 / periodMillis;
++        if (animPart <= 0) {
++            // period is too large for per-second animation steps, animate the whole remaining duration
++            animEnd = 0;
++            realAnimDuration = (int) Math.min(millisTillRotation, Integer.MAX_VALUE);
++            animDuration = (int) (realAnimDuration / _animDurationScale);
++        } else {
++            animEnd = (int) ((currentProgress / animPart) * animPart);
++            int animPartDuration = (int) (1000 / _animDurationScale);
++            float animDurationFraction = (float) (currentProgress - animEnd) / animPart;
++            realAnimDuration = (int) (1000 * animDurationFraction);
++            animDuration = (int) (animPartDuration * animDurationFraction);
++        }
+         ObjectAnimator animation = ObjectAnimator.ofInt(this, "progress", currentProgress, animEnd);
+         animation.setDuration(animDuration);
+         animation.setInterpolator(new LinearInterpolator());

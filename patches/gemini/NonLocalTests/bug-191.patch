@@ -1,0 +1,48 @@
+diff --git a/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java b/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
+index c8816ff..9ffc5e2 100644
+--- a/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
++++ b/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
+@@ -47,8 +47,11 @@ public class TowerInserter {
+         }
+ 
+         if (mInsertedTower == null && !mGameManager.isGameOver()) {
+-            showTowerLevels();
+-            mInsertedTower = mTowerFactory.createTower(towerName);
++            Tower tower = mTowerFactory.createTower(towerName);
++            if (tower.getValue() <= mScoreBoard.getCredits()) {
++                showTowerLevels();
++                mInsertedTower = tower;
++            }
+         }
+     }
+ 
+@@ -95,17 +98,21 @@ public class TowerInserter {
+         }
+ 
+         if (mInsertedTower != null && mCurrentPlateau != null) {
+-            mInsertedTower.setEnabled(true);
+-            mCurrentPlateau.setOccupant(mInsertedTower);
++            if (mInsertedTower.getValue() <= mScoreBoard.getCredits()) {
++                mInsertedTower.setEnabled(true);
++                mCurrentPlateau.setOccupant(mInsertedTower);
+ 
+-            mScoreBoard.takeCredits(mInsertedTower.getValue());
+-            mTowerAging.ageTower(mInsertedTower);
++                mScoreBoard.takeCredits(mInsertedTower.getValue());
++                mTowerAging.ageTower(mInsertedTower);
+ 
+-            mTowerSelector.selectTower(null);
+-            hideTowerLevels();
++                mTowerSelector.selectTower(null);
++                hideTowerLevels();
+ 
+-            mCurrentPlateau = null;
+-            mInsertedTower = null;
++                mCurrentPlateau = null;
++                mInsertedTower = null;
++            } else {
++                cancel();
++            }
+         }
+     }
+ 

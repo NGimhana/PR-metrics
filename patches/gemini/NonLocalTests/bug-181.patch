@@ -1,0 +1,47 @@
+diff --git a/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java b/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
+index efe820f..a55857f 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
++++ b/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
+@@ -732,10 +732,42 @@ public class StoriesFragment extends Fragment {
+                         Iterator<Story> iterator = stories.iterator();
+                         while (iterator.hasNext()) {
+                             Story story = iterator.next();
++                            if (story.id == 0) {
++                                continue;
++                            }
+                             story.clicked = clickedIds.contains(story.id);
+ 
+                             if (hideClicked && story.clicked) {
+                                 iterator.remove();
++                                continue;
++                            }
++
++                            boolean filtered = false;
++                            for (String phrase : filterWords) {
++                                if (story.title.toLowerCase().contains(phrase.toLowerCase())) {
++                                    filtered = true;
++                                    break;
++                                }
++                            }
++                            if (filtered) {
++                                iterator.remove();
++                                continue;
++                            }
++
++                            for (String phrase : filterDomains) {
++                                if (story.url != null && story.url.toLowerCase().contains(phrase.toLowerCase())) {
++                                    filtered = true;
++                                    break;
++                                }
++                            }
++
++                            if (filtered) {
++                                iterator.remove();
++                                continue;
++                            }
++
++                            if (hideJobs && adapter.type != SettingsUtils.getJobsIndex(getResources()) && (story.isJob || (story.by != null && story.by.equals("whoishiring")))) {
++                                iterator.remove();
+                             }
+                         }
+ 

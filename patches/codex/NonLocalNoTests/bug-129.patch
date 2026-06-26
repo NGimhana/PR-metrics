@@ -1,0 +1,41 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
+@@ -36,9 +36,11 @@
+ import android.widget.EditText;
+ import android.widget.LinearLayout;
+ import android.widget.Spinner;
++import android.widget.Toast;
+ 
+ import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
+ import com.github.aakira.expandablelayout.ExpandableLinearLayout;
++import org.apache.commons.codec.binary.Base32;
+ 
+ import org.shadowice.flocke.andotp.Activities.MainActivity;
+ import org.shadowice.flocke.andotp.Database.Entry;
+@@ -202,6 +204,16 @@
+                         String label = labelInput.getText().toString();
+                         //Replace spaces with empty characters
+                         String secret = secretInput.getText().toString().replaceAll("\\s+","");
++                        try {
++                            byte[] decodedSecret = new Base32().decode(secret.toUpperCase(Locale.US));
++                            if (decodedSecret == null || decodedSecret.length == 0) {
++                                Toast.makeText(callingActivity, R.string.toast_invalid_secret, Toast.LENGTH_LONG).show();
++                                return;
++                            }
++                        } catch (IllegalArgumentException e) {
++                            Toast.makeText(callingActivity, R.string.toast_invalid_secret, Toast.LENGTH_LONG).show();
++                            return;
++                        }
+                         int digits = Integer.parseInt(digitsInput.getText().toString());
+ 
+                         if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+--- a/app/src/main/res/values/strings_main.xml
++++ b/app/src/main/res/values/strings_main.xml
+@@ -64,6 +64,7 @@
+     <string name="toast_copied_to_clipboard">Copied to clipboard</string>
+     <string name="toast_entry_exists">This entry already exists</string>
+     <string name="toast_invalid_qr_code">Invalid QR Code</string>
++    <string name="toast_invalid_secret">Invalid secret</string>
+     <string name="toast_encryption_key_empty">Encryption key not loaded</string>
+     <string name="toast_intent_creation_failed">Invalid intent-provided code</string>
+     <string name="toast_intent_creation_succeeded">Intent-provided code added</string>

@@ -1,0 +1,29 @@
+--- a/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
++++ b/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
+@@ -95,6 +95,15 @@
+             index = savedInstanceState.getInt(SELECTED_TAB_INDEX);
+         }
+         mViewPager.setCurrentItem(index);
++        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
++            @Override
++            public void onPageSelected(int position) {
++                ActionMode runningActionMode = getRunningActionMode();
++                if (runningActionMode != null) {
++                    runningActionMode.finish();
++                }
++            }
++        });
+ 
+ 
+         TrickyTripperApp app = getApp();
+@@ -442,6 +451,9 @@
+     }
+ 
+     public void setRunningActionMode(ActionMode actionMode) {
++        if (actionMode != null && mActionMode != null && mActionMode != actionMode) {
++            mActionMode.finish();
++        }
+         this.mActionMode = actionMode;
+     }
+-}
++}

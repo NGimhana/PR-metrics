@@ -1,0 +1,41 @@
+--- a/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
++++ b/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
+@@ -400,7 +400,7 @@
+      * @param path Path of pdf file to be encrypted
+      */
+     private void doEncryption(String path) throws IOException, DocumentException {
+-        String finalOutputFile = path.replace(".pdf", mActivity.getString(R.string.encrypted_file));
++        String finalOutputFile = getUniqueEncryptedFilePath(path);
+         Log.e("Log", finalOutputFile);
+         PdfReader reader = new PdfReader(path);
+         PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(finalOutputFile));
+@@ -411,8 +411,28 @@
+         mFileList.add(new File(finalOutputFile));
+     }
+ 
++    private String getUniqueEncryptedFilePath(String path) {
++        String pdfExtension = mActivity.getString(R.string.pdf_ext);
++        String encryptedSuffix = mActivity.getString(R.string.encrypted_file);
++        String baseName = path;
++
++        if (path.endsWith(pdfExtension)) {
++            baseName = path.substring(0, path.length() - pdfExtension.length());
++        }
++
++        String encryptedBaseName = baseName + encryptedSuffix.replace(pdfExtension, "");
++        String candidatePath = encryptedBaseName + pdfExtension;
++        int fileIndex = 1;
++
++        while (new File(candidatePath).exists()) {
++            candidatePath = encryptedBaseName + fileIndex + pdfExtension;
++            fileIndex++;
++        }
++        return candidatePath;
++    }
++
+     public interface EmptyStateChangeListener {
+         void setEmptyStateVisible();
+         void setEmptyStateGone();
+     }
+-}
++}

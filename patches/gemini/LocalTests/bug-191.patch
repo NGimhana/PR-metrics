@@ -1,0 +1,16 @@
+diff --git a/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java b/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
+index c8816ff..bdefd69 100644
+--- a/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
++++ b/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
+@@ -95,6 +95,11 @@ public class TowerInserter {
+         }
+ 
+         if (mInsertedTower != null && mCurrentPlateau != null) {
++            if (mScoreBoard.getCredits() < mInsertedTower.getValue()) {
++                cancel();
++                return;
++            }
++
+             mInsertedTower.setEnabled(true);
+             mCurrentPlateau.setOccupant(mInsertedTower);
+ 

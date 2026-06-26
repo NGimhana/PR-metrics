@@ -1,0 +1,14 @@
+--- a/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
++++ b/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
+@@ -95,6 +95,11 @@
+         }
+ 
+         if (mInsertedTower != null && mCurrentPlateau != null) {
++            if (mInsertedTower.getValue() > mScoreBoard.getCredits()) {
++                cancel();
++                return;
++            }
++
+             mInsertedTower.setEnabled(true);
+             mCurrentPlateau.setOccupant(mInsertedTower);
+ 

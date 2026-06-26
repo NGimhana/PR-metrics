@@ -1,0 +1,302 @@
+diff --git a/app/src/main/java/swati4star/createpdf/activity/MainActivity.java b/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
+index 807337b..44e43dc 100644
+--- a/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
++++ b/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
+@@ -41,6 +41,7 @@ import swati4star.createpdf.fragment.SettingsFragment;
+ import swati4star.createpdf.fragment.SplitFilesFragment;
+ import swati4star.createpdf.fragment.TextToPdfFragment;
+ import swati4star.createpdf.fragment.ViewFilesFragment;
++import swati4star.createpdf.interfaces.IOnBackPressed;
+ import swati4star.createpdf.util.FeedbackUtils;
+ import swati4star.createpdf.util.ThemeUtils;
+ import swati4star.createpdf.util.WhatsNewUtils;
+@@ -267,6 +268,11 @@ public class MainActivity extends AppCompatActivity
+         } else {
+             Fragment currentFragment = getSupportFragmentManager()
+                     .findFragmentById(R.id.content);
++            if (currentFragment instanceof IOnBackPressed) {
++                if (((IOnBackPressed) currentFragment).onBackPressed())
++                    return;
++            }
++
+             if (currentFragment instanceof HomeFragment) {
+                 checkDoubleBackPress();
+             } else {
+diff --git a/app/src/main/java/swati4star/createpdf/fragment/AddImagesFragment.java b/app/src/main/java/swati4star/createpdf/fragment/AddImagesFragment.java
+index bd1d07d..0b38fc7 100644
+--- a/app/src/main/java/swati4star/createpdf/fragment/AddImagesFragment.java
++++ b/app/src/main/java/swati4star/createpdf/fragment/AddImagesFragment.java
+@@ -36,6 +36,7 @@ import butterknife.OnClick;
+ import swati4star.createpdf.R;
+ import swati4star.createpdf.adapter.MergeFilesAdapter;
+ import swati4star.createpdf.interfaces.BottomSheetPopulate;
++import swati4star.createpdf.interfaces.IOnBackPressed;
+ import swati4star.createpdf.util.BottomSheetCallback;
+ import swati4star.createpdf.util.BottomSheetUtils;
+ import swati4star.createpdf.util.FileUtils;
+@@ -54,7 +55,8 @@ import static swati4star.createpdf.util.FileUriUtils.getFilePath;
+ import static swati4star.createpdf.util.StringUtils.hideKeyboard;
+ import static swati4star.createpdf.util.StringUtils.showSnackbar;
+ 
+-public class AddImagesFragment extends Fragment implements BottomSheetPopulate, MergeFilesAdapter.OnClickListener {
++public class AddImagesFragment extends Fragment implements BottomSheetPopulate, MergeFilesAdapter.OnClickListener,
++        IOnBackPressed {
+ 
+     private Activity mActivity;
+     private String mPath;
+@@ -278,4 +280,13 @@ public class AddImagesFragment extends Fragment implements BottomSheetPopulate,
+     public void onPopulate(ArrayList<String> paths) {
+         populateUtil(mActivity, paths, this, mLayout, mLottieProgress, mRecyclerViewFiles);
+     }
++
++    @Override
++    public boolean onBackPressed() {
++        if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
++            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
++            return true;
++        }
++        return false;
++    }
+ }
+diff --git a/app/src/main/java/swati4star/createpdf/fragment/InvertPdfFragment.java b/app/src/main/java/swati4star/createpdf/fragment/InvertPdfFragment.java
+index 855b123..0e0286b 100644
+--- a/app/src/main/java/swati4star/createpdf/fragment/InvertPdfFragment.java
++++ b/app/src/main/java/swati4star/createpdf/fragment/InvertPdfFragment.java
+@@ -31,6 +31,7 @@ import swati4star.createpdf.adapter.FilesListAdapter;
+ import swati4star.createpdf.adapter.MergeFilesAdapter;
+ import swati4star.createpdf.database.DatabaseHelper;
+ import swati4star.createpdf.interfaces.BottomSheetPopulate;
++import swati4star.createpdf.interfaces.IOnBackPressed;
+ import swati4star.createpdf.interfaces.OnPDFCreatedInterface;
+ import swati4star.createpdf.util.BottomSheetCallback;
+ import swati4star.createpdf.util.BottomSheetUtils;
+@@ -47,7 +48,8 @@ import static swati4star.createpdf.util.StringUtils.getSnackbarwithAction;
+ import static swati4star.createpdf.util.StringUtils.showSnackbar;
+ 
+ public class InvertPdfFragment extends Fragment implements MergeFilesAdapter.OnClickListener,
+-        FilesListAdapter.OnFileItemClickedListener, BottomSheetPopulate, OnPDFCreatedInterface {
++        FilesListAdapter.OnFileItemClickedListener, BottomSheetPopulate, OnPDFCreatedInterface,
++        IOnBackPressed {
+ 
+     private Activity mActivity;
+     private String mPath;
+@@ -191,5 +193,14 @@ public class InvertPdfFragment extends Fragment implements MergeFilesAdapter.OnC
+         viewPdfButton(path);
+         resetValues();
+     }
++
++    @Override
++    public boolean onBackPressed() {
++        if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
++            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
++            return true;
++        }
++        return false;
++    }
+ }
+ 
+diff --git a/app/src/main/java/swati4star/createpdf/fragment/MergeFilesFragment.java b/app/src/main/java/swati4star/createpdf/fragment/MergeFilesFragment.java
+index 3c2ccbf..8f06300 100644
+--- a/app/src/main/java/swati4star/createpdf/fragment/MergeFilesFragment.java
++++ b/app/src/main/java/swati4star/createpdf/fragment/MergeFilesFragment.java
+@@ -42,6 +42,7 @@ import swati4star.createpdf.adapter.MergeFilesAdapter;
+ import swati4star.createpdf.adapter.MergeSelectedFilesAdapter;
+ import swati4star.createpdf.database.DatabaseHelper;
+ import swati4star.createpdf.interfaces.BottomSheetPopulate;
++import swati4star.createpdf.interfaces.IOnBackPressed;
+ import swati4star.createpdf.interfaces.MergeFilesListener;
+ import swati4star.createpdf.interfaces.OnItemClickListner;
+ import swati4star.createpdf.model.EnhancementOptionsEntity;
+@@ -67,7 +68,7 @@ import static swati4star.createpdf.util.StringUtils.getSnackbarwithAction;
+ import static swati4star.createpdf.util.StringUtils.showSnackbar;
+ 
+ public class MergeFilesFragment extends Fragment implements MergeFilesAdapter.OnClickListener, MergeFilesListener,
+-        MergeSelectedFilesAdapter.OnFileItemClickListener, OnItemClickListner, BottomSheetPopulate {
++        MergeSelectedFilesAdapter.OnFileItemClickListener, OnItemClickListner, BottomSheetPopulate, IOnBackPressed {
+     private Activity mActivity;
+     private String mCheckbtClickTag = "";
+     private static final int INTENT_REQUEST_PICKFILE_CODE = 10;
+@@ -385,4 +386,13 @@ public class MergeFilesFragment extends Fragment implements MergeFilesAdapter.On
+         }
+         mLottieProgress.setVisibility(View.GONE);
+     }
++
++    @Override
++    public boolean onBackPressed() {
++        if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
++            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
++            return true;
++        }
++        return false;
++    }
+ }
+diff --git a/app/src/main/java/swati4star/createpdf/fragment/PdfToImageFragment.java b/app/src/main/java/swati4star/createpdf/fragment/PdfToImageFragment.java
+index db12248..107987f 100644
+--- a/app/src/main/java/swati4star/createpdf/fragment/PdfToImageFragment.java
++++ b/app/src/main/java/swati4star/createpdf/fragment/PdfToImageFragment.java
+@@ -34,6 +34,7 @@ import swati4star.createpdf.adapter.ExtractImagesAdapter;
+ import swati4star.createpdf.adapter.MergeFilesAdapter;
+ import swati4star.createpdf.interfaces.BottomSheetPopulate;
+ import swati4star.createpdf.interfaces.ExtractImagesListener;
++import swati4star.createpdf.interfaces.IOnBackPressed;
+ import swati4star.createpdf.util.BottomSheetCallback;
+ import swati4star.createpdf.util.BottomSheetUtils;
+ import swati4star.createpdf.util.CommonCodeUtils;
+@@ -50,7 +51,7 @@ import static swati4star.createpdf.util.DialogUtils.createAnimationDialog;
+ import static swati4star.createpdf.util.FileUriUtils.getFilePath;
+ 
+ public class PdfToImageFragment extends Fragment implements BottomSheetPopulate, MergeFilesAdapter.OnClickListener,
+-        ExtractImagesListener, ExtractImagesAdapter.OnFileItemClickedListener {
++        ExtractImagesListener, ExtractImagesAdapter.OnFileItemClickedListener, IOnBackPressed {
+ 
+     private static final int INTENT_REQUEST_PICKFILE_CODE = 10;
+     private Activity mActivity;
+@@ -253,4 +254,13 @@ public class PdfToImageFragment extends Fragment implements BottomSheetPopulate,
+     public void onPopulate(ArrayList<String> paths) {
+         populateUtil(mActivity, paths, this, mLayout, mLottieProgress, mRecyclerViewFiles);
+     }
++
++    @Override
++    public boolean onBackPressed() {
++        if (mSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
++            mSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
++            return true;
++        }
++        return false;
++    }
+ }
+diff --git a/app/src/main/java/swati4star/createpdf/fragment/RemoveDuplicatePagesFragment.java b/app/src/main/java/swati4star/createpdf/fragment/RemoveDuplicatePagesFragment.java
+index 38b500e..6185ce7 100644
+--- a/app/src/main/java/swati4star/createpdf/fragment/RemoveDuplicatePagesFragment.java
++++ b/app/src/main/java/swati4star/createpdf/fragment/RemoveDuplicatePagesFragment.java
+@@ -31,6 +31,7 @@ import swati4star.createpdf.adapter.FilesListAdapter;
+ import swati4star.createpdf.adapter.MergeFilesAdapter;
+ import swati4star.createpdf.database.DatabaseHelper;
+ import swati4star.createpdf.interfaces.BottomSheetPopulate;
++import swati4star.createpdf.interfaces.IOnBackPressed;
+ import swati4star.createpdf.interfaces.OnPDFCreatedInterface;
+ import swati4star.createpdf.util.BottomSheetCallback;
+ import swati4star.createpdf.util.BottomSheetUtils;
+@@ -46,7 +47,8 @@ import static swati4star.createpdf.util.StringUtils.getSnackbarwithAction;
+ import static swati4star.createpdf.util.StringUtils.showSnackbar;
+ 
+ public class RemoveDuplicatePagesFragment extends Fragment implements MergeFilesAdapter.OnClickListener,
+-        FilesListAdapter.OnFileItemClickedListener, BottomSheetPopulate, OnPDFCreatedInterface {
++        FilesListAdapter.OnFileItemClickedListener, BottomSheetPopulate, OnPDFCreatedInterface,
++        IOnBackPressed {
+ 
+     private Activity mActivity;
+     private String mPath;
+@@ -179,16 +181,24 @@ public class RemoveDuplicatePagesFragment extends Fragment implements MergeFiles
+     public void onPDFCreated(boolean isNewPdfCreated, String path) {
+         mMaterialDialog.dismiss();
+         if (!isNewPdfCreated) {
+-            showSnackbar(mActivity, R.string.snackbar_no_duplicate_pdf);
++            showSnackbar(mActivity, R.string.snackbar_invert_unsuccessful);
+             //Hiding View PDF button
+             mViewPdf.setVisibility(View.GONE);
+             return;
+         }
+-        new DatabaseHelper(mActivity).insertRecord(path, mActivity.getString(R.string.snackbar_no_duplicate_pdf));
++        new DatabaseHelper(mActivity).insertRecord(path, mActivity.getString(R.string.snackbar_invert_unsuccessful));
+         getSnackbarwithAction(mActivity, R.string.snackbar_pdfCreated)
+                 .setAction(R.string.snackbar_viewAction, v -> mFileUtils.openFile(path)).show();
+         viewPdfButton(path);
+         resetValues();
+     }
+-}
+ 
++    @Override
++    public boolean onBackPressed() {
++        if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
++            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
++            return true;
++        }
++        return false;
++    }
++}
+diff --git a/app/src/main/java/swati4star/createpdf/fragment/RemovePagesFragment.java b/app/src/main/java/swati4star/createpdf/fragment/RemovePagesFragment.java
+index 70a5840..02db395 100644
+--- a/app/src/main/java/swati4star/createpdf/fragment/RemovePagesFragment.java
++++ b/app/src/main/java/swati4star/createpdf/fragment/RemovePagesFragment.java
+@@ -39,6 +39,7 @@ import swati4star.createpdf.activity.RearrangePdfPages;
+ import swati4star.createpdf.adapter.MergeFilesAdapter;
+ import swati4star.createpdf.database.DatabaseHelper;
+ import swati4star.createpdf.interfaces.BottomSheetPopulate;
++import swati4star.createpdf.interfaces.IOnBackPressed;
+ import swati4star.createpdf.interfaces.OnPDFCompressedInterface;
+ import swati4star.createpdf.util.BottomSheetCallback;
+ import swati4star.createpdf.util.BottomSheetUtils;
+@@ -65,7 +66,7 @@ import static swati4star.createpdf.util.StringUtils.hideKeyboard;
+ import static swati4star.createpdf.util.StringUtils.showSnackbar;
+ 
+ public class RemovePagesFragment extends Fragment implements MergeFilesAdapter.OnClickListener,
+-        OnPDFCompressedInterface, BottomSheetPopulate {
++        OnPDFCompressedInterface, BottomSheetPopulate, IOnBackPressed {
+ 
+     private Activity mActivity;
+     private String mPath;
+@@ -323,4 +324,13 @@ public class RemovePagesFragment extends Fragment implements MergeFilesAdapter.O
+     public void onPopulate(ArrayList<String> paths) {
+         populateUtil(mActivity, paths, this, mLayout, mLottieProgress, mRecyclerViewFiles);
+     }
++
++    @Override
++    public boolean onBackPressed() {
++        if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
++            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
++            return true;
++        }
++        return false;
++    }
+ }
+diff --git a/app/src/main/java/swati4star/createpdf/fragment/SplitFilesFragment.java b/app/src/main/java/swati4star/createpdf/fragment/SplitFilesFragment.java
+index 59624b9..ce9f9b9 100644
+--- a/app/src/main/java/swati4star/createpdf/fragment/SplitFilesFragment.java
++++ b/app/src/main/java/swati4star/createpdf/fragment/SplitFilesFragment.java
+@@ -35,6 +35,7 @@ import swati4star.createpdf.R;
+ import swati4star.createpdf.adapter.FilesListAdapter;
+ import swati4star.createpdf.adapter.MergeFilesAdapter;
+ import swati4star.createpdf.interfaces.BottomSheetPopulate;
++import swati4star.createpdf.interfaces.IOnBackPressed;
+ import swati4star.createpdf.util.BottomSheetCallback;
+ import swati4star.createpdf.util.BottomSheetUtils;
+ import swati4star.createpdf.util.FileUtils;
+@@ -49,7 +50,7 @@ import static swati4star.createpdf.util.FileUriUtils.getFilePath;
+ import static swati4star.createpdf.util.StringUtils.showSnackbar;
+ 
+ public class SplitFilesFragment extends Fragment implements MergeFilesAdapter.OnClickListener,
+-        FilesListAdapter.OnFileItemClickedListener, BottomSheetPopulate {
++        FilesListAdapter.OnFileItemClickedListener, BottomSheetPopulate, IOnBackPressed {
+ 
+     private Activity mActivity;
+     private String mPath;
+@@ -204,4 +205,13 @@ public class SplitFilesFragment extends Fragment implements MergeFilesAdapter.On
+     public void onPopulate(ArrayList<String> paths) {
+         populateUtil(mActivity, paths, this, mLayout, mLottieProgress, mRecyclerViewFiles);
+     }
++
++    @Override
++    public boolean onBackPressed() {
++        if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
++            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
++            return true;
++        }
++        return false;
++    }
+ }
+diff --git a/app/src/main/java/swati4star/createpdf/interfaces/IOnBackPressed.java b/app/src/main/java/swati4star/createpdf/interfaces/IOnBackPressed.java
+new file mode 100644
+index 0000000..e72c3fa
+--- /dev/null
++++ b/app/src/main/java/swati4star/createpdf/interfaces/IOnBackPressed.java
+@@ -0,0 +1,9 @@
++package swati4star.createpdf.interfaces;
++
++public interface IOnBackPressed {
++    /**
++     * If you want to handle the back-press in your fragment
++     * @return true if the back-press was handled
++     */
++    boolean onBackPressed();
++}

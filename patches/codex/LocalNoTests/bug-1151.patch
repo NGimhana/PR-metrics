@@ -1,0 +1,50 @@
+--- a/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java
++++ b/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java
+@@ -186,11 +186,14 @@
+ 
+     private SensorManager mSensorManager;
+ 
++    private boolean mIsDarkTheme;
++
+     /** Called when the activity is first created. */
+     @Override
+     public void onCreate(Bundle savedInstanceState) {
++        mIsDarkTheme = Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false);
+         // Set theme
+-        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
++        if (mIsDarkTheme) {
+             setTheme(R.style.AppTheme_Dark_NoActionBar);
+         }
+         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+@@ -265,6 +268,11 @@
+          * Check preferences to see how these componenets should be initialized
+          */
+         SharedPreferences settings = Application.getPrefs();
++
++        if (settings.getBoolean(getString(R.string.pref_key_dark_theme), false) != mIsDarkTheme) {
++            recreate();
++            return;
++        }
+ 
+         checkKeepScreenOn(settings);
+ 
+--- a/GPSTest/src/main/java/com/android/gpstest/Preferences.java
++++ b/GPSTest/src/main/java/com/android/gpstest/Preferences.java
+@@ -135,12 +135,12 @@
+         chkDarkTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+             @Override
+             public boolean onPreferenceChange(Preference preference, Object newValue) {
+-                // Close and restart Activities (clearing the back stack) to apply new theme
+-                finish();
+-                final Intent intent = getIntent();
+-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+-                startActivity(intent);
+-                return true;
++                // Persist now and refresh this screen, preserving the existing back stack.
++                Application.getPrefs().edit()
++                        .putBoolean(getString(R.string.pref_key_dark_theme), (Boolean) newValue)
++                        .apply();
++                recreate();
++                return false;
+             }
+         });

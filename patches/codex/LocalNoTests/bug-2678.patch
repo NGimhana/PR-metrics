@@ -1,0 +1,131 @@
+--- a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
++++ b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+@@ -67,8 +67,6 @@
+     private EditText degreeText1, degreeText2, degreeText3, degreeText4;
+     private SeekArc seekArc1, seekArc2, seekArc3, seekArc4;
+     private LinearLayout servo1TimeLine, servo2TimeLine, servo3TimeLine, servo4TimeLine;
+-    private int degree;
+-    private boolean editEnter = false;
+     private HorizontalScrollView scrollView;
+     private CountDownTimer timeLine;
+     private boolean isPlaying = false;
+@@ -144,6 +142,10 @@
+         degreeText2.setText(getResources().getString(R.string.zero));
+         degreeText3.setText(getResources().getString(R.string.zero));
+         degreeText4.setText(getResources().getString(R.string.zero));
++        degreeText1.setTag(0);
++        degreeText2.setTag(0);
++        degreeText3.setTag(0);
++        degreeText4.setTag(0);
+ 
+         degreeText1.setFilters(new InputFilter[]{new InputMinMaxFilter(0, 360)});
+         degreeText2.setFilters(new InputFilter[]{new InputMinMaxFilter(0, 360)});
+@@ -225,12 +227,7 @@
+         seekArc1.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
+-                if (editEnter) {
+-                    degreeText1.setText(String.valueOf(degree));
+-                    editEnter = false;
+-                } else {
+-                    degreeText1.setText(String.valueOf((int) (i * 3.6)));
+-                }
++                setDegreeText(degreeText1, (int) (i * 3.6));
+                 degreeText1.setCursorVisible(false);
+             }
+ 
+@@ -248,12 +245,7 @@
+         seekArc2.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
+-                if (editEnter) {
+-                    degreeText2.setText(String.valueOf(degree));
+-                    editEnter = false;
+-                } else {
+-                    degreeText2.setText(String.valueOf((int) (i * 3.6)));
+-                }
++                setDegreeText(degreeText2, (int) (i * 3.6));
+                 degreeText2.setCursorVisible(false);
+             }
+ 
+@@ -271,12 +263,7 @@
+         seekArc3.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
+-                if (editEnter) {
+-                    degreeText3.setText(String.valueOf(degree));
+-                    editEnter = false;
+-                } else {
+-                    degreeText3.setText(String.valueOf((int) (i * 3.6)));
+-                }
++                setDegreeText(degreeText3, (int) (i * 3.6));
+                 degreeText3.setCursorVisible(false);
+             }
+ 
+@@ -294,12 +281,7 @@
+         seekArc4.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
+-                if (editEnter) {
+-                    degreeText4.setText(String.valueOf(degree));
+-                    editEnter = false;
+-                } else {
+-                    degreeText4.setText(String.valueOf((int) (i * 3.6)));
+-                }
++                setDegreeText(degreeText4, (int) (i * 3.6));
+                 degreeText4.setCursorVisible(false);
+             }
+ 
+@@ -479,32 +461,44 @@
+         }
+     }
+     private void processDegreeInput(EditText degreeText, SeekArc seekArc) {
+-        int previousDegree = degree;
+         String degreeStr = degreeText.getText().toString().trim();
++        int degree;
+ 
+         if (degreeStr.isEmpty()) {
+-            degree = (degree == 0) ? (int) (seekArc.getProgress() * 3.6) : previousDegree;
++            degree = getPreviousDegree(degreeText, seekArc);
+         } else {
+             try {
+                 degree = Integer.parseInt(degreeStr);
+             } catch (NumberFormatException e) {
+-                degreeText.setText(getResources().getString(R.string.zero));
+                 seekArc.setProgress(0);
++                setDegreeText(degreeText, 0);
+                 toastInvalidValueMessage();
+                 return;
+             }
+         }
+ 
+         if (degree > 360 || degree < 0) {
+-            degreeText.setText(getResources().getString(R.string.zero));
+             seekArc.setProgress(0);
++            setDegreeText(degreeText, 0);
+             toastInvalidValueMessage();
+         } else {
+             seekArc.setProgress((int) (degree / 3.6));
+-            editEnter = true;
+-        }
+-    }
+-
++            setDegreeText(degreeText, degree);
++        }
++    }
++
++    private int getPreviousDegree(EditText degreeText, SeekArc seekArc) {
++        Object previousDegree = degreeText.getTag();
++        if (previousDegree instanceof Integer) {
++            return (Integer) previousDegree;
++        }
++        return (int) (seekArc.getProgress() * 3.6);
++    }
++
++    private void setDegreeText(EditText degreeText, int degree) {
++        degreeText.setText(String.valueOf(degree));
++        degreeText.setTag(degree);
++    }
+ 
+     private void saveTimeline() {
+         long block = System.currentTimeMillis();

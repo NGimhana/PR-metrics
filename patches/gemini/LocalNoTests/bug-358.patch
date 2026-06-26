@@ -1,0 +1,77 @@
+diff --git a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+index 6b8c2ce..40452ef 100644
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+@@ -1,7 +1,6 @@
+ package com.trianguloy.urlchecker.modules.list;
+ 
+ import android.net.Uri;
+-import android.net.UrlQuerySanitizer;
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.LinearLayout;
+@@ -74,13 +73,6 @@ class UriPartsDialog extends AModuleDialog {
+ 
+         // parse
+         var uri = Uri.parse(urlData.url);
+-        var urlQuerySanitizer = new UrlQuerySanitizer();
+-        // the default parseUrl doesn't remove the fragment
+-        if (uri.getQuery() != null) {
+-            urlQuerySanitizer.setAllowUnregisteredParamaters(true);
+-            urlQuerySanitizer.setUnregisteredParameterValueSanitizer(v -> v);
+-            urlQuerySanitizer.parseQuery(uri.getQuery());
+-        }
+ 
+         // domain elements
+         if (uri.getAuthority() != null || uri.getScheme() != null) {
+@@ -108,18 +100,39 @@ class UriPartsDialog extends AModuleDialog {
+         }
+ 
+         // query parameters
+-        var parameters = urlQuerySanitizer.getParameterList();
+-        if (parameters.size() > 0) {
+-            var queries = addGroup("Parameters", parameters.size(), uri.buildUpon().query(null));
+-            for (var i = 0; i < parameters.size(); i++) {
+-                // generate same url but without this parameter
+-                var builder = uri.buildUpon();
+-                builder.query(null);
+-                for (var j = 0; j < parameters.size(); j++) {
+-                    if (i != j) builder.appendQueryParameter(parameters.get(j).mParameter, parameters.get(j).mValue);
++        var encodedQuery = uri.getEncodedQuery();
++        if (encodedQuery != null) {
++            var names = new ArrayList<String>();
++            var values = new ArrayList<String>();
++            for (var pair : encodedQuery.split("&")) {
++                if (pair.isEmpty()) continue;
++                int idx = pair.indexOf("=");
++                String name, value;
++                if (idx >= 0) {
++                    name = pair.substring(0, idx);
++                    value = pair.substring(idx + 1);
++                } else {
++                    name = pair;
++                    value = "";
++                }
++                names.add(Uri.decode(name.replace('+', ' ')));
++                values.add(Uri.decode(value.replace('+', ' ')));
++            }
++
++            if (names.size() > 0) {
++                var queries = addGroup("Parameters", names.size(), uri.buildUpon().query(null));
++                for (var i = 0; i < names.size(); i++) {
++                    // generate same url but without this parameter
++                    var builder = uri.buildUpon();
++                    builder.query(null);
++                    for (var j = 0; j < names.size(); j++) {
++                        if (i != j) {
++                            builder.appendQueryParameter(names.get(j), values.get(j));
++                        }
++                    }
++                    // append the parameter
++                    addPart(names.get(i), values.get(i), queries, builder);
+                 }
+-                // append the parameter
+-                addPart(parameters.get(i).mParameter, parameters.get(i).mValue, queries, builder);
+             }
+         }
+ 

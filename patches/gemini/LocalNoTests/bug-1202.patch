@@ -1,0 +1,58 @@
+diff --git a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+index d26b1c3..5505135 100644
+--- a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
++++ b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+@@ -128,11 +128,12 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+     @OnClick(R.id.nextimageButton)
+     void nextImg() {
+         //Proceed to next if Save Current has been clicked
+-        if (mClicked == mClickedFilter) {
++        if (mClicked || (!mClickedFilter && !mDoodleSelected)) {
+             next();
+             incrementImageCount();
+             mClicked = false;
+             mClickedFilter = false;
++            mDoodleSelected = false;
+         } else
+             Toast.makeText(getApplicationContext(), R.string.save_first, Toast.LENGTH_SHORT).show();
+     }
+@@ -140,11 +141,12 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+     @OnClick(R.id.previousImageButton)
+     void previousImg() {
+         //move to previous if Save Current has been clicked
+-        if (mClicked == mClickedFilter) {
++        if (mClicked || (!mClickedFilter && !mDoodleSelected)) {
+             previous();
+             decrementImageCount();
+             mClicked = false;
+             mClickedFilter = false;
++            mDoodleSelected = false;
+         } else
+             Toast.makeText(getApplicationContext(), R.string.save_first, Toast.LENGTH_SHORT).show();
+     }
+@@ -168,6 +170,9 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+                 .setImageBitmap(BitmapFactory.decodeFile(originalPath));
+         mPhotoEditor.clearAllViews();
+         mPhotoEditor.undo();
++        mClicked = false;
++        mClickedFilter = false;
++        mDoodleSelected = false;
+     }
+ 
+     /**
+@@ -318,6 +323,7 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+                 doodleSeekBar.setVisibility(View.VISIBLE);
+                 brushColorsView.setVisibility(View.VISIBLE);
+                 mDoodleSelected = true;
++                mClicked = false;
+             } else if (doodleSeekBar.getVisibility() == View.VISIBLE &&
+                     brushColorsView.getVisibility() == View.VISIBLE) {
+                 mPhotoEditor.setBrushDrawingMode(false);
+@@ -327,6 +333,7 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+         } else {
+             PhotoFilter filter = mFilterItems.get(position).getFilter();
+             applyFilter(filter);
++            mClicked = false;
+         }
+     }
+ 

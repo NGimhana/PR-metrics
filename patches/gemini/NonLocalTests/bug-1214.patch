@@ -1,0 +1,141 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 08e7ef5..a17a34d 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -441,6 +441,27 @@ public class IntroScreenActivity extends IntroActivity {
+             passwordInput.addTextChangedListener(textWatcher);
+             passwordConfirm.addTextChangedListener(textWatcher);
+ 
++            passwordLayout.setEndIconOnClickListener(new View.OnClickListener() {
++                @Override
++                public void onClick(View v) {
++                    int selectionInput = passwordInput.getSelectionEnd();
++                    int selectionConfirm = passwordConfirm.getSelectionEnd();
++
++                    if (passwordInput.getTransformationMethod() instanceof PasswordTransformationMethod) {
++                        passwordInput.setTransformationMethod(null);
++                        passwordConfirm.setTransformationMethod(null);
++                    } else {
++                        passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
++                        passwordConfirm.setTransformationMethod(PasswordTransformationMethod.getInstance());
++                    }
++
++                    if (selectionInput >= 0)
++                        passwordInput.setSelection(selectionInput);
++                    if (selectionConfirm >= 0)
++                        passwordConfirm.setSelection(selectionConfirm);
++                }
++            });
++
+             selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.PASSWORD));
+ 
+             return root;
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java
+index 9209e36..6fa8eea 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java
+@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatDialog;
+ import android.text.Editable;
+ import android.text.TextUtils;
+ import android.text.TextWatcher;
++import android.text.method.PasswordTransformationMethod;
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.EditText;
+@@ -37,10 +38,31 @@ public class PasswordEntryDialog extends AppCompatDialog
+         setTitle(R.string.dialog_title_enter_password);
+         setContentView(R.layout.dialog_password_entry);
+ 
+-        TextInputLayout passwordLayout = findViewById(R.id.passwordInputLayout);
++        final TextInputLayout passwordLayout = findViewById(R.id.passwordInputLayout);
+         passwordInput = findViewById(R.id.passwordInput);
+         passwordConfirm = findViewById(R.id.passwordConfirm);
+ 
++        passwordLayout.setEndIconOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                int selectionInput = passwordInput.getSelectionEnd();
++                int selectionConfirm = passwordConfirm.getSelectionEnd();
++
++                if (passwordInput.getTransformationMethod() instanceof PasswordTransformationMethod) {
++                    passwordInput.setTransformationMethod(null);
++                    passwordConfirm.setTransformationMethod(null);
++                } else {
++                    passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
++                    passwordConfirm.setTransformationMethod(PasswordTransformationMethod.getInstance());
++                }
++
++                if (selectionInput >= 0)
++                    passwordInput.setSelection(selectionInput);
++                if (selectionConfirm >= 0)
++                    passwordConfirm.setSelection(selectionConfirm);
++            }
++        });
++
+         if (blockAccessibility) {
+             passwordLayout.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+             passwordConfirm.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java
+index 9d1373d..f09413a 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java
+@@ -127,6 +127,27 @@ public class CredentialsPreference extends DialogPreference
+         passwordInput = view.findViewById(R.id.passwordEdit);
+         passwordConfirm = view.findViewById(R.id.passwordConfirm);
+ 
++        passwordLayout.setEndIconOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                int selectionInput = passwordInput.getSelectionEnd();
++                int selectionConfirm = passwordConfirm.getSelectionEnd();
++
++                if (passwordInput.getTransformationMethod() instanceof PasswordTransformationMethod) {
++                    passwordInput.setTransformationMethod(null);
++                    passwordConfirm.setTransformationMethod(null);
++                } else {
++                    passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
++                    passwordConfirm.setTransformationMethod(PasswordTransformationMethod.getInstance());
++                }
++
++                if (selectionInput >= 0)
++                    passwordInput.setSelection(selectionInput);
++                if (selectionConfirm >= 0)
++                    passwordConfirm.setSelection(selectionConfirm);
++            }
++        });
++
+         if (settings.getBlockAccessibility()) {
+             passwordLayout.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+             passwordConfirm.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java
+index 4fcc709..a323439 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java
+@@ -99,6 +99,27 @@ public class PasswordEncryptedPreference extends DialogPreference
+         passwordInput = view.findViewById(R.id.passwordEdit);
+         passwordConfirm = view.findViewById(R.id.passwordConfirm);
+ 
++        passwordLayout.setEndIconOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                int selectionInput = passwordInput.getSelectionEnd();
++                int selectionConfirm = passwordConfirm.getSelectionEnd();
++
++                if (passwordInput.getTransformationMethod() instanceof PasswordTransformationMethod) {
++                    passwordInput.setTransformationMethod(null);
++                    passwordConfirm.setTransformationMethod(null);
++                } else {
++                    passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
++                    passwordConfirm.setTransformationMethod(PasswordTransformationMethod.getInstance());
++                }
++
++                if (selectionInput >= 0)
++                    passwordInput.setSelection(selectionInput);
++                if (selectionConfirm >= 0)
++                    passwordConfirm.setSelection(selectionConfirm);
++            }
++        });
++
+         if (settings.getBlockAccessibility()) {
+             passwordLayout.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+             passwordConfirm.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);

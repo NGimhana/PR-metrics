@@ -1,0 +1,64 @@
+diff --git a/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java b/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
+index b7298fe..7285a1b 100644
+--- a/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
+@@ -124,15 +124,6 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
+         FishingSpot fishingSpot = getNewFishingSpot();
+         fishingSpot.setName(mNameView.getInputText());
+ 
+-        if (mMap != null) {
+-            fishingSpot.setLatitude(mMap.getCameraPosition().target.latitude);
+-            fishingSpot.setLongitude(mMap.getCameraPosition().target.longitude);
+-        } else {
+-            // in case Google Play Services isn't available, fishing spots can still be added and updated later
+-            fishingSpot.setLatitude(0.0);
+-            fishingSpot.setLongitude(0.0);
+-        }
+-
+         // name
+         if (fishingSpot.isNameNull()) {
+             AlertUtils.showError(getActivity(), R.string.error_name);
+@@ -145,6 +136,33 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
+             return false;
+         }
+ 
++        // coordinates
++        String latStr = mLatitudeView.getInputText();
++        String lngStr = mLongitudeView.getInputText();
++        boolean valid = true;
++        double lat = 0;
++        double lng = 0;
++
++        if (latStr == null || lngStr == null) {
++            valid = false;
++        } else {
++            try {
++                lat = Double.parseDouble(latStr.replace(',', '.'));
++                lng = Double.parseDouble(lngStr.replace(',', '.'));
++                valid = mMapFragment.isValid(new LatLng(lat, lng));
++            } catch (NumberFormatException e) {
++                valid = false;
++            }
++        }
++
++        if (!valid) {
++            AlertUtils.showError(getActivity(), R.string.msg_invalid_coordinate);
++            return false;
++        }
++
++        fishingSpot.setLatitude(lat);
++        fishingSpot.setLongitude(lng);
++
+         return true;
+     }
+ 
+@@ -272,6 +290,9 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
+     private double validateCoordinateInput(InputTextView input) {
+         String inputText = input.getInputText();
+ 
++        if (inputText == null)
++            return -1;
++
+         // do not validate if the user is entering a negative coordinate
+         if (inputText.length() == 1 && inputText.charAt(0) == '-')
+             return -1;

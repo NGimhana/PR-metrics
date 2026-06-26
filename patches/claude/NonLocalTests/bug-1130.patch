@@ -1,0 +1,17 @@
+--- a/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
++++ b/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
+@@ -511,12 +511,11 @@
+             recyclerView.setAdapter(recyclerAdapter);
+         }
+         if(queue == null || queue.size() == 0) {
+-            recyclerView.setVisibility(View.GONE);
+             txtvEmpty.setVisibility(View.VISIBLE);
+         } else {
+             txtvEmpty.setVisibility(View.GONE);
+-            recyclerView.setVisibility(View.VISIBLE);
+-        }
++        }
++        recyclerView.setVisibility(View.VISIBLE);
+ 
+         if (restoreScrollPosition) {
+             restoreScrollPosition();

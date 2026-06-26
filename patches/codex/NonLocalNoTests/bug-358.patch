@@ -1,0 +1,94 @@
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+@@ -1,7 +1,6 @@
+ package com.trianguloy.urlchecker.modules.list;
+ 
+ import android.net.Uri;
+-import android.net.UrlQuerySanitizer;
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.LinearLayout;
+@@ -74,13 +73,7 @@
+ 
+         // parse
+         var uri = Uri.parse(urlData.url);
+-        var urlQuerySanitizer = new UrlQuerySanitizer();
+-        // the default parseUrl doesn't remove the fragment
+-        if (uri.getQuery() != null) {
+-            urlQuerySanitizer.setAllowUnregisteredParamaters(true);
+-            urlQuerySanitizer.setUnregisteredParameterValueSanitizer(v -> v);
+-            urlQuerySanitizer.parseQuery(uri.getQuery());
+-        }
++        var parameters = getQueryParameters(uri);
+ 
+         // domain elements
+         if (uri.getAuthority() != null || uri.getScheme() != null) {
+@@ -108,7 +101,6 @@
+         }
+ 
+         // query parameters
+-        var parameters = urlQuerySanitizer.getParameterList();
+         if (parameters.size() > 0) {
+             var queries = addGroup("Parameters", parameters.size(), uri.buildUpon().query(null));
+             for (var i = 0; i < parameters.size(); i++) {
+@@ -116,10 +108,10 @@
+                 var builder = uri.buildUpon();
+                 builder.query(null);
+                 for (var j = 0; j < parameters.size(); j++) {
+-                    if (i != j) builder.appendQueryParameter(parameters.get(j).mParameter, parameters.get(j).mValue);
++                    if (i != j) builder.appendQueryParameter(parameters.get(j).name, parameters.get(j).value);
+                 }
+                 // append the parameter
+-                addPart(parameters.get(i).mParameter, parameters.get(i).mValue, queries, builder);
++                addPart(parameters.get(i).name, parameters.get(i).value, queries, builder);
+             }
+         }
+ 
+@@ -203,4 +195,47 @@
+         return true;
+     };
+ 
++    private static List<QueryParameter> getQueryParameters(Uri uri) {
++        var query = uri.getEncodedQuery();
++        var parameters = new ArrayList<QueryParameter>();
++        if (query == null || query.isEmpty()) return parameters;
++
++        for (var part : query.split("&", -1)) {
++            var split = part.indexOf('=');
++            var name = split == -1 ? part : part.substring(0, split);
++            var value = split == -1 ? "" : part.substring(split + 1);
++            parameters.add(new QueryParameter(decodeQueryPart(name), decodeQueryPart(value)));
++        }
++        return parameters;
++    }
++
++    private static String decodeQueryPart(String part) {
++        // Query strings commonly use '+' for spaces, but a '+' produced by
++        // decoding "%2B" must stay as '+'. Apply the form rule only once.
++        var decoded = safeDecode(part.replace("+", " "));
++        while (true) {
++            var next = safeDecode(decoded);
++            if (next.equals(decoded)) return decoded;
++            decoded = next;
++        }
++    }
++
++    private static String safeDecode(String part) {
++        try {
++            return Uri.decode(part);
++        } catch (Exception e) {
++            return part;
++        }
++    }
++
++    private static class QueryParameter {
++        final String name;
++        final String value;
++
++        QueryParameter(String name, String value) {
++            this.name = name;
++            this.value = value;
++        }
++    }
++
+ }

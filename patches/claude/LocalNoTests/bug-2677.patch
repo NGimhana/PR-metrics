@@ -1,0 +1,57 @@
+--- a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
++++ b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+@@ -229,7 +229,7 @@
+                     degreeText1.setText(String.valueOf(degree));
+                     editEnter = false;
+                 } else {
+-                    degreeText1.setText(String.valueOf((int) (i * 3.6)));
++                    degreeText1.setText(String.valueOf((int) Math.round(i * 3.6)));
+                 }
+                 degreeText1.setCursorVisible(false);
+             }
+@@ -252,7 +252,7 @@
+                     degreeText2.setText(String.valueOf(degree));
+                     editEnter = false;
+                 } else {
+-                    degreeText2.setText(String.valueOf((int) (i * 3.6)));
++                    degreeText2.setText(String.valueOf((int) Math.round(i * 3.6)));
+                 }
+                 degreeText2.setCursorVisible(false);
+             }
+@@ -275,7 +275,7 @@
+                     degreeText3.setText(String.valueOf(degree));
+                     editEnter = false;
+                 } else {
+-                    degreeText3.setText(String.valueOf((int) (i * 3.6)));
++                    degreeText3.setText(String.valueOf((int) Math.round(i * 3.6)));
+                 }
+                 degreeText3.setCursorVisible(false);
+             }
+@@ -298,7 +298,7 @@
+                     degreeText4.setText(String.valueOf(degree));
+                     editEnter = false;
+                 } else {
+-                    degreeText4.setText(String.valueOf((int) (i * 3.6)));
++                    degreeText4.setText(String.valueOf((int) Math.round(i * 3.6)));
+                 }
+                 degreeText4.setCursorVisible(false);
+             }
+@@ -483,7 +483,7 @@
+         String degreeStr = degreeText.getText().toString().trim();
+ 
+         if (degreeStr.isEmpty()) {
+-            degree = (degree == 0) ? (int) (seekArc.getProgress() * 3.6) : previousDegree;
++            degree = (degree == 0) ? (int) Math.round(seekArc.getProgress() * 3.6) : previousDegree;
+         } else {
+             try {
+                 degree = Integer.parseInt(degreeStr);
+@@ -500,8 +500,8 @@
+             seekArc.setProgress(0);
+             toastInvalidValueMessage();
+         } else {
+-            seekArc.setProgress((int) (degree / 3.6));
+             editEnter = true;
++            seekArc.setProgress((int) Math.round(degree / 3.6));
+         }
+     }
+ 

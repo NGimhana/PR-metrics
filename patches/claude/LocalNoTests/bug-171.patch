@@ -1,0 +1,54 @@
+--- a/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
++++ b/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
+@@ -13,6 +13,9 @@
+ import org.sufficientlysecure.htmltextview.HtmlTextView;
+ import org.sufficientlysecure.htmltextview.OnClickATagListener;
+ 
++import java.util.regex.Matcher;
++import java.util.regex.Pattern;
++
+ public class DialogUtils {
+ 
+     public static void showTextSelectionDialog(Context ctx, String text) {
+@@ -21,7 +24,7 @@
+         selectTextDialogBuilder.setView(rootView);
+ 
+         HtmlTextView htmlTextView = rootView.findViewById(R.id.select_text_htmltextview);
+-        htmlTextView.setHtml(text);
++        htmlTextView.setHtml(untruncateLinks(text));
+ 
+         htmlTextView.setOnClickATagListener(new OnClickATagListener() {
+             @Override
+@@ -36,4 +39,32 @@
+         selectTextDialog.show();
+     }
+ 
++    /**
++     * Replaces truncated link text with the full URL from the href attribute.
++     * Hacker News truncates long URLs in anchor tag display text (e.g.,
++     * &lt;a href="https://full-url.com/path"&gt;https://full-url.com/pa...&lt;/a&gt;).
++     * This method restores the full URL as the visible text so that selecting
++     * text in the dialog copies the complete link.
++     */
++    private static String untruncateLinks(String html) {
++        Matcher matcher = Pattern.compile("<a [^>]*href=\"([^\"]*)\"[^>]*>(.*?)</a>", Pattern.CASE_INSENSITIVE).matcher(html);
++        StringBuffer sb = new StringBuffer();
++        while (matcher.find()) {
++            String href = matcher.group(1);
++            String linkText = matcher.group(2);
++            // Only replace if the link text looks like a truncated URL
++            // (i.e., it ends with "..." and the href starts with the non-truncated part)
++            if (linkText != null && href != null && linkText.endsWith("...")) {
++                String prefix = linkText.substring(0, linkText.length() - 3);
++                if (href.startsWith(prefix)) {
++                    matcher.appendReplacement(sb, Matcher.quoteReplacement("<a href=\"" + href + "\">" + href + "</a>"));
++                    continue;
++                }
++            }
++            matcher.appendReplacement(sb, Matcher.quoteReplacement(matcher.group(0)));
++        }
++        matcher.appendTail(sb);
++        return sb.toString();
++    }
++
+ }

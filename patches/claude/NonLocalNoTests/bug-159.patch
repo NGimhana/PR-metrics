@@ -1,0 +1,108 @@
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
+@@ -673,8 +673,16 @@
+ 
+     private void openNoteEditorForCurrentlySelectedNote() {
+         try {
+-            //Just select the first one. It doesn't particularly matter if there's a multiselect occurring.
+-            openNoteEditorForCard(getSelectedCardIds()[0]);
++            long[] selectedCardIds = getSelectedCardIds();
++            //Open the editor for the first selected card, but pass all selected card IDs
++            //so that batch operations like note type change can be applied to all of them
++            mCurrentCardId = selectedCardIds[0];
++            sCardBrowserCard = getCol().getCard(mCurrentCardId);
++            Intent editCard = new Intent(this, NoteEditor.class);
++            editCard.putExtra(NoteEditor.EXTRA_CALLER, NoteEditor.CALLER_CARDBROWSER_EDIT);
++            editCard.putExtra(NoteEditor.EXTRA_CARD_ID, sCardBrowserCard.getId());
++            editCard.putExtra(NoteEditor.EXTRA_ALL_CARD_IDS, selectedCardIds);
++            startActivityForResultWithAnimation(editCard, EDIT_CARD, ActivityTransitionAnimation.LEFT);
+         } catch (Exception e) {
+             Timber.w(e, "Error Opening Note Editor");
+             UIUtils.showThemedToast(this, getString(R.string.card_browser_note_editor_error), false);
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java
+@@ -127,6 +127,7 @@
+     public static final String EXTRA_CARD_ID = "CARD_ID";
+     public static final String EXTRA_CONTENTS = "CONTENTS";
+     public static final String EXTRA_ID = "ID";
++    public static final String EXTRA_ALL_CARD_IDS = "ALL_CARD_IDS";
+ 
+     private static final String ACTION_CREATE_FLASHCARD = "org.openintents.action.CREATE_FLASHCARD";
+     private static final String ACTION_CREATE_FLASHCARD_SEND = "android.intent.action.SEND";
+@@ -179,6 +180,9 @@
+     private ArrayList<Long> mAllModelIds;
+     private Map<Integer, Integer> mModelChangeFieldMap;
+     private Map<Integer, Integer> mModelChangeCardMap;
++
++    /** When editing from CardBrowser with multiple cards selected, stores all card IDs for batch type change */
++    private long[] mAllCardIds;
+ 
+     /* indicates if a new note is added or a card is edited */
+     private boolean mAddNote;
+@@ -437,6 +441,9 @@
+                 }
+                 mEditorNote = mCurrentEditedCard.note();
+                 mAddNote = false;
++                if (intent.hasExtra(EXTRA_ALL_CARD_IDS)) {
++                    mAllCardIds = intent.getLongArrayExtra(EXTRA_ALL_CARD_IDS);
++                }
+                 break;
+ 
+             case CALLER_CARDBROWSER_ADD:
+@@ -850,7 +857,7 @@
+      * @throws ConfirmModSchemaException If a full sync will be required
+      */
+     private void changeNoteType(JSONObject oldModel, JSONObject newModel) throws ConfirmModSchemaException {
+-        final long [] nids = {mEditorNote.getId()};
++        final long[] nids = getAllNoteIdsForTypeChange();
+         getCol().getModels().change(oldModel, nids, newModel, mModelChangeFieldMap, mModelChangeCardMap);
+         // refresh the note object to reflect the database changes
+         mEditorNote.load();
+@@ -858,6 +865,36 @@
+         closeNoteEditor();
+     }
+ 
++    /**
++     * Get all note IDs that should be affected by a note type change.
++     * When multiple cards were selected in the CardBrowser, this returns note IDs
++     * for all selected cards that share the same note type as the current note.
++     * Otherwise, returns just the current note's ID.
++     */
++    private long[] getAllNoteIdsForTypeChange() {
++        if (mAllCardIds == null || mAllCardIds.length <= 1) {
++            return new long[] {mEditorNote.getId()};
++        }
++        // Collect unique note IDs from all selected cards that have the same model as the current note
++        long currentModelId = mCurrentEditedCard.model().getLong("id");
++        java.util.LinkedHashSet<Long> noteIdSet = new java.util.LinkedHashSet<>();
++        // Always include the current note first
++        noteIdSet.add(mEditorNote.getId());
++        for (long cardId : mAllCardIds) {
++            Card card = getCol().getCard(cardId);
++            Note note = card.note();
++            // Only include notes that have the same original model
++            if (note.model().getLong("id") == currentModelId) {
++                noteIdSet.add(note.getId());
++            }
++        }
++        long[] nids = new long[noteIdSet.size()];
++        int idx = 0;
++        for (Long nid : noteIdSet) {
++            nids[idx++] = nid;
++        }
++        return nids;
++    }
+ 
+     @Override
+     public void onBackPressed() {
+--- a/AnkiDroid/src/main/java/com/ichi2/utils/JSONObject.java
++++ b/AnkiDroid/src/main/java/com/ichi2/utils/JSONObject.java
+@@ -94,7 +94,7 @@
+ 
+     public JSONObject(JSONObject copyFrom) {
+         this();
+-        for (String key: this) {
++        for (String key: copyFrom) {
+             put(key, copyFrom.get(key));
+         }
+     }

@@ -1,0 +1,26 @@
+--- a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
++++ b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+@@ -128,7 +128,7 @@
+     @OnClick(R.id.nextimageButton)
+     void nextImg() {
+         //Proceed to next if Save Current has been clicked
+-        if (mClicked == mClickedFilter) {
++        if (mClicked || !mClickedFilter) {
+             next();
+             incrementImageCount();
+             mClicked = false;
+@@ -140,7 +140,7 @@
+     @OnClick(R.id.previousImageButton)
+     void previousImg() {
+         //move to previous if Save Current has been clicked
+-        if (mClicked == mClickedFilter) {
++        if (mClicked || !mClickedFilter) {
+             previous();
+             decrementImageCount();
+             mClicked = false;
+@@ -384,4 +384,4 @@
+         mPhotoEditor.setBrushColor(getResources().getColor(color));
+     }
+ 
+-}
++}

@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
++++ b/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
+@@ -65,7 +65,7 @@
+         int currentProgress = (int) (maxProgress * ((float) millisTillRotation / (_period * 1000)));
+ 
+         // start progress animation, compensating for any changes to the animator duration scale settings
+-        int animPart = maxProgress / _period;
++        int animPart = Math.max(maxProgress / _period, 1);
+         int animEnd = (currentProgress / animPart) * animPart;
+         int animPartDuration = (int) (1000 / _animDurationScale);
+         float animDurationFraction = (float) (currentProgress - animEnd) / animPart;

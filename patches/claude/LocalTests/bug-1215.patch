@@ -1,0 +1,54 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
+@@ -276,28 +276,33 @@
+ 
+             @Override
+             public void afterTextChanged(Editable editable) {
+-                if ((TextUtils.isEmpty(labelInput.getText()) && TextUtils.isEmpty(issuerInput.getText())) ||
+-                        (TextUtils.isEmpty(secretInput.getText()) && isNewEntry) ||
+-                        TextUtils.isEmpty(digitsInput.getText()) ||
+-                        Integer.parseInt(digitsInput.getText().toString()) == 0) {
+-                    positiveButton.setEnabled(false);
+-                } else {
+-                    Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
+-                    if (type == Entry.OTPType.HOTP) {
+-                        if (TextUtils.isEmpty(counterInput.getText())) {
+-                            positiveButton.setEnabled(false);
++                try {
++                    if ((TextUtils.isEmpty(labelInput.getText()) && TextUtils.isEmpty(issuerInput.getText())) ||
++                            (TextUtils.isEmpty(secretInput.getText()) && isNewEntry) ||
++                            TextUtils.isEmpty(digitsInput.getText()) ||
++                            Integer.parseInt(digitsInput.getText().toString()) == 0) {
++                        positiveButton.setEnabled(false);
++                    } else {
++                        Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
++                        if (type == Entry.OTPType.HOTP) {
++                            if (TextUtils.isEmpty(counterInput.getText())) {
++                                positiveButton.setEnabled(false);
++                            } else {
++                                Long.parseLong(counterInput.getText().toString());
++                                positiveButton.setEnabled(true);
++                            }
++                        } else if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
++                            if (TextUtils.isEmpty(periodInput.getText()) || Integer.parseInt(periodInput.getText().toString()) == 0) {
++                                positiveButton.setEnabled(false);
++                            } else {
++                                positiveButton.setEnabled(true);
++                            }
+                         } else {
+                             positiveButton.setEnabled(true);
+                         }
+-                    } else if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+-                        if (TextUtils.isEmpty(periodInput.getText()) || Integer.parseInt(periodInput.getText().toString()) == 0) {
+-                            positiveButton.setEnabled(false);
+-                        } else {
+-                            positiveButton.setEnabled(true);
+-                        }
+-                    } else {
+-                        positiveButton.setEnabled(true);
+                     }
++                } catch (NumberFormatException e) {
++                    positiveButton.setEnabled(false);
+                 }
+             }
+         };

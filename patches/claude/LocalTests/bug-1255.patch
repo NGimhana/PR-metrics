@@ -1,0 +1,11 @@
+--- a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java
++++ b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java
+@@ -326,7 +326,7 @@
+ 
+ 	public String getChannelUrl() {
+ 		try {
+-			return YoutubeChannelLinkHandlerFactory.getInstance().getUrl(getId());
++			return YoutubeChannelLinkHandlerFactory.getInstance().getUrl("channel/" + getChannelId().getRawId());
+ 		} catch (ParsingException p) {
+ 			Logger.e(this, "getChannel URL for " + getId() + ", error:" + p.getMessage(), p);
+ 			return id;

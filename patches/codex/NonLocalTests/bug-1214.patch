@@ -1,0 +1,79 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -317,6 +317,40 @@
+             return passwordInput.getText().toString();
+         }
+ 
++        private void setPasswordHidden(EditText input) {
++            int cursorPos = input.getSelectionEnd();
++            input.setTransformationMethod(new PasswordTransformationMethod());
++            if (cursorPos >= 0) {
++                input.setSelection(Math.min(cursorPos, input.length()));
++            }
++        }
++
++        private void setPasswordVisible(EditText input) {
++            int cursorPos = input.getSelectionEnd();
++            input.setTransformationMethod(null);
++            if (cursorPos >= 0) {
++                input.setSelection(Math.min(cursorPos, input.length()));
++            }
++        }
++
++        private void syncConfirmVisibilityWithPrimary() {
++            if (passwordInput.getTransformationMethod() == null) {
++                setPasswordVisible(passwordConfirm);
++            } else {
++                setPasswordHidden(passwordConfirm);
++            }
++        }
++
++        private void togglePasswordVisibility() {
++            if (passwordInput.getTransformationMethod() == null) {
++                setPasswordHidden(passwordInput);
++                setPasswordHidden(passwordConfirm);
++            } else {
++                setPasswordVisible(passwordInput);
++                setPasswordVisible(passwordConfirm);
++            }
++        }
++
+         @Override
+         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                                  Bundle savedInstanceState) {
+@@ -331,6 +365,13 @@
+             passwordConfirm = root.findViewById(R.id.introPasswordConfirm);
+ 
+             generateSelectionMapping();
++            passwordLayout.setEndIconOnClickListener(new View.OnClickListener() {
++                @Override
++                public void onClick(View view) {
++                    togglePasswordVisibility();
++                    syncConfirmVisibilityWithPrimary();
++                }
++            });
+ 
+             final String[] authEntries = getResources().getStringArray(R.array.settings_entries_auth);
+             ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getIntroActivity(), android.R.layout.simple_spinner_item, authEntries) {
+@@ -371,8 +412,8 @@
+                         passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                         passwordConfirm.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+ 
+-                        passwordInput.setTransformationMethod(new PasswordTransformationMethod());
+-                        passwordConfirm.setTransformationMethod(new PasswordTransformationMethod());
++                        setPasswordHidden(passwordInput);
++                        setPasswordHidden(passwordConfirm);
+ 
+                         minLength = Constants.AUTH_MIN_PASSWORD_LENGTH;
+                         lengthWarning = getString(R.string.settings_label_short_password, minLength);
+@@ -392,8 +433,8 @@
+                         passwordInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+                         passwordConfirm.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+ 
+-                        passwordInput.setTransformationMethod(new PasswordTransformationMethod());
+-                        passwordConfirm.setTransformationMethod(new PasswordTransformationMethod());
++                        setPasswordHidden(passwordInput);
++                        setPasswordHidden(passwordConfirm);
+ 
+                         minLength = Constants.AUTH_MIN_PIN_LENGTH;
+                         lengthWarning = getString(R.string.settings_label_short_pin, minLength);

@@ -1,0 +1,32 @@
+--- a/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java
++++ b/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java
+@@ -23,6 +23,7 @@
+ import android.text.method.Touch;
+ import android.text.style.ClickableSpan;
+ import android.view.MotionEvent;
++import android.view.ViewConfiguration;
+ import android.widget.TextView;
+ 
+ /**
+@@ -30,6 +31,7 @@
+  */
+ public class LocalLinkMovementMethod extends LinkMovementMethod {
+     static LocalLinkMovementMethod sInstance;
++    private long lastActionDownTime = 0;
+ 
+     public static LocalLinkMovementMethod getInstance() {
+         if (sInstance == null)
+@@ -61,8 +63,12 @@
+ 
+             if (link.length != 0) {
+                 if (action == MotionEvent.ACTION_UP) {
+-                    link[0].onClick(widget);
++                    // Only handle the click if it was not a long press
++                    if (event.getEventTime() - lastActionDownTime < ViewConfiguration.getLongPressTimeout()) {
++                        link[0].onClick(widget);
++                    }
+                 } else if (action == MotionEvent.ACTION_DOWN) {
++                    lastActionDownTime = event.getEventTime();
+                     Selection.setSelection(buffer,
+                             buffer.getSpanStart(link[0]),
+                             buffer.getSpanEnd(link[0]));

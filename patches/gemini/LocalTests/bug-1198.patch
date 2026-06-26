@@ -1,0 +1,30 @@
+diff --git a/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java b/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
+index 9d59829..b1b1217 100644
+--- a/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
++++ b/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
+@@ -400,12 +400,21 @@ public class ViewFilesAdapter extends RecyclerView.Adapter<ViewFilesAdapter.View
+      * @param path Path of pdf file to be encrypted
+      */
+     private void doEncryption(String path) throws IOException, DocumentException {
+-        String finalOutputFile = path.replace(".pdf", mActivity.getString(R.string.encrypted_file));
+-        Log.e("Log", finalOutputFile);
++        String extension = mActivity.getString(R.string.pdf_ext);
++        String suffix = mActivity.getString(R.string.encrypted_file);
++        String baseName = path.substring(0, path.lastIndexOf(extension));
++        String finalOutputFile = baseName + suffix;
++        int i = 2;
++        while (new File(finalOutputFile).exists()) {
++            finalOutputFile = baseName + suffix.replace(extension, "") + i + extension;
++            i++;
++        }
+         PdfReader reader = new PdfReader(path);
+         PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(finalOutputFile));
+-        stamper.setEncryption(mPassword.getBytes(), mActivity.getString(R.string.app_name).getBytes(),
+-                PdfWriter.ALLOW_PRINTING | PdfWriter.ALLOW_COPY, PdfWriter.ENCRYPTION_AES_256);
++        if (mPassword != null) {
++            stamper.setEncryption(mPassword.getBytes(), mActivity.getString(R.string.app_name).getBytes(),
++                    PdfWriter.ALLOW_PRINTING | PdfWriter.ALLOW_COPY, PdfWriter.ENCRYPTION_AES_256);
++        }
+         stamper.close();
+         reader.close();
+         mFileList.add(new File(finalOutputFile));

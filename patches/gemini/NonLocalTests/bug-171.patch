@@ -1,0 +1,155 @@
+diff --git a/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java b/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
+index 2729eff..30c22d5 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
++++ b/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
+@@ -21,6 +21,7 @@ public class DialogUtils {
+         selectTextDialogBuilder.setView(rootView);
+ 
+         HtmlTextView htmlTextView = rootView.findViewById(R.id.select_text_htmltextview);
++        htmlTextView.setUnTruncateLinks(true);
+         htmlTextView.setHtml(text);
+ 
+         htmlTextView.setOnClickATagListener(new OnClickATagListener() {
+diff --git a/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlFormatter.java b/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlFormatter.java
+index b681268..f2fb002 100644
+--- a/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlFormatter.java
++++ b/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlFormatter.java
+@@ -35,7 +35,8 @@ public class HtmlFormatter {
+                     return builder.getOnClickATagListener();
+                 }
+             }, builder.getIndent(),
+-            builder.isRemoveTrailingWhiteSpace()
++            builder.isRemoveTrailingWhiteSpace(),
++            builder.isUnTruncateLinks()
+         );
+     }
+ 
+@@ -43,12 +44,13 @@ public class HtmlFormatter {
+         OnClickATagListener provideTagClickListener();
+     }
+ 
+-    public static Spanned formatHtml(@Nullable String html, ImageGetter imageGetter, ClickableTableSpan clickableTableSpan, DrawTableLinkSpan drawTableLinkSpan, TagClickListenerProvider tagClickListenerProvider, float indent, boolean removeTrailingWhiteSpace) {
++    public static Spanned formatHtml(@Nullable String html, ImageGetter imageGetter, ClickableTableSpan clickableTableSpan, DrawTableLinkSpan drawTableLinkSpan, TagClickListenerProvider tagClickListenerProvider, float indent, boolean removeTrailingWhiteSpace, boolean unTruncateLinks) {
+         final HtmlTagHandler htmlTagHandler = new HtmlTagHandler();
+         htmlTagHandler.setClickableTableSpan(clickableTableSpan);
+         htmlTagHandler.setDrawTableLinkSpan(drawTableLinkSpan);
+         htmlTagHandler.setOnClickATagListenerProvider(tagClickListenerProvider);
+         htmlTagHandler.setListIndentPx(indent);
++        htmlTagHandler.setUnTruncateLinks(unTruncateLinks);
+ 
+         html = htmlTagHandler.overrideTags(html);
+ 
+diff --git a/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlFormatterBuilder.java b/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlFormatterBuilder.java
+index d98affb..b15d878 100644
+--- a/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlFormatterBuilder.java
++++ b/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlFormatterBuilder.java
+@@ -26,6 +26,7 @@ public class HtmlFormatterBuilder {
+     private OnClickATagListener onClickATagListener;
+     private float indent = 24.0f;
+     private boolean removeTrailingWhiteSpace = true;
++    private boolean unTruncateLinks = false;
+ 
+     public String getHtml() {
+         return html;
+@@ -55,6 +56,10 @@ public class HtmlFormatterBuilder {
+         return removeTrailingWhiteSpace;
+     }
+ 
++    public boolean isUnTruncateLinks() {
++        return unTruncateLinks;
++    }
++
+     public HtmlFormatterBuilder setHtml(@Nullable final String html) {
+         this.html = html;
+         return this;
+@@ -88,4 +93,9 @@ public class HtmlFormatterBuilder {
+         this.removeTrailingWhiteSpace = removeTrailingWhiteSpace;
+         return this;
+     }
++
++    public HtmlFormatterBuilder setUnTruncateLinks(final boolean unTruncateLinks) {
++        this.unTruncateLinks = unTruncateLinks;
++        return this;
++    }
+ }
+\ No newline at end of file
+diff --git a/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTagHandler.java b/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTagHandler.java
+index 2b062cc..85a049d 100644
+--- a/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTagHandler.java
++++ b/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTagHandler.java
+@@ -115,6 +115,7 @@ public class HtmlTagHandler implements WrapperTagHandler {
+     private ClickableTableSpan clickableTableSpan;
+     private DrawTableLinkSpan drawTableLinkSpan;
+     private HtmlFormatter.TagClickListenerProvider onClickATagListenerProvider;
++    private boolean unTruncateLinks = false;
+ 
+     private static class Ul {
+     }
+@@ -266,14 +267,24 @@ public class HtmlTagHandler implements WrapperTagHandler {
+                 final int spanStart = output.getSpanStart(a);
+                 final int spanEnd = output.length();
+                 final String href = a instanceof A ? ((A) a).href : null;
+-                final String spannedText = output.subSequence(spanStart, spanEnd).toString();
++
++                if (unTruncateLinks) {
++                    final String spannedText = output.subSequence(spanStart, spanEnd).toString();
++                    if (spannedText.endsWith("...") && href != null && href.startsWith(spannedText.substring(0, spannedText.length() - 3))) {
++                        output.replace(spanStart, spanEnd, href);
++                    }
++                }
++
++                final int newSpanEnd = output.length();
++                final String finalSpannedText = output.subSequence(spanStart, newSpanEnd).toString();
++
+                 end(output, A.class, false, new URLSpan(href) {
+                     @Override
+                     public void onClick(View widget) {
+                         if (onClickATagListenerProvider != null && widget != null) {
+                             OnClickATagListener tagClickListener = onClickATagListenerProvider.provideTagClickListener();
+                             if (tagClickListener != null) {
+-                                boolean clickConsumed = tagClickListener.onClick(widget, spannedText, getURL());
++                                boolean clickConsumed = tagClickListener.onClick(widget, finalSpannedText, getURL());
+                                 if (!clickConsumed) {
+                                     super.onClick(widget);
+                                 }
+@@ -436,4 +447,8 @@ public class HtmlTagHandler implements WrapperTagHandler {
+     public void setOnClickATagListenerProvider(HtmlFormatter.TagClickListenerProvider onClickATagListenerProvider) {
+         this.onClickATagListenerProvider = onClickATagListenerProvider;
+     }
++
++    public void setUnTruncateLinks(boolean unTruncateLinks) {
++        this.unTruncateLinks = unTruncateLinks;
++    }
+ }
+diff --git a/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTextView.java b/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTextView.java
+index 88dcaf6..7e72d8d 100644
+--- a/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTextView.java
++++ b/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTextView.java
+@@ -47,6 +47,7 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
+     private float indent = 24.0f; // Default to 24px.
+ 
+     private boolean removeTrailingWhiteSpace = true;
++    private boolean unTruncateLinks = false;
+ 
+     public HtmlTextView(Context context, AttributeSet attrs, int defStyle) {
+         super(context, attrs, defStyle);
+@@ -105,7 +106,7 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
+                     public OnClickATagListener provideTagClickListener() {
+                         return onClickATagListener;
+                     }
+-                }, indent, removeTrailingWhiteSpace
++                }, indent, removeTrailingWhiteSpace, unTruncateLinks
+         );
+         replaceQuoteSpans(styledText);
+         setText(styledText);
+@@ -126,6 +127,10 @@ public class HtmlTextView extends JellyBeanSpanFixTextView {
+         this.removeTrailingWhiteSpace = removeTrailingWhiteSpace;
+     }
+ 
++    public void setUnTruncateLinks(boolean unTruncateLinks) {
++        this.unTruncateLinks = unTruncateLinks;
++    }
++
+     public void setClickableTableSpan(@Nullable ClickableTableSpan clickableTableSpan) {
+         this.clickableTableSpan = clickableTableSpan;
+     }

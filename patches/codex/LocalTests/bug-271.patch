@@ -1,0 +1,49 @@
+--- a/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
++++ b/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
+@@ -59,24 +59,35 @@
+     }
+ 
+     private void refresh() {
+-        // calculate the current progress the bar should start at
+         int maxProgress = getMax();
++        if (maxProgress <= 0 || _period <= 0) {
++            setProgress(0);
++            return;
++        }
++
++        long periodMillis = _period * 1000L;
+         long millisTillRotation = TotpInfo.getMillisTillNextRotation(_period);
+-        int currentProgress = (int) (maxProgress * ((float) millisTillRotation / (_period * 1000)));
++        int currentProgress = (int) (maxProgress * ((float) millisTillRotation / periodMillis));
++        currentProgress = Math.max(0, Math.min(maxProgress, currentProgress));
+ 
+-        // start progress animation, compensating for any changes to the animator duration scale settings
+-        int animPart = maxProgress / _period;
+-        int animEnd = (currentProgress / animPart) * animPart;
+-        int animPartDuration = (int) (1000 / _animDurationScale);
+-        float animDurationFraction = (float) (currentProgress - animEnd) / animPart;
+-        int realAnimDuration =  (int) (1000 * animDurationFraction);
+-        int animDuration =  (int) (animPartDuration * animDurationFraction);
+-        ObjectAnimator animation = ObjectAnimator.ofInt(this, "progress", currentProgress, animEnd);
++        long realAnimDuration = millisTillRotation % 1000;
++        if (realAnimDuration <= 0) {
++            realAnimDuration = 1000;
++        }
++
++        long nextMillisTillRotation = Math.max(0, millisTillRotation - realAnimDuration);
++        int nextProgress = (int) (maxProgress * ((float) nextMillisTillRotation / periodMillis));
++        nextProgress = Math.max(0, Math.min(maxProgress, nextProgress));
++
++        float durationScale = _animDurationScale <= 0 ? 1.0f : _animDurationScale;
++        int animDuration = Math.max(1, (int) (realAnimDuration / durationScale));
++
++        ObjectAnimator animation = ObjectAnimator.ofInt(this, "progress", currentProgress, nextProgress);
++        animation.setAutoCancel(true);
+         animation.setDuration(animDuration);
+         animation.setInterpolator(new LinearInterpolator());
+         animation.start();
+ 
+-        // the animation only lasts for (less than) one second, so restart it after that
+         _handler.postDelayed(this::refresh, realAnimDuration);
+     }
+ }

@@ -1,0 +1,64 @@
+--- a/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
+@@ -124,14 +124,17 @@
+         FishingSpot fishingSpot = getNewFishingSpot();
+         fishingSpot.setName(mNameView.getInputText());
+ 
+-        if (mMap != null) {
+-            fishingSpot.setLatitude(mMap.getCameraPosition().target.latitude);
+-            fishingSpot.setLongitude(mMap.getCameraPosition().target.longitude);
+-        } else {
+-            // in case Google Play Services isn't available, fishing spots can still be added and updated later
+-            fishingSpot.setLatitude(0.0);
+-            fishingSpot.setLongitude(0.0);
+-        }
++        double latitude = validateCoordinateInput(mLatitudeView);
++        double longitude = validateCoordinateInput(mLongitudeView);
++        LatLng coordinates = new LatLng(latitude, longitude);
++
++        if (Double.isNaN(latitude) || Double.isNaN(longitude) || !mMapFragment.isValid(coordinates)) {
++            AlertUtils.showError(getActivity(), R.string.msg_invalid_coordinate);
++            return false;
++        }
++
++        fishingSpot.setLatitude(latitude);
++        fishingSpot.setLongitude(longitude);
+ 
+         // name
+         if (fishingSpot.isNameNull()) {
+@@ -246,7 +249,7 @@
+                 double lat = validateCoordinateInput(mLatitudeView);
+                 double lng = validateCoordinateInput(mLongitudeView);
+ 
+-                if (lat != -1 && lng != -1) {
++                if (!Double.isNaN(lat) && !Double.isNaN(lng)) {
+                     LatLng latLng = new LatLng(lat, lng);
+ 
+                     if (mMapFragment.isValid(latLng)) {
+@@ -272,20 +275,23 @@
+     private double validateCoordinateInput(InputTextView input) {
+         String inputText = input.getInputText();
+ 
++        if (inputText == null)
++            return 0.0;
++
+         // do not validate if the user is entering a negative coordinate
+         if (inputText.length() == 1 && inputText.charAt(0) == '-')
+-            return -1;
++            return Double.NaN;
+ 
+         try {
+             inputText = inputText.replace(',', '.'); // some countries/keyboard use ',' in place of '.'
+-            return (double) Utils.asFloat(inputText, 0);
++            return Double.parseDouble(inputText);
+         } catch (NumberFormatException e) {
+             e.printStackTrace();
+             Utils.showToast(getContext(), R.string.msg_invalid_coordinate);
+             input.pressBackspace();
+         }
+ 
+-        return -1;
++        return Double.NaN;
+     }
+ 
+     private void initMapFragment() {

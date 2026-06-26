@@ -1,0 +1,66 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -244,7 +244,8 @@
+         private LinearLayout credentialsLayout = null;
+         private TextInputLayout passwordLayout = null;
+         private TextInputEditText passwordInput = null;
+-        private EditText passwordConfirm = null;
++        private TextInputLayout passwordConfirmLayout = null;
++        private TextInputEditText passwordConfirm = null;
+ 
+         private SparseArray<Constants.AuthMethod> selectionMapping;
+ 
+@@ -328,6 +329,7 @@
+             credentialsLayout = root.findViewById(R.id.introCredentialsLayout);
+             passwordLayout = root.findViewById(R.id.introPasswordLayout);
+             passwordInput = root.findViewById(R.id.introPasswordEdit);
++            passwordConfirmLayout = root.findViewById(R.id.introPasswordConfirmLayout);
+             passwordConfirm = root.findViewById(R.id.introPasswordConfirm);
+ 
+             generateSelectionMapping();
+@@ -366,7 +368,7 @@
+                         credentialsLayout.setVisibility(View.VISIBLE);
+ 
+                         passwordLayout.setHint(getString(R.string.settings_hint_password));
+-                        passwordConfirm.setHint(R.string.settings_hint_password_confirm);
++                        passwordConfirmLayout.setHint(getString(R.string.settings_hint_password_confirm));
+ 
+                         passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                         passwordConfirm.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+@@ -387,7 +389,7 @@
+                         credentialsLayout.setVisibility(View.VISIBLE);
+ 
+                         passwordLayout.setHint(getString(R.string.settings_hint_pin));
+-                        passwordConfirm.setHint(R.string.settings_hint_pin_confirm);
++                        passwordConfirmLayout.setHint(getString(R.string.settings_hint_pin_confirm));
+ 
+                         passwordInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+                         passwordConfirm.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+--- a/app/src/main/res/layout/component_intro_authentication.xml
++++ b/app/src/main/res/layout/component_intro_authentication.xml
+@@ -75,13 +75,21 @@
+ 
+             </com.google.android.material.textfield.TextInputLayout>
+ 
+-            <EditText
+-                android:id="@+id/introPasswordConfirm"
++            <com.google.android.material.textfield.TextInputLayout
++                android:id="@+id/introPasswordConfirmLayout"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:hint="@string/settings_hint_password_confirm"
+-                android:inputType="textPassword"
+-                android:autofillHints="password" />
++                app:passwordToggleEnabled="true" >
++
++                <com.google.android.material.textfield.TextInputEditText
++                    android:id="@+id/introPasswordConfirm"
++                    android:layout_width="match_parent"
++                    android:layout_height="match_parent"
++                    android:inputType="textPassword"
++                    android:autofillHints="password" />
++
++            </com.google.android.material.textfield.TextInputLayout>
+ 
+         </LinearLayout>
+ 

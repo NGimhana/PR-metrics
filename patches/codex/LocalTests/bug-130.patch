@@ -1,0 +1,17 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -431,7 +431,13 @@
+             passwordInput.addTextChangedListener(textWatcher);
+             passwordConfirm.addTextChangedListener(textWatcher);
+ 
+-            selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.PASSWORD));
++            if (encryptionType == Constants.EncryptionType.PASSWORD) {
++                selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.PASSWORD));
++            } else {
++                selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.NONE));
++            }
++
++            updateEncryptionType(encryptionType);
+ 
+             return root;
+         }

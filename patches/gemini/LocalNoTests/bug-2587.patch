@@ -1,0 +1,56 @@
+diff --git a/app/src/main/java/io/pslab/communication/HttpAsyncTask.java b/app/src/main/java/io/pslab/communication/HttpAsyncTask.java
+index 4aae415..8a3adc9 100644
+--- a/app/src/main/java/io/pslab/communication/HttpAsyncTask.java
++++ b/app/src/main/java/io/pslab/communication/HttpAsyncTask.java
+@@ -2,11 +2,8 @@ package io.pslab.communication;
+ 
+ import android.os.AsyncTask;
+ 
+-import org.json.JSONException;
+ import org.json.JSONObject;
+ 
+-import java.io.IOException;
+-
+ import io.pslab.interfaces.HttpCallback;
+ 
+ public class HttpAsyncTask extends AsyncTask<byte[], Void, Void> {
+@@ -29,7 +26,7 @@ public class HttpAsyncTask extends AsyncTask<byte[], Void, Void> {
+             } else {
+                 res = mHttpHandler.read();
+             }
+-        } catch (IOException | JSONException e) {
++        } catch (Exception e) {
+             mHttpCallback.error(e);
+             e.printStackTrace();
+         }
+diff --git a/app/src/main/java/io/pslab/fragment/ESPFragment.java b/app/src/main/java/io/pslab/fragment/ESPFragment.java
+index 3c13b32..1a1b6ba 100644
+--- a/app/src/main/java/io/pslab/fragment/ESPFragment.java
++++ b/app/src/main/java/io/pslab/fragment/ESPFragment.java
+@@ -20,8 +20,6 @@ import androidx.fragment.app.DialogFragment;
+ 
+ import com.google.android.material.snackbar.Snackbar;
+ 
+-import java.io.IOException;
+-
+ import io.pslab.R;
+ import io.pslab.others.CustomSnackBar;
+ import io.pslab.others.ScienceLabCommon;
+@@ -49,7 +47,7 @@ public class ESPFragment extends DialogFragment {
+         espConnectBtn.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-                espIPAddress = espIPEditText.getText().toString();
++                espIPAddress = espIPEditText.getText().toString().trim();
+                 espConnectBtn.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                 Activity activity;
+                 if (espIPAddress.isEmpty() && ((activity = getActivity()) != null)) {
+@@ -106,7 +104,7 @@ public class ESPFragment extends DialogFragment {
+                     ScienceLabCommon.setEspBaseIP(espIPAddress);
+                 }
+                 result = response.body().string();
+-            } catch (IOException e) {
++            } catch (Exception e) {
+                 e.printStackTrace();
+             }
+             return result;

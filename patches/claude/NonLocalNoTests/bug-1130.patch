@@ -1,0 +1,14 @@
+--- a/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
++++ b/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
+@@ -515,7 +515,10 @@
+             txtvEmpty.setVisibility(View.VISIBLE);
+         } else {
+             txtvEmpty.setVisibility(View.GONE);
+-            recyclerView.setVisibility(View.VISIBLE);
++            if (recyclerView.getVisibility() != View.VISIBLE) {
++                recyclerView.setVisibility(View.VISIBLE);
++                recyclerView.scrollToPosition(0);
++            }
+         }
+ 
+         if (restoreScrollPosition) {

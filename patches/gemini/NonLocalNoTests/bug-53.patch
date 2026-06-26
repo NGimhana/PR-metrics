@@ -1,0 +1,27 @@
+diff --git a/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java b/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
+index 7a263a9..c04318a 100644
+--- a/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
++++ b/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
+@@ -93,7 +93,21 @@ public class NewFileDialog extends DialogFragment {
+         } else {
+             encryptCheckbox.setVisibility(View.GONE);
+         }
+-        fileExtEdit.setText(appSettings.getNewFileDialogLastUsedExtension());
++        final String lastUsedExtension = appSettings.getNewFileDialogLastUsedExtension();
++        fileExtEdit.setText(lastUsedExtension);
++
++        // Match extension with spinner
++        String lastUsedExtensionWithoutEncryption = lastUsedExtension;
++        if (lastUsedExtensionWithoutEncryption.endsWith(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION)) {
++            lastUsedExtensionWithoutEncryption = lastUsedExtensionWithoutEncryption.substring(0, lastUsedExtensionWithoutEncryption.length() - JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION.length());
++        }
++        for (int i = 0; i < typeSpinnerToExtension.length; i++) {
++            if (lastUsedExtensionWithoutEncryption.equals(typeSpinnerToExtension[i])) {
++                typeSpinner.setSelection(i);
++                break;
++            }
++        }
++
+         fileNameEdit.requestFocus();
+         new Handler().postDelayed(new ContextUtils.DoTouchView(fileNameEdit), 200);
+ 

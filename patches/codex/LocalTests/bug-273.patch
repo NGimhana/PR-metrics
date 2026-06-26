@@ -1,0 +1,53 @@
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java
+@@ -32,6 +32,9 @@
+  * buttons will be shown).
+  */
+ public class Previewer extends AbstractFlashcardViewer {
++    private static final String STATE_CURRENT_INDEX = "currentIndex";
++    private static final String STATE_SHOWING_ANSWER = "showingAnswer";
++
+     private long[] mCardList;
+     private int mIndex;
+     private boolean mShowingAnswer;
+@@ -42,8 +45,18 @@
+         super.onCreate(savedInstanceState);
+ 
+         mCardList = getIntent().getLongArrayExtra("cardList");
++        if (mCardList == null || mCardList.length == 0) {
++            Timber.e("Previewer started with empty card list or invalid index");
++            finishWithoutAnimation();
++            return;
++        }
+         mIndex = getIntent().getIntExtra("index", -1);
+-        if (mCardList.length == 0 || mIndex < 0 || mIndex > mCardList.length - 1) {
++        mShowingAnswer = false;
++        if (savedInstanceState != null) {
++            mIndex = savedInstanceState.getInt(STATE_CURRENT_INDEX, mIndex);
++            mShowingAnswer = savedInstanceState.getBoolean(STATE_SHOWING_ANSWER, false);
++        }
++        if (mIndex < 0 || mIndex > mCardList.length - 1) {
+             Timber.e("Previewer started with empty card list or invalid index");
+             finishWithoutAnimation();
+             return;
+@@ -58,8 +71,19 @@
+     protected void onCollectionLoaded(Collection col) {
+         super.onCollectionLoaded(col);
+         mCurrentCard = col.getCard(mCardList[mIndex]);
+-        displayCardQuestion();
++        if (mShowingAnswer) {
++            displayCardAnswer();
++        } else {
++            displayCardQuestion();
++        }
+         showBackIcon();
++    }
++
++    @Override
++    protected void onSaveInstanceState(Bundle outState) {
++        outState.putInt(STATE_CURRENT_INDEX, mIndex);
++        outState.putBoolean(STATE_SHOWING_ANSWER, mShowingAnswer);
++        super.onSaveInstanceState(outState);
+     }
+ 
+ 

@@ -1,0 +1,11 @@
+--- a/app/src/main/java/net/gsantner/markor/util/DocumentIO.java
++++ b/app/src/main/java/net/gsantner/markor/util/DocumentIO.java
+@@ -137,7 +137,7 @@
+             document.setFile(documentInitial.getFile());
+         }
+ 
+-        if (!currentText.equals(documentInitial.getContent())) {
++        if (!document.getFile().exists() || !currentText.equals(documentInitial.getContent())) {
+             document.forceAddNextChangeToHistory();
+             document.setContent(currentText);
+             ret = FileUtils.writeFile(document.getFile(), document.getContent());

@@ -1,0 +1,40 @@
+diff --git a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+index 79e57f3..8a60ee9 100644
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+@@ -73,15 +73,6 @@ class UriPartsDialog extends AModuleDialog {
+ 
+         // parse
+         var uri = Uri.parse(urlData.url);
+-        var urlQuerySanitizer = new UrlQuerySanitizer();
+-        // the default parseUrl doesn't remove the fragment
+-        if (uri.getQuery() != null) {
+-            urlQuerySanitizer.setAllowUnregisteredParamaters(true);
+-            urlQuerySanitizer.setUnregisteredParameterValueSanitizer(v -> v);
+-            urlQuerySanitizer.parseQuery(uri.getQuery()
+-                    // this will fix issues with the parser decoding twice
+-                    .replace("%", "%25"));
+-        }
+ 
+         // domain elements
+         if (uri.getAuthority() != null || uri.getScheme() != null) {
+@@ -112,7 +103,18 @@ class UriPartsDialog extends AModuleDialog {
+         }
+ 
+         // query parameters
+-        var parameters = urlQuerySanitizer.getParameterList();
++        var urlQuerySanitizer = new UrlQuerySanitizer();
++        var parameters = new ArrayList<UrlQuerySanitizer.ParameterValuePair>();
++        if (uri.isHierarchical()) {
++            try {
++                for (var key : uri.getQueryParameterNames()) {
++                    for (var value : uri.getQueryParameters(key)) {
++                        parameters.add(urlQuerySanitizer.new ParameterValuePair(key, value));
++                    }
++                }
++            } catch (Exception ignored) {
++            }
++        }
+         if (!parameters.isEmpty()) {
+             var queries = addGroup("Parameters", parameters.size(), uri.buildUpon().query(null));
+             for (var i = 0; i < parameters.size(); i++) {

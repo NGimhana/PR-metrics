@@ -515,14 +515,40 @@ public class MethodLineExtractor {
         for (Map.Entry<String, Map<String, List<BugEntry>>> bugEntry : groupMap.entrySet()) {
             String bugName = bugEntry.getKey();
             JSONObject filesObj = new JSONObject();
+            boolean skipBug = false;
             for (Map.Entry<String, List<BugEntry>> fileEntry : bugEntry.getValue().entrySet()) {
                 String relFile = fileEntry.getKey();
                 List<BugEntry> hunks = fileEntry.getValue();
-                Path javaPath = workDir.resolve(bugName).resolve(relFile).normalize();
-                ParseResult<CompilationUnit> pr = parser.parse(javaPath);
-                if (!pr.getResult().isPresent())
-                    continue;
-                CompilationUnit cu = StaticJavaParser.parse(javaPath);
+                BugEntry hunk0 = hunks.get(0);
+                Path bugDir = workDir.resolve(bugName);
+                Path javaPath = bugDir.resolve(relFile).normalize();
+                if (!Files.exists(javaPath)) {
+                    try {
+                        String prefix = testPathPrefix(hunk0.proj, hunk0.bugNum);
+                        javaPath = bugDir.resolve(prefix).resolve(relFile).normalize();
+                    } catch (IllegalArgumentException e) {
+                        // Soft failure
+                    }
+                }
+                if (!Files.exists(javaPath)) {
+                    System.err.printf("⚠ file missing: %s%n", javaPath);
+                    skipBug = true;
+                    break;
+                }
+                ParseResult<CompilationUnit> pr;
+                CompilationUnit cu;
+                try {
+                    pr = parser.parse(javaPath);
+                    if (!pr.getResult().isPresent()) {
+                        skipBug = true;
+                        break;
+                    }
+                    cu = StaticJavaParser.parse(javaPath);
+                } catch (Exception e) {
+                    System.err.printf("⚠ Error parsing file: %s%n", javaPath);
+                    skipBug = true;
+                    break;
+                }
                 parentMap.clear();
                 annotateParents(cu, null);
                 int treeDiam = subtreeDiameter(cu);
@@ -575,7 +601,9 @@ public class MethodLineExtractor {
                 fileObj.put("pairs", pairObj);
                 filesObj.put(relFile, fileObj);
             }
-            astMetrics.put(bugName, filesObj);
+            if (!skipBug) {
+                astMetrics.put(bugName, filesObj);
+            }
         }
 
         // write out two JSON files

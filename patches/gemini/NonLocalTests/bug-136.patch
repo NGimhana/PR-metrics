@@ -1,0 +1,78 @@
+diff --git a/app/build.gradle b/app/build.gradle
+index 3115ac2..8989619 100644
+--- a/app/build.gradle
++++ b/app/build.gradle
+@@ -23,7 +23,19 @@ android {
+         targetCompatibility JavaVersion.VERSION_1_8
+     }
+ 
++    signingConfigs {
++        debug {
++            storeFile file('debug.keystore')
++            storePassword 'android'
++            keyAlias 'androiddebugkey'
++            keyPassword 'android'
++        }
++    }
++
+     buildTypes {
++        debug {
++            signingConfig signingConfigs.debug
++        }
+         release {
+             minifyEnabled true
+             shrinkResources true
+diff --git a/app/src/main/java/com/simon/harmonichackernews/ComposeActivity.java b/app/src/main/java/com/simon/harmonichackernews/ComposeActivity.java
+index 835cb6f..932e9a5 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/ComposeActivity.java
++++ b/app/src/main/java/com/simon/harmonichackernews/ComposeActivity.java
+@@ -210,12 +210,12 @@ public class ComposeActivity extends AppCompatActivity {
+                 //we just do the default back behavior (which is predictive back)
+                 AlertDialog dialog = new MaterialAlertDialogBuilder(editText.getContext())
+                         .setMessage(type == TYPE_POST ? "Discard post?" : "Discard comment?")
+-                        .setNegativeButton("Discard", new DialogInterface.OnClickListener() {
++                        .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                             public void onClick(DialogInterface dialog, int whichButton) {
+                                 dialog.cancel();
+                                 finish();
+                             }})
+-                        .setPositiveButton("Cancel", null).create();
++                        .setNegativeButton("Cancel", null).create();
+ 
+                 dialog.show();
+             }
+@@ -243,7 +243,7 @@ public class ComposeActivity extends AppCompatActivity {
+         AlertDialog dialog = new MaterialAlertDialogBuilder(this)
+                 .setTitle("Formatting information")
+                 .setMessage("Blank lines separate paragraphs.\n\nText surrounded by asterisks is italicized, if the character after the first asterisk isn't whitespace.\n\nText after a blank line that is indented by two or more spaces is reproduced verbatim. (This is intended for code.)\n\nUrls become links, except in the text field of a submission.")
+-                .setNegativeButton("Dismiss", null).create();
++                .setPositiveButton("Dismiss", null).create();
+ 
+         dialog.show();
+     }
+diff --git a/app/src/main/java/com/simon/harmonichackernews/MainActivity.java b/app/src/main/java/com/simon/harmonichackernews/MainActivity.java
+index dc40564..9961a66 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/MainActivity.java
++++ b/app/src/main/java/com/simon/harmonichackernews/MainActivity.java
+@@ -248,7 +248,7 @@ public class MainActivity extends BaseActivity implements StoriesFragment.StoryC
+                         startActivity(intent);
+                     }
+                 })
+-                .setNegativeButton("Done", null).create();
++                .setPositiveButton("Done", null).create();
+ 
+         dialog.show();
+     }
+diff --git a/app/src/main/java/com/simon/harmonichackernews/network/UserActions.java b/app/src/main/java/com/simon/harmonichackernews/network/UserActions.java
+index 6afd2fe..be5aade 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/network/UserActions.java
++++ b/app/src/main/java/com/simon/harmonichackernews/network/UserActions.java
+@@ -230,7 +230,7 @@ private static final String HEADER_SET_COOKIE = "set-cookie";
+             AlertDialog dialog = new MaterialAlertDialogBuilder(ctx)
+                     .setTitle(summary)
+                     .setMessage(response)
+-                    .setNegativeButton("Done", null).create();
++                    .setPositiveButton("Done", null).create();
+ 
+             dialog.show();
+         } catch (Exception e) {

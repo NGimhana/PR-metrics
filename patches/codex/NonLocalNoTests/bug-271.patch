@@ -1,0 +1,38 @@
+--- a/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
++++ b/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
+@@ -62,21 +62,24 @@
+         // calculate the current progress the bar should start at
+         int maxProgress = getMax();
+         long millisTillRotation = TotpInfo.getMillisTillNextRotation(_period);
+-        int currentProgress = (int) (maxProgress * ((float) millisTillRotation / (_period * 1000)));
++        int periodMillis = _period * 1000;
++        int currentProgress = (int) (maxProgress * ((float) millisTillRotation / periodMillis));
+ 
+-        // start progress animation, compensating for any changes to the animator duration scale settings
+-        int animPart = maxProgress / _period;
+-        int animEnd = (currentProgress / animPart) * animPart;
+-        int animPartDuration = (int) (1000 / _animDurationScale);
+-        float animDurationFraction = (float) (currentProgress - animEnd) / animPart;
+-        int realAnimDuration =  (int) (1000 * animDurationFraction);
+-        int animDuration =  (int) (animPartDuration * animDurationFraction);
+-        ObjectAnimator animation = ObjectAnimator.ofInt(this, "progress", currentProgress, animEnd);
++        // If animations are disabled, update immediately and schedule the next refresh.
++        if (_animDurationScale <= 0.0f) {
++            setProgress(currentProgress);
++            _handler.postDelayed(this::refresh, millisTillRotation);
++            return;
++        }
++
++        // Animate for the full remaining rotation duration to avoid divisions by period-dependent values.
++        long scaledDuration = (long) (millisTillRotation / _animDurationScale);
++        int animDuration = (int) Math.min(Integer.MAX_VALUE, scaledDuration);
++        ObjectAnimator animation = ObjectAnimator.ofInt(this, "progress", currentProgress, 0);
+         animation.setDuration(animDuration);
+         animation.setInterpolator(new LinearInterpolator());
+         animation.start();
+ 
+-        // the animation only lasts for (less than) one second, so restart it after that
+-        _handler.postDelayed(this::refresh, realAnimDuration);
++        _handler.postDelayed(this::refresh, millisTillRotation);
+     }
+ }

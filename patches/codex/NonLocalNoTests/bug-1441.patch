@@ -1,0 +1,66 @@
+--- a/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
+@@ -124,15 +124,6 @@
+         FishingSpot fishingSpot = getNewFishingSpot();
+         fishingSpot.setName(mNameView.getInputText());
+ 
+-        if (mMap != null) {
+-            fishingSpot.setLatitude(mMap.getCameraPosition().target.latitude);
+-            fishingSpot.setLongitude(mMap.getCameraPosition().target.longitude);
+-        } else {
+-            // in case Google Play Services isn't available, fishing spots can still be added and updated later
+-            fishingSpot.setLatitude(0.0);
+-            fishingSpot.setLongitude(0.0);
+-        }
+-
+         // name
+         if (fishingSpot.isNameNull()) {
+             AlertUtils.showError(getActivity(), R.string.error_name);
+@@ -144,6 +135,23 @@
+             AlertUtils.showError(getActivity(), R.string.error_fishing_spot_name);
+             return false;
+         }
++
++        Double latitude = parseCoordinateInput(mLatitudeView);
++        Double longitude = parseCoordinateInput(mLongitudeView);
++
++        if (latitude == null || longitude == null) {
++            AlertUtils.showError(getActivity(), R.string.msg_invalid_coordinate);
++            return false;
++        }
++
++        LatLng coordinates = new LatLng(latitude, longitude);
++        if (!mMapFragment.isValid(coordinates)) {
++            AlertUtils.showError(getActivity(), R.string.msg_invalid_coordinate);
++            return false;
++        }
++
++        fishingSpot.setLatitude(latitude);
++        fishingSpot.setLongitude(longitude);
+ 
+         return true;
+     }
+@@ -288,6 +296,23 @@
+         return -1;
+     }
+ 
++    /**
++     * Parses the coordinate text value from an {@link InputTextView}.
++     *
++     * @return The coordinate value, or null if the input is empty or invalid.
++     */
++    private Double parseCoordinateInput(InputTextView input) {
++        String inputText = input.getInputText();
++        if (inputText == null)
++            return null;
++
++        try {
++            return (double)Utils.asFloat(inputText.replace(',', '.'), 0);
++        } catch (NumberFormatException e) {
++            return null;
++        }
++    }
++
+     private void initMapFragment() {
+         mMapFragment = (DraggableMapFragment)getChildFragmentManager().findFragmentById(R.id.fishing_spot_map);
+ 

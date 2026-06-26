@@ -1,0 +1,11 @@
+--- a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
++++ b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+@@ -483,7 +483,7 @@
+         String degreeStr = degreeText.getText().toString().trim();
+ 
+         if (degreeStr.isEmpty()) {
+-            degree = (degree == 0) ? (int) (seekArc.getProgress() * 3.6) : previousDegree;
++            degree = (int) (seekArc.getProgress() * 3.6);
+         } else {
+             try {
+                 degree = Integer.parseInt(degreeStr);

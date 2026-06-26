@@ -1,0 +1,30 @@
+--- a/app/src/main/java/io/pslab/fragment/ESPFragment.java
++++ b/app/src/main/java/io/pslab/fragment/ESPFragment.java
+@@ -49,7 +49,7 @@
+         espConnectBtn.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-                espIPAddress = espIPEditText.getText().toString();
++                espIPAddress = espIPEditText.getText().toString().trim();
+                 espConnectBtn.onEditorAction(EditorInfo.IME_ACTION_DONE);
+                 Activity activity;
+                 if (espIPAddress.isEmpty() && ((activity = getActivity()) != null)) {
+@@ -105,8 +105,10 @@
+                     ScienceLabCommon.setIsWifiConnected(true);
+                     ScienceLabCommon.setEspBaseIP(espIPAddress);
+                 }
+-                result = response.body().string();
+-            } catch (IOException e) {
++                if (response.body() != null) {
++                    result = response.body().string();
++                }
++            } catch (IOException | IllegalArgumentException e) {
+                 e.printStackTrace();
+             }
+             return result;
+@@ -125,4 +127,4 @@
+             }
+         }
+     }
+-}
++}

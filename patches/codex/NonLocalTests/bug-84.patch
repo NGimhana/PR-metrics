@@ -1,0 +1,112 @@
+--- a/ultrasonic/src/main/java/org/moire/ultrasonic/fragment/ServerSettingsFragment.java
++++ b/ultrasonic/src/main/java/org/moire/ultrasonic/fragment/ServerSettingsFragment.java
+@@ -7,7 +7,6 @@
+ import android.preference.EditTextPreference;
+ import android.preference.Preference;
+ import android.preference.PreferenceFragment;
+-import android.preference.PreferenceManager;
+ import android.support.annotation.Nullable;
+ import android.util.Log;
+ import android.view.View;
+@@ -61,7 +60,8 @@
+         super.onCreate(savedInstanceState);
+ 
+         serverId = getArguments().getInt(ARG_SERVER_ID);
+-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
++        getPreferenceManager().setSharedPreferencesName(Constants.PREFERENCES_FILE_NAME);
++        sharedPreferences = getPreferenceManager().getSharedPreferences();
+ 
+         addPreferencesFromResource(R.xml.server_settings);
+     }
+@@ -93,7 +93,7 @@
+         if (preference == serverNamePref) {
+             sharedPreferences.edit()
+                     .putString(Constants.PREFERENCES_KEY_SERVER_NAME + serverId, (String) newValue)
+-                    .apply();
++                    .commit();
+             updateName();
+             return true;
+         } else if (preference == serverUrlPref) {
+@@ -110,7 +110,7 @@
+ 
+             sharedPreferences.edit()
+                     .putString(Constants.PREFERENCES_KEY_SERVER_URL + serverId, url)
+-                    .apply();
++                    .commit();
+             updateUrl();
+             return true;
+         } else if (preference == serverUsernamePref) {
+@@ -122,34 +122,34 @@
+ 
+             sharedPreferences.edit()
+                     .putString(Constants.PREFERENCES_KEY_USERNAME + serverId, username)
+-                    .apply();
++                    .commit();
+             updateUsername();
+             return true;
+         } else if (preference == serverPasswordPref) {
+             sharedPreferences.edit()
+                     .putString(Constants.PREFERENCES_KEY_PASSWORD + serverId, (String) newValue)
+-                    .apply();
++                    .commit();
+             updatePassword();
+             return true;
+         } else if (preference == equalizerPref) {
+             sharedPreferences.edit()
+                     .putBoolean(Constants.PREFERENCES_KEY_SERVER_ENABLED + serverId, (Boolean) newValue)
+-                    .apply();
++                    .commit();
+             return true;
+         } else if (preference == jukeboxPref) {
+             sharedPreferences.edit()
+                     .putBoolean(Constants.PREFERENCES_KEY_JUKEBOX_BY_DEFAULT + serverId, (Boolean) newValue)
+-                    .apply();
++                    .commit();
+             return true;
+         } else if (preference == allowSelfSignedCertificatePref) {
+             sharedPreferences.edit()
+                     .putBoolean(Constants.PREFERENCES_KEY_ALLOW_SELF_SIGNED_CERTIFICATE + serverId, (Boolean) newValue)
+-                    .apply();
++                    .commit();
+             return true;
+         } else if (preference == enableLdapUserSupportPref) {
+             sharedPreferences.edit()
+                     .putBoolean(Constants.PREFERENCES_KEY_LDAP_SUPPORT + serverId, (Boolean) newValue)
+-                    .apply();
++                    .commit();
+             return true;
+         }
+         return false;
+--- a/ultrasonic/src/main/java/org/moire/ultrasonic/fragment/SettingsFragment.java
++++ b/ultrasonic/src/main/java/org/moire/ultrasonic/fragment/SettingsFragment.java
+@@ -10,7 +10,6 @@
+ import android.preference.Preference;
+ import android.preference.PreferenceCategory;
+ import android.preference.PreferenceFragment;
+-import android.preference.PreferenceManager;
+ import android.provider.SearchRecentSuggestions;
+ import android.support.annotation.Nullable;
+ import android.util.Log;
+@@ -74,9 +73,10 @@
+     public void onCreate(@Nullable Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+ 
++        getPreferenceManager().setSharedPreferencesName(Constants.PREFERENCES_FILE_NAME);
+         addPreferencesFromResource(R.xml.settings);
+ 
+-        settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
++        settings = getPreferenceManager().getSharedPreferences();
+     }
+ 
+     @Override
+--- a/ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java
++++ b/ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java
+@@ -206,7 +206,7 @@
+ 
+         public static int getActiveServers(Context context)
+         {
+-                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
++                SharedPreferences settings = getPreferences(context);
+                 return settings.getInt(Constants.PREFERENCES_KEY_ACTIVE_SERVERS, 3);
+         }
+ 

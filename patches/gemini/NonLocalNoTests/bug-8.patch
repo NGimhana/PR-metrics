@@ -1,0 +1,158 @@
+diff --git a/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java b/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
+index af0b7e5..5aaca36 100644
+--- a/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
++++ b/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
+@@ -76,6 +76,15 @@ public class TrickyTripperActivity extends AppCompatActivity implements DeleteDi
+         mDrawerList = (ListView) findViewById(R.id.drawer_drawer_list_view_trips);
+         mViewPager = (ViewPager) findViewById(R.id.drawer_content_pager);
+ 
++        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
++            @Override
++            public void onPageSelected(int position) {
++                if (mActionMode != null) {
++                    mActionMode.finish();
++                }
++            }
++        });
++
+         updatePagerAdapter();
+ 
+         mDrawerToggle = new MyActionBarDrawerToggle();
+diff --git a/app/src/main/java/de/koelle/christian/trickytripper/activities/ParticipantTabActivity.java b/app/src/main/java/de/koelle/christian/trickytripper/activities/ParticipantTabActivity.java
+index 0273f5e..adf4c46 100644
+--- a/app/src/main/java/de/koelle/christian/trickytripper/activities/ParticipantTabActivity.java
++++ b/app/src/main/java/de/koelle/christian/trickytripper/activities/ParticipantTabActivity.java
+@@ -93,6 +93,9 @@ public class ParticipantTabActivity extends ListFragment {
+     }
+ 
+     private TrickyTripperApp getApp() {
++        if (getActivity() == null) {
++            return null;
++        }
+         return (TrickyTripperApp) getActivity().getApplication();
+     }
+ 
+@@ -125,6 +128,9 @@ public class ParticipantTabActivity extends ListFragment {
+ 
+         @Override
+         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
++            if (getApp() == null) {
++                return false;
++            }
+             MenuInflater inflater = mode.getMenuInflater();
+             inflater.inflate(R.menu.options_participant, menu);
+ 
+@@ -149,6 +155,9 @@ public class ParticipantTabActivity extends ListFragment {
+ 
+         @Override
+         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
++            if (getApp() == null) {
++                return false;
++            }
+             switch (item.getItemId()) {
+                 case R.id.option_participant_create_payment:
+                     getApp().getViewController().openCreatePayment(selectedParticipant);
+@@ -213,6 +222,9 @@ public class ParticipantTabActivity extends ListFragment {
+                 return;
+             }
+             TrickyTripperApp app = getApp();
++            if (app == null) {
++                return;
++            }
+             ParticipantRow row = (ParticipantRow) getListView().getItemAtPosition(position);
+             if (row.getParticipant().isActive()) {
+                 Participant p = row.getParticipant();
+@@ -222,11 +234,16 @@ public class ParticipantTabActivity extends ListFragment {
+     }
+ 
+     public ActionMode getRunningActionMode() {
++        if (getActivity() == null) {
++            return null;
++        }
+         return ((TrickyTripperActivity) getActivity()).getRunningActionMode();
+     }
+ 
+     public void setRunningActionMode(ActionMode actionMode) {
+-        ((TrickyTripperActivity) getActivity()).setRunningActionMode(actionMode);
++        if (getActivity() != null) {
++            ((TrickyTripperActivity) getActivity()).setRunningActionMode(actionMode);
++        }
+     }
+ 
+ 
+diff --git a/app/src/main/java/de/koelle/christian/trickytripper/activities/PaymentTabActivity.java b/app/src/main/java/de/koelle/christian/trickytripper/activities/PaymentTabActivity.java
+index 871c2cc..6e6adeb 100644
+--- a/app/src/main/java/de/koelle/christian/trickytripper/activities/PaymentTabActivity.java
++++ b/app/src/main/java/de/koelle/christian/trickytripper/activities/PaymentTabActivity.java
+@@ -124,6 +124,9 @@ public class PaymentTabActivity extends ListFragment implements DeleteConfirmati
+     }
+ 
+     private TrickyTripperApp getApp() {
++        if (getActivity() == null) {
++            return null;
++        }
+         return ((TrickyTripperApp) getActivity().getApplication());
+     }
+ 
+@@ -131,6 +134,7 @@ public class PaymentTabActivity extends ListFragment implements DeleteConfirmati
+         return !PaymentCategory.MONEY_TRANSFER.equals(row.getCategory());
+     }
+ 
++
+     private void startEditPaymentActivity(final Payment row) {
+         getApp().getViewController().openEditPayment(row);
+     }
+@@ -146,6 +150,7 @@ public class PaymentTabActivity extends ListFragment implements DeleteConfirmati
+         return deleteConfirmationPrefix + getResources().getString(idDeleteConfirmation);
+     }
+ 
++
+     public void doDelete(Bundle bundle) {
+         Payment payment = TabDialogSupport.getPaymentFromBundle(bundle);
+         ((TrickyTripperApp) getActivity().getApplication()).getTripController().deletePayment(payment);
+@@ -153,6 +158,7 @@ public class PaymentTabActivity extends ListFragment implements DeleteConfirmati
+         getActivity().supportInvalidateOptionsMenu();
+     }
+ 
++
+     private String getPrefixTextForTransferDeletion(Payment row) {
+         Entry<Participant, Amount> transfererEntry = row.getParticipantToSpending().entrySet().iterator()
+                 .next();
+@@ -201,6 +207,9 @@ public class PaymentTabActivity extends ListFragment implements DeleteConfirmati
+ 
+         @Override
+         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
++            if (getApp() == null) {
++                return false;
++            }
+             int[] optionIds;
+             if (isNotMoneyTransfer(payment)) {
+                 optionIds = new int[]{
+@@ -228,6 +237,9 @@ public class PaymentTabActivity extends ListFragment implements DeleteConfirmati
+ 
+         @Override
+         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
++            if (getApp() == null) {
++                return false;
++            }
+             switch (item.getItemId()) {
+                 case R.id.option_delete:
+                     getApp().getViewController().openDeleteConfirmationOnFragment(getFragmentManager(),
+@@ -255,11 +267,16 @@ public class PaymentTabActivity extends ListFragment implements DeleteConfirmati
+     }
+ 
+     public ActionMode getRunningActionMode() {
++        if (getActivity() == null) {
++            return null;
++        }
+         return ((TrickyTripperActivity) getActivity()).getRunningActionMode();
+     }
+ 
+     public void setRunningActionMode(ActionMode actionMode) {
+-        ((TrickyTripperActivity) getActivity()).setRunningActionMode(actionMode);
++        if (getActivity() != null) {
++            ((TrickyTripperActivity) getActivity()).setRunningActionMode(actionMode);
++        }
+     }
+ 
+ 

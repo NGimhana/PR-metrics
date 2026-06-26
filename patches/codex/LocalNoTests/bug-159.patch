@@ -1,0 +1,31 @@
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
+@@ -387,14 +387,23 @@
+         }
+         //copy to array to ensure threadsafe iteration
+         Integer[] checkedPositions = mCheckedCardPositions.toArray(new Integer[0]);
+-        HashSet<String> notes = new HashSet<>();
++        Long noteId = null;
+         for (Integer position : checkedPositions) {
+-            String noteId = mCards.get(position).get(NOTE);
+-            if (notes.add(noteId) && notes.size() > 1) {
++            long cardId;
++            try {
++                cardId = Long.parseLong(mCards.get(position).get(ID));
++            } catch (Exception e) {
++                Timber.w(e, "Unable to parse card id while checking selected note ids");
+                 return false;
+             }
+-        }
+-        return notes.size() == 1;
++            long selectedNoteId = getCol().getCard(cardId).getNid();
++            if (noteId == null) {
++                noteId = selectedNoteId;
++            } else if (noteId != selectedNoteId) {
++                return false;
++            }
++        }
++        return noteId != null;
+     }
+ 
+     @VisibleForTesting

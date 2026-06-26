@@ -1,0 +1,70 @@
+diff --git a/app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java b/app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java
+index 74a19e6..9f24d1a 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java
++++ b/app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java
+@@ -1597,7 +1597,7 @@ public class CommentsFragment extends Fragment implements CommentsRecyclerViewAd
+                         break;
+                     case 2: // copy text
+                         ClipboardManager clipboard = (ClipboardManager) ctx.getSystemService(Context.CLIPBOARD_SERVICE);
+-                        ClipData clip = ClipData.newPlainText("Hacker News comment", Html.fromHtml(comment.text));
++                        ClipData clip = ClipData.newPlainText("Hacker News comment", Html.fromHtml(DialogUtils.untruncateLinks(comment.text)));
+                         clipboard.setPrimaryClip(clip);
+ 
+                         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+diff --git a/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java b/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
+index 2729eff..2eda21c 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
++++ b/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
+@@ -10,6 +10,10 @@ import androidx.appcompat.app.AlertDialog;
+ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+ import com.simon.harmonichackernews.R;
+ 
++import org.jsoup.Jsoup;
++import org.jsoup.nodes.Document;
++import org.jsoup.nodes.Element;
++import org.jsoup.select.Elements;
+ import org.sufficientlysecure.htmltextview.HtmlTextView;
+ import org.sufficientlysecure.htmltextview.OnClickATagListener;
+ 
+@@ -20,6 +24,8 @@ public class DialogUtils {
+         View rootView = LayoutInflater.from(ctx).inflate(R.layout.select_text_dialog, null);
+         selectTextDialogBuilder.setView(rootView);
+ 
++        text = untruncateLinks(text);
++
+         HtmlTextView htmlTextView = rootView.findViewById(R.id.select_text_htmltextview);
+         htmlTextView.setHtml(text);
+ 
+@@ -36,4 +42,32 @@ public class DialogUtils {
+         selectTextDialog.show();
+     }
+ 
++    public static String untruncateLinks(String text) {
++        if (text == null) {
++            return null;
++        }
++        Document doc = Jsoup.parseBodyFragment(text);
++        Elements links = doc.select("a");
++        for (Element link : links) {
++            String href = link.attr("href");
++            String linkText = link.text();
++
++            String prefix = null;
++            if (linkText.endsWith("...")) {
++                prefix = linkText.substring(0, linkText.length() - 3);
++            } else if (linkText.endsWith("…")) {
++                prefix = linkText.substring(0, linkText.length() - 1);
++            }
++
++            if (prefix != null) {
++                if (href.startsWith(prefix)
++                        || href.replaceFirst("https?://", "").startsWith(prefix)
++                        || href.replaceFirst("https?://www.", "").startsWith(prefix)) {
++                    link.text(href);
++                }
++            }
++        }
++        return doc.body().html();
++    }
++
+ }

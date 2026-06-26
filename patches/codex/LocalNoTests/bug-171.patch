@@ -1,0 +1,53 @@
+--- a/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
++++ b/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
+@@ -10,6 +10,9 @@
+ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+ import com.simon.harmonichackernews.R;
+ 
++import org.jsoup.Jsoup;
++import org.jsoup.nodes.Document;
++import org.jsoup.nodes.Element;
+ import org.sufficientlysecure.htmltextview.HtmlTextView;
+ import org.sufficientlysecure.htmltextview.OnClickATagListener;
+ 
+@@ -21,7 +24,7 @@
+         selectTextDialogBuilder.setView(rootView);
+ 
+         HtmlTextView htmlTextView = rootView.findViewById(R.id.select_text_htmltextview);
+-        htmlTextView.setHtml(text);
++        htmlTextView.setHtml(expandTruncatedLinks(text));
+ 
+         htmlTextView.setOnClickATagListener(new OnClickATagListener() {
+             @Override
+@@ -36,4 +39,31 @@
+         selectTextDialog.show();
+     }
+ 
++    static String expandTruncatedLinks(String html) {
++        Document document = Jsoup.parseBodyFragment(html);
++
++        for (Element link : document.select("a[href]")) {
++            String href = link.attr("href").trim();
++            String linkText = link.text().trim();
++
++            if (isTruncatedHrefText(linkText, href)) {
++                link.text(href);
++            }
++        }
++
++        return document.body().html();
++    }
++
++    private static boolean isTruncatedHrefText(String linkText, String href) {
++        if (linkText.endsWith("...")) {
++            String linkPrefix = linkText.substring(0, linkText.length() - 3).trim();
++            return !linkPrefix.isEmpty() && href.startsWith(linkPrefix);
++        } else if (linkText.endsWith("…")) {
++            String linkPrefix = linkText.substring(0, linkText.length() - 1).trim();
++            return !linkPrefix.isEmpty() && href.startsWith(linkPrefix);
++        }
++
++        return false;
++    }
++
+ }

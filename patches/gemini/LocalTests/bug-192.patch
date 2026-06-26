@@ -1,0 +1,69 @@
+diff --git a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+index e6a58f0..64a9bd8 100644
+--- a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
++++ b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+@@ -46,6 +46,7 @@ public class DocumentEditFragment extends BaseFragment implements TextFormat.Tex
+     public static final int HISTORY_DELTA = 5000;
+     public static final String FRAGMENT_TAG = "DocumentEditFragment";
+     private static final String SAVESTATE_DOCUMENT = "DOCUMENT";
++    private static final String SAVESTATE_CURSOR = "CURSOR";
+     public static boolean showPreviewOnBack = false;
+ 
+     public static DocumentEditFragment newInstance(Document document) {
+@@ -77,6 +78,7 @@ public class DocumentEditFragment extends BaseFragment implements TextFormat.Tex
+     private Context _context;
+     private Document _document;
+     private TextFormat _textFormat;
++    private int _savedCursor = -1;
+ 
+     public DocumentEditFragment() {
+     }
+@@ -95,8 +97,11 @@ public class DocumentEditFragment extends BaseFragment implements TextFormat.Tex
+         //applyTextFormat(TextFormat.FORMAT_PLAIN);
+         setupAppearancePreferences();
+ 
+-        if (savedInstanceState != null && savedInstanceState.containsKey(SAVESTATE_DOCUMENT)) {
+-            _document = (Document) savedInstanceState.getSerializable(SAVESTATE_DOCUMENT);
++        if (savedInstanceState != null) {
++            if (savedInstanceState.containsKey(SAVESTATE_DOCUMENT)) {
++                _document = (Document) savedInstanceState.getSerializable(SAVESTATE_DOCUMENT);
++            }
++            _savedCursor = savedInstanceState.getInt(SAVESTATE_CURSOR, -1);
+         }
+         _document = loadDocument();
+         loadDocumentIntoUi();
+@@ -109,7 +114,9 @@ public class DocumentEditFragment extends BaseFragment implements TextFormat.Tex
+     public void onResume() {
+         super.onResume();
+         checkReloadDisk();
+-        _hlEditor.setText(_document.getContent());
++        if (!_hlEditor.getText().toString().equals(_document.getContent())) {
++            loadDocumentIntoUi();
++        }
+     }
+ 
+     @Override
+@@ -133,9 +140,13 @@ public class DocumentEditFragment extends BaseFragment implements TextFormat.Tex
+ 
+     public void loadDocumentIntoUi() {
+         int editorpos = _hlEditor.getSelectionStart();
++        if (_savedCursor != -1) {
++            editorpos = _savedCursor;
++            _savedCursor = -1;
++        }
++
+         _hlEditor.setText(_document.getContent());
+-        editorpos = editorpos > _hlEditor.length() ? _hlEditor.length() - 1 : editorpos;
+-        _hlEditor.setSelection(editorpos < 0 ? 0 : editorpos);
++        _hlEditor.setSelection(Math.min(Math.max(editorpos, 0), _hlEditor.length()));
+         Activity activity = getActivity();
+         if (activity != null && activity instanceof DocumentActivity) {
+             DocumentActivity da = ((DocumentActivity) activity);
+@@ -266,6 +277,7 @@ public class DocumentEditFragment extends BaseFragment implements TextFormat.Tex
+     public void onSaveInstanceState(@NonNull Bundle outState) {
+         saveDocument();
+         outState.putSerializable(SAVESTATE_DOCUMENT, _document);
++        outState.putInt(SAVESTATE_CURSOR, _hlEditor.getSelectionStart());
+         super.onSaveInstanceState(outState);
+     }
+ 

@@ -1,0 +1,20 @@
+--- a/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java
++++ b/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java
+@@ -306,6 +306,17 @@
+                 mSbasStatus.clear();
+                 mGnssAdapter.notifyDataSetChanged();
+                 mSbasAdapter.notifyDataSetChanged();
++
++                // Clear any stale filter summary after GNSS is stopped.
++                if (filterGroup != null) {
++                    filterGroup.setVisibility(View.GONE);
++                }
++                if (filterTextView != null) {
++                    filterTextView.setText("");
++                }
++                if (mNumSats != null) {
++                    mNumSats.setTypeface(null, Typeface.NORMAL);
++                }
+             }
+             mNavigating = navigating;
+         }

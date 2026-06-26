@@ -1,0 +1,46 @@
+--- a/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
++++ b/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
+@@ -87,13 +87,14 @@
+         final Spinner typeSpinner = root.findViewById(R.id.new_file_dialog__type);
+         final Spinner templateSpinner = root.findViewById(R.id.new_file_dialog__template);
+         final String[] typeSpinnerToExtension = getResources().getStringArray(R.array.new_file_types__file_extension);
++        final String lastUsedExtension = appSettings.getNewFileDialogLastUsedExtension();
+ 
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && appSettings.hasPasswordBeenSetOnce()) {
+             encryptCheckbox.setChecked(appSettings.getNewFileDialogLastUsedEncryption());
+         } else {
+             encryptCheckbox.setVisibility(View.GONE);
+         }
+-        fileExtEdit.setText(appSettings.getNewFileDialogLastUsedExtension());
++        fileExtEdit.setText(lastUsedExtension);
+         fileNameEdit.requestFocus();
+         new Handler().postDelayed(new ContextUtils.DoTouchView(fileNameEdit), 200);
+ 
+@@ -116,6 +117,7 @@
+             }
+             fileNameEdit.setSelection(fileNameEdit.length());
+         }));
++        typeSpinner.setSelection(getTypeSelectionFromExtension(lastUsedExtension, typeSpinnerToExtension), false);
+ 
+         templateSpinner.setOnItemSelectedListener(new AndroidSpinnerOnItemSelectedAdapter(pos -> {
+             String prefix = null;
+@@ -183,6 +185,19 @@
+         return dialogBuilder;
+     }
+ 
++    private int getTypeSelectionFromExtension(final String extension, final String[] typeSpinnerToExtension) {
++        String normalized = extension == null ? "" : extension;
++        if (normalized.endsWith(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION)) {
++            normalized = normalized.replace(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION, "");
++        }
++        for (int i = 0; i < typeSpinnerToExtension.length; i++) {
++            if (TextUtils.equals(typeSpinnerToExtension[i], normalized)) {
++                return i;
++            }
++        }
++        return 0;
++    }
++
+     private boolean ez(EditText et) {
+         return et.getText().toString().isEmpty();
+     }

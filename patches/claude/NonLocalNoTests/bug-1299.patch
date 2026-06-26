@@ -1,0 +1,30 @@
+--- a/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java
++++ b/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java
+@@ -277,6 +277,11 @@
+     private boolean validateData() {
+         final String strValue = etCurVal.getText().toString();
+         final TraitObject currentTrait = traitBox.getCurrentTrait();
++
++        if (currentTrait == null) {
++            return true;
++        }
++
+         final String trait = currentTrait.getTrait();
+ 
+         if (traitBox.existsNewTraits()
+@@ -326,6 +331,7 @@
+             @Override
+             public void onClick(View v) {
+                 TraitObject currentTrait = traitBox.getCurrentTrait();
++                if (currentTrait == null) return;
+                 updateTrait(currentTrait.getTrait(), currentTrait.getFormat(), "NA");
+                 setNaText();
+             }
+@@ -338,6 +344,7 @@
+ 
+                 // if a brapi observation that has been synced, don't allow deleting
+                 TraitObject currentTrait = traitBox.getCurrentTrait();
++                if (currentTrait == null) return;
+                 if (dt.isBrapiSynced(rangeBox.getPlotID(), currentTrait.getTrait())) {
+                     if (currentTrait.getFormat().equals("photo")) {
+                         // I want to use abstract method

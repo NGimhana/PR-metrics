@@ -1,0 +1,150 @@
+diff --git a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java
+index e723c49..a32664e 100644
+--- a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java
++++ b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java
+@@ -33,6 +33,7 @@ import java.util.List;
+ import free.rm.skytube.R;
+ import free.rm.skytube.app.EventBus;
+ import free.rm.skytube.app.SkyTubeApp;
++import free.rm.skytube.app.Utils;
+ import free.rm.skytube.businessobjects.Logger;
+ import free.rm.skytube.businessobjects.YouTube.VideoBlocker;
+ import free.rm.skytube.businessobjects.YouTube.newpipe.ChannelId;
+@@ -67,14 +68,14 @@ public class YouTubeChannel extends CardData implements Serializable {
+ 
+ 	public YouTubeChannel(String id, String title) {
+ 		this();
+-		this.id = id;
++		this.id = Utils.removeChannelIdPrefix(id);
+ 		this.title = title;
+ 	}
+ 
+ 	public YouTubeChannel(String id, String title, String description, String thumbnailUrl,
+ 						  String bannerUrl, long subscriberCount, boolean isUserSubscribed, long lastVisitTime, long lastCheckTime,
+ 						  Integer categoryId, List<String> tags) {
+-		this.id = id;
++		this.id = Utils.removeChannelIdPrefix(id);
+ 		this.title = title;
+ 		this.description = description;
+ 		this.thumbnailUrl = thumbnailUrl;
+diff --git a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/newpipe/NewPipeService.java b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/newpipe/NewPipeService.java
+index 7274130..ec58398 100644
+--- a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/newpipe/NewPipeService.java
++++ b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/newpipe/NewPipeService.java
+@@ -419,8 +419,15 @@ public class NewPipeService {
+             viewCount = 0;
+         }
+ 
++        String uploaderUrl = extractor.getUploaderUrl();
++        String uploaderId;
++        try {
++            uploaderId = uploaderUrl != null ? streamingService.getChannelLHFactory().fromUrl(uploaderUrl).getId() : null;
++        } catch (ParsingException e) {
++            uploaderId = uploaderUrl;
++        }
+         YouTubeVideo video = new YouTubeVideo(extractor.getId(), extractor.getName(), NewPipeUtils.filterHtml(extractor.getDescription()),
+-                extractor.getLength(), new YouTubeChannel(extractor.getUploaderUrl(), extractor.getUploaderName()),
++                extractor.getLength(), new YouTubeChannel(uploaderId, extractor.getUploaderName()),
+                 viewCount, uploadDate.instant, uploadDate.exact, NewPipeUtils.getThumbnailUrl(extractor.getThumbnails()));
+         try {
+             video.setLikeDislikeCount(extractor.getLikeCount(), getDislikeCount(extractor, videoId));
+diff --git a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/newpipe/VideoPager.java b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/newpipe/VideoPager.java
+index f480514..cd28dc4 100644
+--- a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/newpipe/VideoPager.java
++++ b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/newpipe/VideoPager.java
+@@ -104,7 +104,14 @@ public class VideoPager extends Pager<InfoItem, CardData> {
+         if (NewPipeService.DEBUG_LOG) {
+             Logger.i(this, "item %s, title=%s at %s", id, item.getName(), date);
+         }
+-        YouTubeChannel ch = new YouTubeChannel(item.getUploaderUrl(), item.getUploaderName());
++        String uploaderUrl = item.getUploaderUrl();
++        String uploaderId;
++        try {
++            uploaderId = uploaderUrl != null ? channelLinkHandler.fromUrl(uploaderUrl).getId() : null;
++        } catch (ParsingException e) {
++            uploaderId = uploaderUrl;
++        }
++        YouTubeChannel ch = new YouTubeChannel(uploaderId, item.getUploaderName());
+         return new YouTubeVideo(id, item.getName(), null, item.getDuration(), ch,
+                 item.getViewCount(), date.instant, date.exact, NewPipeService.getThumbnailUrl(id));
+     }
+diff --git a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/newpipe/VideoPagerWithChannel.java b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/newpipe/VideoPagerWithChannel.java
+index 3cb9673..3fad674 100644
+--- a/app/src/main/java/free/rm/skytube/businessobjects/YouTube/newpipe/VideoPagerWithChannel.java
++++ b/app/src/main/java/free/rm/skytube/businessobjects/YouTube/newpipe/VideoPagerWithChannel.java
+@@ -19,6 +19,7 @@ package free.rm.skytube.businessobjects.YouTube.newpipe;
+ import org.schabi.newpipe.extractor.InfoItem;
+ import org.schabi.newpipe.extractor.ListExtractor;
+ import org.schabi.newpipe.extractor.StreamingService;
++import org.schabi.newpipe.extractor.exceptions.ParsingException;
+ import org.schabi.newpipe.extractor.stream.StreamInfoItem;
+ 
+ import free.rm.skytube.businessobjects.Logger;
+@@ -43,7 +44,19 @@ public class VideoPagerWithChannel extends VideoPager {
+         if (NewPipeService.DEBUG_LOG) {
+             Logger.d(this, "item %s, title=%s at %s", id, item.getName(), date);
+         }
+-        YouTubeChannel ch = channel != null ? channel : new YouTubeChannel(item.getUploaderUrl(), item.getUploaderName());
++        YouTubeChannel ch;
++        if (channel != null) {
++            ch = channel;
++        } else {
++            String uploaderUrl = item.getUploaderUrl();
++            String uploaderId;
++            try {
++                uploaderId = uploaderUrl != null ? channelLinkHandler.fromUrl(uploaderUrl).getId() : null;
++            } catch (ParsingException e) {
++                uploaderId = uploaderUrl;
++            }
++            ch = new YouTubeChannel(uploaderId, item.getUploaderName());
++        }
+         return new YouTubeVideo(id, item.getName(), null, item.getDuration(), ch,
+                 item.getViewCount(), date.instant, date.exact, NewPipeService.getThumbnailUrl(id));
+     }
+diff --git a/app/src/main/java/free/rm/skytube/gui/businessobjects/adapters/GridViewHolder.java b/app/src/main/java/free/rm/skytube/gui/businessobjects/adapters/GridViewHolder.java
+index 2b389f7..f8d1799 100644
+--- a/app/src/main/java/free/rm/skytube/gui/businessobjects/adapters/GridViewHolder.java
++++ b/app/src/main/java/free/rm/skytube/gui/businessobjects/adapters/GridViewHolder.java
+@@ -221,9 +221,21 @@ public class GridViewHolder extends RecyclerView.ViewHolder implements Serializa
+ 		final PopupMenu popupMenu = createPopup(R.menu.channel_options_menu, view);
+ 		Menu menu = popupMenu.getMenu();
+ 		actionHandler.updateSubscribeMenuItem(channel.getChannelId(), menu);
+-		popupMenu.setOnMenuItemClickListener(item ->
+-			actionHandler.handleChannelActions(context, channel, item.getItemId())
+-		);
++		popupMenu.setOnMenuItemClickListener(item -> {
++			if (actionHandler.handleChannelActions(context, channel, item.getItemId())) {
++				return true;
++			}
++			switch (item.getItemId()) {
++				case R.id.share:
++					SkyTubeApp.shareUrl(context, channel.getChannelUrl());
++					return true;
++				case R.id.copyurl:
++					SkyTubeApp.copyUrl(context, "Channel URL", channel.getChannelUrl());
++					return true;
++				default:
++					return false;
++			}
++		});
+ 		popupMenu.show();
+ 	}
+ 
+diff --git a/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java b/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java
+index 5fb8965..0ba432a 100644
+--- a/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java
++++ b/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java
+@@ -56,13 +56,6 @@ public class ChannelActionHandler {
+             case R.id.unblock_channel:
+                 compositeDisposable.add(channel.unblockChannel().subscribe());
+                 return true;
+-            case R.id.share:
+-                SkyTubeApp.shareUrl(context, channel.getChannelUrl());
+-                return true;
+-            case R.id.copyurl:
+-                SkyTubeApp.copyUrl(context, "Channel URL", channel.getChannelUrl());
+-                return true;
+-
+         }
+         return false;
+     }

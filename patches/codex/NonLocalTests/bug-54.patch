@@ -1,0 +1,56 @@
+--- a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
++++ b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+@@ -202,18 +202,22 @@
+     }
+ 
+     private long _lastChangedThreadStart = 0;
++    private final Runnable _deferredContentSync = () -> {
++        if (_document != null && _hlEditor != null) {
++            _document.setContent(_hlEditor.getText().toString());
++            Activity activity = getActivity();
++            if (activity instanceof AppCompatActivity) {
++                ((AppCompatActivity) activity).supportInvalidateOptionsMenu();
++            }
++        }
++    };
+ 
+     @OnTextChanged(value = R.id.document__fragment__edit__highlighting_editor, callback = OnTextChanged.Callback.TEXT_CHANGED)
+     public void onContentEditValueChanged(CharSequence text) {
+         if ((_lastChangedThreadStart + HISTORY_DELTA) < System.currentTimeMillis()) {
+             _lastChangedThreadStart = System.currentTimeMillis();
+-            _hlEditor.postDelayed(() -> {
+-                _document.setContent(text.toString());
+-                Activity activity = getActivity();
+-                if (activity != null && activity instanceof AppCompatActivity) {
+-                    ((AppCompatActivity) activity).supportInvalidateOptionsMenu();
+-                }
+-            }, HISTORY_DELTA);
++            _hlEditor.removeCallbacks(_deferredContentSync);
++            _hlEditor.postDelayed(_deferredContentSync, HISTORY_DELTA);
+         }
+         Activity activity = getActivity();
+         if (activity != null && activity instanceof AppCompatActivity) {
+@@ -293,6 +297,13 @@
+     public boolean saveDocument() {
+         boolean ret = false;
+         if (isAdded() && _hlEditor != null) {
++            _hlEditor.removeCallbacks(_deferredContentSync);
++            if (_document != null) {
++                boolean history = _document.isDoHistory();
++                _document.setDoHistory(false);
++                _document.setContent(_hlEditor.getText().toString());
++                _document.setDoHistory(history);
++            }
+             boolean argAllowRename = getArguments() == null || getArguments().getBoolean(DocumentIO.EXTRA_ALLOW_RENAME, true);
+             ret = DocumentIO.saveDocument(_document, argAllowRename, _hlEditor.getText().toString());
+             updateLauncherWidgets();
+@@ -328,6 +339,9 @@
+ 
+     @Override
+     public void onDestroyView() {
++        if (_hlEditor != null) {
++            _hlEditor.removeCallbacks(_deferredContentSync);
++        }
+         super.onDestroyView();
+         showPreviewOnBack = false;
+     }

@@ -1,0 +1,55 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java
+@@ -242,6 +242,32 @@
+         }
+     }
+ 
++    private void setPasswordTransformationMethod() {
++        passwordLayout.setEndIconOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                boolean wasShowingPassword = passwordInput.getTransformationMethod() instanceof PasswordTransformationMethod;
++                dispatchPasswordVisibilityChange(passwordInput, wasShowingPassword);
++                dispatchPasswordVisibilityChange(passwordConfirm, wasShowingPassword);
++                passwordLayout.refreshDrawableState();
++            }
++        });
++        passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
++        passwordConfirm.setTransformationMethod(PasswordTransformationMethod.getInstance());
++    }
++
++    private void dispatchPasswordVisibilityChange(EditText editText, boolean wasShowingPassword) {
++        final int selection = editText.getSelectionEnd();
++        if (wasShowingPassword) {
++            editText.setTransformationMethod(null);
++        } else {
++            editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
++        }
++        if (selection >= 0) {
++            editText.setSelection(selection);
++        }
++    }
++
+     private void updateLayout() {
+         if (value == AuthMethod.NONE) {
+             credentialsLayout.setVisibility(View.GONE);
+@@ -259,8 +285,7 @@
+             passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+             passwordConfirm.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+ 
+-            passwordInput.setTransformationMethod(new PasswordTransformationMethod());
+-            passwordConfirm.setTransformationMethod(new PasswordTransformationMethod());
++            setPasswordTransformationMethod();
+ 
+             minLength = Constants.AUTH_MIN_PASSWORD_LENGTH;
+             toShortWarning.setText(getContext().getString(R.string.settings_label_short_password, minLength));
+@@ -278,8 +303,7 @@
+             passwordInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+             passwordConfirm.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+ 
+-            passwordInput.setTransformationMethod(new PasswordTransformationMethod());
+-            passwordConfirm.setTransformationMethod(new PasswordTransformationMethod());
++            setPasswordTransformationMethod();
+ 
+             minLength = Constants.AUTH_MIN_PIN_LENGTH;
+             toShortWarning.setText(getContext().getString(R.string.settings_label_short_pin, minLength));

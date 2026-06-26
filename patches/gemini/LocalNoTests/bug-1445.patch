@@ -1,0 +1,38 @@
+diff --git a/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java b/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java
+index 95e2eb9..123f26b 100644
+--- a/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java
+@@ -916,11 +916,19 @@ public class Logbook {
+ 
+     //region Trip Manipulation
+     public static boolean tripExists(Trip trip) {
++        return tripExists(trip, null);
++    }
++
++    public static boolean tripExists(Trip trip, UUID excludeId) {
+         ArrayList<UserDefineObject> trips = getTrips();
+ 
+-        for (UserDefineObject object : trips)
++        for (UserDefineObject object : trips) {
++            if (excludeId != null && object.getId().equals(excludeId))
++                continue;
++
+             if (trip.overlapsTrip((Trip)object))
+                 return true;
++        }
+ 
+         return false;
+     }
+diff --git a/app/src/main/java/com/cohenadair/anglerslog/trips/ManageTripFragment.java b/app/src/main/java/com/cohenadair/anglerslog/trips/ManageTripFragment.java
+index cd69d55..82ddf3c 100644
+--- a/app/src/main/java/com/cohenadair/anglerslog/trips/ManageTripFragment.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/trips/ManageTripFragment.java
+@@ -125,7 +125,7 @@ public class ManageTripFragment extends ManageContentFragment {
+     @Override
+     public boolean verifyUserInput() {
+         // make sure the new trip doesn't overlap any existing trips
+-        if ((mDateChanged || !isEditing()) && Logbook.tripExists(getNewTrip())) {
++        if ((mDateChanged || !isEditing()) && Logbook.tripExists(getNewTrip(), isEditing() ? getEditingId() : null)) {
+             AlertUtils.showError(getActivity(), R.string.error_trip_date);
+             return false;
+         }

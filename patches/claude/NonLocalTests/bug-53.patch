@@ -1,0 +1,42 @@
+--- a/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
++++ b/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
+@@ -94,6 +94,7 @@
+             encryptCheckbox.setVisibility(View.GONE);
+         }
+         fileExtEdit.setText(appSettings.getNewFileDialogLastUsedExtension());
++        typeSpinner.setSelection(appSettings.getNewFileDialogLastUsedType());
+         fileNameEdit.requestFocus();
+         new Handler().postDelayed(new ContextUtils.DoTouchView(fileNameEdit), 200);
+ 
+@@ -153,6 +154,7 @@
+                     }
+ 
+                     appSettings.setNewFileDialogLastUsedExtension(fileExtEdit.getText().toString().trim());
++                    appSettings.setNewFileDialogLastUsedType(typeSpinner.getSelectedItemPosition());
+                     final File f = new File(basedir, fileNameEdit.getText().toString().trim() + fileExtEdit.getText().toString().trim());
+                     final byte[] templateContents = getTemplateContent(templateSpinner, basedir, encryptCheckbox.isChecked());
+                     shareUtil.writeFile(f, false, (arg_ok, arg_fos) -> {
+--- a/app/src/main/java/net/gsantner/markor/util/AppSettings.java
++++ b/app/src/main/java/net/gsantner/markor/util/AppSettings.java
+@@ -710,4 +710,12 @@
+     public void setNewFileDialogLastUsedExtension(String v) {
+         setString(R.string.pref_key__new_file_dialog_lastused_extension, v);
+     }
++
++    public int getNewFileDialogLastUsedType() {
++        return getInt(R.string.pref_key__new_file_dialog_lastused_type, 0);
++    }
++
++    public void setNewFileDialogLastUsedType(int v) {
++        setInt(R.string.pref_key__new_file_dialog_lastused_type, v);
++    }
+ }
+--- a/app/src/main/res/values/string-not_translatable.xml
++++ b/app/src/main/res/values/string-not_translatable.xml
+@@ -286,5 +286,6 @@
+     <string name="pref_key__default_encryption_password_set_once" translatable="false">pref_key__default_encryption_password_set_once</string>
+     <string name="pref_key__new_file_dialog_lastused_encryption" translatable="false">pref_key__new_file_dialog_lastused_encryption</string>
+     <string name="pref_key__new_file_dialog_lastused_extension" translatable="false">pref_key__new_file_dialog_lastused_extension</string>
++    <string name="pref_key__new_file_dialog_lastused_type" translatable="false">pref_key__new_file_dialog_lastused_type</string>
+     <string name="select_current_line" translatable="false">Select current line(s)</string>
+ </resources>

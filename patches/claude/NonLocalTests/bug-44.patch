@@ -1,0 +1,21 @@
+--- a/omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java
++++ b/omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java
+@@ -28,6 +28,7 @@
+ import java.util.HashMap;
+ import java.util.List;
+ import java.util.regex.Matcher;
++import java.util.regex.Pattern;
+ 
+ 
+ public class TagsHelper {
+@@ -87,8 +88,8 @@
+     public static Pair<String, String> removeTag(String noteTitle, String noteContent, List<Tag> tagsToRemove) {
+         String title = noteTitle, content = noteContent;
+         for (Tag tagToRemove : tagsToRemove) {
+-            title = title.replaceAll(tagToRemove.getText(), "");
+-            content = content.replaceAll(tagToRemove.getText(), "");
++            title = title.replaceAll(Pattern.quote(tagToRemove.getText()) + "(?!\\w)\\n?", "");
++            content = content.replaceAll(Pattern.quote(tagToRemove.getText()) + "(?!\\w)\\n?", "");
+         }
+         return new Pair<>(title, content);
+     }

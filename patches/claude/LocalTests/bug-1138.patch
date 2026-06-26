@@ -1,0 +1,74 @@
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+@@ -47,6 +47,9 @@
+ import de.greenrobot.event.EventBus;
+ import org.slf4j.Logger;
+ 
++import android.Manifest;
++import androidx.core.content.ContextCompat;
++import android.content.pm.PackageManager;
+ import java.io.File;
+ import java.io.IOException;
+ import java.text.SimpleDateFormat;
+@@ -137,6 +140,28 @@
+ 
+         if(session.isStarted() && gpsLocationListener == null && towerLocationListener == null && passiveLocationListener == null) {
+             LOG.warn("App might be recovering from an unexpected stop.  Starting logging again.");
++
++            if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
++                LOG.error("Storage permission not granted. Notifying user.");
++
++                NotificationManager mgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
++
++                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
++                    NotificationChannel channel = new NotificationChannel("gpslogger_error",
++                            getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH);
++                    mgr.createNotificationChannel(channel);
++                }
++
++                Notification errorNotif = new NotificationCompat.Builder(getApplicationContext(), "gpslogger_error")
++                        .setSmallIcon(R.drawable.notification)
++                        .setContentTitle(getString(R.string.error))
++                        .setContentText(getString(R.string.could_not_write_to_file))
++                        .setPriority(NotificationCompat.PRIORITY_HIGH)
++                        .build();
++
++                mgr.notify(NOTIFICATION_ID + 1, errorNotif);
++            }
++
+             startLogging();
+         }
+ 
+@@ -393,8 +418,6 @@
+     protected void startLogging() {
+         LOG.debug(".");
+         session.setAddNewTrackSegment(true);
+-
+-
+ 
+         try {
+             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+@@ -1092,6 +1115,23 @@
+         }
+         catch(Exception e){
+              LOG.error(getString(R.string.could_not_write_to_file), e);
++
++             NotificationManager mgr = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
++
++             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
++                 NotificationChannel channel = new NotificationChannel("gpslogger_error",
++                         getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH);
++                 mgr.createNotificationChannel(channel);
++             }
++
++             Notification errorNotif = new NotificationCompat.Builder(getApplicationContext(), "gpslogger_error")
++                     .setSmallIcon(R.drawable.notification)
++                     .setContentTitle(getString(R.string.error))
++                     .setContentText(getString(R.string.could_not_write_to_file))
++                     .setPriority(NotificationCompat.PRIORITY_HIGH)
++                     .build();
++
++             mgr.notify(NOTIFICATION_ID + 1, errorNotif);
+         }
+ 
+         session.clearDescription();

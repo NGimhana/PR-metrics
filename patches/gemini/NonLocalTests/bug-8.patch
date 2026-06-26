@@ -1,0 +1,20 @@
+diff --git a/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java b/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
+index af0b7e5..5aaca36 100644
+--- a/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
++++ b/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
+@@ -76,6 +76,15 @@ public class TrickyTripperActivity extends AppCompatActivity implements DeleteDi
+         mDrawerList = (ListView) findViewById(R.id.drawer_drawer_list_view_trips);
+         mViewPager = (ViewPager) findViewById(R.id.drawer_content_pager);
+ 
++        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
++            @Override
++            public void onPageSelected(int position) {
++                if (mActionMode != null) {
++                    mActionMode.finish();
++                }
++            }
++        });
++
+         updatePagerAdapter();
+ 
+         mDrawerToggle = new MyActionBarDrawerToggle();

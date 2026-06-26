@@ -1,0 +1,87 @@
+diff --git a/app/src/main/java/net/gsantner/markor/model/Document.java b/app/src/main/java/net/gsantner/markor/model/Document.java
+index c7677eb..d03b6a0 100644
+--- a/app/src/main/java/net/gsantner/markor/model/Document.java
++++ b/app/src/main/java/net/gsantner/markor/model/Document.java
+@@ -52,6 +52,7 @@ public class Document implements Serializable {
+         target.setTitle(source.getTitle());
+         target.setContent(source.getContent());
+         target.setFormat(source.getFormat());
++        target.setFileExtension(source.getFileExtension());
+         target.setDoHistory(true);
+         return target;
+     }
+diff --git a/app/src/main/java/net/gsantner/markor/util/DocumentIO.java b/app/src/main/java/net/gsantner/markor/util/DocumentIO.java
+index 965c394..96f0e5c 100644
+--- a/app/src/main/java/net/gsantner/markor/util/DocumentIO.java
++++ b/app/src/main/java/net/gsantner/markor/util/DocumentIO.java
+@@ -116,31 +116,40 @@ public class DocumentIO {
+         boolean ret;
+         String filename = DocumentIO.normalizeTitleForFilename(document) + document.getFileExtension();
+         document.setDoHistory(true);
+-        document.setFile(new File(document.getFile().getParentFile(), filename));
++        File newFile = new File(document.getFile().getParentFile(), filename);
+ 
+         Document documentInitial = document.getInitialVersion();
+         if (argAllowRename) {
+-            if (!document.getFile().equals(documentInitial.getFile())) {
++            if (!newFile.equals(documentInitial.getFile())) {
+                 if (documentInitial.getFile().exists()) {
+-                    if (FileUtils.renameFile(documentInitial.getFile(), document.getFile())) {
++                    if (FileUtils.renameFile(documentInitial.getFile(), newFile)) {
++                        document.setFile(newFile);
+                         // Rename succeeded -> Rename everything in history too
+                         for (Document hist : document.getHistory()) {
+-                            hist.setFile(document.getFile());
++                            hist.setFile(newFile);
+                             for (Document hist2 : hist.getHistory()) {
+-                                hist2.setFile(document.getFile());
++                                hist2.setFile(newFile);
+                             }
+                         }
+                     }
++                } else {
++                    document.setFile(newFile);
+                 }
+             }
+         } else {
+             document.setFile(documentInitial.getFile());
+         }
+ 
+-        if (!currentText.equals(documentInitial.getContent())) {
++        if (!currentText.equals(documentInitial.getContent()) || !document.getFile().exists()) {
+             document.forceAddNextChangeToHistory();
+             document.setContent(currentText);
+             ret = FileUtils.writeFile(document.getFile(), document.getContent());
++            if (ret) {
++                // Update history items to the new path if we just created/wrote the file
++                for (Document hist : document.getHistory()) {
++                    hist.setFile(document.getFile());
++                }
++            }
+         } else {
+             ret = true;
+         }
+@@ -150,10 +159,8 @@ public class DocumentIO {
+     public static String normalizeTitleForFilename(Document _document) {
+         String name = _document.getTitle();
+         try {
+-            if (name.length() == 0) {
+-                if (_document.getContent().length() == 0) {
+-                    return null;
+-                } else {
++            if (name == null || name.length() == 0) {
++                if (_document.getContent().length() > 0) {
+                     String contentL1 = _document.getContent().split("\n")[0];
+                     if (contentL1.length() < MAX_TITLE_EXTRACTION_LENGTH) {
+                         name = contentL1.substring(0, contentL1.length());
+@@ -162,7 +169,9 @@ public class DocumentIO {
+                     }
+                 }
+             }
+-            name = name.replaceAll("[\\\\/:\"´`'*$?<>\n\r@|#]+", "").trim();
++            if (name != null) {
++                name = name.replaceAll("[\\\\/:\"´`'*$?<>\n\r@|#]+", "").trim();
++            }
+         } catch (Exception ignored) {
+         }
+         if (name == null || name.isEmpty()) {

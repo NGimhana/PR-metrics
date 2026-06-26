@@ -1,0 +1,17 @@
+--- a/app/src/main/java/com/simon/harmonichackernews/ComposeActivity.java
++++ b/app/src/main/java/com/simon/harmonichackernews/ComposeActivity.java
+@@ -210,12 +210,12 @@
+                 //we just do the default back behavior (which is predictive back)
+                 AlertDialog dialog = new MaterialAlertDialogBuilder(editText.getContext())
+                         .setMessage(type == TYPE_POST ? "Discard post?" : "Discard comment?")
+-                        .setNegativeButton("Discard", new DialogInterface.OnClickListener() {
++                        .setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                             public void onClick(DialogInterface dialog, int whichButton) {
+                                 dialog.cancel();
+                                 finish();
+                             }})
+-                        .setPositiveButton("Cancel", null).create();
++                        .setNegativeButton("Cancel", null).create();
+ 
+                 dialog.show();
+             }

@@ -1,0 +1,13 @@
+--- a/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java
+@@ -218,8 +218,8 @@
+ 
+         // get all possible fishing spots to be used when adding a new spot
+         // this is purely for user convenience
+-        List<UserDefineObject> allPossibleFishingSpots = mFishingSpots;
+-        mFishingSpots.addAll(getNewLocation().getFishingSpots());
++        ArrayList<UserDefineObject> allPossibleFishingSpots = new ArrayList<>(mFishingSpots);
++        allPossibleFishingSpots.addAll(getNewLocation().getFishingSpots());
+         fragment.setFishingSpots(allPossibleFishingSpots);
+ 
+         fragment.setOnVerifyInterface(new ManageFishingSpotFragment.OnVerifyInterface() {

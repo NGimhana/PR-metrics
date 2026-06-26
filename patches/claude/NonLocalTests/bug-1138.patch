@@ -1,0 +1,58 @@
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+@@ -417,6 +417,7 @@
+         startPassiveManager();
+         startGpsManager();
+ 
++
+     }
+ 
+     private void notifyByBroadcast(boolean loggingStarted) {
+@@ -584,6 +585,27 @@
+         notificationManager.notify(NOTIFICATION_ID, notif);
+     }
+ 
++    private void showErrorNotification(String title, String message){
++        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
++        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
++            NotificationChannel errorChannel = new NotificationChannel("gpslogger_errors", getString(R.string.error), NotificationManager.IMPORTANCE_HIGH);
++            errorChannel.enableLights(true);
++            errorChannel.enableVibration(true);
++            errorChannel.setShowBadge(true);
++            manager.createNotificationChannel(errorChannel);
++        }
++
++        NotificationCompat.Builder errorNfc = new NotificationCompat.Builder(getApplicationContext(), "gpslogger_errors")
++                .setSmallIcon(R.drawable.notification)
++                .setContentTitle(title)
++                .setContentText(message)
++                .setStyle(new NotificationCompat.BigTextStyle().bigText(message).setBigContentTitle(title))
++                .setPriority(NotificationCompat.PRIORITY_HIGH)
++                .setAutoCancel(true);
++
++        manager.notify(NOTIFICATION_ID + 1, errorNfc.build());
++    }
++
+     @SuppressWarnings("ResourceType")
+     private void startPassiveManager() {
+         if(preferenceHelper.shouldLogPassiveLocations()){
+@@ -1083,6 +1105,11 @@
+ 
+         try {
+             LOG.debug("Calling file writers");
++
++            if(!Files.isAllowedToWriteTo(preferenceHelper.getGpsLoggerFolder())){
++                throw new Exception(getString(R.string.could_not_write_to_file));
++            }
++
+             FileLoggerFactory.write(getApplicationContext(), loc);
+ 
+             if (session.hasDescription()) {
+@@ -1092,6 +1119,7 @@
+         }
+         catch(Exception e){
+              LOG.error(getString(R.string.could_not_write_to_file), e);
++             showErrorNotification(getString(R.string.error), getString(R.string.could_not_write_to_file));
+         }
+ 
+         session.clearDescription();

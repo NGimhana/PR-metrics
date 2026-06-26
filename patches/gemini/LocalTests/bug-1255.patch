@@ -1,0 +1,34 @@
+diff --git a/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java b/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java
+index 5fb8965..70b767a 100644
+--- a/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java
++++ b/app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java
+@@ -56,10 +56,10 @@ public class ChannelActionHandler {
+             case R.id.unblock_channel:
+                 compositeDisposable.add(channel.unblockChannel().subscribe());
+                 return true;
+-            case R.id.share:
++            case R.id.share_channel:
+                 SkyTubeApp.shareUrl(context, channel.getChannelUrl());
+                 return true;
+-            case R.id.copyurl:
++            case R.id.copy_channel_url:
+                 SkyTubeApp.copyUrl(context, "Channel URL", channel.getChannelUrl());
+                 return true;
+ 
+diff --git a/app/src/main/res/menu/channel_options_menu.xml b/app/src/main/res/menu/channel_options_menu.xml
+index a111da5..fddf1b1 100644
+--- a/app/src/main/res/menu/channel_options_menu.xml
++++ b/app/src/main/res/menu/channel_options_menu.xml
+@@ -1,10 +1,10 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <menu xmlns:android="http://schemas.android.com/apk/res/android">
+     <item
+-        android:id="@+id/share"
++        android:id="@+id/share_channel"
+         android:title="@string/share_via"/>
+     <item
+-        android:id="@+id/copyurl"
++        android:id="@+id/copy_channel_url"
+         android:title="@string/copy_url"/>
+     <item
+         android:id="@+id/open_channel" android:visible="false"

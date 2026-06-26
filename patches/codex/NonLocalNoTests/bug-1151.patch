@@ -1,0 +1,15 @@
+--- a/GPSTest/src/main/java/com/android/gpstest/Preferences.java
++++ b/GPSTest/src/main/java/com/android/gpstest/Preferences.java
+@@ -135,10 +135,10 @@
+         chkDarkTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+             @Override
+             public boolean onPreferenceChange(Preference preference, Object newValue) {
+-                // Close and restart Activities (clearing the back stack) to apply new theme
++                // Restart Settings to apply the new theme, but keep the existing back stack
++                // so users can return to GpsTestActivity after leaving Settings.
+                 finish();
+                 final Intent intent = getIntent();
+-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                 startActivity(intent);
+                 return true;
+             }

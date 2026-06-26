@@ -1,0 +1,27 @@
+--- a/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java
+@@ -216,10 +216,20 @@
+         if (editingId != null)
+             fragment.setIsEditing(true, editingId);
+ 
+-        // get all possible fishing spots to be used when adding a new spot
+-        // this is purely for user convenience
+-        List<UserDefineObject> allPossibleFishingSpots = mFishingSpots;
+-        mFishingSpots.addAll(getNewLocation().getFishingSpots());
++        // get all possible fishing spots to be used when adding a new spot.
++        // keep this list separate so we don't mutate mFishingSpots while editing.
++        List<UserDefineObject> allPossibleFishingSpots = new ArrayList<>(mFishingSpots);
++        for (UserDefineObject spot : getNewLocation().getFishingSpots()) {
++            boolean exists = false;
++            for (UserDefineObject existingSpot : allPossibleFishingSpots)
++                if (existingSpot.getId().equals(spot.getId())) {
++                    exists = true;
++                    break;
++                }
++
++            if (!exists)
++                allPossibleFishingSpots.add(spot);
++        }
+         fragment.setFishingSpots(allPossibleFishingSpots);
+ 
+         fragment.setOnVerifyInterface(new ManageFishingSpotFragment.OnVerifyInterface() {

@@ -1,0 +1,21 @@
+--- a/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
++++ b/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
+@@ -401,6 +401,18 @@
+      */
+     private void doEncryption(String path) throws IOException, DocumentException {
+         String finalOutputFile = path.replace(".pdf", mActivity.getString(R.string.encrypted_file));
++        File outputFile = new File(finalOutputFile);
++        if (outputFile.exists()) {
++            int count = 1;
++            String base = path.replace(".pdf", "");
++            String suffix = mActivity.getString(R.string.encrypted_file);
++            String ext = suffix.replace(".pdf", "");
++            while (outputFile.exists()) {
++                finalOutputFile = base + ext + " (" + count + ")" + ".pdf";
++                outputFile = new File(finalOutputFile);
++                count++;
++            }
++        }
+         Log.e("Log", finalOutputFile);
+         PdfReader reader = new PdfReader(path);
+         PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(finalOutputFile));

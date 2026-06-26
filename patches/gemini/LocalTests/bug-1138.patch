@@ -1,0 +1,39 @@
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+index d215ec3..38bf408 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+@@ -584,7 +584,26 @@ public class GpsLoggingService extends Service  {
+         notificationManager.notify(NOTIFICATION_ID, notif);
+     }
+ 
++    private void showErrorNotification(String message) {
++        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
++
++        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
++            NotificationChannel channel = new NotificationChannel("gpslogger_error", getString(R.string.error), NotificationManager.IMPORTANCE_HIGH);
++            manager.createNotificationChannel(channel);
++        }
++
++        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "gpslogger_error")
++                .setSmallIcon(R.drawable.notification)
++                .setContentTitle(getString(R.string.error))
++                .setContentText(message)
++                .setPriority(NotificationCompat.PRIORITY_HIGH)
++                .setAutoCancel(true);
++
++        manager.notify(1138, builder.build());
++    }
++
+     @SuppressWarnings("ResourceType")
++
+     private void startPassiveManager() {
+         if(preferenceHelper.shouldLogPassiveLocations()){
+             LOG.debug("Starting passive location listener");
+@@ -1092,6 +1111,7 @@ public class GpsLoggingService extends Service  {
+         }
+         catch(Exception e){
+              LOG.error(getString(R.string.could_not_write_to_file), e);
++             showErrorNotification(getString(R.string.could_not_write_to_file));
+         }
+ 
+         session.clearDescription();

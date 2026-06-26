@@ -1,0 +1,43 @@
+diff --git a/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java b/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
+index 9f719f6..1628581 100644
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
+@@ -25,6 +25,7 @@ import android.content.DialogInterface;
+ import android.content.Intent;
+ import android.content.IntentFilter;
+ import android.content.SharedPreferences;
++import android.database.Cursor;
+ import android.graphics.Typeface;
+ import android.os.Bundle;
+ import android.os.Handler;
+@@ -381,20 +382,20 @@ public class CardBrowser extends NavigationDrawerActivity implements
+     }
+ 
+     private boolean hasSelectedSingleNoteId() {
+-        //Heuristic to skip a large array copy
+-        if (checkedCardCount() > 50) {
++        if (checkedCardCount() == 0 || checkedCardCount() > 50) {
+             return false;
+         }
+-        //copy to array to ensure threadsafe iteration
+-        Integer[] checkedPositions = mCheckedCardPositions.toArray(new Integer[0]);
+-        HashSet<String> notes = new HashSet<>();
+-        for (Integer position : checkedPositions) {
+-            String noteId = mCards.get(position).get(NOTE);
+-            if (notes.add(noteId) && notes.size() > 1) {
+-                return false;
++        long[] cardIds = getSelectedCardIds();
++        HashSet<Long> noteIds = new HashSet<>();
++        try (Cursor cur = getCol().getDb().getDatabase().query("select distinct nid from cards where id in " + Utils.ids2str(cardIds), null)) {
++            while (cur.moveToNext()) {
++                noteIds.add(cur.getLong(0));
++                if (noteIds.size() > 1) {
++                    return false;
++                }
+             }
+         }
+-        return notes.size() == 1;
++        return noteIds.size() == 1;
+     }
+ 
+     @VisibleForTesting

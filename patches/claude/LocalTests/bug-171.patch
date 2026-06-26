@@ -1,0 +1,36 @@
+--- a/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
++++ b/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
+@@ -13,7 +13,24 @@
+ import org.sufficientlysecure.htmltextview.HtmlTextView;
+ import org.sufficientlysecure.htmltextview.OnClickATagListener;
+ 
++import java.util.regex.Matcher;
++import java.util.regex.Pattern;
++
+ public class DialogUtils {
++
++    public static String untruncateLinks(String html) {
++        Pattern pattern = Pattern.compile("<a\\s[^>]*href\\s*=\\s*\"([^\"]*)\"[^>]*>(.*?)</a>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
++        Matcher matcher = pattern.matcher(html);
++        StringBuffer sb = new StringBuffer();
++        while (matcher.find()) {
++            String href = matcher.group(1);
++            String linkText = matcher.group(2);
++            // Replace truncated link text with the full href URL
++            matcher.appendReplacement(sb, Matcher.quoteReplacement("<a href=\"" + href + "\">" + href + "</a>"));
++        }
++        matcher.appendTail(sb);
++        return sb.toString();
++    }
+ 
+     public static void showTextSelectionDialog(Context ctx, String text) {
+         MaterialAlertDialogBuilder selectTextDialogBuilder = new MaterialAlertDialogBuilder(ctx);
+@@ -21,7 +38,7 @@
+         selectTextDialogBuilder.setView(rootView);
+ 
+         HtmlTextView htmlTextView = rootView.findViewById(R.id.select_text_htmltextview);
+-        htmlTextView.setHtml(text);
++        htmlTextView.setHtml(untruncateLinks(text));
+ 
+         htmlTextView.setOnClickATagListener(new OnClickATagListener() {
+             @Override

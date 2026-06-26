@@ -1,0 +1,54 @@
+--- a/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
+@@ -124,14 +124,12 @@
+         FishingSpot fishingSpot = getNewFishingSpot();
+         fishingSpot.setName(mNameView.getInputText());
+ 
+-        if (mMap != null) {
+-            fishingSpot.setLatitude(mMap.getCameraPosition().target.latitude);
+-            fishingSpot.setLongitude(mMap.getCameraPosition().target.longitude);
+-        } else {
+-            // in case Google Play Services isn't available, fishing spots can still be added and updated later
+-            fishingSpot.setLatitude(0.0);
+-            fishingSpot.setLongitude(0.0);
+-        }
++        LatLng coordinates = getCoordinatesFromViews();
++        if (coordinates == null)
++            return false;
++
++        fishingSpot.setLatitude(coordinates.latitude);
++        fishingSpot.setLongitude(coordinates.longitude);
+ 
+         // name
+         if (fishingSpot.isNameNull()) {
+@@ -146,6 +144,30 @@
+         }
+ 
+         return true;
++    }
++
++    private LatLng getCoordinatesFromViews() {
++        String latText = mLatitudeView.getInputText();
++        String lngText = mLongitudeView.getInputText();
++
++        if (latText == null || lngText == null) {
++            AlertUtils.showError(getActivity(), R.string.msg_invalid_coordinate);
++            return null;
++        }
++
++        latText = latText.replace(',', '.');
++        lngText = lngText.replace(',', '.');
++
++        try {
++            LatLng latLng = new LatLng(Double.parseDouble(latText), Double.parseDouble(lngText));
++            if (mMapFragment.isValid(latLng))
++                return latLng;
++        } catch (NumberFormatException e) {
++            e.printStackTrace();
++        }
++
++        AlertUtils.showError(getActivity(), R.string.msg_invalid_coordinate);
++        return null;
+     }
+ 
+     @Override

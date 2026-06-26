@@ -1,0 +1,10 @@
+--- a/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java
++++ b/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java
+@@ -306,6 +306,7 @@
+                 mSbasStatus.clear();
+                 mGnssAdapter.notifyDataSetChanged();
+                 mSbasAdapter.notifyDataSetChanged();
++                filterGroup.setVisibility(View.GONE);
+             }
+             mNavigating = navigating;
+         }

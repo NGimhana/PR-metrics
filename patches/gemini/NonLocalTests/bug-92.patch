@@ -1,0 +1,13 @@
+diff --git a/app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java b/app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java
+index b57990e..4307bf4 100644
+--- a/app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java
++++ b/app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java
+@@ -123,7 +123,7 @@ class VendorDB implements VendorService {
+ 
+         @Override
+         public boolean evaluate(String object) {
+-            return object.contains(filter);
++            return StringUtils.containsIgnoreCase(object, filter);
+         }
+     }
+ 

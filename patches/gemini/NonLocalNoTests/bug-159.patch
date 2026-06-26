@@ -1,0 +1,142 @@
+diff --git a/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java b/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
+index 9f719f6..a27d60a 100644
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
+@@ -126,6 +126,8 @@ public class CardBrowser extends NavigationDrawerActivity implements
+     public static final String INTERVAL = "interval";
+     public static final String LAPSES = "lapses";
+     public static final String NOTE = "note";
++    public static final String NID = "nid";
++    public static final String MID = "mid";
+     public static final String REVIEWS = "reviews";
+     private static Pattern sMarkedPattern = Pattern.compile(".*[Mm]arked.*");
+ 
+@@ -389,7 +391,7 @@ public class CardBrowser extends NavigationDrawerActivity implements
+         Integer[] checkedPositions = mCheckedCardPositions.toArray(new Integer[0]);
+         HashSet<String> notes = new HashSet<>();
+         for (Integer position : checkedPositions) {
+-            String noteId = mCards.get(position).get(NOTE);
++            String noteId = mCards.get(position).get(NID);
+             if (notes.add(noteId) && notes.size() > 1) {
+                 return false;
+             }
+@@ -397,6 +399,26 @@ public class CardBrowser extends NavigationDrawerActivity implements
+         return notes.size() == 1;
+     }
+ 
++    private boolean hasSelectedNotesOfSameType() {
++        if (checkedCardCount() == 0) {
++            return false;
++        }
++        Integer[] checkedPositions = mCheckedCardPositions.toArray(new Integer[0]);
++        HashSet<String> noteTypes = new HashSet<>();
++        for (Integer position : checkedPositions) {
++            String noteType = mCards.get(position).get(MID);
++            if (noteType == null) {
++                // Card not rendered yet, can't determine type easily without DB hit.
++                // For simplicity, return false if we don't know yet.
++                return false;
++            }
++            if (noteTypes.add(noteType) && noteTypes.size() > 1) {
++                return false;
++            }
++        }
++        return noteTypes.size() == 1;
++    }
++
+     @VisibleForTesting
+     void changeDeck(int deckPosition) {
+         long[] ids = getSelectedCardIds();
+@@ -671,10 +693,31 @@ public class CardBrowser extends NavigationDrawerActivity implements
+         startActivityForResultWithAnimation(editCard, EDIT_CARD, ActivityTransitionAnimation.LEFT);
+     }
+ 
++    private long[] getNoteIdsForCards(long[] cardIds) {
++        HashSet<Long> noteIds = new HashSet<>();
++        for (long cardId : cardIds) {
++            noteIds.add(getCol().getCard(cardId).getNid());
++        }
++        long[] result = new long[noteIds.size()];
++        int i = 0;
++        for (Long nid : noteIds) {
++            result[i++] = nid;
++        }
++        return result;
++    }
++
+     private void openNoteEditorForCurrentlySelectedNote() {
+         try {
+             //Just select the first one. It doesn't particularly matter if there's a multiselect occurring.
+-            openNoteEditorForCard(getSelectedCardIds()[0]);
++            long[] cardIds = getSelectedCardIds();
++            long[] noteIds = getNoteIdsForCards(cardIds);
++            sCardBrowserCard = getCol().getCard(cardIds[0]);
++            // start note editor using the card we just loaded
++            Intent editCard = new Intent(this, NoteEditor.class);
++            editCard.putExtra(NoteEditor.EXTRA_CALLER, NoteEditor.CALLER_CARDBROWSER_EDIT);
++            editCard.putExtra(NoteEditor.EXTRA_CARD_ID, sCardBrowserCard.getId());
++            editCard.putExtra(NoteEditor.EXTRA_NOTE_IDS, noteIds);
++            startActivityForResultWithAnimation(editCard, EDIT_CARD, ActivityTransitionAnimation.LEFT);
+         } catch (Exception e) {
+             Timber.w(e, "Error Opening Note Editor");
+             UIUtils.showThemedToast(this, getString(R.string.card_browser_note_editor_error), false);
+@@ -875,7 +918,7 @@ public class CardBrowser extends NavigationDrawerActivity implements
+         mActionBarMenu.findItem(R.id.action_select_all).setVisible(!hasSelectedAllCards());
+         //Note: Theoretically should not happen, as this should kick us back to the menu
+         mActionBarMenu.findItem(R.id.action_select_none).setVisible(hasSelectedCards());
+-        mActionBarMenu.findItem(R.id.action_edit_note).setVisible(hasSelectedSingleNoteId());
++        mActionBarMenu.findItem(R.id.action_edit_note).setVisible(hasSelectedNotesOfSameType());
+     }
+ 
+ 
+@@ -1523,6 +1566,8 @@ public class CardBrowser extends NavigationDrawerActivity implements
+         }
+         item.put(LAPSES, Integer.toString(c.getLapses()));
+         item.put(NOTE, c.model().optString("name"));
++        item.put(NID, Long.toString(c.getNid()));
++        item.put(MID, Long.toString(c.model().optLong("id")));
+         item.put(QUESTION, formatQA(q, context));
+         item.put(REVIEWS, Integer.toString(c.getReps()));
+         String tags = note.stringTags();
+diff --git a/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java b/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java
+index 250538a..70df808 100644
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java
+@@ -125,6 +125,7 @@ public class NoteEditor extends AnkiActivity {
+     public static final String TARGET_TEXT = "TARGET_TEXT";
+     public static final String EXTRA_CALLER = "CALLER";
+     public static final String EXTRA_CARD_ID = "CARD_ID";
++    public static final String EXTRA_NOTE_IDS = "NOTE_IDS";
+     public static final String EXTRA_CONTENTS = "CONTENTS";
+     public static final String EXTRA_ID = "ID";
+ 
+@@ -172,6 +173,7 @@ public class NoteEditor extends AnkiActivity {
+     private Spinner mNoteDeckSpinner;
+ 
+     private Note mEditorNote;
++    private long[] mNoteIds;
+     public static Card mCurrentEditedCard;
+     private List<String> mSelectedTags;
+     private long mCurrentDid;
+@@ -437,6 +439,7 @@ public class NoteEditor extends AnkiActivity {
+                 }
+                 mEditorNote = mCurrentEditedCard.note();
+                 mAddNote = false;
++                mNoteIds = getIntent().getLongArrayExtra(EXTRA_NOTE_IDS);
+                 break;
+ 
+             case CALLER_CARDBROWSER_ADD:
+@@ -850,7 +853,12 @@ public class NoteEditor extends AnkiActivity {
+      * @throws ConfirmModSchemaException If a full sync will be required
+      */
+     private void changeNoteType(JSONObject oldModel, JSONObject newModel) throws ConfirmModSchemaException {
+-        final long [] nids = {mEditorNote.getId()};
++        final long [] nids;
++        if (mNoteIds != null && mNoteIds.length > 0) {
++            nids = mNoteIds;
++        } else {
++            nids = new long[] {mEditorNote.getId()};
++        }
+         getCol().getModels().change(oldModel, nids, newModel, mModelChangeFieldMap, mModelChangeCardMap);
+         // refresh the note object to reflect the database changes
+         mEditorNote.load();

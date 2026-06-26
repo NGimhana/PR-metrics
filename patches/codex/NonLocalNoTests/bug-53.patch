@@ -1,0 +1,45 @@
+--- a/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
++++ b/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
+@@ -93,7 +93,9 @@
+         } else {
+             encryptCheckbox.setVisibility(View.GONE);
+         }
+-        fileExtEdit.setText(appSettings.getNewFileDialogLastUsedExtension());
++        final String lastUsedExtension = appSettings.getNewFileDialogLastUsedExtension();
++        fileExtEdit.setText(lastUsedExtension);
++        typeSpinner.setSelection(getTypeSpinnerPositionFromExtension(lastUsedExtension, typeSpinnerToExtension));
+         fileNameEdit.requestFocus();
+         new Handler().postDelayed(new ContextUtils.DoTouchView(fileNameEdit), 200);
+ 
+@@ -183,6 +185,31 @@
+         return dialogBuilder;
+     }
+ 
++    private int getTypeSpinnerPositionFromExtension(String extension, String[] typeSpinnerToExtension) {
++        String normalizedExtension = extension == null ? "" : extension.trim();
++        if (normalizedExtension.endsWith(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION)) {
++            normalizedExtension = normalizedExtension.substring(0, normalizedExtension.length() - JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION.length());
++        }
++
++        int fallbackPosition = 0;
++        int longestSuffixMatchLength = -1;
++        for (int pos = 0; pos < typeSpinnerToExtension.length; pos++) {
++            String mappedExtension = typeSpinnerToExtension[pos];
++            if (TextUtils.isEmpty(mappedExtension)) {
++                fallbackPosition = pos;
++                continue;
++            }
++            if (mappedExtension.equals(normalizedExtension)) {
++                return pos;
++            }
++            if (normalizedExtension.endsWith(mappedExtension) && mappedExtension.length() > longestSuffixMatchLength) {
++                fallbackPosition = pos;
++                longestSuffixMatchLength = mappedExtension.length();
++            }
++        }
++        return fallbackPosition;
++    }
++
+     private boolean ez(EditText et) {
+         return et.getText().toString().isEmpty();
+     }

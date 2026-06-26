@@ -1,0 +1,31 @@
+--- a/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
++++ b/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
+@@ -9,7 +9,10 @@
+ import android.os.Bundle;
+ import android.preference.PreferenceManager;
+ import android.support.annotation.NonNull;
++import android.support.design.widget.BottomSheetBehavior;
+ import android.support.design.widget.NavigationView;
++import android.view.View;
++import android.widget.LinearLayout;
+ import android.support.v4.app.Fragment;
+ import android.support.v4.app.FragmentManager;
+ import android.support.v4.content.ContextCompat;
+@@ -270,6 +273,17 @@
+             if (currentFragment instanceof HomeFragment) {
+                 checkDoubleBackPress();
+             } else {
++                // Check if a BottomSheet is expanded in the current fragment
++                if (currentFragment != null && currentFragment.getView() != null) {
++                    View bottomSheet = currentFragment.getView().findViewById(R.id.bottom_sheet);
++                    if (bottomSheet != null) {
++                        BottomSheetBehavior sheetBehavior = BottomSheetBehavior.from(bottomSheet);
++                        if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
++                            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
++                            return;
++                        }
++                    }
++                }
+                 Fragment fragment = new HomeFragment();
+                 getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
+                 setDefaultMenuSelected(0);

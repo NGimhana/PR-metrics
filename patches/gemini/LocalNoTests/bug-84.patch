@@ -1,0 +1,36 @@
+diff --git a/ultrasonic/src/main/java/org/moire/ultrasonic/util/Constants.java b/ultrasonic/src/main/java/org/moire/ultrasonic/util/Constants.java
+index fc6b7e1..e183f87 100644
+--- a/ultrasonic/src/main/java/org/moire/ultrasonic/util/Constants.java
++++ b/ultrasonic/src/main/java/org/moire/ultrasonic/util/Constants.java
+@@ -131,9 +131,6 @@ public final class Constants
+ 	public static final String PREFERENCES_KEY_SCAN_MEDIA = "scanMedia";
+ 	public static final String PREFERENCES_KEY_IMAGE_LOADER_CONCURRENCY = "imageLoaderConcurrency";
+ 
+-	// Name of the preferences file.
+-	public static final String PREFERENCES_FILE_NAME = "org.moire.ultrasonic_preferences";
+-
+ 	// Number of free trial days for non-licensed servers.
+ 	public static final int FREE_TRIAL_DAYS = 30;
+ 
+diff --git a/ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java b/ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java
+index f9994f3..37b06ec 100644
+--- a/ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java
++++ b/ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java
+@@ -206,7 +206,7 @@ public class Util extends DownloadActivity
+ 
+ 	public static int getActiveServers(Context context)
+ 	{
+-		SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
++		SharedPreferences settings = getPreferences(context);
+ 		return settings.getInt(Constants.PREFERENCES_KEY_ACTIVE_SERVERS, 3);
+ 	}
+ 
+@@ -400,7 +400,7 @@ public class Util extends DownloadActivity
+ 
+ 	public static SharedPreferences getPreferences(Context context)
+ 	{
+-		return context.getSharedPreferences(Constants.PREFERENCES_FILE_NAME, 0);
++		return PreferenceManager.getDefaultSharedPreferences(context);
+ 	}
+ 
+ 	public static int getRemainingTrialDays(Context context)

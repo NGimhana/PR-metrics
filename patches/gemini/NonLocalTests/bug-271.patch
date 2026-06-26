@@ -1,0 +1,47 @@
+diff --git a/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java b/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
+index 6a9c567..706510c 100644
+--- a/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
++++ b/app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java
+@@ -66,17 +66,30 @@ public class TotpProgressBar extends ProgressBar {
+ 
+         // start progress animation, compensating for any changes to the animator duration scale settings
+         int animPart = maxProgress / _period;
+-        int animEnd = (currentProgress / animPart) * animPart;
+-        int animPartDuration = (int) (1000 / _animDurationScale);
+-        float animDurationFraction = (float) (currentProgress - animEnd) / animPart;
+-        int realAnimDuration =  (int) (1000 * animDurationFraction);
+-        int animDuration =  (int) (animPartDuration * animDurationFraction);
+-        ObjectAnimator animation = ObjectAnimator.ofInt(this, "progress", currentProgress, animEnd);
+-        animation.setDuration(animDuration);
+-        animation.setInterpolator(new LinearInterpolator());
+-        animation.start();
+-
+-        // the animation only lasts for (less than) one second, so restart it after that
+-        _handler.postDelayed(this::refresh, realAnimDuration);
++        if (animPart > 0) {
++            int animEnd = (currentProgress / animPart) * animPart;
++            if (animEnd == currentProgress) {
++                animEnd -= animPart;
++            }
++            if (animEnd < 0) {
++                animEnd = 0;
++            }
++
++            int animPartDuration = (int) (1000 / _animDurationScale);
++            float animDurationFraction = (float) (currentProgress - animEnd) / animPart;
++            int realAnimDuration = (int) (1000 * animDurationFraction);
++            int animDuration = (int) (animPartDuration * animDurationFraction);
++
++            ObjectAnimator animation = ObjectAnimator.ofInt(this, "progress", currentProgress, animEnd);
++            animation.setDuration(animDuration);
++            animation.setInterpolator(new LinearInterpolator());
++            animation.start();
++
++            // the animation only lasts for (less than) one second, so restart it after that
++            _handler.postDelayed(this::refresh, Math.max(1, realAnimDuration));
++        } else {
++            setProgress(currentProgress);
++            _handler.postDelayed(this::refresh, 1000);
++        }
+     }
+ }

@@ -1,0 +1,103 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
+@@ -218,13 +218,26 @@
+ 
+                 Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
+                 TokenCalculator.HashAlgorithm algorithm = (TokenCalculator.HashAlgorithm) algorithmInput.getSelectedItem();
+-                int digits = Integer.parseInt(digitsInput.getText().toString());
++
++                int digits;
++                try {
++                    digits = Integer.parseInt(digitsInput.getText().toString());
++                } catch (NumberFormatException e) {
++                    digitsInput.setError(callingActivity.getString(R.string.error_invalid_secret));
++                    return;
++                }
+ 
+                 String issuer = issuerInput.getText().toString();
+                 String label = labelInput.getText().toString();
+ 
+                 if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+-                    int period = Integer.parseInt(periodInput.getText().toString());
++                    int period;
++                    try {
++                        period = Integer.parseInt(periodInput.getText().toString());
++                    } catch (NumberFormatException e) {
++                        periodInput.setError(callingActivity.getString(R.string.error_invalid_secret));
++                        return;
++                    }
+ 
+                     if (oldEntry == null) {
+                         Entry e = new Entry(type, secret, period, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
+@@ -242,7 +255,13 @@
+ 
+                     callingActivity.refreshTags();
+                 } else if (type == Entry.OTPType.HOTP) {
+-                    long counter = Long.parseLong(counterInput.getText().toString());
++                    long counter;
++                    try {
++                        counter = Long.parseLong(counterInput.getText().toString());
++                    } catch (NumberFormatException e) {
++                        counterInput.setError(callingActivity.getString(R.string.error_invalid_secret));
++                        return;
++                    }
+ 
+                     if (oldEntry == null) {
+                         Entry e = new Entry(type, secret, counter, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
+@@ -276,28 +295,37 @@
+ 
+             @Override
+             public void afterTextChanged(Editable editable) {
+-                if ((TextUtils.isEmpty(labelInput.getText()) && TextUtils.isEmpty(issuerInput.getText())) ||
+-                        (TextUtils.isEmpty(secretInput.getText()) && isNewEntry) ||
+-                        TextUtils.isEmpty(digitsInput.getText()) ||
+-                        Integer.parseInt(digitsInput.getText().toString()) == 0) {
+-                    positiveButton.setEnabled(false);
+-                } else {
+-                    Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
+-                    if (type == Entry.OTPType.HOTP) {
+-                        if (TextUtils.isEmpty(counterInput.getText())) {
+-                            positiveButton.setEnabled(false);
++                try {
++                    if ((TextUtils.isEmpty(labelInput.getText()) && TextUtils.isEmpty(issuerInput.getText())) ||
++                            (TextUtils.isEmpty(secretInput.getText()) && isNewEntry) ||
++                            TextUtils.isEmpty(digitsInput.getText()) ||
++                            Integer.parseInt(digitsInput.getText().toString()) == 0) {
++                        positiveButton.setEnabled(false);
++                    } else {
++                        Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
++                        if (type == Entry.OTPType.HOTP) {
++                            if (TextUtils.isEmpty(counterInput.getText())) {
++                                positiveButton.setEnabled(false);
++                            } else {
++                                try {
++                                    Long.parseLong(counterInput.getText().toString());
++                                    positiveButton.setEnabled(true);
++                                } catch (NumberFormatException e) {
++                                    positiveButton.setEnabled(false);
++                                }
++                            }
++                        } else if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
++                            if (TextUtils.isEmpty(periodInput.getText()) || Integer.parseInt(periodInput.getText().toString()) == 0) {
++                                positiveButton.setEnabled(false);
++                            } else {
++                                positiveButton.setEnabled(true);
++                            }
+                         } else {
+                             positiveButton.setEnabled(true);
+                         }
+-                    } else if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+-                        if (TextUtils.isEmpty(periodInput.getText()) || Integer.parseInt(periodInput.getText().toString()) == 0) {
+-                            positiveButton.setEnabled(false);
+-                        } else {
+-                            positiveButton.setEnabled(true);
+-                        }
+-                    } else {
+-                        positiveButton.setEnabled(true);
+-                    }
++                    }
++                } catch (NumberFormatException e) {
++                    positiveButton.setEnabled(false);
+                 }
+             }
+         };

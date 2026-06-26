@@ -1,0 +1,39 @@
+--- a/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
++++ b/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
+@@ -93,7 +93,9 @@
+         } else {
+             encryptCheckbox.setVisibility(View.GONE);
+         }
+-        fileExtEdit.setText(appSettings.getNewFileDialogLastUsedExtension());
++        final String lastUsedExtension = appSettings.getNewFileDialogLastUsedExtension();
++        fileExtEdit.setText(lastUsedExtension);
++        typeSpinner.setSelection(getTypeSpinnerPositionForExtension(lastUsedExtension, typeSpinnerToExtension));
+         fileNameEdit.requestFocus();
+         new Handler().postDelayed(new ContextUtils.DoTouchView(fileNameEdit), 200);
+ 
+@@ -183,6 +185,25 @@
+         return dialogBuilder;
+     }
+ 
++    private int getTypeSpinnerPositionForExtension(final String extension, final String[] spinnerExtensions) {
++        if (spinnerExtensions == null || spinnerExtensions.length == 0) {
++            return 0;
++        }
++        String normalizedExtension = extension == null ? "" : extension;
++        if (normalizedExtension.endsWith(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION)) {
++            normalizedExtension = normalizedExtension.substring(
++                    0,
++                    normalizedExtension.length() - JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION.length()
++            );
++        }
++        for (int i = 0; i < spinnerExtensions.length; i++) {
++            if (TextUtils.equals(spinnerExtensions[i], normalizedExtension)) {
++                return i;
++            }
++        }
++        return 0;
++    }
++
+     private boolean ez(EditText et) {
+         return et.getText().toString().isEmpty();
+     }

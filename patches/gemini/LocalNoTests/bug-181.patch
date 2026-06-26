@@ -1,0 +1,136 @@
+diff --git a/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java b/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
+index efe820f..8db25f6 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
++++ b/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
+@@ -159,6 +159,9 @@ public class StoriesFragment extends Fragment {
+             }
+         });
+ 
++        filterWords = Utils.getFilterWords(getContext());
++        filterDomains = Utils.getFilterDomains(getContext());
++
+         queue = NetworkComponent.getRequestQueueInstance(requireContext());
+         stories.add(new Story());
+         attemptRefresh();
+@@ -483,21 +486,25 @@ public class StoriesFragment extends Fragment {
+                         }
+ 
+                         // lets check if we should remove the post because of filter
+-                        for (String phrase : filterWords) {
+-                            if (story.title.toLowerCase().contains(phrase.toLowerCase())) {
+-                                stories.remove(story);
+-                                adapter.notifyItemRemoved(index);
+-                                loadedTo = Math.max(0, loadedTo - 1);
+-                                return;
++                        if (story.title != null && filterWords != null) {
++                            for (String phrase : filterWords) {
++                                if (story.title.toLowerCase().contains(phrase.toLowerCase())) {
++                                    stories.remove(story);
++                                    adapter.notifyItemRemoved(index);
++                                    loadedTo = Math.max(0, loadedTo - 1);
++                                    return;
++                                }
+                             }
+                         }
+                         // or domain name
+-                        for (String phrase : filterDomains) {
+-                            if (story.url.toLowerCase().contains(phrase.toLowerCase())) {
+-                                stories.remove(story);
+-                                adapter.notifyItemRemoved(index);
+-                                loadedTo = Math.max(0, loadedTo - 1);
+-                                return;
++                        if (story.url != null && filterDomains != null) {
++                            for (String phrase : filterDomains) {
++                                if (story.url.toLowerCase().contains(phrase.toLowerCase())) {
++                                    stories.remove(story);
++                                    adapter.notifyItemRemoved(index);
++                                    loadedTo = Math.max(0, loadedTo - 1);
++                                    return;
++                                }
+                             }
+                         }
+ 
+@@ -725,24 +732,56 @@ public class StoriesFragment extends Fragment {
+                         stories.clear();
+                         stories.add(new Story());
+ 
+-                        adapter.notifyItemRangeRemoved(1, oldSize + 1);
++                        adapter.notifyItemRangeRemoved(1, oldSize - 1);
+ 
+                         stories.addAll(JSONParser.algoliaJsonToStories(response));
+ 
+                         Iterator<Story> iterator = stories.iterator();
++                        if (iterator.hasNext()) {
++                            iterator.next();
++                        }
++
+                         while (iterator.hasNext()) {
+                             Story story = iterator.next();
+                             story.clicked = clickedIds.contains(story.id);
+ 
+                             if (hideClicked && story.clicked) {
+                                 iterator.remove();
++                                continue;
++                            }
++
++                            boolean removed = false;
++                            if (story.title != null && filterWords != null) {
++                                for (String phrase : filterWords) {
++                                    if (story.title.toLowerCase().contains(phrase.toLowerCase())) {
++                                        iterator.remove();
++                                        removed = true;
++                                        break;
++                                    }
++                                }
++                            }
++                            if (removed) continue;
++
++                            if (story.url != null && filterDomains != null) {
++                                for (String phrase : filterDomains) {
++                                    if (story.url.toLowerCase().contains(phrase.toLowerCase())) {
++                                        iterator.remove();
++                                        removed = true;
++                                        break;
++                                    }
++                                }
++                            }
++                            if (removed) continue;
++
++                            if (hideJobs && adapter.type != SettingsUtils.getJobsIndex(getResources()) && (story.isJob || (story.by != null && story.by.equals("whoishiring")))) {
++                                iterator.remove();
+                             }
+                         }
+ 
+                         adapter.loadingFailed = false;
+                         adapter.loadingFailedServerError = false;
+ 
+-                        adapter.notifyItemRangeInserted(1, stories.size());
++                        adapter.notifyItemRangeInserted(1, stories.size() - 1);
+                         adapter.notifyItemChanged(0);
+ 
+                     } catch (JSONException e) {
+diff --git a/app/src/main/java/com/simon/harmonichackernews/network/JSONParser.java b/app/src/main/java/com/simon/harmonichackernews/network/JSONParser.java
+index 1e59934..4c89976 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/network/JSONParser.java
++++ b/app/src/main/java/com/simon/harmonichackernews/network/JSONParser.java
+@@ -30,9 +30,18 @@ public class JSONParser {
+ 
+             Story story = new Story();
+ 
+-            boolean isComment = hit.getJSONArray("_tags").get(0).equals("comment");
++            boolean isComment = false;
++            JSONArray tags = hit.optJSONArray("_tags");
++            if (tags != null) {
++                for (int j = 0; j < tags.length(); j++) {
++                    if (tags.optString(j).equals("comment")) {
++                        isComment = true;
++                        break;
++                    }
++                }
++            }
+ 
+-            story.title = isComment ? hit.getString("story_title") : hit.optString("title");
++            story.title = isComment ? hit.optString("story_title") : hit.optString("title");
+             story.score = hit.optInt("points");
+             story.by = hit.getString("author");
+             story.descendants = hit.optInt("num_comments");

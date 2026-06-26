@@ -1,0 +1,132 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
+index cf8aa23..f956c04 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
+@@ -36,6 +36,7 @@ import android.widget.Button;
+ import android.widget.EditText;
+ import android.widget.LinearLayout;
+ import android.widget.Spinner;
++import android.widget.Toast;
+ 
+ import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
+ import com.github.aakira.expandablelayout.ExpandableLinearLayout;
+@@ -192,48 +193,56 @@ public class ManualEntryDialog {
+         AlertDialog.Builder builder = new AlertDialog.Builder(callingActivity);
+         builder.setTitle(R.string.dialog_title_manual_entry)
+                 .setView(inputView)
+-                .setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
+-                    @Override
+-                    public void onClick(DialogInterface dialogInterface, int i) {
+-                        Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
+-                        TokenCalculator.HashAlgorithm algorithm = (TokenCalculator.HashAlgorithm) algorithmInput.getSelectedItem();
+-
+-                        String issuer = issuerInput.getText().toString();
+-                        String label = labelInput.getText().toString();
+-                        //Replace spaces with empty characters
+-                        String secret = secretInput.getText().toString().replaceAll("\\s+","");
+-                        int digits = Integer.parseInt(digitsInput.getText().toString());
+-
+-                        if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+-                            int period = Integer.parseInt(periodInput.getText().toString());
+-
+-                            Entry e = new Entry(type, secret, period, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
+-                            e.updateOTP();
+-                            e.setLastUsed(System.currentTimeMillis());
+-                            adapter.addEntry(e);
+-
+-                            callingActivity.refreshTags();
+-                        } else if (type == Entry.OTPType.HOTP) {
+-                            long counter = Long.parseLong(counterInput.getText().toString());
+-
+-                            Entry e = new Entry(type, secret, counter, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
+-                            e.updateOTP();
+-                            e.setLastUsed(System.currentTimeMillis());
+-                            adapter.addEntry(e);
+-                        }
+-                    }
+-                })
++                .setPositiveButton(R.string.button_save, null)
+                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                     @Override
+                     public void onClick(DialogInterface dialogInterface, int i) {}
+                 });
+ 
+-        AlertDialog dialog = builder.create();
++        final AlertDialog dialog = builder.create();
+         dialog.show();
+ 
+         final Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+         positiveButton.setEnabled(false);
+ 
++        positiveButton.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
++                TokenCalculator.HashAlgorithm algorithm = (TokenCalculator.HashAlgorithm) algorithmInput.getSelectedItem();
++
++                String issuer = issuerInput.getText().toString();
++                String label = labelInput.getText().toString();
++                //Replace spaces with empty characters
++                String secret = secretInput.getText().toString().replaceAll("\\s+","");
++                int digits = Integer.parseInt(digitsInput.getText().toString());
++
++                try {
++                    if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
++                        int period = Integer.parseInt(periodInput.getText().toString());
++
++                        Entry e = new Entry(type, secret, period, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
++                        e.updateOTP();
++                        e.setLastUsed(System.currentTimeMillis());
++                        adapter.addEntry(e);
++
++                        callingActivity.refreshTags();
++                    } else if (type == Entry.OTPType.HOTP) {
++                        long counter = Long.parseLong(counterInput.getText().toString());
++
++                        Entry e = new Entry(type, secret, counter, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
++                        e.updateOTP();
++                        e.setLastUsed(System.currentTimeMillis());
++                        adapter.addEntry(e);
++                    }
++
++                    dialog.dismiss();
++                } catch (Exception e) {
++                    Toast.makeText(callingActivity, R.string.toast_invalid_secret, Toast.LENGTH_LONG).show();
++                }
++            }
++        });
++
+         TextWatcher watcher = new TextWatcher() {
+             @Override
+             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Utilities/DatabaseHelper.java b/app/src/main/java/org/shadowice/flocke/andotp/Utilities/DatabaseHelper.java
+index 05db337..f24ca05 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Utilities/DatabaseHelper.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Utilities/DatabaseHelper.java
+@@ -165,8 +165,12 @@ public class DatabaseHelper {
+             JSONArray json = new JSONArray(data);
+ 
+             for (int i = 0; i < json.length(); i++) {
+-                Entry entry = new Entry(json.getJSONObject(i));
+-                entries.add(entry);
++                try {
++                    Entry entry = new Entry(json.getJSONObject(i));
++                    entries.add(entry);
++                } catch (Exception e) {
++                    e.printStackTrace();
++                }
+             }
+         } catch (Exception error) {
+             error.printStackTrace();
+diff --git a/app/src/main/res/values/strings_main.xml b/app/src/main/res/values/strings_main.xml
+index 12ae672..6937802 100644
+--- a/app/src/main/res/values/strings_main.xml
++++ b/app/src/main/res/values/strings_main.xml
+@@ -63,6 +63,7 @@
+     <string name="toast_auth_failed_fatal">Authentication failed, closing andOTP!</string>
+     <string name="toast_copied_to_clipboard">Copied to clipboard</string>
+     <string name="toast_entry_exists">This entry already exists</string>
++    <string name="toast_invalid_secret">Invalid secret</string>
+     <string name="toast_invalid_qr_code">Invalid QR Code</string>
+     <string name="toast_encryption_key_empty">Encryption key not loaded</string>
+     <string name="toast_intent_creation_failed">Invalid intent-provided code</string>

@@ -1,0 +1,39 @@
+--- a/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
++++ b/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
+@@ -77,6 +77,8 @@
+                 if(!prefs.getBoolean("double-tap", false)) {
+                     if (prefs.getBoolean("history-onclick", false)) {
+                         doAction("display-history");
++                    } else {
++                        revealFavoritesOnTap();
+                     }
+                 }
+                 return super.onSingleTapUp(e);
+@@ -88,6 +90,8 @@
+                 if(prefs.getBoolean("double-tap", false)) {
+                     if (prefs.getBoolean("history-onclick", false)) {
+                         doAction("display-history");
++                    } else {
++                        revealFavoritesOnTap();
+                     }
+                 }
+ 
+@@ -174,6 +178,18 @@
+                         break;
+                 }
+             }
++
++            private void revealFavoritesOnTap() {
++                if (!isMinimalisticModeEnabledForFavorites()) {
++                    return;
++                }
++
++                if (!mainActivity.isViewingSearchResults() || !mainActivity.searchEditText.getText().toString().isEmpty()) {
++                    return;
++                }
++
++                mainActivity.favoritesBar.setVisibility(View.VISIBLE);
++            }
+         });
+     }
+ 

@@ -1,0 +1,22 @@
+diff --git a/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java b/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
+index 9d59829..d46e372 100644
+--- a/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
++++ b/app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java
+@@ -401,6 +401,17 @@ public class ViewFilesAdapter extends RecyclerView.Adapter<ViewFilesAdapter.View
+      */
+     private void doEncryption(String path) throws IOException, DocumentException {
+         String finalOutputFile = path.replace(".pdf", mActivity.getString(R.string.encrypted_file));
++        if (new File(finalOutputFile).exists()) {
++            int count = 2;
++            while (true) {
++                String newName = finalOutputFile.replace(".pdf", count + ".pdf");
++                if (!new File(newName).exists()) {
++                    finalOutputFile = newName;
++                    break;
++                }
++                count++;
++            }
++        }
+         Log.e("Log", finalOutputFile);
+         PdfReader reader = new PdfReader(path);
+         PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(finalOutputFile));

@@ -1,0 +1,51 @@
+--- a/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
++++ b/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
+@@ -15,6 +15,7 @@
+ import android.widget.Toast;
+ 
+ import java.text.SimpleDateFormat;
++import java.util.Iterator;
+ import java.util.List;
+ import java.util.Objects;
+ 
+@@ -146,6 +147,9 @@
+             });
+ 
+             CheckBox checkBox = v.findViewById(R.id.fileCheckBox);
++            // Prevent state binding from firing selection mutations.
++            checkBox.setOnCheckedChangeListener(null);
++            checkBox.setChecked(isInContext(f));
+             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                 if (isChecked && !isInContext(f)) {
+                     activity.getFileOpContext().getSecond().add(f);
+@@ -162,13 +166,8 @@
+                 contextButton.setVisibility(View.GONE);
+             }
+ 
+-            for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
+-                if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+-                    v.setBackgroundColor(activity.getColorByAttr(R.attr.colorPrimary));
+-                    checkBox.setChecked(true);
+-                } else {
+-                    checkBox.setChecked(false);
+-                }
++            if (isInContext(f)) {
++                v.setBackgroundColor(activity.getColorByAttr(R.attr.colorPrimary));
+             }
+         }
+         return v;
+@@ -185,9 +184,12 @@
+     }
+ 
+     private void removeFromContext(FMFile f) {
+-        for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
++        Iterator<FMFile> iterator = activity.getFileOpContext().getSecond().iterator();
++        while (iterator.hasNext()) {
++            FMFile contextFile = iterator.next();
+             if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+-                activity.getFileOpContext().getSecond().remove(contextFile);
++                iterator.remove();
++                break;
+             }
+         }
+     }

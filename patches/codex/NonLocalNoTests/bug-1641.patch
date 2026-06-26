@@ -1,0 +1,85 @@
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java
+@@ -7,8 +7,10 @@
+ import android.support.v7.widget.Toolbar;
+ import android.view.View;
+ import android.widget.EditText;
++import android.widget.Spinner;
+ 
+ import com.german_software_engineers.trainerapp.Controller.ApplicationManager;
++import com.german_software_engineers.trainerappmodel.Enumerations.TrainingsTypes;
+ import com.german_software_engineers.trainerappmodel.Legacy.Schedule;
+ import com.german_software_engineers.trainerappmodel.Exceptions.ScheduleAvailableException;
+ 
+@@ -48,6 +50,14 @@
+         }
+ 
+         Schedule schedule = new Schedule(((EditText)findViewById(R.id.nameTextEdit)).getText().toString());
++        Spinner trainTypeSpinner = (Spinner) findViewById(R.id.trainSpinner);
++        int selectedTrainingsType = trainTypeSpinner.getSelectedItemPosition();
++        TrainingsTypes[] trainingsTypes = TrainingsTypes.values();
++        if (selectedTrainingsType < 0 || selectedTrainingsType >= trainingsTypes.length) {
++            schedule.setTrainingsType(TrainingsTypes.strength_endurance);
++        } else {
++            schedule.setTrainingsType(trainingsTypes[selectedTrainingsType]);
++        }
+ 
+         Integer reps = 0;
+         if(!((EditText)findViewById(R.id.repEdit)).getText().toString().isEmpty()) {
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/MyScheduleRecyclerViewAdapter.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/MyScheduleRecyclerViewAdapter.java
+@@ -38,7 +38,12 @@
+     public void onBindViewHolder(final ViewHolder holder, int position) {
+         holder.mItem = mValues.get(position);
+         //holder.mIdView.setText(position);
+-        holder.mContentView.setText(mValues.get(position).getName());
++        Schedule schedule = mValues.get(position);
++        String scheduleLabel = schedule.getName();
++        if (schedule.getTrainingsType() != null) {
++            scheduleLabel = scheduleLabel + " (" + schedule.getTrainingsType().name().replace('_', ' ') + ")";
++        }
++        holder.mContentView.setText(scheduleLabel);
+ 
+         holder.mView.setOnClickListener(new View.OnClickListener() {
+             @Override
+--- a/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Model/XMLParser.java
++++ b/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Model/XMLParser.java
+@@ -2,6 +2,7 @@
+ 
+ import com.german_software_engineers.trainerappmodel.Enumerations.ExerciseType;
+ import com.german_software_engineers.trainerappmodel.Enumerations.Intensities;
++import com.german_software_engineers.trainerappmodel.Enumerations.TrainingsTypes;
+ import com.german_software_engineers.trainerappmodel.Exceptions.ScheduleAvailableException;
+ import com.german_software_engineers.trainerappmodel.Exercise.BodyWeightExercise;
+ import com.german_software_engineers.trainerappmodel.Exercise.DeviceExercise;
+@@ -92,7 +93,16 @@
+                     Element element=(Element)node;
+                     String name = element.getAttribute(SCHEDULE_NAME_TAG);
+                     Schedule schedule = new Schedule(name);
+-//                    schedule.setTrainingsType(TrainingsTypes.valueOf(element.getAttribute(SCHEDULE_TRAININGSTYPE_TAG)));
++                    String trainingsTypeAttribute = element.getAttribute(SCHEDULE_TRAININGSTYPE_TAG);
++                    if (trainingsTypeAttribute.isEmpty()) {
++                        schedule.setTrainingsType(TrainingsTypes.strength_endurance);
++                    } else {
++                        try {
++                            schedule.setTrainingsType(TrainingsTypes.valueOf(trainingsTypeAttribute));
++                        } catch (IllegalArgumentException ex) {
++                            schedule.setTrainingsType(TrainingsTypes.strength_endurance);
++                        }
++                    }
+                     schedule.setPauseTime(Integer.valueOf(element.getAttribute(SCHEDULE_PAUSETIME_TAG)));
+                     schedule.setRepetitions(Integer.valueOf(element.getAttribute(SCHEDULE_REPETITIONS_TAG)));
+                     schedule.setSets(Integer.valueOf(element.getAttribute(SCHEDULE_SETS_TAG)));
+@@ -219,7 +229,11 @@
+ //                scheduleName.setValue(sched.getName());
+ //                scheduleElement.setAttributeNode(scheduleName);
+                 scheduleElement.setAttribute(SCHEDULE_NAME_TAG, sched.getName());
+-//                scheduleElement.setAttribute(SCHEDULE_TRAININGSTYPE_TAG, sched.getTrainingsType().name());
++                TrainingsTypes trainingsType = sched.getTrainingsType();
++                if (trainingsType == null) {
++                    trainingsType = TrainingsTypes.strength_endurance;
++                }
++                scheduleElement.setAttribute(SCHEDULE_TRAININGSTYPE_TAG, trainingsType.name());
+                 scheduleElement.setAttribute(SCHEDULE_REPETITIONS_TAG, String.valueOf(sched.getRepetitions()));
+                 scheduleElement.setAttribute(SCHEDULE_PAUSETIME_TAG, String.valueOf(sched.getPauseTime()));
+                 scheduleElement.setAttribute(SCHEDULE_SETS_TAG, String.valueOf(sched.getSets()));

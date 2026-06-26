@@ -1,0 +1,63 @@
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java
+@@ -6,6 +6,12 @@
+ import android.support.v7.app.AppCompatActivity;
+ import android.support.v7.widget.Toolbar;
+ import android.view.View;
++import android.widget.TextView;
++
++import java.io.BufferedReader;
++import java.io.IOException;
++import java.io.InputStream;
++import java.io.InputStreamReader;
+ 
+ public class InfoActivity extends AppCompatActivity {
+ 
+@@ -24,6 +30,32 @@
+                         .setAction("Action", null).show();
+             }
+         });
++
++        TextView licenseTextView = (TextView) findViewById(R.id.license_text);
++        licenseTextView.setText(loadGplLicenseText());
++
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+     }
++
++    private String loadGplLicenseText() {
++        InputStream inputStream = getResources().openRawResource(R.raw.gpl_v3_license);
++        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
++        StringBuilder builder = new StringBuilder();
++        String line;
++
++        try {
++            while ((line = reader.readLine()) != null) {
++                builder.append(line).append('\n');
++            }
++        } catch (IOException e) {
++            return getString(R.string.large_text);
++        } finally {
++            try {
++                reader.close();
++            } catch (IOException ignored) {
++            }
++        }
++
++        return builder.toString();
++    }
+ }
+--- a/app/src/main/res/layout/content_info.xml
++++ b/app/src/main/res/layout/content_info.xml
+@@ -9,9 +9,9 @@
+     tools:showIn="@layout/activity_info">
+ 
+     <TextView
++        android:id="@+id/license_text"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+-        android:layout_margin="@dimen/text_margin"
+-        android:text="@string/large_text" />
++        android:layout_margin="@dimen/text_margin" />
+ 
+-</android.support.v4.widget.NestedScrollView>
++</android.support.v4.widget.NestedScrollView>

@@ -1,0 +1,57 @@
+--- a/app/src/main/res/layout/content_info.xml
++++ b/app/src/main/res/layout/content_info.xml
+@@ -8,10 +8,31 @@
+     tools:context=".InfoActivity"
+     tools:showIn="@layout/activity_info">
+ 
+-    <TextView
+-        android:layout_width="wrap_content"
++    <LinearLayout
++        android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+-        android:layout_margin="@dimen/text_margin"
+-        android:text="@string/large_text" />
++        android:orientation="vertical">
+ 
+-</android.support.v4.widget.NestedScrollView>
++        <Button
++            android:id="@+id/license_button"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_margin="@dimen/text_margin"
++            android:text="@string/take_me_to_license" />
++
++        <TextView
++            android:id="@+id/license_url"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_margin="@dimen/text_margin"
++            android:text="@string/license_url" />
++
++        <TextView
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_margin="@dimen/text_margin"
++            android:text="@string/large_text" />
++
++    </LinearLayout>
++
++</android.support.v4.widget.NestedScrollView>
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -38,9 +38,14 @@
+         "TERMS AND CONDITIONS\n"
+         "0. Definitions:"
+         "\"This License\" refers to version 3 of the GNU General Public License.\n"
+-        "..."
++        "...\n\n"
++        "How to Apply These Terms to Your New Programs\n\n"
++        "For more information on this license, see\n"
++        "https://www.gnu.org/licenses/gpl-3.0-standalone.html"
+ 
+     </string>
++    <string name="license_url">https://www.gnu.org/licenses/gpl-3.0-standalone.html</string>
++    <string name="take_me_to_license">TAKE ME TO LICENSE</string>
+     <string name="title_activity_general_training_schedule_editor">Add Trainigns Schedule</string>
+ 
+     <string-array name="exerciseType">

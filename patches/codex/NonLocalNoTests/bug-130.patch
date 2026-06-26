@@ -1,0 +1,33 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -220,6 +220,9 @@
+ 
+             selection.setSelection(selectionMapping.indexOfValue(Constants.EncryptionType.PASSWORD));
+ 
++            if (encryptionChangedCallback != null)
++                encryptionChangedCallback.onEncryptionChanged(getEncryptionType());
++
+             return root;
+         }
+ 
+@@ -229,7 +232,7 @@
+     }
+ 
+     public static class AuthenticationFragment extends SlideFragment {
+-        private Constants.EncryptionType encryptionType = Constants.EncryptionType.KEYSTORE;
++        private Constants.EncryptionType encryptionType = Constants.EncryptionType.PASSWORD;
+ 
+         private int slidePos = -1;
+ 
+@@ -431,7 +434,10 @@
+             passwordInput.addTextChangedListener(textWatcher);
+             passwordConfirm.addTextChangedListener(textWatcher);
+ 
+-            selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.PASSWORD));
++            if (encryptionType == Constants.EncryptionType.PASSWORD)
++                selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.PASSWORD));
++            else
++                selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.NONE));
+ 
+             return root;
+         }

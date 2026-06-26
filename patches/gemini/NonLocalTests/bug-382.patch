@@ -1,0 +1,20 @@
+diff --git a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+index 79e57f3..34f0a6e 100644
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+@@ -75,12 +75,10 @@ class UriPartsDialog extends AModuleDialog {
+         var uri = Uri.parse(urlData.url);
+         var urlQuerySanitizer = new UrlQuerySanitizer();
+         // the default parseUrl doesn't remove the fragment
+-        if (uri.getQuery() != null) {
++        if (uri.getEncodedQuery() != null) {
+             urlQuerySanitizer.setAllowUnregisteredParamaters(true);
+-            urlQuerySanitizer.setUnregisteredParameterValueSanitizer(v -> v);
+-            urlQuerySanitizer.parseQuery(uri.getQuery()
+-                    // this will fix issues with the parser decoding twice
+-                    .replace("%", "%25"));
++            urlQuerySanitizer.setUnregisteredParameterValueSanitizer(v -> urlQuerySanitizer.unescape(v));
++            urlQuerySanitizer.parseQuery(uri.getEncodedQuery());
+         }
+ 
+         // domain elements

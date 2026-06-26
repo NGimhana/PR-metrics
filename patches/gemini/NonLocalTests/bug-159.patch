@@ -1,0 +1,68 @@
+diff --git a/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java b/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
+index 9f719f6..17eba17 100644
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java
+@@ -126,6 +126,7 @@ public class CardBrowser extends NavigationDrawerActivity implements
+     public static final String INTERVAL = "interval";
+     public static final String LAPSES = "lapses";
+     public static final String NOTE = "note";
++    public static final String NID = "nid";
+     public static final String REVIEWS = "reviews";
+     private static Pattern sMarkedPattern = Pattern.compile(".*[Mm]arked.*");
+ 
+@@ -387,11 +388,24 @@ public class CardBrowser extends NavigationDrawerActivity implements
+         }
+         //copy to array to ensure threadsafe iteration
+         Integer[] checkedPositions = mCheckedCardPositions.toArray(new Integer[0]);
+-        HashSet<String> notes = new HashSet<>();
++        HashSet<Long> notes = new HashSet<>();
+         for (Integer position : checkedPositions) {
+-            String noteId = mCards.get(position).get(NOTE);
+-            if (notes.add(noteId) && notes.size() > 1) {
+-                return false;
++            Map<String, String> card = mCards.get(position);
++            Long nid = null;
++            if (card.containsKey(NID)) {
++                nid = Long.parseLong(card.get(NID));
++            } else {
++                Card c = getCol().getCard(Long.parseLong(card.get(ID)));
++                if (c != null) {
++                    nid = c.getNid();
++                    // Optional: put it back in the map for next time
++                    card.put(NID, nid.toString());
++                }
++            }
++            if (nid != null) {
++                if (notes.add(nid) && notes.size() > 1) {
++                    return false;
++                }
+             }
+         }
+         return notes.size() == 1;
+@@ -1523,6 +1537,7 @@ public class CardBrowser extends NavigationDrawerActivity implements
+         }
+         item.put(LAPSES, Integer.toString(c.getLapses()));
+         item.put(NOTE, c.model().optString("name"));
++        item.put(NID, Long.toString(c.getNid()));
+         item.put(QUESTION, formatQA(q, context));
+         item.put(REVIEWS, Integer.toString(c.getReps()));
+         String tags = note.stringTags();
+diff --git a/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java b/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java
+index 250538a..70be046 100644
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java
+@@ -1642,10 +1642,11 @@ public class NoteEditor extends AnkiActivity {
+                 for (int i=0; i < mEditorNote.items().length; i++) {
+                     mModelChangeFieldMap.put(i, i);
+                 }
+-                // Initialize mapping between cards new model -> old model
++                // Initialize mapping between cards old model -> new model
+                 mModelChangeCardMap = new HashMap<>();
+-                for (int i=0; i < newModel.getJSONArray("tmpls").length() ; i++) {
+-                    if (i < mEditorNote.cards().size()) {
++                ArrayList<Card> oldCards = mEditorNote.cards();
++                for (int i=0; i < oldCards.size(); i++) {
++                    if (i < newModel.getJSONArray("tmpls").length()) {
+                         mModelChangeCardMap.put(i, i);
+                     } else {
+                         mModelChangeCardMap.put(i, null);

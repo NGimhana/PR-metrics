@@ -1,0 +1,31 @@
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java
+index ce3f025..65d31be 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java
+@@ -53,14 +53,14 @@ public class ExerciseDialog extends DialogFragment {
+         if(isFootActivated)
+             footPos = Integer.valueOf(((TextView)dialog.findViewById(R.id.FootEdit)).getText().toString());
+ 
+-        boolean isAngnleActivated = ((CheckBox)dialog.findViewById(R.id.AngleCheckBox)).isChecked();
++        boolean isAngleActivated = ((CheckBox)dialog.findViewById(R.id.AngleCheckBox)).isChecked();
+         Integer anglePos = 0;
+-        if(isAngnleActivated)
++        if(isAngleActivated)
+             anglePos = Integer.valueOf(((TextView)dialog.findViewById(R.id.AngleEdit)).getText().toString());
+ 
+         boolean isBackActivated = ((CheckBox)dialog.findViewById(R.id.BackCheckBox)).isChecked();
+         Integer backPos = 0;
+-        if(isAngnleActivated)
++        if(isBackActivated)
+             backPos = Integer.valueOf(((TextView)dialog.findViewById(R.id.BackEdit)).getText().toString());
+ 
+         boolean isWeightActivated = ((CheckBox)dialog.findViewById(R.id.WeightCheckBox)).isChecked();
+@@ -68,7 +68,7 @@ public class ExerciseDialog extends DialogFragment {
+         if(isWeightActivated)
+             weight = Double.valueOf(((TextView)dialog.findViewById(R.id.WeightEdit)).getText().toString());
+ 
+-        Exercise exc = new Exercise(name,isSeatActivated, isLegActivated,isFootActivated,isAngnleActivated,isWeightActivated, isBackActivated);
++        Exercise exc = new Exercise(name,isSeatActivated, isLegActivated,isFootActivated,isAngleActivated,isWeightActivated, isBackActivated);
+         exc.setAnglePosition(anglePos.intValue());
+         exc.setFootPosition(footPos.intValue());
+         exc.setLegPosition(LegPos.intValue());

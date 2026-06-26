@@ -1,0 +1,25 @@
+diff --git a/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java b/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
+index 7a263a9..0f8a4e7 100644
+--- a/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
++++ b/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
+@@ -93,7 +93,19 @@ public class NewFileDialog extends DialogFragment {
+         } else {
+             encryptCheckbox.setVisibility(View.GONE);
+         }
+-        fileExtEdit.setText(appSettings.getNewFileDialogLastUsedExtension());
++        final String lastUsedExtension = appSettings.getNewFileDialogLastUsedExtension();
++        fileExtEdit.setText(lastUsedExtension);
++
++        // find index
++        int lastSelected = 3; // Default to "none" if not found
++        final String baseExt = lastUsedExtension.replace(JavaPasswordbasedCryption.DEFAULT_ENCRYPTION_EXTENSION, "");
++        for (int i = 0; i < typeSpinnerToExtension.length; i++) {
++            if (baseExt.equals(typeSpinnerToExtension[i]) || (TextUtils.isEmpty(baseExt) && TextUtils.isEmpty(typeSpinnerToExtension[i]))) {
++                lastSelected = i;
++                break;
++            }
++        }
++        typeSpinner.setSelection(lastSelected);
+         fileNameEdit.requestFocus();
+         new Handler().postDelayed(new ContextUtils.DoTouchView(fileNameEdit), 200);
+ 

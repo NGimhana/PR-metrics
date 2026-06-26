@@ -1,0 +1,59 @@
+diff --git a/AnkiDroid/src/main/AndroidManifest.xml b/AnkiDroid/src/main/AndroidManifest.xml
+index c67a7a5..e11e288 100644
+--- a/AnkiDroid/src/main/AndroidManifest.xml
++++ b/AnkiDroid/src/main/AndroidManifest.xml
+@@ -289,7 +289,7 @@
+         <activity
+             android:exported="false"
+             android:name="com.ichi2.anki.Previewer"
+-            android:configChanges="locale"
++            android:configChanges="keyboardHidden|orientation|locale|screenSize"
+             android:label="@string/preview_title" />
+ 
+         <!-- small widget -->
+diff --git a/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java b/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java
+index a8dba17..cb19564 100644
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java
+@@ -42,8 +42,15 @@ public class Previewer extends AbstractFlashcardViewer {
+         super.onCreate(savedInstanceState);
+ 
+         mCardList = getIntent().getLongArrayExtra("cardList");
+-        mIndex = getIntent().getIntExtra("index", -1);
+-        if (mCardList.length == 0 || mIndex < 0 || mIndex > mCardList.length - 1) {
++        if (savedInstanceState != null) {
++            mIndex = savedInstanceState.getInt("index");
++            mShowingAnswer = savedInstanceState.getBoolean("mShowingAnswer");
++        } else {
++            mIndex = getIntent().getIntExtra("index", -1);
++            mShowingAnswer = false;
++        }
++
++        if (mCardList == null || mCardList.length == 0 || mIndex < 0 || mIndex > mCardList.length - 1) {
+             Timber.e("Previewer started with empty card list or invalid index");
+             finishWithoutAnimation();
+             return;
+@@ -54,11 +61,22 @@ public class Previewer extends AbstractFlashcardViewer {
+         startLoadingCollection();
+     }
+ 
++    @Override
++    public void onSaveInstanceState(Bundle outState) {
++        super.onSaveInstanceState(outState);
++        outState.putInt("index", mIndex);
++        outState.putBoolean("mShowingAnswer", mShowingAnswer);
++    }
++
+     @Override
+     protected void onCollectionLoaded(Collection col) {
+         super.onCollectionLoaded(col);
+         mCurrentCard = col.getCard(mCardList[mIndex]);
+-        displayCardQuestion();
++        if (mShowingAnswer) {
++            displayCardAnswer();
++        } else {
++            displayCardQuestion();
++        }
+         showBackIcon();
+     }
+ 

@@ -1,0 +1,64 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
+@@ -40,6 +40,8 @@
+ import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
+ import com.github.aakira.expandablelayout.ExpandableLinearLayout;
+ 
++import android.widget.Toast;
++
+ import org.shadowice.flocke.andotp.Activities.MainActivity;
+ import org.shadowice.flocke.andotp.Database.Entry;
+ import org.shadowice.flocke.andotp.R;
+@@ -204,22 +206,26 @@
+                         String secret = secretInput.getText().toString().replaceAll("\\s+","");
+                         int digits = Integer.parseInt(digitsInput.getText().toString());
+ 
+-                        if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+-                            int period = Integer.parseInt(periodInput.getText().toString());
+-
+-                            Entry e = new Entry(type, secret, period, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
+-                            e.updateOTP();
+-                            e.setLastUsed(System.currentTimeMillis());
+-                            adapter.addEntry(e);
+-
+-                            callingActivity.refreshTags();
+-                        } else if (type == Entry.OTPType.HOTP) {
+-                            long counter = Long.parseLong(counterInput.getText().toString());
+-
+-                            Entry e = new Entry(type, secret, counter, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
+-                            e.updateOTP();
+-                            e.setLastUsed(System.currentTimeMillis());
+-                            adapter.addEntry(e);
++                        try {
++                            if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
++                                int period = Integer.parseInt(periodInput.getText().toString());
++
++                                Entry e = new Entry(type, secret, period, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
++                                e.updateOTP();
++                                e.setLastUsed(System.currentTimeMillis());
++                                adapter.addEntry(e);
++
++                                callingActivity.refreshTags();
++                            } else if (type == Entry.OTPType.HOTP) {
++                                long counter = Long.parseLong(counterInput.getText().toString());
++
++                                Entry e = new Entry(type, secret, counter, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
++                                e.updateOTP();
++                                e.setLastUsed(System.currentTimeMillis());
++                                adapter.addEntry(e);
++                            }
++                        } catch (Exception e) {
++                            Toast.makeText(callingActivity, R.string.toast_invalid_secret, Toast.LENGTH_LONG).show();
+                         }
+                     }
+                 })
+--- a/app/src/main/res/values/strings_main.xml
++++ b/app/src/main/res/values/strings_main.xml
+@@ -63,6 +63,7 @@
+     <string name="toast_auth_failed_fatal">Authentication failed, closing andOTP!</string>
+     <string name="toast_copied_to_clipboard">Copied to clipboard</string>
+     <string name="toast_entry_exists">This entry already exists</string>
++    <string name="toast_invalid_secret">The secret is not valid Base32</string>
+     <string name="toast_invalid_qr_code">Invalid QR Code</string>
+     <string name="toast_encryption_key_empty">Encryption key not loaded</string>
+     <string name="toast_intent_creation_failed">Invalid intent-provided code</string>

@@ -1,0 +1,42 @@
+diff --git a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+index 79e57f3..ecb1de5 100644
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+@@ -19,6 +19,7 @@ import com.trianguloy.urlchecker.utilities.methods.AndroidUtils;
+ import com.trianguloy.urlchecker.utilities.methods.Inflater;
+ import com.trianguloy.urlchecker.utilities.methods.JavaUtils;
+ import com.trianguloy.urlchecker.utilities.methods.JavaUtils.Supplier;
++import com.trianguloy.urlchecker.utilities.methods.UrlUtils;
+ 
+ import java.util.ArrayList;
+ import java.util.List;
+@@ -75,12 +76,10 @@ class UriPartsDialog extends AModuleDialog {
+         var uri = Uri.parse(urlData.url);
+         var urlQuerySanitizer = new UrlQuerySanitizer();
+         // the default parseUrl doesn't remove the fragment
+-        if (uri.getQuery() != null) {
++        if (uri.getEncodedQuery() != null) {
+             urlQuerySanitizer.setAllowUnregisteredParamaters(true);
+             urlQuerySanitizer.setUnregisteredParameterValueSanitizer(v -> v);
+-            urlQuerySanitizer.parseQuery(uri.getQuery()
+-                    // this will fix issues with the parser decoding twice
+-                    .replace("%", "%25"));
++            urlQuerySanitizer.parseQuery(uri.getEncodedQuery());
+         }
+ 
+         // domain elements
+@@ -118,12 +117,12 @@ class UriPartsDialog extends AModuleDialog {
+             for (var i = 0; i < parameters.size(); i++) {
+                 int removeI = i;
+                 // append the parameter
+-                addPart(parameters.get(i).mParameter, parameters.get(i).mValue, queries, () -> {
++                addPart(UrlUtils.decode(parameters.get(i).mParameter), UrlUtils.decode(parameters.get(i).mValue), queries, () -> {
+                     // generate same url but without this parameter
+                     var builder = uri.buildUpon();
+                     builder.query(null);
+                     for (var newI = 0; newI < parameters.size(); newI++) {
+-                        if (newI != removeI) builder.appendQueryParameter(parameters.get(newI).mParameter, parameters.get(newI).mValue);
++                        if (newI != removeI) builder.appendQueryParameter(UrlUtils.decode(parameters.get(newI).mParameter), UrlUtils.decode(parameters.get(newI).mValue));
+                     }
+                     return builder.build().toString();
+                 });

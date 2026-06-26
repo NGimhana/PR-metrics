@@ -1,0 +1,27 @@
+--- a/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java
++++ b/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java
+@@ -306,6 +306,7 @@
+                 mSbasStatus.clear();
+                 mGnssAdapter.notifyDataSetChanged();
+                 mSbasAdapter.notifyDataSetChanged();
++                filterGroup.setVisibility(View.GONE);
+             }
+             mNavigating = navigating;
+         }
+@@ -446,6 +447,7 @@
+     }
+ 
+     public void gpsStop() {
++        filterGroup.setVisibility(View.GONE);
+     }
+ 
+     public void onLocationChanged(Location location) {
+@@ -778,7 +780,7 @@
+             return;
+         }
+         Set<GnssType> filter = PreferenceUtils.getGnssFilter();
+-        if (filter.isEmpty()) {
++        if (filter.isEmpty() || (GpsTestActivity.getInstance() != null && !GpsTestActivity.getInstance().mStarted)) {
+             filterGroup.setVisibility(View.GONE);
+             // Set num sats view back to normal
+             mNumSats.setTypeface(null, Typeface.NORMAL);

@@ -1,0 +1,339 @@
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+index d215ec3..1e7ce49 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+@@ -56,6 +56,7 @@ import java.util.Date;
+ public class GpsLoggingService extends Service  {
+     private static NotificationManager notificationManager;
+     private static int NOTIFICATION_ID = 8675309;
++    private static int ERROR_NOTIFICATION_ID = 8675310;
+     private final IBinder binder = new GpsLoggingBinder();
+     AlarmManager nextPointAlarmManager;
+     private NotificationCompat.Builder nfc;
+@@ -1092,6 +1093,7 @@ public class GpsLoggingService extends Service  {
+         }
+         catch(Exception e){
+              LOG.error(getString(R.string.could_not_write_to_file), e);
++             EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+         }
+ 
+         session.clearDescription();
+@@ -1193,6 +1195,31 @@ public class GpsLoggingService extends Service  {
+ 
+ 
+ 
++    @EventBusHook
++    public void onEvent(ServiceEvents.FileWriteError error) {
++        showErrorNotification(getString(R.string.could_not_write_to_file), error.message);
++    }
++
++    private void showErrorNotification(String title, String message) {
++        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
++
++        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
++            NotificationChannel channel = new NotificationChannel("gpslogger_error", getString(R.string.could_not_write_to_file), NotificationManager.IMPORTANCE_HIGH);
++            notificationManager.createNotificationChannel(channel);
++        }
++
++        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "gpslogger_error")
++                .setSmallIcon(android.R.drawable.stat_notify_error)
++                .setContentTitle(title)
++                .setContentText(message)
++                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
++                .setPriority(NotificationCompat.PRIORITY_HIGH)
++                .setOnlyAlertOnce(true)
++                .setAutoCancel(true);
++
++        notificationManager.notify(ERROR_NOTIFICATION_ID, builder.build());
++    }
++
+     @EventBusHook
+     public void onEvent(ProfileEvents.SwitchToProfile switchToProfileEvent){
+         try {
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java b/gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java
+index 40014a8..47f28bc 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java
+@@ -91,4 +91,14 @@ public class ServiceEvents {
+         }
+     }
+ 
++    /**
++     * An error occurred while writing to a file
++     */
++    public static class FileWriteError {
++        public String message;
++        public FileWriteError(String message) {
++            this.message = message;
++        }
++    }
++
+ }
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/FileLoggerFactory.java b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/FileLoggerFactory.java
+index 17d757b..a2bfce6 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/FileLoggerFactory.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/FileLoggerFactory.java
+@@ -24,6 +24,7 @@ import android.location.Location;
+ import com.mendhak.gpslogger.common.PreferenceHelper;
+ import com.mendhak.gpslogger.common.Session;
+ import com.mendhak.gpslogger.common.Strings;
++import com.mendhak.gpslogger.common.events.ServiceEvents;
+ import com.mendhak.gpslogger.loggers.csv.CSVFileLogger;
+ import com.mendhak.gpslogger.loggers.customurl.CustomUrlLogger;
+ import com.mendhak.gpslogger.loggers.geojson.GeoJSONLogger;
+@@ -31,6 +32,7 @@ import com.mendhak.gpslogger.loggers.gpx.Gpx10FileLogger;
+ import com.mendhak.gpslogger.loggers.gpx.Gpx11FileLogger;
+ import com.mendhak.gpslogger.loggers.kml.Kml22FileLogger;
+ import com.mendhak.gpslogger.loggers.opengts.OpenGTSLogger;
++import de.greenrobot.event.EventBus;
+ 
+ 
+ import java.io.File;
+@@ -52,7 +54,11 @@ public class FileLoggerFactory {
+ 
+         File gpxFolder = new File(preferenceHelper.getGpsLoggerFolder());
+         if (!gpxFolder.exists()) {
+-            gpxFolder.mkdirs();
++            if (!gpxFolder.mkdirs()) {
++                EventBus.getDefault().post(new ServiceEvents.FileWriteError("Could not create folder " + gpxFolder.getPath()));
++            }
++        } else if (!gpxFolder.canWrite()) {
++            EventBus.getDefault().post(new ServiceEvents.FileWriteError("Folder exists but is not writable: " + gpxFolder.getPath()));
+         }
+ 
+         if (preferenceHelper.shouldLogToGpx()) {
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/csv/CSVFileLogger.java b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/csv/CSVFileLogger.java
+index 5d83ca9..da5c72a 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/csv/CSVFileLogger.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/csv/CSVFileLogger.java
+@@ -30,8 +30,10 @@ import com.mendhak.gpslogger.common.PreferenceHelper;
+ import com.mendhak.gpslogger.common.Session;
+ import com.mendhak.gpslogger.common.Strings;
+ import com.mendhak.gpslogger.common.Systems;
++import com.mendhak.gpslogger.common.events.ServiceEvents;
+ import com.mendhak.gpslogger.loggers.FileLogger;
+ import com.mendhak.gpslogger.loggers.Files;
++import de.greenrobot.event.EventBus;
+ import org.apache.commons.csv.CSVFormat;
+ import org.apache.commons.csv.CSVPrinter;
+ import java.io.File;
+@@ -120,53 +122,58 @@ public class CSVFileLogger implements FileLogger {
+     @Override
+     public void annotate(String description, Location loc) throws Exception {
+ 
+-        if(!Files.reallyExists(file)){
+-            CSVFormat header = CSVFormat.DEFAULT.builder()
+-                    .setHeader(getCSVFileHeaders())
++        try {
++            if (!Files.reallyExists(file)) {
++                CSVFormat header = CSVFormat.DEFAULT.builder()
++                        .setHeader(getCSVFileHeaders())
++                        .setDelimiter(PreferenceHelper.getInstance().getCSVDelimiter())
++                        .build();
++                FileWriter out = new FileWriter(file);
++                CSVPrinter printer = new CSVPrinter(out, header);
++                printer.close();
++                out.close();
++            }
++
++            CSVFormat header = CSVFormat.DEFAULT.builder().setSkipHeaderRecord(true)
+                     .setDelimiter(PreferenceHelper.getInstance().getCSVDelimiter())
+                     .build();
+-            FileWriter out = new FileWriter(file);
+-            CSVPrinter printer = new CSVPrinter(out, header);
+-            printer.close();
++
++            FileWriter out = new FileWriter(file, true);
++            try (CSVPrinter printer = new CSVPrinter(out, header)) {
++                printer.printRecord(
++                        Strings.getIsoDateTime(new Date(loc.getTime())),
++                        applyDecimalComma(loc.getLatitude()),
++                        applyDecimalComma(loc.getLongitude()),
++                        loc.hasAltitude() ? applyDecimalComma(loc.getAltitude()) : "",
++                        loc.hasAccuracy() ? applyDecimalComma(loc.getAccuracy()) : "",
++                        loc.hasBearing() ? applyDecimalComma(loc.getBearing()) : "",
++                        loc.hasSpeed() ? applyDecimalComma(loc.getSpeed()) : "",
++                        Maths.getBundledSatelliteCount(loc),
++                        loc.getProvider(),
++                        (loc.getExtras() != null && !Strings.isNullOrEmpty(loc.getExtras().getString(BundleConstants.HDOP))) ? applyDecimalComma(loc.getExtras().getString(BundleConstants.HDOP)) : "",
++                        (loc.getExtras() != null && !Strings.isNullOrEmpty(loc.getExtras().getString(BundleConstants.VDOP))) ? applyDecimalComma(loc.getExtras().getString(BundleConstants.VDOP)) : "",
++                        (loc.getExtras() != null && !Strings.isNullOrEmpty(loc.getExtras().getString(BundleConstants.PDOP))) ? applyDecimalComma(loc.getExtras().getString(BundleConstants.PDOP)) : "",
++                        (loc.getExtras() != null && !Strings.isNullOrEmpty(loc.getExtras().getString(BundleConstants.GEOIDHEIGHT))) ? applyDecimalComma(loc.getExtras().getString(BundleConstants.GEOIDHEIGHT)) : "",
++                        (loc.getExtras() != null && !Strings.isNullOrEmpty(loc.getExtras().getString(BundleConstants.AGEOFDGPSDATA))) ? loc.getExtras().getString(BundleConstants.AGEOFDGPSDATA) : "",
++                        (loc.getExtras() != null && !Strings.isNullOrEmpty(loc.getExtras().getString(BundleConstants.DGPSID))) ? loc.getExtras().getString(BundleConstants.DGPSID) : "",
++                        "", //Activity detection was removed, but keeping this here for backward compatibility.
++                        (batteryLevel != null) ? batteryLevel : "",
++                        description,
++                        loc.getTime(),
++                        Strings.getIsoDateTimeWithOffset(new Date(loc.getTime())),
++                        applyDecimalComma(Session.getInstance().getTotalTravelled()),
++                        Session.getInstance().getStartTimeStamp(),
++                        PreferenceHelper.getInstance().getCurrentProfileName(),
++                        batteryCharging
++                );
++            }
+             out.close();
+-        }
+ 
+-        CSVFormat header = CSVFormat.DEFAULT.builder().setSkipHeaderRecord(true)
+-                .setDelimiter(PreferenceHelper.getInstance().getCSVDelimiter())
+-                .build();
+-
+-        FileWriter out = new FileWriter(file, true);
+-        try (CSVPrinter printer = new CSVPrinter(out, header)) {
+-            printer.printRecord(
+-                    Strings.getIsoDateTime(new Date(loc.getTime())),
+-                    applyDecimalComma(loc.getLatitude()),
+-                    applyDecimalComma(loc.getLongitude()),
+-                    loc.hasAltitude() ? applyDecimalComma(loc.getAltitude()) : "",
+-                    loc.hasAccuracy() ? applyDecimalComma(loc.getAccuracy()) : "",
+-                    loc.hasBearing() ? applyDecimalComma(loc.getBearing()) : "",
+-                    loc.hasSpeed() ? applyDecimalComma(loc.getSpeed()) : "",
+-                    Maths.getBundledSatelliteCount(loc),
+-                    loc.getProvider(),
+-                    (loc.getExtras() != null && !Strings.isNullOrEmpty(loc.getExtras().getString(BundleConstants.HDOP))) ? applyDecimalComma(loc.getExtras().getString(BundleConstants.HDOP)) : "",
+-                    (loc.getExtras() != null && !Strings.isNullOrEmpty(loc.getExtras().getString(BundleConstants.VDOP))) ? applyDecimalComma(loc.getExtras().getString(BundleConstants.VDOP)) : "",
+-                    (loc.getExtras() != null && !Strings.isNullOrEmpty(loc.getExtras().getString(BundleConstants.PDOP))) ? applyDecimalComma(loc.getExtras().getString(BundleConstants.PDOP)) : "",
+-                    (loc.getExtras() != null && !Strings.isNullOrEmpty(loc.getExtras().getString(BundleConstants.GEOIDHEIGHT))) ? applyDecimalComma(loc.getExtras().getString(BundleConstants.GEOIDHEIGHT)) : "",
+-                    (loc.getExtras() != null && !Strings.isNullOrEmpty(loc.getExtras().getString(BundleConstants.AGEOFDGPSDATA))) ? loc.getExtras().getString(BundleConstants.AGEOFDGPSDATA) : "",
+-                    (loc.getExtras() != null && !Strings.isNullOrEmpty(loc.getExtras().getString(BundleConstants.DGPSID))) ? loc.getExtras().getString(BundleConstants.DGPSID) : "",
+-                    "", //Activity detection was removed, but keeping this here for backward compatibility.
+-                    (batteryLevel != null) ? batteryLevel : "",
+-                    description,
+-                    loc.getTime(),
+-                    Strings.getIsoDateTimeWithOffset(new Date(loc.getTime())),
+-                    applyDecimalComma(Session.getInstance().getTotalTravelled()),
+-                    Session.getInstance().getStartTimeStamp(),
+-                    PreferenceHelper.getInstance().getCurrentProfileName(),
+-                    batteryCharging
+-            );
++            Files.addToMediaDatabase(file, "text/csv");
++        } catch (Exception e) {
++            EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
++            throw e;
+         }
+-        out.close();
+-
+-        Files.addToMediaDatabase(file, "text/csv");
+     }
+ 
+     /**
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/geojson/GeoJSONWriterPoints.java b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/geojson/GeoJSONWriterPoints.java
+index cd28eb0..43fcd97 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/geojson/GeoJSONWriterPoints.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/geojson/GeoJSONWriterPoints.java
+@@ -4,8 +4,10 @@ import android.location.Location;
+ import androidx.annotation.NonNull;
+ 
+ import com.mendhak.gpslogger.common.Strings;
++import com.mendhak.gpslogger.common.events.ServiceEvents;
+ import com.mendhak.gpslogger.common.slf4j.Logs;
+ import com.mendhak.gpslogger.loggers.Files;
++import de.greenrobot.event.EventBus;
+ 
+ import org.slf4j.Logger;
+ 
+@@ -68,6 +70,7 @@ public class GeoJSONWriterPoints implements Runnable {
+         } catch (IOException e) {
+             e.printStackTrace();
+             LOG.error("GeoJSONWriterPoints", e);
++            EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+         }
+ 
+     }
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/gpx/Gpx10FileLogger.java b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/gpx/Gpx10FileLogger.java
+index 2cd6a14..138a141 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/gpx/Gpx10FileLogger.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/gpx/Gpx10FileLogger.java
+@@ -26,9 +26,11 @@ import com.mendhak.gpslogger.common.Maths;
+ import com.mendhak.gpslogger.common.PreferenceHelper;
+ import com.mendhak.gpslogger.common.RejectionHandler;
+ import com.mendhak.gpslogger.common.Strings;
++import com.mendhak.gpslogger.common.events.ServiceEvents;
+ import com.mendhak.gpslogger.common.slf4j.Logs;
+ import com.mendhak.gpslogger.loggers.FileLogger;
+ import com.mendhak.gpslogger.loggers.Files;
++import de.greenrobot.event.EventBus;
+ import org.slf4j.Logger;
+ 
+ import java.io.*;
+@@ -161,6 +163,7 @@ class Gpx10AnnotateHandler implements Runnable {
+                 LOG.debug("Finished annotation to GPX10 File");
+             } catch (Exception e) {
+                 LOG.error("Gpx10FileLogger.annotate", e);
++                EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+             }
+ 
+         }
+@@ -242,6 +245,7 @@ class Gpx10WriteHandler implements Runnable {
+ 
+             } catch (Exception e) {
+                 LOG.error("Gpx10FileLogger.write", e);
++                EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+             }
+ 
+         }
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/kml/Kml22FileLogger.java b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/kml/Kml22FileLogger.java
+index 87e0124..0946fbe 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/kml/Kml22FileLogger.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/kml/Kml22FileLogger.java
+@@ -24,9 +24,11 @@ import android.location.Location;
+ import com.mendhak.gpslogger.common.PreferenceHelper;
+ import com.mendhak.gpslogger.common.RejectionHandler;
+ import com.mendhak.gpslogger.common.Strings;
++import com.mendhak.gpslogger.common.events.ServiceEvents;
+ import com.mendhak.gpslogger.common.slf4j.Logs;
+ import com.mendhak.gpslogger.loggers.FileLogger;
+ import com.mendhak.gpslogger.loggers.Files;
++import de.greenrobot.event.EventBus;
+ import org.slf4j.Logger;
+ 
+ import java.io.*;
+@@ -118,6 +120,7 @@ class Kml22AnnotateHandler implements Runnable {
+             }
+         } catch (Exception e) {
+             LOG.error("Kml22FileLogger.annotate", e);
++            EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+         }
+     }
+ 
+@@ -223,6 +226,7 @@ class Kml22WriteHandler implements Runnable {
+ 
+         } catch (Exception e) {
+             LOG.error("Kml22FileLogger.write", e);
++            EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+         }
+     }
+ }
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/nmea/NmeaFileLogger.java b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/nmea/NmeaFileLogger.java
+index bee4d5a..7f54a89 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/nmea/NmeaFileLogger.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/nmea/NmeaFileLogger.java
+@@ -23,7 +23,9 @@ import com.mendhak.gpslogger.common.PreferenceHelper;
+ import com.mendhak.gpslogger.common.RejectionHandler;
+ import com.mendhak.gpslogger.common.Session;
+ import com.mendhak.gpslogger.common.Strings;
++import com.mendhak.gpslogger.common.events.ServiceEvents;
+ import com.mendhak.gpslogger.loggers.Files;
++import de.greenrobot.event.EventBus;
+ 
+ import java.io.BufferedWriter;
+ import java.io.File;
+@@ -60,7 +62,7 @@ public class NmeaFileLogger {
+             try {
+                 nmeaFile.createNewFile();
+             } catch (IOException e) {
+-
++                EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+             }
+         }
+ 
+@@ -92,7 +94,7 @@ class NmeaWriteHandler implements Runnable {
+                 Files.addToMediaDatabase(gpxFile, "text/plain");
+ 
+             } catch (IOException e) {
+-
++                EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+             }
+         }
+ 

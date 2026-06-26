@@ -1,0 +1,15 @@
+diff --git a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+index dfc33d5..970feb1 100644
+--- a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
++++ b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+@@ -231,7 +231,10 @@ public class DocumentEditFragment extends GsFragmentBase implements TextFormat.T
+         }
+         if (document.getHistory().isEmpty()) {
+             document.forceAddNextChangeToHistory();
++            boolean historyEnabled = document.isDoHistory();
++            document.setDoHistory(true);
+             document.addToHistory();
++            document.setDoHistory(historyEnabled);
+         }
+ 
+         return document;

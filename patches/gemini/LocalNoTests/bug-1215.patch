@@ -1,0 +1,136 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Database/Entry.java b/app/src/main/java/org/shadowice/flocke/andotp/Database/Entry.java
+index 21cbd79..3190b70 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Database/Entry.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Database/Entry.java
+@@ -141,13 +141,21 @@ public class Entry {
+ 
+         if (type == OTPType.HOTP) {
+             if (counter != null) {
+-                this.counter = Long.parseLong(counter);
++                try {
++                    this.counter = Long.parseLong(counter);
++                } catch (NumberFormatException e) {
++                    this.counter = TokenCalculator.HOTP_INITIAL_COUNTER;
++                }
+             } else {
+                 throw new Exception("missing counter for HOTP");
+             }
+         } else if (type == OTPType.TOTP || type == OTPType.STEAM) {
+             if (period != null) {
+-                this.period = Integer.parseInt(period);
++                try {
++                    this.period = Integer.parseInt(period);
++                } catch (NumberFormatException e) {
++                    this.period = TokenCalculator.TOTP_DEFAULT_PERIOD;
++                }
+             } else {
+                 this.period = TokenCalculator.TOTP_DEFAULT_PERIOD;
+             }
+@@ -158,7 +166,11 @@ public class Entry {
+         this.secret = new Base32().decode(secret.toUpperCase());
+ 
+         if (digits != null) {
+-            this.digits = Integer.parseInt(digits);
++            try {
++                this.digits = Integer.parseInt(digits);
++            } catch (NumberFormatException e) {
++                this.digits = this.type == OTPType.STEAM ? TokenCalculator.STEAM_DEFAULT_DIGITS : TokenCalculator.TOTP_DEFAULT_DIGITS;
++            }
+         } else {
+             this.digits = this.type == OTPType.STEAM ? TokenCalculator.STEAM_DEFAULT_DIGITS : TokenCalculator.TOTP_DEFAULT_DIGITS;
+         }
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
+index 0dbe619..3ece15a 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java
+@@ -218,13 +218,20 @@ public class ManualEntryDialog {
+ 
+                 Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
+                 TokenCalculator.HashAlgorithm algorithm = (TokenCalculator.HashAlgorithm) algorithmInput.getSelectedItem();
+-                int digits = Integer.parseInt(digitsInput.getText().toString());
++
++                int digits = 0;
++                try {
++                    digits = Integer.parseInt(digitsInput.getText().toString());
++                } catch (NumberFormatException ignored) {}
+ 
+                 String issuer = issuerInput.getText().toString();
+                 String label = labelInput.getText().toString();
+ 
+                 if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+-                    int period = Integer.parseInt(periodInput.getText().toString());
++                    int period = 0;
++                    try {
++                        period = Integer.parseInt(periodInput.getText().toString());
++                    } catch (NumberFormatException ignored) {}
+ 
+                     if (oldEntry == null) {
+                         Entry e = new Entry(type, secret, period, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
+@@ -242,7 +249,10 @@ public class ManualEntryDialog {
+ 
+                     callingActivity.refreshTags();
+                 } else if (type == Entry.OTPType.HOTP) {
+-                    long counter = Long.parseLong(counterInput.getText().toString());
++                    long counter = 0;
++                    try {
++                        counter = Long.parseLong(counterInput.getText().toString());
++                    } catch (NumberFormatException ignored) {}
+ 
+                     if (oldEntry == null) {
+                         Entry e = new Entry(type, secret, counter, digits, issuer, label, algorithm, tagsAdapter.getActiveTags());
+@@ -276,21 +286,36 @@ public class ManualEntryDialog {
+ 
+             @Override
+             public void afterTextChanged(Editable editable) {
++                int digits = 0;
++                try {
++                    digits = Integer.parseInt(digitsInput.getText().toString());
++                } catch (NumberFormatException ignored) {}
++
+                 if ((TextUtils.isEmpty(labelInput.getText()) && TextUtils.isEmpty(issuerInput.getText())) ||
+                         (TextUtils.isEmpty(secretInput.getText()) && isNewEntry) ||
+                         TextUtils.isEmpty(digitsInput.getText()) ||
+-                        Integer.parseInt(digitsInput.getText().toString()) == 0) {
++                        digits == 0) {
+                     positiveButton.setEnabled(false);
+                 } else {
+                     Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
+                     if (type == Entry.OTPType.HOTP) {
+-                        if (TextUtils.isEmpty(counterInput.getText())) {
++                        long counter = -1;
++                        try {
++                            counter = Long.parseLong(counterInput.getText().toString());
++                        } catch (NumberFormatException ignored) {}
++
++                        if (TextUtils.isEmpty(counterInput.getText()) || counter < 0) {
+                             positiveButton.setEnabled(false);
+                         } else {
+                             positiveButton.setEnabled(true);
+                         }
+                     } else if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+-                        if (TextUtils.isEmpty(periodInput.getText()) || Integer.parseInt(periodInput.getText().toString()) == 0) {
++                        int period = 0;
++                        try {
++                            period = Integer.parseInt(periodInput.getText().toString());
++                        } catch (NumberFormatException ignored) {}
++
++                        if (TextUtils.isEmpty(periodInput.getText()) || period == 0) {
+                             positiveButton.setEnabled(false);
+                         } else {
+                             positiveButton.setEnabled(true);
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/View/EntriesCardAdapter.java b/app/src/main/java/org/shadowice/flocke/andotp/View/EntriesCardAdapter.java
+index 7ffe389..f21fcf6 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/View/EntriesCardAdapter.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/View/EntriesCardAdapter.java
+@@ -440,7 +440,10 @@ public class EntriesCardAdapter extends RecyclerView.Adapter<EntryViewHolder>
+                     @Override
+                     public void onClick(DialogInterface dialogInterface, int i) {
+                         int realIndex = getRealIndex(pos);
+-                        long newCounter = Long.parseLong(input.getEditableText().toString());
++                        long newCounter = 0;
++                        try {
++                            newCounter = Long.parseLong(input.getEditableText().toString());
++                        } catch (NumberFormatException ignored) {}
+ 
+                         displayedEntries.get(pos).setCounter(newCounter);
+                         notifyItemChanged(pos);

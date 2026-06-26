@@ -1,0 +1,67 @@
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java
+index cd5e171..b86aae9 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java
+@@ -49,7 +49,13 @@ public class ExerciseViewActivity extends ExerciseListActivity {
+         super.onStart();
+         TextView ScheduleInfo = (TextView) findViewById(R.id.ScheduleInfo);
+ 
+-        String scheduleInfo = String.format(getResources().getString(R.string.ScheduleInfo), ActiveSchedule.getRepetitions(), ActiveSchedule.getPauseTime(), ActiveSchedule.getSets(), ActiveSchedule.getSpeed());
++        String trainingsType = "No Type";
++        if(ActiveSchedule.getTrainingsType() != null)
++        {
++            trainingsType = ActiveSchedule.getTrainingsType().name();
++        }
++
++        String scheduleInfo = String.format(getResources().getString(R.string.ScheduleInfo), trainingsType, ActiveSchedule.getRepetitions(), ActiveSchedule.getPauseTime(), ActiveSchedule.getSets(), ActiveSchedule.getSpeed());
+         ScheduleInfo.setText(scheduleInfo);
+     }
+ 
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java b/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java
+index 84f3cf0..2bbd63c 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java
+@@ -7,10 +7,12 @@ import android.support.v7.app.AppCompatActivity;
+ import android.support.v7.widget.Toolbar;
+ import android.view.View;
+ import android.widget.EditText;
++import android.widget.Spinner;
+ 
+ import com.german_software_engineers.trainerapp.Controller.ApplicationManager;
+ import com.german_software_engineers.trainerappmodel.Legacy.Schedule;
+ import com.german_software_engineers.trainerappmodel.Exceptions.ScheduleAvailableException;
++import com.german_software_engineers.trainerappmodel.Enumerations.TrainingsTypes;
+ 
+ public class GeneralTrainingScheduleEditor extends AppCompatActivity {
+ 
+@@ -49,6 +51,9 @@ public class GeneralTrainingScheduleEditor extends AppCompatActivity {
+ 
+         Schedule schedule = new Schedule(((EditText)findViewById(R.id.nameTextEdit)).getText().toString());
+ 
++        Spinner spinner = (Spinner) findViewById(R.id.trainSpinner);
++        schedule.setTrainingsType(TrainingsTypes.values()[spinner.getSelectedItemPosition()]);
++
+         Integer reps = 0;
+         if(!((EditText)findViewById(R.id.repEdit)).getText().toString().isEmpty()) {
+             reps = Integer.valueOf(((EditText) findViewById(R.id.repEdit)).getText().toString());
+@@ -76,6 +81,7 @@ public class GeneralTrainingScheduleEditor extends AppCompatActivity {
+ 
+        try {
+            ((ApplicationManager)getApplication()).getApplicationModel().addSchedule(schedule);
++           ((ApplicationManager)getApplication()).getApplicationModel().setActiveSchedule(schedule);
+        } catch (ScheduleAvailableException e) {
+            e.printStackTrace();
+        }
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index 5339212..fc73d01 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -75,7 +75,7 @@ modification follow.\n\n\n"
+ 
+     <!--ExerciseViewActivity-->
+     <string name="ExerciseViewActivityTitle">ExerciseViewActivity</string>
+-    <string name="ScheduleInfo">Repetitions: %1$d \nPause: %2$d s\nSets: %3$d \nSpeed: %4$d</string>
++    <string name="ScheduleInfo">Trainings Type: %1$s \nRepetitions: %2$d \nPause: %3$d s\nSets: %4$d \nSpeed: %5$d</string>
+ 
+     <string name="WarmUpExerciseInfoExecutionTime">Execution Time: %1$d\n</string>
+     <string name="WarmUpExerciseInfoIntensity">Intensity: %1$s min\n</string>

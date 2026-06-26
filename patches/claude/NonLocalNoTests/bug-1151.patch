@@ -1,0 +1,47 @@
+--- a/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java
++++ b/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java
+@@ -186,11 +186,14 @@
+ 
+     private SensorManager mSensorManager;
+ 
++    private boolean mUseDarkTheme;
++
+     /** Called when the activity is first created. */
+     @Override
+     public void onCreate(Bundle savedInstanceState) {
+         // Set theme
+-        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
++        mUseDarkTheme = Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false);
++        if (mUseDarkTheme) {
+             setTheme(R.style.AppTheme_Dark_NoActionBar);
+         }
+         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+@@ -250,6 +253,14 @@
+     @Override
+     protected void onResume() {
+         super.onResume();
++
++        // If the theme has been changed, recreate the activity to apply the new theme
++        boolean useDarkTheme = Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false);
++        if (mUseDarkTheme != useDarkTheme) {
++            mUseDarkTheme = useDarkTheme;
++            recreate();
++            return;
++        }
+ 
+         addStatusListener();
+ 
+--- a/GPSTest/src/main/java/com/android/gpstest/Preferences.java
++++ b/GPSTest/src/main/java/com/android/gpstest/Preferences.java
+@@ -135,10 +135,9 @@
+         chkDarkTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+             @Override
+             public boolean onPreferenceChange(Preference preference, Object newValue) {
+-                // Close and restart Activities (clearing the back stack) to apply new theme
++                // Restart Preferences Activity to apply new theme
+                 finish();
+                 final Intent intent = getIntent();
+-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                 startActivity(intent);
+                 return true;
+             }

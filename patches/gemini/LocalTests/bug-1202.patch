@@ -1,0 +1,22 @@
+diff --git a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+index d26b1c3..47f1590 100644
+--- a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
++++ b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+@@ -128,7 +128,7 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+     @OnClick(R.id.nextimageButton)
+     void nextImg() {
+         //Proceed to next if Save Current has been clicked
+-        if (mClicked == mClickedFilter) {
++        if (mClicked || !mClickedFilter) {
+             next();
+             incrementImageCount();
+             mClicked = false;
+@@ -140,7 +140,7 @@ public class ImageEditor extends AppCompatActivity implements OnFilterItemClicke
+     @OnClick(R.id.previousImageButton)
+     void previousImg() {
+         //move to previous if Save Current has been clicked
+-        if (mClicked == mClickedFilter) {
++        if (mClicked || !mClickedFilter) {
+             previous();
+             decrementImageCount();
+             mClicked = false;

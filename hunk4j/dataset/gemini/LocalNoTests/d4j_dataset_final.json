@@ -1,0 +1,1388 @@
+{
+    "bug-1130": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/de/danoeh/antennapod/adapter/AllEpisodesRecycleAdapter.java",
+                "start_line": 273,
+                "end_line": 273
+            },
+            "1": {
+                "file": "app/src/main/java/de/danoeh/antennapod/adapter/QueueRecyclerAdapter.java",
+                "start_line": 203,
+                "end_line": 203
+            },
+            "2": {
+                "file": "app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java",
+                "start_line": 514,
+                "end_line": 514
+            }
+        }
+    },
+    "bug-1138": {
+        "buggy_hunks": {
+            "0": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java",
+                "start_line": 35,
+                "end_line": 35
+            },
+            "1": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java",
+                "start_line": 397,
+                "end_line": 398
+            },
+            "2": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java",
+                "start_line": 415,
+                "end_line": 425
+            },
+            "3": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java",
+                "start_line": 544,
+                "end_line": 548
+            },
+            "4": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java",
+                "start_line": 568,
+                "end_line": 600
+            },
+            "5": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java",
+                "start_line": 1118,
+                "end_line": 1118
+            },
+            "6": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java",
+                "start_line": 1250,
+                "end_line": 1268
+            },
+            "7": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/GpsMainActivity.java",
+                "start_line": 518,
+                "end_line": 528
+            },
+            "8": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/common/Session.java",
+                "start_line": 379,
+                "end_line": 394
+            },
+            "9": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java",
+                "start_line": 94,
+                "end_line": 101
+            },
+            "10": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/geojson/GeoJSONWriterPoints.java",
+                "start_line": 7,
+                "end_line": 10
+            },
+            "11": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/geojson/GeoJSONWriterPoints.java",
+                "start_line": 73,
+                "end_line": 73
+            },
+            "12": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/gpx/Gpx10FileLogger.java",
+                "start_line": 30,
+                "end_line": 33
+            },
+            "13": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/gpx/Gpx10FileLogger.java",
+                "start_line": 166,
+                "end_line": 166
+            },
+            "14": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/gpx/Gpx10FileLogger.java",
+                "start_line": 248,
+                "end_line": 248
+            },
+            "15": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/kml/Kml22FileLogger.java",
+                "start_line": 28,
+                "end_line": 31
+            },
+            "16": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/kml/Kml22FileLogger.java",
+                "start_line": 123,
+                "end_line": 123
+            },
+            "17": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/kml/Kml22FileLogger.java",
+                "start_line": 229,
+                "end_line": 229
+            },
+            "18": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/nmea/NmeaFileLogger.java",
+                "start_line": 26,
+                "end_line": 28
+            },
+            "19": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/nmea/NmeaFileLogger.java",
+                "start_line": 65,
+                "end_line": 65
+            },
+            "20": {
+                "file": "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/nmea/NmeaFileLogger.java",
+                "start_line": 97,
+                "end_line": 97
+            }
+        }
+    },
+    "bug-114": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/UserDialogFragment.java",
+                "start_line": 16,
+                "end_line": 16
+            },
+            "1": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/UserDialogFragment.java",
+                "start_line": 207,
+                "end_line": 207
+            },
+            "2": {
+                "file": "app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java",
+                "start_line": 26,
+                "end_line": 26
+            },
+            "3": {
+                "file": "app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java",
+                "start_line": 65,
+                "end_line": 78
+            }
+        }
+    },
+    "bug-1146": {
+        "buggy_hunks": {
+            "0": {
+                "file": "GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java",
+                "start_line": 309,
+                "end_line": 309
+            },
+            "1": {
+                "file": "GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java",
+                "start_line": 782,
+                "end_line": 782
+            }
+        }
+    },
+    "bug-1151": {
+        "buggy_hunks": {
+            "0": {
+                "file": "GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java",
+                "start_line": 189,
+                "end_line": 196
+            },
+            "1": {
+                "file": "GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java",
+                "start_line": 257,
+                "end_line": 262
+            },
+            "2": {
+                "file": "GPSTest/src/main/java/com/android/gpstest/HelpActivity.java",
+                "start_line": 28,
+                "end_line": 30
+            },
+            "3": {
+                "file": "GPSTest/src/main/java/com/android/gpstest/Preferences.java",
+                "start_line": 20,
+                "end_line": 20
+            },
+            "4": {
+                "file": "GPSTest/src/main/java/com/android/gpstest/Preferences.java",
+                "start_line": 139,
+                "end_line": 143
+            }
+        }
+    },
+    "bug-1198": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java",
+                "start_line": 403,
+                "end_line": 405
+            },
+            "1": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/HomeFragment.java",
+                "start_line": 58,
+                "end_line": 58
+            },
+            "2": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/HomeFragment.java",
+                "start_line": 93,
+                "end_line": 99
+            },
+            "3": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/HomeFragment.java",
+                "start_line": 416,
+                "end_line": 416
+            },
+            "4": {
+                "file": "app/src/main/java/swati4star/createpdf/util/FileUtils.java",
+                "start_line": 266,
+                "end_line": 290
+            }
+        }
+    },
+    "bug-1202": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/swati4star/createpdf/activity/ImageEditor.java",
+                "start_line": 131,
+                "end_line": 136
+            },
+            "1": {
+                "file": "app/src/main/java/swati4star/createpdf/activity/ImageEditor.java",
+                "start_line": 144,
+                "end_line": 149
+            },
+            "2": {
+                "file": "app/src/main/java/swati4star/createpdf/activity/ImageEditor.java",
+                "start_line": 173,
+                "end_line": 175
+            },
+            "3": {
+                "file": "app/src/main/java/swati4star/createpdf/activity/ImageEditor.java",
+                "start_line": 326,
+                "end_line": 326
+            },
+            "4": {
+                "file": "app/src/main/java/swati4star/createpdf/activity/ImageEditor.java",
+                "start_line": 336,
+                "end_line": 336
+            }
+        }
+    },
+    "bug-1205": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/swati4star/createpdf/activity/MainActivity.java",
+                "start_line": 44,
+                "end_line": 44
+            },
+            "1": {
+                "file": "app/src/main/java/swati4star/createpdf/activity/MainActivity.java",
+                "start_line": 271,
+                "end_line": 274
+            },
+            "2": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/AddImagesFragment.java",
+                "start_line": 39,
+                "end_line": 39
+            },
+            "3": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/AddImagesFragment.java",
+                "start_line": 58,
+                "end_line": 59
+            },
+            "4": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/AddImagesFragment.java",
+                "start_line": 283,
+                "end_line": 289
+            },
+            "5": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/InvertPdfFragment.java",
+                "start_line": 34,
+                "end_line": 34
+            },
+            "6": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/InvertPdfFragment.java",
+                "start_line": 51,
+                "end_line": 51
+            },
+            "7": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/InvertPdfFragment.java",
+                "start_line": 195,
+                "end_line": 202
+            },
+            "8": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/MergeFilesFragment.java",
+                "start_line": 46,
+                "end_line": 46
+            },
+            "9": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/MergeFilesFragment.java",
+                "start_line": 70,
+                "end_line": 72
+            },
+            "10": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/MergeFilesFragment.java",
+                "start_line": 390,
+                "end_line": 396
+            },
+            "11": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/PdfToImageFragment.java",
+                "start_line": 37,
+                "end_line": 37
+            },
+            "12": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/PdfToImageFragment.java",
+                "start_line": 54,
+                "end_line": 54
+            },
+            "13": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/PdfToImageFragment.java",
+                "start_line": 257,
+                "end_line": 263
+            },
+            "14": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/RemoveDuplicatePagesFragment.java",
+                "start_line": 34,
+                "end_line": 34
+            },
+            "15": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/RemoveDuplicatePagesFragment.java",
+                "start_line": 50,
+                "end_line": 50
+            },
+            "16": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/RemoveDuplicatePagesFragment.java",
+                "start_line": 194,
+                "end_line": 200
+            },
+            "17": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/RemovePagesFragment.java",
+                "start_line": 42,
+                "end_line": 42
+            },
+            "18": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/RemovePagesFragment.java",
+                "start_line": 69,
+                "end_line": 69
+            },
+            "19": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/RemovePagesFragment.java",
+                "start_line": 327,
+                "end_line": 333
+            },
+            "20": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/SplitFilesFragment.java",
+                "start_line": 38,
+                "end_line": 38
+            },
+            "21": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/SplitFilesFragment.java",
+                "start_line": 53,
+                "end_line": 53
+            },
+            "22": {
+                "file": "app/src/main/java/swati4star/createpdf/fragment/SplitFilesFragment.java",
+                "start_line": 208,
+                "end_line": 214
+            }
+        }
+    },
+    "bug-1207": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java",
+                "start_line": 206,
+                "end_line": 230
+            }
+        }
+    },
+    "bug-1213": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/AuthenticateActivity.java",
+                "start_line": 32,
+                "end_line": 31
+            },
+            "1": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/AuthenticateActivity.java",
+                "start_line": 48,
+                "end_line": 48
+            },
+            "2": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/AuthenticateActivity.java",
+                "start_line": 129,
+                "end_line": 130
+            },
+            "3": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 33,
+                "end_line": 32
+            },
+            "4": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 382,
+                "end_line": 382
+            },
+            "5": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 392,
+                "end_line": 391
+            },
+            "6": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 408,
+                "end_line": 408
+            },
+            "7": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java",
+                "start_line": 19,
+                "end_line": 19
+            },
+            "8": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java",
+                "start_line": 67,
+                "end_line": 68
+            },
+            "9": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java",
+                "start_line": 33,
+                "end_line": 32
+            },
+            "10": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java",
+                "start_line": 261,
+                "end_line": 261
+            },
+            "11": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java",
+                "start_line": 279,
+                "end_line": 279
+            },
+            "12": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java",
+                "start_line": 35,
+                "end_line": 34
+            },
+            "13": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java",
+                "start_line": 46,
+                "end_line": 46
+            },
+            "14": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java",
+                "start_line": 138,
+                "end_line": 138
+            },
+            "15": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Utilities/UIHelper.java",
+                "start_line": 28,
+                "end_line": 33
+            },
+            "16": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Utilities/UIHelper.java",
+                "start_line": 68,
+                "end_line": 98
+            }
+        }
+    },
+    "bug-1214": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 38,
+                "end_line": 38
+            },
+            "1": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 46,
+                "end_line": 46
+            },
+            "2": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 249,
+                "end_line": 249
+            },
+            "3": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 334,
+                "end_line": 353
+            },
+            "4": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 390,
+                "end_line": 396
+            },
+            "5": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 411,
+                "end_line": 417
+            },
+            "6": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java",
+                "start_line": 11,
+                "end_line": 15
+            },
+            "7": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java",
+                "start_line": 34,
+                "end_line": 34
+            },
+            "8": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java",
+                "start_line": 46,
+                "end_line": 65
+            },
+            "9": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java",
+                "start_line": 82,
+                "end_line": 86
+            },
+            "10": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java",
+                "start_line": 35,
+                "end_line": 41
+            },
+            "11": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java",
+                "start_line": 86,
+                "end_line": 86
+            },
+            "12": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java",
+                "start_line": 131,
+                "end_line": 150
+            },
+            "13": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java",
+                "start_line": 274,
+                "end_line": 280
+            },
+            "14": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java",
+                "start_line": 293,
+                "end_line": 299
+            },
+            "15": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java",
+                "start_line": 35,
+                "end_line": 40
+            },
+            "16": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java",
+                "start_line": 66,
+                "end_line": 66
+            },
+            "17": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java",
+                "start_line": 103,
+                "end_line": 122
+            },
+            "18": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java",
+                "start_line": 141,
+                "end_line": 157
+            }
+        }
+    },
+    "bug-1215": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Database/Entry.java",
+                "start_line": 144,
+                "end_line": 158
+            },
+            "1": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Database/Entry.java",
+                "start_line": 169,
+                "end_line": 173
+            },
+            "2": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java",
+                "start_line": 221,
+                "end_line": 234
+            },
+            "3": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java",
+                "start_line": 252,
+                "end_line": 255
+            },
+            "4": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java",
+                "start_line": 289,
+                "end_line": 318
+            },
+            "5": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/View/EntriesCardAdapter.java",
+                "start_line": 443,
+                "end_line": 446
+            }
+        }
+    },
+    "bug-123451": {
+        "buggy_hunks": {
+            "0": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/dialogs/CustomStudyDialog.java",
+                "start_line": 439,
+                "end_line": 439
+            }
+        }
+    },
+    "bug-1255": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java",
+                "start_line": 329,
+                "end_line": 329
+            },
+            "1": {
+                "file": "app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java",
+                "start_line": 59,
+                "end_line": 62
+            }
+        }
+    },
+    "bug-129": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java",
+                "start_line": 195,
+                "end_line": 241
+            },
+            "1": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java",
+                "start_line": 253,
+                "end_line": 253
+            }
+        }
+    },
+    "bug-1299": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java",
+                "start_line": 280,
+                "end_line": 286
+            },
+            "1": {
+                "file": "app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java",
+                "start_line": 330,
+                "end_line": 333
+            },
+            "2": {
+                "file": "app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java",
+                "start_line": 344,
+                "end_line": 345
+            },
+            "3": {
+                "file": "app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java",
+                "start_line": 588,
+                "end_line": 588
+            },
+            "4": {
+                "file": "app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java",
+                "start_line": 604,
+                "end_line": 605
+            },
+            "5": {
+                "file": "app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java",
+                "start_line": 617,
+                "end_line": 619
+            },
+            "6": {
+                "file": "app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java",
+                "start_line": 937,
+                "end_line": 940
+            },
+            "7": {
+                "file": "app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java",
+                "start_line": 982,
+                "end_line": 982
+            },
+            "8": {
+                "file": "app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java",
+                "start_line": 286,
+                "end_line": 288
+            },
+            "9": {
+                "file": "app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java",
+                "start_line": 47,
+                "end_line": 47
+            },
+            "10": {
+                "file": "app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java",
+                "start_line": 61,
+                "end_line": 61
+            }
+        }
+    },
+    "bug-130": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 264,
+                "end_line": 267
+            },
+            "1": {
+                "file": "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java",
+                "start_line": 438,
+                "end_line": 438
+            }
+        }
+    },
+    "bug-136": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/ComposeActivity.java",
+                "start_line": 213,
+                "end_line": 218
+            },
+            "1": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/ComposeActivity.java",
+                "start_line": 246,
+                "end_line": 246
+            },
+            "2": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/MainActivity.java",
+                "start_line": 251,
+                "end_line": 251
+            },
+            "3": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/network/UserActions.java",
+                "start_line": 233,
+                "end_line": 233
+            }
+        }
+    },
+    "bug-1441": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java",
+                "start_line": 127,
+                "end_line": 137
+            },
+            "1": {
+                "file": "app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java",
+                "start_line": 245,
+                "end_line": 253
+            },
+            "2": {
+                "file": "app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java",
+                "start_line": 263,
+                "end_line": 274
+            }
+        }
+    },
+    "bug-1445": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java",
+                "start_line": 919,
+                "end_line": 931
+            },
+            "1": {
+                "file": "app/src/main/java/com/cohenadair/anglerslog/trips/ManageTripFragment.java",
+                "start_line": 128,
+                "end_line": 128
+            }
+        }
+    },
+    "bug-1446": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java",
+                "start_line": 162,
+                "end_line": 163
+            },
+            "1": {
+                "file": "app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java",
+                "start_line": 223,
+                "end_line": 223
+            }
+        }
+    },
+    "bug-1563": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java",
+                "start_line": 570,
+                "end_line": 580
+            }
+        }
+    },
+    "bug-1568": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java",
+                "start_line": 18,
+                "end_line": 18
+            }
+        }
+    },
+    "bug-159": {
+        "buggy_hunks": {
+            "0": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java",
+                "start_line": 148,
+                "end_line": 148
+            },
+            "1": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java",
+                "start_line": 668,
+                "end_line": 668
+            },
+            "2": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java",
+                "start_line": 2182,
+                "end_line": 2182
+            },
+            "3": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java",
+                "start_line": 95,
+                "end_line": 100
+            },
+            "4": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java",
+                "start_line": 181,
+                "end_line": 181
+            },
+            "5": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java",
+                "start_line": 442,
+                "end_line": 442
+            },
+            "6": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java",
+                "start_line": 857,
+                "end_line": 870
+            },
+            "7": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java",
+                "start_line": 891,
+                "end_line": 892
+            }
+        }
+    },
+    "bug-160": {
+        "buggy_hunks": {
+            "0": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/Reviewer.java",
+                "start_line": 432,
+                "end_line": 448
+            }
+        }
+    },
+    "bug-1641": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java",
+                "start_line": 52,
+                "end_line": 52
+            },
+            "1": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java",
+                "start_line": 10,
+                "end_line": 13
+            },
+            "2": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java",
+                "start_line": 53,
+                "end_line": 53
+            },
+            "3": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/MyScheduleRecyclerViewAdapter.java",
+                "start_line": 40,
+                "end_line": 41
+            },
+            "4": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/MyScheduleRecyclerViewAdapter.java",
+                "start_line": 63,
+                "end_line": 70
+            },
+            "5": {
+                "file": "trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Legacy/Schedule.java",
+                "start_line": 22,
+                "end_line": 22
+            },
+            "6": {
+                "file": "trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Model/XMLParser.java",
+                "start_line": 5,
+                "end_line": 5
+            },
+            "7": {
+                "file": "trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Model/XMLParser.java",
+                "start_line": 96,
+                "end_line": 99
+            },
+            "8": {
+                "file": "trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Model/XMLParser.java",
+                "start_line": 226,
+                "end_line": 226
+            }
+        }
+    },
+    "bug-1645": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java",
+                "start_line": 26,
+                "end_line": 26
+            },
+            "1": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java",
+                "start_line": 38,
+                "end_line": 38
+            },
+            "2": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java",
+                "start_line": 56,
+                "end_line": 63
+            },
+            "3": {
+                "file": "app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java",
+                "start_line": 71,
+                "end_line": 71
+            }
+        }
+    },
+    "bug-171": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java",
+                "start_line": 1600,
+                "end_line": 1600
+            },
+            "1": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java",
+                "start_line": 13,
+                "end_line": 16
+            },
+            "2": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java",
+                "start_line": 27,
+                "end_line": 28
+            },
+            "3": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java",
+                "start_line": 45,
+                "end_line": 70
+            }
+        }
+    },
+    "bug-18": {
+        "buggy_hunks": {
+            "0": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/MedicineCreateOrEditFragment.java",
+                "start_line": 486,
+                "end_line": 486
+            },
+            "1": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/RoutineCreateOrEditFragment.java",
+                "start_line": 119,
+                "end_line": 122
+            },
+            "2": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleImportFragment.java",
+                "start_line": 530,
+                "end_line": 530
+            },
+            "3": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleImportFragment.java",
+                "start_line": 570,
+                "end_line": 570
+            },
+            "4": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleImportFragment.java",
+                "start_line": 1056,
+                "end_line": 1056
+            },
+            "5": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleImportFragment.java",
+                "start_line": 1072,
+                "end_line": 1072
+            },
+            "6": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleImportFragment.java",
+                "start_line": 1105,
+                "end_line": 1105
+            },
+            "7": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+                "start_line": 314,
+                "end_line": 314
+            },
+            "8": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+                "start_line": 542,
+                "end_line": 542
+            },
+            "9": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+                "start_line": 554,
+                "end_line": 554
+            },
+            "10": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+                "start_line": 595,
+                "end_line": 595
+            },
+            "11": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+                "start_line": 1021,
+                "end_line": 1021
+            },
+            "12": {
+                "file": "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java",
+                "start_line": 1037,
+                "end_line": 1037
+            }
+        }
+    },
+    "bug-181": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java",
+                "start_line": 162,
+                "end_line": 164
+            },
+            "1": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java",
+                "start_line": 489,
+                "end_line": 507
+            },
+            "2": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java",
+                "start_line": 735,
+                "end_line": 784
+            },
+            "3": {
+                "file": "app/src/main/java/com/simon/harmonichackernews/network/JSONParser.java",
+                "start_line": 33,
+                "end_line": 44
+            }
+        }
+    },
+    "bug-191": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java",
+                "start_line": 98,
+                "end_line": 102
+            },
+            "1": {
+                "file": "app/src/main/java/ch/logixisland/anuto/view/game/TowerView.java",
+                "start_line": 125,
+                "end_line": 128
+            }
+        }
+    },
+    "bug-192": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java",
+                "start_line": 49,
+                "end_line": 49
+            },
+            "1": {
+                "file": "app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java",
+                "start_line": 99,
+                "end_line": 107
+            },
+            "2": {
+                "file": "app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java",
+                "start_line": 117,
+                "end_line": 116
+            },
+            "3": {
+                "file": "app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java",
+                "start_line": 139,
+                "end_line": 143
+            },
+            "4": {
+                "file": "app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java",
+                "start_line": 277,
+                "end_line": 277
+            }
+        }
+    },
+    "bug-2587": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/pslab/communication/HttpAsyncTask.java",
+                "start_line": 5,
+                "end_line": 6
+            },
+            "1": {
+                "file": "app/src/main/java/io/pslab/communication/HttpAsyncTask.java",
+                "start_line": 29,
+                "end_line": 29
+            },
+            "2": {
+                "file": "app/src/main/java/io/pslab/fragment/ESPFragment.java",
+                "start_line": 23,
+                "end_line": 22
+            },
+            "3": {
+                "file": "app/src/main/java/io/pslab/fragment/ESPFragment.java",
+                "start_line": 50,
+                "end_line": 50
+            },
+            "4": {
+                "file": "app/src/main/java/io/pslab/fragment/ESPFragment.java",
+                "start_line": 107,
+                "end_line": 107
+            }
+        }
+    },
+    "bug-2677": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 71,
+                "end_line": 74
+            },
+            "1": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 231,
+                "end_line": 232
+            },
+            "2": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 254,
+                "end_line": 255
+            },
+            "3": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 277,
+                "end_line": 278
+            },
+            "4": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 300,
+                "end_line": 301
+            },
+            "5": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 486,
+                "end_line": 486
+            },
+            "6": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 503,
+                "end_line": 510
+            }
+        }
+    },
+    "bug-2678": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 482,
+                "end_line": 489
+            },
+            "1": {
+                "file": "app/src/main/java/io/pslab/activity/RoboticArmActivity.java",
+                "start_line": 498,
+                "end_line": 509
+            }
+        }
+    },
+    "bug-271": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java",
+                "start_line": 69,
+                "end_line": 84
+            }
+        }
+    },
+    "bug-273": {
+        "buggy_hunks": {
+            "0": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+                "start_line": 45,
+                "end_line": 52
+            },
+            "1": {
+                "file": "AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java",
+                "start_line": 64,
+                "end_line": 79
+            }
+        }
+    },
+    "bug-275": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java",
+                "start_line": 96,
+                "end_line": 101
+            },
+            "1": {
+                "file": "app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java",
+                "start_line": 120,
+                "end_line": 120
+            },
+            "2": {
+                "file": "app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java",
+                "start_line": 145,
+                "end_line": 145
+            },
+            "3": {
+                "file": "app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java",
+                "start_line": 48,
+                "end_line": 53
+            },
+            "4": {
+                "file": "app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java",
+                "start_line": 117,
+                "end_line": 117
+            },
+            "5": {
+                "file": "app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java",
+                "start_line": 129,
+                "end_line": 129
+            }
+        }
+    },
+    "bug-358": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+                "start_line": 4,
+                "end_line": 3
+            },
+            "1": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+                "start_line": 76,
+                "end_line": 75
+            },
+            "2": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+                "start_line": 103,
+                "end_line": 135
+            }
+        }
+    },
+    "bug-365": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java",
+                "start_line": 191,
+                "end_line": 200
+            }
+        }
+    },
+    "bug-382": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+                "start_line": 76,
+                "end_line": 75
+            },
+            "1": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java",
+                "start_line": 106,
+                "end_line": 117
+            }
+        }
+    },
+    "bug-44": {
+        "buggy_hunks": {
+            "0": {
+                "file": "omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java",
+                "start_line": 31,
+                "end_line": 31
+            },
+            "1": {
+                "file": "omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java",
+                "start_line": 91,
+                "end_line": 93
+            }
+        }
+    },
+    "bug-447": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/trianguloy/urlchecker/modules/companions/PatternCatalog.java",
+                "start_line": 58,
+                "end_line": 68
+            }
+        }
+    },
+    "bug-53": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java",
+                "start_line": 96,
+                "end_line": 108
+            }
+        }
+    },
+    "bug-54": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java",
+                "start_line": 229,
+                "end_line": 231
+            },
+            "1": {
+                "file": "app/src/main/java/net/gsantner/markor/util/DocumentIO.java",
+                "start_line": 112,
+                "end_line": 119
+            }
+        }
+    },
+    "bug-71": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java",
+                "start_line": 78,
+                "end_line": 78
+            },
+            "1": {
+                "file": "app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java",
+                "start_line": 89,
+                "end_line": 89
+            }
+        }
+    },
+    "bug-8": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java",
+                "start_line": 83,
+                "end_line": 90
+            },
+            "1": {
+                "file": "app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java",
+                "start_line": 440,
+                "end_line": 442
+            },
+            "2": {
+                "file": "app/src/main/java/de/koelle/christian/trickytripper/activities/ParticipantTabActivity.java",
+                "start_line": 225,
+                "end_line": 234
+            },
+            "3": {
+                "file": "app/src/main/java/de/koelle/christian/trickytripper/activities/PaymentTabActivity.java",
+                "start_line": 258,
+                "end_line": 267
+            }
+        }
+    },
+    "bug-84": {
+        "buggy_hunks": {
+            "0": {
+                "file": "ultrasonic/src/main/java/org/moire/ultrasonic/util/Constants.java",
+                "start_line": 134,
+                "end_line": 133
+            },
+            "1": {
+                "file": "ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java",
+                "start_line": 209,
+                "end_line": 209
+            },
+            "2": {
+                "file": "ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java",
+                "start_line": 403,
+                "end_line": 403
+            }
+        }
+    },
+    "bug-92": {
+        "buggy_hunks": {
+            "0": {
+                "file": "app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java",
+                "start_line": 46,
+                "end_line": 47
+            },
+            "1": {
+                "file": "app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java",
+                "start_line": 126,
+                "end_line": 126
+            }
+        }
+    }
+}

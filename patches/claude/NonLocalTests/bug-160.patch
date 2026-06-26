@@ -1,0 +1,35 @@
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/Reviewer.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/Reviewer.java
+@@ -432,6 +432,7 @@
+         if (mShowWhiteboard && mWhiteboard != null && mWhiteboard.undoSize() > 0) {
+             // Whiteboard undo queue non-empty. Switch the undo icon to a whiteboard specific one.
+             menu.findItem(R.id.action_undo).setIcon(R.drawable.ic_eraser_variant_white_24dp);
++            menu.findItem(R.id.action_undo).setEnabled(true).getIcon().setAlpha(Themes.ALPHA_ICON_ENABLED_LIGHT);
+         } else if (mShowWhiteboard && mWhiteboard != null && mWhiteboard.isUndoModeActive()) {
+             // Whiteboard undo queue empty, but user has added strokes to it for current card. Disable undo button.
+             menu.findItem(R.id.action_undo).setIcon(R.drawable.ic_eraser_variant_white_24dp);
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/Whiteboard.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/Whiteboard.java
+@@ -206,8 +206,11 @@
+     public void undo() {
+         mUndo.pop();
+         mUndo.apply();
+-        if (undoSize() == 0 && mCardViewer.get() != null) {
+-            mCardViewer.get().supportInvalidateOptionsMenu();
++        if (undoSize() == 0) {
++            mUndoModeActive = false;
++            if (mCardViewer.get() != null) {
++                mCardViewer.get().supportInvalidateOptionsMenu();
++            }
+         }
+     }
+ 
+@@ -277,7 +280,7 @@
+         mUndoModeActive = true;
+         // kill the path so we don't double draw
+         mPath.reset();
+-        if (mUndo.size() == 1 && mCardViewer.get() != null) {
++        if (mCardViewer.get() != null) {
+             mCardViewer.get().supportInvalidateOptionsMenu();
+         }
+     }

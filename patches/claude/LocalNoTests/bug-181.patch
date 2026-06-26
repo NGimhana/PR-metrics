@@ -1,0 +1,36 @@
+--- a/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
++++ b/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
+@@ -736,6 +736,33 @@
+ 
+                             if (hideClicked && story.clicked) {
+                                 iterator.remove();
++                                continue;
++                            }
++
++                            // filter by words
++                            boolean filtered = false;
++                            for (String phrase : filterWords) {
++                                if (story.title.toLowerCase().contains(phrase.toLowerCase())) {
++                                    iterator.remove();
++                                    filtered = true;
++                                    break;
++                                }
++                            }
++                            if (filtered) continue;
++
++                            // filter by domain
++                            for (String phrase : filterDomains) {
++                                if (story.url.toLowerCase().contains(phrase.toLowerCase())) {
++                                    iterator.remove();
++                                    filtered = true;
++                                    break;
++                                }
++                            }
++                            if (filtered) continue;
++
++                            // filter jobs
++                            if (hideJobs && adapter.type != SettingsUtils.getJobsIndex(getResources()) && (story.isJob || story.by.equals("whoishiring"))) {
++                                iterator.remove();
+                             }
+                         }
+ 

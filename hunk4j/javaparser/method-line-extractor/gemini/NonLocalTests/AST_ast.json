@@ -1,0 +1,584 @@
+{
+    "bug-54": {
+        "app/src/main/java/net/gsantner/markor/util/DocumentIO.java": {
+            "diameter": 35,
+            "pairs": {}
+        },
+        "app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java": {
+            "diameter": 29,
+            "pairs": {}
+        }
+    },
+    "bug-8": {"app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java": {
+        "diameter": 30,
+        "pairs": {}
+    }},
+    "bug-71": {"app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java": {
+        "diameter": 34,
+        "pairs": {"0_1": 5}
+    }},
+    "bug-92": {"app/src/main/java/com/vrem/wifianalyzer/vendor/model/VendorDB.java": {
+        "diameter": 29,
+        "pairs": {}
+    }},
+    "bug-53": {"app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java": {
+        "diameter": 33,
+        "pairs": {}
+    }},
+    "bug-365": {"app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java": {
+        "diameter": 27,
+        "pairs": {}
+    }},
+    "bug-447": {"app/src/main/java/com/trianguloy/urlchecker/modules/companions/PatternCatalog.java": {
+        "diameter": 27,
+        "pairs": {}
+    }},
+    "bug-129": {"app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java": {
+        "diameter": 37,
+        "pairs": {
+            "0_1": 5,
+            "0_2": 5,
+            "1_2": 2
+        }
+    }},
+    "bug-160": {"AnkiDroid/src/main/java/com/ichi2/anki/Reviewer.java": {
+        "diameter": 33,
+        "pairs": {}
+    }},
+    "bug-1563": {"app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java": {
+        "diameter": 66,
+        "pairs": {
+            "0_1": 0,
+            "0_2": 2,
+            "0_3": 3,
+            "1_2": 2,
+            "1_3": 3,
+            "2_3": 5
+        }
+    }},
+    "bug-1640": {"app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java": {
+        "diameter": 19,
+        "pairs": {}
+    }},
+    "bug-1146": {"GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java": {
+        "diameter": 36,
+        "pairs": {
+            "0_1": 3,
+            "0_2": 7,
+            "1_2": 4
+        }
+    }},
+    "bug-181": {"app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java": {
+        "diameter": 41,
+        "pairs": {}
+    }},
+    "bug-2677": {"app/src/main/java/io/pslab/activity/RoboticArmActivity.java": {
+        "diameter": 37,
+        "pairs": {
+            "0_1": 4,
+            "0_2": 3,
+            "0_3": 7,
+            "1_2": 1,
+            "0_4": 4,
+            "1_3": 5,
+            "0_5": 1,
+            "1_4": 2,
+            "2_3": 4,
+            "0_6": 2,
+            "1_5": 3,
+            "2_4": 1,
+            "1_6": 4,
+            "2_5": 2,
+            "3_4": 5,
+            "2_6": 3,
+            "3_5": 6,
+            "3_6": 7,
+            "4_5": 3,
+            "4_6": 4,
+            "5_6": 1
+        }
+    }},
+    "bug-1202": {"app/src/main/java/swati4star/createpdf/activity/ImageEditor.java": {
+        "diameter": 31,
+        "pairs": {
+            "0_1": 8,
+            "0_2": 4,
+            "0_3": 12,
+            "1_2": 4,
+            "0_4": 4,
+            "1_3": 12,
+            "1_4": 4,
+            "2_3": 8,
+            "2_4": 0,
+            "3_4": 8
+        }
+    }},
+    "bug-382": {"app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java": {
+        "diameter": 33,
+        "pairs": {}
+    }},
+    "bug-2678": {"app/src/main/java/io/pslab/activity/RoboticArmActivity.java": {
+        "diameter": 37,
+        "pairs": {"0_1": 1}
+    }},
+    "bug-1205": {
+        "app/src/main/java/swati4star/createpdf/fragment/RemovePagesFragment.java": {
+            "diameter": 32,
+            "pairs": {
+                "17_18": 3,
+                "17_19": 1,
+                "18_19": 2
+            }
+        },
+        "app/src/main/java/swati4star/createpdf/fragment/SplitFilesFragment.java": {
+            "diameter": 27,
+            "pairs": {
+                "22_20": 1,
+                "22_21": 1,
+                "20_21": 2
+            }
+        },
+        "app/src/main/java/swati4star/createpdf/activity/MainActivity.java": {
+            "diameter": 27,
+            "pairs": {"0_1": 1}
+        },
+        "app/src/main/java/swati4star/createpdf/fragment/PdfToImageFragment.java": {
+            "diameter": 22,
+            "pairs": {
+                "11_12": 3,
+                "12_13": 2,
+                "11_13": 3
+            }
+        },
+        "app/src/main/java/swati4star/createpdf/fragment/RemoveDuplicatePagesFragment.java": {
+            "diameter": 21,
+            "pairs": {
+                "14_16": 2,
+                "14_15": 3,
+                "15_16": 1
+            }
+        },
+        "app/src/main/java/swati4star/createpdf/fragment/AddImagesFragment.java": {
+            "diameter": 34,
+            "pairs": {
+                "2_3": 2,
+                "2_4": 1,
+                "3_4": 1
+            }
+        },
+        "app/src/main/java/swati4star/createpdf/fragment/MergeFilesFragment.java": {
+            "diameter": 37,
+            "pairs": {
+                "8_9": 3,
+                "8_10": 1,
+                "9_10": 2
+            }
+        },
+        "app/src/main/java/swati4star/createpdf/fragment/InvertPdfFragment.java": {
+            "diameter": 21,
+            "pairs": {
+                "5_6": 2,
+                "5_7": 4,
+                "6_7": 4
+            }
+        }
+    },
+    "bug-1568": {"app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java": {
+        "diameter": 31,
+        "pairs": {
+            "0_1": 7,
+            "0_2": 2,
+            "1_2": 5
+        }
+    }},
+    "bug-1645": {"app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java": {
+        "diameter": 26,
+        "pairs": {"0_1": 2}
+    }},
+    "bug-1207": {"app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java": {
+        "diameter": 30,
+        "pairs": {}
+    }},
+    "bug-44": {"omniNotes/src/main/java/it/feio/android/omninotes/utils/TagsHelper.java": {
+        "diameter": 29,
+        "pairs": {}
+    }},
+    "bug-84": {
+        "ultrasonic/src/main/java/org/moire/ultrasonic/util/Constants.java": {
+            "diameter": 10,
+            "pairs": {}
+        },
+        "ultrasonic/src/main/java/org/moire/ultrasonic/util/Util.java": {
+            "diameter": 35,
+            "pairs": {"1_2": 6}
+        }
+    },
+    "bug-114": {"app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java": {
+        "diameter": 23,
+        "pairs": {"0_1": 10}
+    }},
+    "bug-136": {
+        "app/src/main/java/com/simon/harmonichackernews/MainActivity.java": {
+            "diameter": 146,
+            "pairs": {}
+        },
+        "app/src/main/java/com/simon/harmonichackernews/network/UserActions.java": {
+            "diameter": 38,
+            "pairs": {}
+        },
+        "app/src/main/java/com/simon/harmonichackernews/ComposeActivity.java": {
+            "diameter": 36,
+            "pairs": {"0_1": 16}
+        }
+    },
+    "bug-1151": {
+        "GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java": {
+            "diameter": 42,
+            "pairs": {
+                "0_1": 3,
+                "0_2": 2,
+                "1_2": 5
+            }
+        },
+        "GPSTest/src/main/java/com/android/gpstest/Preferences.java": {
+            "diameter": 30,
+            "pairs": {}
+        }
+    },
+    "bug-159": {
+        "AnkiDroid/src/main/java/com/ichi2/anki/CardBrowser.java": {
+            "diameter": 38,
+            "pairs": {
+                "0_1": 1,
+                "0_2": 4,
+                "1_2": 3
+            }
+        },
+        "AnkiDroid/src/main/java/com/ichi2/anki/NoteEditor.java": {
+            "diameter": 39,
+            "pairs": {}
+        }
+    },
+    "bug-1130": {
+        "app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java": {
+            "diameter": 38,
+            "pairs": {"1_2": 6}
+        },
+        "app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java": {
+            "diameter": 35,
+            "pairs": {}
+        }
+    },
+    "bug-358": {"app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java": {
+        "diameter": 28,
+        "pairs": {}
+    }},
+    "bug-1198": {"app/src/main/java/swati4star/createpdf/adapter/ViewFilesAdapter.java": {
+        "diameter": 43,
+        "pairs": {}
+    }},
+    "bug-171": {
+        "app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTagHandler.java": {
+            "diameter": 40,
+            "pairs": {
+                "7_8": 9,
+                "6_7": 8,
+                "6_8": 1
+            }
+        },
+        "app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTextView.java": {
+            "diameter": 22,
+            "pairs": {
+                "11_10": 3,
+                "11_9": 0,
+                "9_10": 3
+            }
+        },
+        "app/src/main/java/org/sufficientlysecure/htmltextview/HtmlFormatterBuilder.java": {
+            "diameter": 12,
+            "pairs": {
+                "3_4": 0,
+                "3_5": 1,
+                "4_5": 1
+            }
+        },
+        "app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java": {
+            "diameter": 19,
+            "pairs": {}
+        },
+        "app/src/main/java/org/sufficientlysecure/htmltextview/HtmlFormatter.java": {
+            "diameter": 23,
+            "pairs": {"1_2": 4}
+        }
+    },
+    "bug-271": {"app/src/main/java/com/beemdevelopment/aegis/ui/views/TotpProgressBar.java": {
+        "diameter": 23,
+        "pairs": {}
+    }},
+    "bug-191": {"app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java": {
+        "diameter": 27,
+        "pairs": {"0_1": 0}
+    }},
+    "bug-1255": {
+        "app/src/main/java/free/rm/skytube/businessobjects/YouTube/POJOs/YouTubeChannel.java": {
+            "diameter": 34,
+            "pairs": {}
+        },
+        "app/src/main/java/free/rm/skytube/gui/businessobjects/adapters/GridViewHolder.java": {
+            "diameter": 36,
+            "pairs": {}
+        },
+        "app/src/main/java/free/rm/skytube/gui/businessobjects/views/ChannelActionHandler.java": {
+            "diameter": 25,
+            "pairs": {}
+        }
+    },
+    "bug-1299": {
+        "app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java": {
+            "diameter": 32,
+            "pairs": {"7_8": 11}
+        },
+        "app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java": {
+            "diameter": 43,
+            "pairs": {}
+        },
+        "app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java": {
+            "diameter": 38,
+            "pairs": {
+                "0_1": 1,
+                "0_2": 1,
+                "0_3": 1,
+                "1_2": 0,
+                "0_4": 2,
+                "1_3": 2,
+                "0_5": 1,
+                "1_4": 3,
+                "2_3": 2,
+                "1_5": 2,
+                "2_4": 3,
+                "2_5": 2,
+                "3_4": 1,
+                "3_5": 2,
+                "4_5": 3
+            }
+        }
+    },
+    "bug-2587": {"app/src/main/java/io/pslab/fragment/ESPFragment.java": {
+        "diameter": 31,
+        "pairs": {}
+    }},
+    "bug-192": {"app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java": {
+        "diameter": 29,
+        "pairs": {}
+    }},
+    "bug-18": {
+        "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleTimetableFragment.java": {
+            "diameter": 46,
+            "pairs": {
+                "4_5": 23,
+                "4_6": 24,
+                "5_6": 23
+            }
+        },
+        "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/MedicineCreateOrEditFragment.java": {
+            "diameter": 39,
+            "pairs": {}
+        },
+        "Calendula/src/main/java/es/usc/citius/servando/calendula/fragments/ScheduleImportFragment.java": {
+            "diameter": 42,
+            "pairs": {
+                "1_2": 23,
+                "1_3": 24,
+                "2_3": 23
+            }
+        }
+    },
+    "bug-123451": {"AnkiDroid/src/main/java/com/ichi2/anki/dialogs/CustomStudyDialog.java": {
+        "diameter": 40,
+        "pairs": {}
+    }},
+    "bug-1213": {
+        "app/src/main/java/org/shadowice/flocke/andotp/Utilities/UIHelper.java": {
+            "diameter": 26,
+            "pairs": {"12_13": 0}
+        },
+        "app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java": {
+            "diameter": 24,
+            "pairs": {
+                "11_10": 4,
+                "11_9": 4,
+                "9_10": 2
+            }
+        },
+        "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java": {
+            "diameter": 21,
+            "pairs": {"4_5": 6}
+        },
+        "app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java": {
+            "diameter": 26,
+            "pairs": {
+                "7_8": 4,
+                "6_7": 7,
+                "6_8": 9
+            }
+        },
+        "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java": {
+            "diameter": 36,
+            "pairs": {
+                "0_1": 9,
+                "0_2": 9,
+                "0_3": 10,
+                "1_2": 0,
+                "1_3": 3,
+                "2_3": 3
+            }
+        }
+    },
+    "bug-275": {
+        "app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java": {
+            "diameter": 37,
+            "pairs": {
+                "0_1": 17,
+                "0_2": 11,
+                "1_2": 16
+            }
+        },
+        "app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java": {
+            "diameter": 26,
+            "pairs": {
+                "3_4": 12,
+                "3_5": 12,
+                "4_5": 10
+            }
+        }
+    },
+    "bug-1214": {
+        "app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java": {
+            "diameter": 21,
+            "pairs": {"1_2": 3}
+        },
+        "app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java": {
+            "diameter": 26,
+            "pairs": {}
+        },
+        "app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java": {
+            "diameter": 24,
+            "pairs": {}
+        },
+        "app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java": {
+            "diameter": 35,
+            "pairs": {}
+        }
+    },
+    "bug-1138": {
+        "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/kml/Kml22FileLogger.java": {
+            "diameter": 31,
+            "pairs": {
+                "17_18": 1,
+                "17_19": 0,
+                "18_19": 1
+            }
+        },
+        "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/gpx/Gpx10FileLogger.java": {
+            "diameter": 32,
+            "pairs": {
+                "14_16": 3,
+                "14_15": 4,
+                "15_16": 7
+            }
+        },
+        "gpslogger/src/main/java/com/mendhak/gpslogger/GpsMainActivity.java": {
+            "diameter": 47,
+            "pairs": {}
+        },
+        "gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java": {
+            "diameter": 14,
+            "pairs": {}
+        },
+        "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/geojson/GeoJSONWriterPoints.java": {
+            "diameter": 24,
+            "pairs": {"12_13": 3}
+        },
+        "gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java": {
+            "diameter": 43,
+            "pairs": {
+                "0_1": 1,
+                "0_2": 7,
+                "0_3": 1,
+                "1_2": 6,
+                "0_4": 2,
+                "1_3": 0,
+                "0_5": 1,
+                "1_4": 1,
+                "2_3": 6,
+                "0_6": 4,
+                "1_5": 0,
+                "2_4": 7,
+                "0_7": 3,
+                "1_6": 3,
+                "2_5": 6,
+                "3_4": 1,
+                "0_8": 1,
+                "1_7": 2,
+                "2_6": 9,
+                "3_5": 0,
+                "0_9": 3,
+                "1_8": 0,
+                "2_7": 8,
+                "3_6": 3,
+                "4_5": 1,
+                "1_9": 2,
+                "2_8": 6,
+                "3_7": 2,
+                "4_6": 4,
+                "2_9": 8,
+                "3_8": 0,
+                "4_7": 3,
+                "5_6": 3,
+                "3_9": 2,
+                "4_8": 1,
+                "5_7": 2,
+                "4_9": 3,
+                "5_8": 0,
+                "6_7": 5,
+                "5_9": 2,
+                "6_8": 3,
+                "6_9": 5,
+                "7_8": 2,
+                "7_9": 4,
+                "8_9": 2
+            }
+        },
+        "gpslogger/src/main/java/com/mendhak/gpslogger/loggers/nmea/NmeaFileLogger.java": {
+            "diameter": 25,
+            "pairs": {
+                "22_20": 4,
+                "22_21": 8,
+                "20_21": 4
+            }
+        }
+    },
+    "bug-1215": {"app/src/main/java/org/shadowice/flocke/andotp/Dialogs/ManualEntryDialog.java": {
+        "diameter": 36,
+        "pairs": {
+            "0_1": 4,
+            "0_2": 12,
+            "0_3": 8,
+            "1_2": 16,
+            "1_3": 12,
+            "2_3": 10
+        }
+    }},
+    "bug-273": {"AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java": {
+        "diameter": 28,
+        "pairs": {"0_1": 2}
+    }},
+    "bug-130": {"app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java": {
+        "diameter": 35,
+        "pairs": {
+            "0_1": 7,
+            "0_2": 1,
+            "1_2": 6
+        }
+    }}
+}

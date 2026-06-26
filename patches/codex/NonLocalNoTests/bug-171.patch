@@ -1,0 +1,66 @@
+--- a/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
++++ b/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
+@@ -1,6 +1,8 @@
+ package com.simon.harmonichackernews.utils;
+ 
+ import android.content.Context;
++import android.text.Html;
++import android.text.TextUtils;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ 
+@@ -13,7 +15,14 @@
+ import org.sufficientlysecure.htmltextview.HtmlTextView;
+ import org.sufficientlysecure.htmltextview.OnClickATagListener;
+ 
++import java.util.regex.Matcher;
++import java.util.regex.Pattern;
++
+ public class DialogUtils {
++
++    private static final Pattern ANCHOR_WITH_HREF_PATTERN = Pattern.compile(
++            "<a\\b([^>]*\\bhref\\s*=\\s*(['\"])(.*?)\\2[^>]*)>(.*?)</a>",
++            Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+ 
+     public static void showTextSelectionDialog(Context ctx, String text) {
+         MaterialAlertDialogBuilder selectTextDialogBuilder = new MaterialAlertDialogBuilder(ctx);
+@@ -21,7 +30,7 @@
+         selectTextDialogBuilder.setView(rootView);
+ 
+         HtmlTextView htmlTextView = rootView.findViewById(R.id.select_text_htmltextview);
+-        htmlTextView.setHtml(text);
++        htmlTextView.setHtml(expandTruncatedLinksForSelection(text));
+ 
+         htmlTextView.setOnClickATagListener(new OnClickATagListener() {
+             @Override
+@@ -36,4 +45,30 @@
+         selectTextDialog.show();
+     }
+ 
++    static String expandTruncatedLinksForSelection(String html) {
++        if (html == null) {
++            return "";
++        }
++
++        Matcher matcher = ANCHOR_WITH_HREF_PATTERN.matcher(html);
++        StringBuffer expandedHtml = new StringBuffer();
++
++        while (matcher.find()) {
++            String linkText = Html.fromHtml(matcher.group(4)).toString().trim();
++
++            if (linkText.endsWith("...") || linkText.endsWith("…")) {
++                String href = Html.fromHtml(matcher.group(3)).toString();
++                String replacement = "<a" + matcher.group(1) + ">"
++                        + TextUtils.htmlEncode(href)
++                        + "</a>";
++                matcher.appendReplacement(expandedHtml, Matcher.quoteReplacement(replacement));
++            } else {
++                matcher.appendReplacement(expandedHtml, Matcher.quoteReplacement(matcher.group(0)));
++            }
++        }
++
++        matcher.appendTail(expandedHtml);
++        return expandedHtml.toString();
++    }
++
+ }

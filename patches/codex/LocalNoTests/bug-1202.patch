@@ -1,0 +1,95 @@
+--- a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
++++ b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+@@ -128,11 +128,12 @@
+     @OnClick(R.id.nextimageButton)
+     void nextImg() {
+         //Proceed to next if Save Current has been clicked
+-        if (mClicked == mClickedFilter) {
++        if (canNavigateImage()) {
+             next();
+             incrementImageCount();
+             mClicked = false;
+             mClickedFilter = false;
++            mDoodleSelected = false;
+         } else
+             Toast.makeText(getApplicationContext(), R.string.save_first, Toast.LENGTH_SHORT).show();
+     }
+@@ -140,18 +141,18 @@
+     @OnClick(R.id.previousImageButton)
+     void previousImg() {
+         //move to previous if Save Current has been clicked
+-        if (mClicked == mClickedFilter) {
++        if (canNavigateImage()) {
+             previous();
+             decrementImageCount();
+             mClicked = false;
+             mClickedFilter = false;
++            mDoodleSelected = false;
+         } else
+             Toast.makeText(getApplicationContext(), R.string.save_first, Toast.LENGTH_SHORT).show();
+     }
+ 
+     @OnClick(R.id.savecurrent)
+     void saveC() {
+-        mClicked = true;
+         if (mClickedFilter || mDoodleSelected) {
+             saveCurrentImage();
+         } else {
+@@ -168,6 +169,9 @@
+                 .setImageBitmap(BitmapFactory.decodeFile(originalPath));
+         mPhotoEditor.clearAllViews();
+         mPhotoEditor.undo();
++        mClicked = false;
++        mClickedFilter = false;
++        mDoodleSelected = false;
+     }
+ 
+     /**
+@@ -227,6 +231,9 @@
+                     mImagepaths.add(mCurrentImage, imagePath);
+                     mPhotoEditorView.getSource()
+                             .setImageBitmap(BitmapFactory.decodeFile(mImagepaths.get(mCurrentImage)));
++                    mClicked = true;
++                    mClickedFilter = false;
++                    mDoodleSelected = false;
+                     Toast.makeText(getApplicationContext(), R.string.filter_saved, Toast.LENGTH_SHORT).show();
+                 }
+ 
+@@ -238,6 +245,13 @@
+         } catch (SecurityException e) {
+             e.printStackTrace();
+         }
++    }
++
++    /**
++     * Navigation is allowed when there are no pending edits or current edits are saved.
++     */
++    private boolean canNavigateImage() {
++        return mClicked || !(mClickedFilter || mDoodleSelected);
+     }
+ 
+ 
+@@ -318,6 +332,7 @@
+                 doodleSeekBar.setVisibility(View.VISIBLE);
+                 brushColorsView.setVisibility(View.VISIBLE);
+                 mDoodleSelected = true;
++                mClicked = false;
+             } else if (doodleSeekBar.getVisibility() == View.VISIBLE &&
+                     brushColorsView.getVisibility() == View.VISIBLE) {
+                 mPhotoEditor.setBrushDrawingMode(false);
+@@ -341,6 +356,9 @@
+             mPhotoEditor.setFilterEffect(filterType);
+             mFilterName = filterType.name();
+             mClickedFilter = filterType != PhotoFilter.NONE;
++            if (mClickedFilter) {
++                mClicked = false;
++            }
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+@@ -384,4 +402,4 @@
+         mPhotoEditor.setBrushColor(getResources().getColor(color));
+     }
+ 
+-}
++}

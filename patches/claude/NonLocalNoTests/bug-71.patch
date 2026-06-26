@@ -1,0 +1,24 @@
+--- a/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
++++ b/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
+@@ -78,6 +78,10 @@
+                     if (prefs.getBoolean("history-onclick", false)) {
+                         doAction("display-history");
+                     }
++                    // Show favorites bar on tap even if history-onclick is disabled
++                    if (isMinimalisticModeEnabledForFavorites()) {
++                        mainActivity.favoritesBar.setVisibility(View.VISIBLE);
++                    }
+                 }
+                 return super.onSingleTapUp(e);
+             }
+@@ -88,6 +92,10 @@
+                 if(prefs.getBoolean("double-tap", false)) {
+                     if (prefs.getBoolean("history-onclick", false)) {
+                         doAction("display-history");
++                    }
++                    // Show favorites bar on tap even if history-onclick is disabled
++                    if (isMinimalisticModeEnabledForFavorites()) {
++                        mainActivity.favoritesBar.setVisibility(View.VISIBLE);
+                     }
+                 }
+ 

@@ -1,0 +1,62 @@
+--- a/app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java
++++ b/app/src/main/java/com/beemdevelopment/aegis/ui/Dialogs.java
+@@ -94,10 +94,8 @@
+             if (isChecked) {
+                 textPassword.setTransformationMethod(null);
+                 textPassword.clearFocus();
+-                textPasswordConfirm.setEnabled(false);
+             } else {
+                 textPassword.setTransformationMethod(new PasswordTransformationMethod());
+-                textPasswordConfirm.setEnabled(true);
+             }
+         });
+ 
+@@ -116,7 +114,7 @@
+ 
+             // replace the default listener
+             button.setOnClickListener(v -> {
+-                if (!EditTextHelper.areEditTextsEqual(textPassword, textPasswordConfirm) && !switchToggleVisibility.isChecked()) {
++                if (!EditTextHelper.areEditTextsEqual(textPassword, textPasswordConfirm)) {
+                     return;
+                 }
+ 
+@@ -141,7 +139,7 @@
+         TextWatcher watcher = new TextWatcher() {
+             public void onTextChanged(CharSequence c, int start, int before, int count) {
+                 boolean equal = EditTextHelper.areEditTextsEqual(textPassword, textPasswordConfirm);
+-                buttonOK.get().setEnabled(equal || switchToggleVisibility.isChecked());
++                buttonOK.get().setEnabled(equal);
+             }
+ 
+             public void beforeTextChanged(CharSequence c, int start, int count, int after) {
+--- a/app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java
++++ b/app/src/main/java/com/beemdevelopment/aegis/ui/slides/CustomAuthenticatedSlide.java
+@@ -46,10 +46,8 @@
+             if (isChecked) {
+                 _textPassword.setTransformationMethod(null);
+                 _textPassword.clearFocus();
+-                _textPasswordConfirm.setEnabled(false);
+             } else {
+                 _textPassword.setTransformationMethod(new PasswordTransformationMethod());
+-                _textPasswordConfirm.setEnabled(true);
+             }
+         });
+ 
+@@ -113,7 +111,7 @@
+                 // intentional fallthrough
+             case CustomAuthenticationSlide.CRYPT_TYPE_PASS:
+                 if (EditTextHelper.getEditTextChars(_textPassword).length > 0) {
+-                    return EditTextHelper.areEditTextsEqual(_textPassword, _textPasswordConfirm) || _checkPasswordVisibility.isChecked();
++                    return EditTextHelper.areEditTextsEqual(_textPassword, _textPasswordConfirm);
+                 }
+ 
+                 return false;
+@@ -125,7 +123,7 @@
+     @Override
+     public void onUserIllegallyRequestedNextPage() {
+         String message;
+-        if (!EditTextHelper.areEditTextsEqual(_textPassword, _textPasswordConfirm) && !_checkPasswordVisibility.isChecked()) {
++        if (!EditTextHelper.areEditTextsEqual(_textPassword, _textPasswordConfirm)) {
+             message = getString(R.string.password_equality_error);
+ 
+             View view = getView();

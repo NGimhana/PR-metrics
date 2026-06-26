@@ -1,0 +1,57 @@
+diff --git a/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java b/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java
+index 9db5860..c86d391 100644
+--- a/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java
++++ b/GPSTest/src/main/java/com/android/gpstest/GpsTestActivity.java
+@@ -145,6 +145,8 @@ public class GpsTestActivity extends AppCompatActivity
+ 
+     boolean mWriteNmeaTimestampToLog;
+ 
++    boolean mUseDarkTheme;
++
+     private Switch mSwitch;  // GPS on/off switch
+ 
+     private LocationManager mLocationManager;
+@@ -190,7 +192,8 @@ public class GpsTestActivity extends AppCompatActivity
+     @Override
+     public void onCreate(Bundle savedInstanceState) {
+         // Set theme
+-        if (Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false)) {
++        mUseDarkTheme = Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false);
++        if (mUseDarkTheme) {
+             setTheme(R.style.AppTheme_Dark_NoActionBar);
+         }
+         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+@@ -251,6 +254,13 @@ public class GpsTestActivity extends AppCompatActivity
+     protected void onResume() {
+         super.onResume();
+ 
++        boolean useDarkTheme = Application.getPrefs().getBoolean(getString(R.string.pref_key_dark_theme), false);
++        if (mUseDarkTheme != useDarkTheme) {
++            mUseDarkTheme = useDarkTheme;
++            recreate();
++            return;
++        }
++
+         addStatusListener();
+ 
+         addOrientationSensorListener();
+diff --git a/GPSTest/src/main/java/com/android/gpstest/Preferences.java b/GPSTest/src/main/java/com/android/gpstest/Preferences.java
+index 2be6970..ab49056 100644
+--- a/GPSTest/src/main/java/com/android/gpstest/Preferences.java
++++ b/GPSTest/src/main/java/com/android/gpstest/Preferences.java
+@@ -135,11 +135,10 @@ public class Preferences extends PreferenceActivity {
+         chkDarkTheme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+             @Override
+             public boolean onPreferenceChange(Preference preference, Object newValue) {
+-                // Close and restart Activities (clearing the back stack) to apply new theme
+-                finish();
+-                final Intent intent = getIntent();
+-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+-                startActivity(intent);
++                // Restart Activity to apply new theme
++                boolean newValueBool = (Boolean) newValue;
++                Application.getPrefs().edit().putBoolean(getString(R.string.pref_key_dark_theme), newValueBool).commit();
++                recreate();
+                 return true;
+             }
+         });

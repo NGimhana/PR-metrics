@@ -1,0 +1,44 @@
+diff --git a/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java b/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java
+index a8dba17..a06c917 100644
+--- a/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java
++++ b/AnkiDroid/src/main/java/com/ichi2/anki/Previewer.java
+@@ -42,7 +42,14 @@ public class Previewer extends AbstractFlashcardViewer {
+         super.onCreate(savedInstanceState);
+ 
+         mCardList = getIntent().getLongArrayExtra("cardList");
+-        mIndex = getIntent().getIntExtra("index", -1);
++        if (savedInstanceState != null) {
++            mIndex = savedInstanceState.getInt("index");
++            mShowingAnswer = savedInstanceState.getBoolean("showingAnswer");
++        } else {
++            mIndex = getIntent().getIntExtra("index", -1);
++            mShowingAnswer = false;
++        }
++
+         if (mCardList.length == 0 || mIndex < 0 || mIndex > mCardList.length - 1) {
+             Timber.e("Previewer started with empty card list or invalid index");
+             finishWithoutAnimation();
+@@ -54,11 +61,22 @@ public class Previewer extends AbstractFlashcardViewer {
+         startLoadingCollection();
+     }
+ 
++    @Override
++    protected void onSaveInstanceState(Bundle outState) {
++        super.onSaveInstanceState(outState);
++        outState.putInt("index", mIndex);
++        outState.putBoolean("showingAnswer", mShowingAnswer);
++    }
++
+     @Override
+     protected void onCollectionLoaded(Collection col) {
+         super.onCollectionLoaded(col);
+         mCurrentCard = col.getCard(mCardList[mIndex]);
+-        displayCardQuestion();
++        if (mShowingAnswer) {
++            displayCardAnswer();
++        } else {
++            displayCardQuestion();
++        }
+         showBackIcon();
+     }
+ 

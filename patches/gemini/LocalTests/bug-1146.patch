@@ -1,0 +1,48 @@
+diff --git a/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java b/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java
+index 764f468..7954745 100644
+--- a/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java
++++ b/GPSTest/src/main/java/com/android/gpstest/GpsStatusFragment.java
+@@ -281,6 +281,9 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
+     }
+ 
+     private void setStarted(boolean navigating) {
++        if (navigating && (GpsTestActivity.getInstance() == null || !GpsTestActivity.getInstance().mStarted)) {
++            return;
++        }
+         if (navigating != mNavigating) {
+             if (!navigating) {
+                 mViewModel.reset();
+@@ -308,6 +311,7 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
+                 mSbasAdapter.notifyDataSetChanged();
+             }
+             mNavigating = navigating;
++            updateFilterView();
+         }
+     }
+ 
+@@ -773,16 +777,21 @@ public class GpsStatusFragment extends Fragment implements GpsTestListener {
+     }
+ 
+     private void updateFilterView() {
+-        Context c = getContext();
+-        if (c == null) {
++        if (filterGroup == null) {
+             return;
+         }
+         Set<GnssType> filter = PreferenceUtils.getGnssFilter();
+-        if (filter.isEmpty()) {
++        if (filter.isEmpty() || !mNavigating) {
+             filterGroup.setVisibility(View.GONE);
+             // Set num sats view back to normal
+-            mNumSats.setTypeface(null, Typeface.NORMAL);
++            if (mNumSats != null) {
++                mNumSats.setTypeface(null, Typeface.NORMAL);
++            }
+         } else {
++            Context c = getContext();
++            if (c == null) {
++                return;
++            }
+             // Show filter text
+             filterGroup.setVisibility(View.VISIBLE);
+             filterTextView.setText(c.getString(R.string.filter_text, svVisibleCount, svCount));

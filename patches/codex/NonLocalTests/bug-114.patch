@@ -1,0 +1,60 @@
+--- a/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java
++++ b/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java
+@@ -23,6 +23,7 @@
+ import android.text.method.Touch;
+ import android.text.style.ClickableSpan;
+ import android.view.MotionEvent;
++import android.view.ViewConfiguration;
+ import android.widget.TextView;
+ 
+ /**
+@@ -30,6 +31,8 @@
+  */
+ public class LocalLinkMovementMethod extends LinkMovementMethod {
+     static LocalLinkMovementMethod sInstance;
++    private ClickableSpan pressedSpan;
++    private long downTime;
+ 
+     public static LocalLinkMovementMethod getInstance() {
+         if (sInstance == null)
+@@ -43,7 +46,8 @@
+         int action = event.getAction();
+ 
+         if (action == MotionEvent.ACTION_UP ||
+-                action == MotionEvent.ACTION_DOWN) {
++                action == MotionEvent.ACTION_DOWN ||
++                action == MotionEvent.ACTION_CANCEL) {
+             int x = (int) event.getX();
+             int y = (int) event.getY();
+ 
+@@ -60,16 +64,27 @@
+             ClickableSpan[] link = buffer.getSpans(off, off, ClickableSpan.class);
+ 
+             if (link.length != 0) {
+-                if (action == MotionEvent.ACTION_UP) {
+-                    link[0].onClick(widget);
+-                } else if (action == MotionEvent.ACTION_DOWN) {
++                if (action == MotionEvent.ACTION_DOWN) {
++                    pressedSpan = link[0];
++                    downTime = event.getEventTime();
+                     Selection.setSelection(buffer,
+                             buffer.getSpanStart(link[0]),
+                             buffer.getSpanEnd(link[0]));
++                } else if (action == MotionEvent.ACTION_UP) {
++                    boolean isLongPress = event.getEventTime() - downTime >= ViewConfiguration.getLongPressTimeout();
++                    if (!isLongPress && pressedSpan == link[0]) {
++                        link[0].onClick(widget);
++                    }
++                    pressedSpan = null;
++                    Selection.removeSelection(buffer);
++                } else {
++                    pressedSpan = null;
++                    Selection.removeSelection(buffer);
+                 }
+ 
+                 return true;
+             } else {
++                pressedSpan = null;
+                 Selection.removeSelection(buffer);
+                 Touch.onTouchEvent(widget, buffer, event);
+                 return false;

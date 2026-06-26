@@ -1,0 +1,11 @@
+--- a/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java
+@@ -919,7 +919,7 @@
+         ArrayList<UserDefineObject> trips = getTrips();
+ 
+         for (UserDefineObject object : trips)
+-            if (trip.overlapsTrip((Trip)object))
++            if (!object.getId().equals(trip.getId()) && trip.overlapsTrip((Trip)object))
+                 return true;
+ 
+         return false;

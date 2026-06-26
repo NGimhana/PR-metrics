@@ -1,0 +1,28 @@
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+@@ -19,6 +19,7 @@
+ import com.trianguloy.urlchecker.utilities.methods.Inflater;
+ import com.trianguloy.urlchecker.utilities.methods.JavaUtils;
+ 
++import java.net.URLDecoder;
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+@@ -74,7 +75,16 @@
+ 
+         // parse
+         var uri = Uri.parse(urlData.url);
+-        var urlQuerySanitizer = new UrlQuerySanitizer();
++        var urlQuerySanitizer = new UrlQuerySanitizer() {
++            @Override
++            public String unescape(String string) {
++                try {
++                    return URLDecoder.decode(string, "UTF-8");
++                } catch (Exception e) {
++                    return super.unescape(string);
++                }
++            }
++        };
+         // the default parseUrl doesn't remove the fragment
+         if (uri.getQuery() != null) {
+             urlQuerySanitizer.setAllowUnregisteredParamaters(true);

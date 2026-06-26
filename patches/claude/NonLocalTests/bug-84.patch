@@ -1,0 +1,22 @@
+--- a/ultrasonic/src/main/java/org/moire/ultrasonic/fragment/ServerSettingsFragment.java
++++ b/ultrasonic/src/main/java/org/moire/ultrasonic/fragment/ServerSettingsFragment.java
+@@ -61,7 +61,7 @@
+         super.onCreate(savedInstanceState);
+ 
+         serverId = getArguments().getInt(ARG_SERVER_ID);
+-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
++        sharedPreferences = Util.getPreferences(getActivity());
+ 
+         addPreferencesFromResource(R.xml.server_settings);
+     }
+--- a/ultrasonic/src/main/java/org/moire/ultrasonic/fragment/SettingsFragment.java
++++ b/ultrasonic/src/main/java/org/moire/ultrasonic/fragment/SettingsFragment.java
+@@ -76,7 +76,7 @@
+ 
+         addPreferencesFromResource(R.xml.settings);
+ 
+-        settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
++        settings = Util.getPreferences(getActivity());
+     }
+ 
+     @Override

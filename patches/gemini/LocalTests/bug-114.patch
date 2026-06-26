@@ -1,0 +1,20 @@
+diff --git a/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java b/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java
+index 1a36cfe..db48885 100644
+--- a/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java
++++ b/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java
+@@ -61,11 +61,14 @@ public class LocalLinkMovementMethod extends LinkMovementMethod {
+ 
+             if (link.length != 0) {
+                 if (action == MotionEvent.ACTION_UP) {
+-                    link[0].onClick(widget);
++                    if (event.getEventTime() - event.getDownTime() < android.view.ViewConfiguration.getLongPressTimeout()) {
++                        link[0].onClick(widget);
++                    }
+                 } else if (action == MotionEvent.ACTION_DOWN) {
+                     Selection.setSelection(buffer,
+                             buffer.getSpanStart(link[0]),
+                             buffer.getSpanEnd(link[0]));
++                    return false;
+                 }
+ 
+                 return true;

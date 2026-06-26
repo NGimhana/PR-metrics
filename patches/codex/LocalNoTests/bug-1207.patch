@@ -1,0 +1,153 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/View/ManualEntryDialog.java
+@@ -50,6 +50,39 @@
+ import java.util.concurrent.Callable;
+ 
+ public class ManualEntryDialog {
++    private static Integer parsePositiveInt(EditText input, boolean showErrors) {
++        String value = input.getText().toString().trim();
++
++        if (TextUtils.isEmpty(value)) {
++            if (showErrors) {
++                input.setError(input.getContext().getString(R.string.error_value_required));
++            }
++
++            return null;
++        }
++
++        try {
++            int parsedValue = Integer.parseInt(value);
++
++            if (parsedValue <= 0) {
++                if (showErrors) {
++                    input.setError(input.getContext().getString(R.string.error_value_must_be_positive));
++                }
++
++                return null;
++            }
++
++            input.setError(null);
++            return parsedValue;
++        } catch (NumberFormatException e) {
++            if (showErrors) {
++                input.setError(input.getContext().getString(R.string.error_value_must_be_positive));
++            }
++
++            return null;
++        }
++    }
++
+     public static void show(final MainActivity callingActivity, Settings settings, final EntriesCardAdapter adapter) {
+         ViewGroup container = callingActivity.findViewById(R.id.main_content);
+         View inputView = callingActivity.getLayoutInflater().inflate(R.layout.dialog_manual_entry, container, false);
+@@ -160,37 +193,56 @@
+         AlertDialog.Builder builder = new AlertDialog.Builder(callingActivity);
+         builder.setTitle(R.string.dialog_title_manual_entry)
+                 .setView(inputView)
+-                .setPositiveButton(R.string.button_save, new DialogInterface.OnClickListener() {
+-                    @Override
+-                    public void onClick(DialogInterface dialogInterface, int i) {
+-                        Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
+-                        TokenCalculator.HashAlgorithm algorithm = (TokenCalculator.HashAlgorithm) algorithmInput.getSelectedItem();
+-
+-                        if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
+-                            String label = labelInput.getText().toString();
+-                            String secret = secretInput.getText().toString();
+-                            int period = Integer.parseInt(periodInput.getText().toString());
+-                            int digits = Integer.parseInt(digitsInput.getText().toString());
+-
+-                            Entry e = new Entry(type, secret, period, digits, label, algorithm, tagsAdapter.getActiveTags());
+-                            e.updateOTP();
+-                            adapter.addEntry(e);
+-                            adapter.saveEntries();
+-
+-                            callingActivity.refreshTags();
+-                        }
+-                    }
+-                })
++                .setPositiveButton(R.string.button_save, null)
+                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                     @Override
+                     public void onClick(DialogInterface dialogInterface, int i) {}
+                 });
+ 
+-        AlertDialog dialog = builder.create();
++        final AlertDialog dialog = builder.create();
+         dialog.show();
+ 
+         final Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+         positiveButton.setEnabled(false);
++        final Runnable updatePositiveButtonState = new Runnable() {
++            @Override
++            public void run() {
++                boolean hasLabel = !TextUtils.isEmpty(labelInput.getText().toString().trim());
++                boolean hasSecret = !TextUtils.isEmpty(secretInput.getText().toString().trim());
++                boolean hasValidPeriod = parsePositiveInt(periodInput, true) != null;
++                boolean hasValidDigits = parsePositiveInt(digitsInput, true) != null;
++
++                positiveButton.setEnabled(hasLabel && hasSecret && hasValidPeriod && hasValidDigits);
++            }
++        };
++
++        positiveButton.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                Entry.OTPType type = (Entry.OTPType) typeInput.getSelectedItem();
++                TokenCalculator.HashAlgorithm algorithm = (TokenCalculator.HashAlgorithm) algorithmInput.getSelectedItem();
++
++                Integer period = parsePositiveInt(periodInput, true);
++                Integer digits = parsePositiveInt(digitsInput, true);
++                if (period == null || digits == null) {
++                    updatePositiveButtonState.run();
++                    return;
++                }
++
++                if (type == Entry.OTPType.TOTP || type == Entry.OTPType.STEAM) {
++                    String label = labelInput.getText().toString();
++                    String secret = secretInput.getText().toString();
++
++                    Entry e = new Entry(type, secret, period, digits, label, algorithm, tagsAdapter.getActiveTags());
++                    e.updateOTP();
++                    adapter.addEntry(e);
++                    adapter.saveEntries();
++
++                    callingActivity.refreshTags();
++                    dialog.dismiss();
++                }
++            }
++        });
+ 
+         TextWatcher watcher = new TextWatcher() {
+             @Override
+@@ -203,15 +255,15 @@
+ 
+             @Override
+             public void afterTextChanged(Editable editable) {
+-                if (TextUtils.isEmpty(labelInput.getText()) || TextUtils.isEmpty(secretInput.getText())) {
+-                    positiveButton.setEnabled(false);
+-                } else {
+-                    positiveButton.setEnabled(true);
+-                }
++                updatePositiveButtonState.run();
+             }
+         };
+ 
+         labelInput.addTextChangedListener(watcher);
+         secretInput.addTextChangedListener(watcher);
++        periodInput.addTextChangedListener(watcher);
++        digitsInput.addTextChangedListener(watcher);
++
++        updatePositiveButtonState.run();
+     }
+ }
+--- a/app/src/main/res/values/strings_main.xml
++++ b/app/src/main/res/values/strings_main.xml
+@@ -57,6 +57,8 @@
+     <string name="toast_entry_exists">This entry already exists</string>
+     <string name="toast_invalid_qr_code">Invalid QR Code</string>
+     <string name="toast_encryption_key_empty">Encryption key not loaded</string>
++    <string name="error_value_required">Value required</string>
++    <string name="error_value_must_be_positive">Must be greater than 0</string>
+ 
+     <!-- Dialogs -->
+     <string name="dialog_title_auth">Authenticate</string>

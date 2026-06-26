@@ -1,0 +1,93 @@
+diff --git a/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java b/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
+index b7298fe..5df3a13 100644
+--- a/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
+@@ -124,15 +124,17 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
+         FishingSpot fishingSpot = getNewFishingSpot();
+         fishingSpot.setName(mNameView.getInputText());
+ 
+-        if (mMap != null) {
+-            fishingSpot.setLatitude(mMap.getCameraPosition().target.latitude);
+-            fishingSpot.setLongitude(mMap.getCameraPosition().target.longitude);
+-        } else {
+-            // in case Google Play Services isn't available, fishing spots can still be added and updated later
+-            fishingSpot.setLatitude(0.0);
+-            fishingSpot.setLongitude(0.0);
++        double lat = getCoordinate(mLatitudeView);
++        double lng = getCoordinate(mLongitudeView);
++
++        if (Double.isNaN(lat) || Double.isNaN(lng) || !mMapFragment.isValid(new LatLng(lat, lng))) {
++            AlertUtils.showError(getActivity(), R.string.msg_invalid_coordinate);
++            return false;
+         }
+ 
++        fishingSpot.setLatitude(lat);
++        fishingSpot.setLongitude(lng);
++
+         // name
+         if (fishingSpot.isNameNull()) {
+             AlertUtils.showError(getActivity(), R.string.error_name);
+@@ -240,19 +242,15 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
+         refreshButton.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-                if (mLatitudeView.getInputText() == null || mLongitudeView.getInputText() == null)
+-                    return;
+-
+-                double lat = validateCoordinateInput(mLatitudeView);
+-                double lng = validateCoordinateInput(mLongitudeView);
+-
+-                if (lat != -1 && lng != -1) {
+-                    LatLng latLng = new LatLng(lat, lng);
++                double lat = getCoordinate(mLatitudeView);
++                double lng = getCoordinate(mLongitudeView);
+ 
+-                    if (mMapFragment.isValid(latLng)) {
+-                        mMapFragment.updateCameraNoZoom(latLng);
+-                    }
++                if (Double.isNaN(lat) || Double.isNaN(lng) || !mMapFragment.isValid(new LatLng(lat, lng))) {
++                    AlertUtils.showError(getActivity(), R.string.msg_invalid_coordinate);
++                    return;
+                 }
++
++                mMapFragment.updateCameraNoZoom(new LatLng(lat, lng));
+             }
+         });
+     }
+@@ -262,30 +260,18 @@ public class ManageFishingSpotFragment extends ManageContentFragment {
+         mLongitudeView.setInputText(String.format(getResources().getConfiguration().locale, "%.6f", coordinates.longitude));
+     }
+ 
+-    /**
+-     * Validates the given {@link InputTextView}. If the input is invalid a Toast will be displayed
+-     * to the user and the previously entered character will be removed.
+-     *
+-     * @param input The {@link InputTextView} to validate.
+-     * @return The text of the input as a double.
+-     */
+-    private double validateCoordinateInput(InputTextView input) {
++    private double getCoordinate(InputTextView input) {
+         String inputText = input.getInputText();
+ 
+-        // do not validate if the user is entering a negative coordinate
+-        if (inputText.length() == 1 && inputText.charAt(0) == '-')
+-            return -1;
++        if (inputText == null)
++            return Double.NaN;
+ 
+         try {
+-            inputText = inputText.replace(',', '.'); // some countries/keyboard use ',' in place of '.'
+-            return (double) Utils.asFloat(inputText, 0);
++            inputText = inputText.replace(',', '.');
++            return Double.parseDouble(inputText);
+         } catch (NumberFormatException e) {
+-            e.printStackTrace();
+-            Utils.showToast(getContext(), R.string.msg_invalid_coordinate);
+-            input.pressBackspace();
++            return Double.NaN;
+         }
+-
+-        return -1;
+     }
+ 
+     private void initMapFragment() {

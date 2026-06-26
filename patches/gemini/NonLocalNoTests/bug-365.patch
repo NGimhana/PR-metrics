@@ -1,0 +1,34 @@
+diff --git a/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java b/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java
+index f364dd9..770d843 100644
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java
+@@ -188,20 +188,24 @@ class RemoveQueriesDialog extends AModuleDialog {
+          * Returns the name of a query (by index)
+          */
+         public String getQueryName(int index) {
+-            return queries.get(index).split("=")[0];
++            String query = queries.get(index);
++            int idx = query.indexOf("=");
++            return idx == -1 ? query : query.substring(0, idx);
+         }
+ 
+         /**
+          * Returns the decoded value of a query (by index)
+          */
+         public String getQueryValue(int index) {
+-            String[] split = queries.get(index).split("=");
+-            if (split.length == 1) return "";
++            String query = queries.get(index);
++            int idx = query.indexOf("=");
++            if (idx == -1) return "";
++            String value = query.substring(idx + 1);
+             try {
+-                return URLDecoder.decode(split[1]);
++                return URLDecoder.decode(value);
+             } catch (Exception e) {
+                 // can't decode, return it directly
+-                return split[1];
++                return value;
+             }
+         }
+ 

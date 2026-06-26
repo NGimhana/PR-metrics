@@ -1,0 +1,45 @@
+diff --git a/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java b/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
+index 3499e3e..688b1a5 100644
+--- a/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
++++ b/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
+@@ -146,6 +146,9 @@ public class FileArrayAdapter extends BaseArrayAdapter {
+             });
+ 
+             CheckBox checkBox = v.findViewById(R.id.fileCheckBox);
++            boolean inContext = isInContext(f);
++            checkBox.setOnCheckedChangeListener(null);
++            checkBox.setChecked(inContext);
+             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                 if (isChecked && !isInContext(f)) {
+                     activity.getFileOpContext().getSecond().add(f);
+@@ -162,13 +165,8 @@ public class FileArrayAdapter extends BaseArrayAdapter {
+                 contextButton.setVisibility(View.GONE);
+             }
+ 
+-            for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
+-                if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+-                    v.setBackgroundColor(activity.getColorByAttr(R.attr.colorPrimary));
+-                    checkBox.setChecked(true);
+-                } else {
+-                    checkBox.setChecked(false);
+-                }
++            if (inContext) {
++                v.setBackgroundColor(activity.getColorByAttr(R.attr.colorPrimary));
+             }
+         }
+         return v;
+@@ -185,9 +183,11 @@ public class FileArrayAdapter extends BaseArrayAdapter {
+     }
+ 
+     private void removeFromContext(FMFile f) {
+-        for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
+-            if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+-                activity.getFileOpContext().getSecond().remove(contextFile);
++        List<FMFile> second = activity.getFileOpContext().getSecond();
++        for (int i = 0; i < second.size(); i++) {
++            if (second.get(i).getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
++                second.remove(i);
++                break;
+             }
+         }
+     }

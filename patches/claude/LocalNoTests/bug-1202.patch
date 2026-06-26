@@ -1,0 +1,10 @@
+--- a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
++++ b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+@@ -153,6 +153,7 @@
+     void saveC() {
+         mClicked = true;
+         if (mClickedFilter || mDoodleSelected) {
++            mClickedFilter = true;
+             saveCurrentImage();
+         } else {
+             applyFilter(PhotoFilter.NONE);

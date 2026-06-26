@@ -1,0 +1,56 @@
+diff --git a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+index cd2414b..96ee806 100644
+--- a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+@@ -136,6 +136,16 @@ public class FileActivity extends AppCompatActivity
+      */
+     private ListView fileListView;
+ 
++    /**
++     * The last scroll index.
++     */
++    private int lastScrollIndex = -1;
++
++    /**
++     * The last scroll offset.
++     */
++    private int lastScrollOffset = 0;
++
+     /**
+      * The {@link SharedPreferences} of this app.
+      */
+@@ -567,6 +577,11 @@ public class FileActivity extends AppCompatActivity
+      * F5
+      */
+     public void reloadCurrentDirectory() {
++        if (fileListView != null) {
++            lastScrollIndex = fileListView.getFirstVisiblePosition();
++            View v = fileListView.getChildAt(0);
++            lastScrollOffset = (v == null) ? 0 : (v.getTop() - fileListView.getPaddingTop());
++        }
+         loadPath(currentDirectory);
+     }
+ 
+@@ -614,6 +629,10 @@ public class FileActivity extends AppCompatActivity
+ 
+             arrayAdapter = new FileArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()));
+             fileListView.setAdapter(arrayAdapter);
++            if (lastScrollIndex != -1) {
++                fileListView.setSelectionFromTop(lastScrollIndex, lastScrollOffset);
++                lastScrollIndex = -1;
++            }
+         } catch (NoAccessException e) {
+             Log.w(TAG, "Can't read '" + path + "': Permission denied!");
+             fileListView.setVisibility(GONE);
+@@ -656,6 +675,11 @@ public class FileActivity extends AppCompatActivity
+         arrayAdapter = new ArchiveArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()), archive);
+         fileListView.setAdapter(arrayAdapter);
+ 
++        if (lastScrollIndex != -1) {
++            fileListView.setSelectionFromTop(lastScrollIndex, lastScrollOffset);
++            lastScrollIndex = -1;
++        }
++
+         currentDirectory = path;
+         historyMap.put(historyCounter++, new HistoryEntry(currentDirectory, archive));
+         setToolbarText();

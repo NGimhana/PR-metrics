@@ -1,0 +1,38 @@
+diff --git a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+index dfc33d5..c5ac19a 100644
+--- a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
++++ b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+@@ -226,13 +226,15 @@ public class DocumentEditFragment extends GsFragmentBase implements TextFormat.T
+     private Document loadDocument() {
+         AppSettings appSettings = new AppSettings(getActivity().getApplicationContext());
+         Document document = DocumentIO.loadDocument(getActivity(), getArguments(), _document);
+-        if (document != null){
++        if (document != null) {
++            boolean history = document.isDoHistory();
++            document.setDoHistory(true);
++            if (document.getHistory().isEmpty()) {
++                document.forceAddNextChangeToHistory();
++                document.addToHistory();
++            }
+             document.setDoHistory(appSettings.isEditorHistoryEnabled());
+         }
+-        if (document.getHistory().isEmpty()) {
+-            document.forceAddNextChangeToHistory();
+-            document.addToHistory();
+-        }
+ 
+         return document;
+     }
+diff --git a/app/src/main/java/net/gsantner/markor/util/DocumentIO.java b/app/src/main/java/net/gsantner/markor/util/DocumentIO.java
+index 965c394..9f5ffed 100644
+--- a/app/src/main/java/net/gsantner/markor/util/DocumentIO.java
++++ b/app/src/main/java/net/gsantner/markor/util/DocumentIO.java
+@@ -137,7 +137,7 @@ public class DocumentIO {
+             document.setFile(documentInitial.getFile());
+         }
+ 
+-        if (!currentText.equals(documentInitial.getContent())) {
++        if (!currentText.equals(documentInitial.getContent()) || !document.getFile().exists()) {
+             document.forceAddNextChangeToHistory();
+             document.setContent(currentText);
+             ret = FileUtils.writeFile(document.getFile(), document.getContent());

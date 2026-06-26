@@ -1,0 +1,71 @@
+diff --git a/app/src/main/res/layout/content_info.xml b/app/src/main/res/layout/content_info.xml
+index bc49db4..ad2072c 100644
+--- a/app/src/main/res/layout/content_info.xml
++++ b/app/src/main/res/layout/content_info.xml
+@@ -8,10 +8,31 @@
+     tools:context=".InfoActivity"
+     tools:showIn="@layout/activity_info">
+ 
+-    <TextView
+-        android:layout_width="wrap_content"
++    <LinearLayout
++        android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+-        android:layout_margin="@dimen/text_margin"
+-        android:text="@string/large_text" />
++        android:orientation="vertical">
+ 
+-</android.support.v4.widget.NestedScrollView>
+\ No newline at end of file
++        <TextView
++            android:id="@+id/take_me_to_license"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_margin="@dimen/text_margin"
++            android:text="@string/take_me_to_license" />
++
++        <TextView
++            android:id="@+id/license_url"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_margin="@dimen/text_margin"
++            android:text="@string/license_url" />
++
++        <TextView
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_margin="@dimen/text_margin"
++            android:text="@string/large_text" />
++
++    </LinearLayout>
++
++</android.support.v4.widget.NestedScrollView>
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index efa15f7..31f15d6 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -37,10 +37,22 @@ modification follow.\n\n\n"
+ 
+         "TERMS AND CONDITIONS\n"
+         "0. Definitions:"
+-        "\"This License\" refers to version 3 of the GNU General Public License.\n"
+-        "..."
++        "\"This License\" refers to version 3 of the GNU General Public License.\n\n"
++
++        "1. Source Code.\n"
++        "The \"source code\" for a work means the preferred form of the work\n"
++        "for making modifications to it.  \"Object code\" means any non-source\n"
++        "form of a work.\n\n"
++
++        "2. Basic Permissions.\n"
++        "All rights granted under this License are granted for the term of\n"
++        "copyright on the Program, and are irrevocable provided the stated\n"
++        "conditions are met.  This License explicitly affirms your unlimited\n"
++        "permission to run the unmodified Program."
+ 
+     </string>
++    <string name="take_me_to_license">TAKE ME TO LICENSE</string>
++    <string name="license_url">https://www.gnu.org/licenses/gpl-3.0-standalone.html</string>
+     <string name="title_activity_general_training_schedule_editor">Add Trainigns Schedule</string>
+ 
+     <string-array name="exerciseType">

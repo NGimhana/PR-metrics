@@ -1,0 +1,40 @@
+--- a/app/src/main/java/de/danoeh/antennapod/adapter/QueueRecyclerAdapter.java
++++ b/app/src/main/java/de/danoeh/antennapod/adapter/QueueRecyclerAdapter.java
+@@ -97,6 +97,8 @@
+             selectedItem = item;
+             return false;
+         });
++        holder.itemView.setTranslationX(0);
++        holder.itemView.setAlpha(1.0f);
+     }
+ 
+     @Nullable
+--- a/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
++++ b/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
+@@ -131,7 +131,6 @@
+         switch(event.action) {
+             case ADDED:
+                 queue.add(event.position, event.item);
+-                recyclerAdapter.notifyItemInserted(event.position);
+                 break;
+             case SET_QUEUE:
+                 queue = event.items;
+@@ -517,6 +516,18 @@
+             txtvEmpty.setVisibility(View.GONE);
+             recyclerView.setVisibility(View.VISIBLE);
+         }
++        recyclerAdapter.notifyDataSetChanged();
++
++        // Reset any view properties that ItemTouchHelper may have set during swipe
++        // (e.g. translationX and alpha). Deferred via post() so the reset applies
++        // after the RecyclerView completes its layout pass.
++        recyclerView.post(() -> {
++            for (int i = 0; i < recyclerView.getChildCount(); i++) {
++                View child = recyclerView.getChildAt(i);
++                child.setTranslationX(0);
++                child.setAlpha(1.0f);
++            }
++        });
+ 
+         if (restoreScrollPosition) {
+             restoreScrollPosition();

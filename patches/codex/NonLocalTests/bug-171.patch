@@ -1,0 +1,62 @@
+--- a/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
++++ b/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
+@@ -1,6 +1,7 @@
+ package com.simon.harmonichackernews.utils;
+ 
+ import android.content.Context;
++import android.text.TextUtils;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ 
+@@ -13,7 +14,42 @@
+ import org.sufficientlysecure.htmltextview.HtmlTextView;
+ import org.sufficientlysecure.htmltextview.OnClickATagListener;
+ 
++import java.util.regex.Matcher;
++import java.util.regex.Pattern;
++
+ public class DialogUtils {
++    private static final Pattern ANCHOR_PATTERN = Pattern.compile("(?is)<a\\b([^>]*)>(.*?)</a>");
++    private static final Pattern HREF_PATTERN = Pattern.compile("(?is)\\bhref\\s*=\\s*(?:\"([^\"]*)\"|'([^']*)'|([^\\s>]+))");
++
++    private static String expandTruncatedAnchorText(String text) {
++        Matcher anchorMatcher = ANCHOR_PATTERN.matcher(text);
++        StringBuffer result = new StringBuffer();
++
++        while (anchorMatcher.find()) {
++            String attrs = anchorMatcher.group(1);
++            String innerHtml = anchorMatcher.group(2);
++            String innerText = innerHtml.replaceAll("(?is)<[^>]+>", "").trim();
++            String href = null;
++
++            Matcher hrefMatcher = HREF_PATTERN.matcher(attrs);
++            if (hrefMatcher.find()) {
++                href = hrefMatcher.group(1);
++                if (href == null) href = hrefMatcher.group(2);
++                if (href == null) href = hrefMatcher.group(3);
++            }
++
++            if (!TextUtils.isEmpty(href) && innerText.startsWith("http")
++                    && (innerText.endsWith("...") || innerText.endsWith("\u2026"))) {
++                String replacement = "<a" + attrs + ">" + TextUtils.htmlEncode(href) + "</a>";
++                anchorMatcher.appendReplacement(result, Matcher.quoteReplacement(replacement));
++            } else {
++                anchorMatcher.appendReplacement(result, Matcher.quoteReplacement(anchorMatcher.group(0)));
++            }
++        }
++
++        anchorMatcher.appendTail(result);
++        return result.toString();
++    }
+ 
+     public static void showTextSelectionDialog(Context ctx, String text) {
+         MaterialAlertDialogBuilder selectTextDialogBuilder = new MaterialAlertDialogBuilder(ctx);
+@@ -21,7 +57,7 @@
+         selectTextDialogBuilder.setView(rootView);
+ 
+         HtmlTextView htmlTextView = rootView.findViewById(R.id.select_text_htmltextview);
+-        htmlTextView.setHtml(text);
++        htmlTextView.setHtml(expandTruncatedAnchorText(text));
+ 
+         htmlTextView.setOnClickATagListener(new OnClickATagListener() {
+             @Override

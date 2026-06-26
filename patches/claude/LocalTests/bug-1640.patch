@@ -1,0 +1,83 @@
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java
+@@ -6,6 +6,8 @@
+ import android.support.v7.app.AppCompatActivity;
+ import android.support.v7.widget.Toolbar;
+ import android.view.View;
++import android.widget.Button;
++import android.widget.TextView;
+ 
+ public class InfoActivity extends AppCompatActivity {
+ 
+@@ -25,5 +27,14 @@
+             }
+         });
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
++
++        Button licenseButton = (Button) findViewById(R.id.take_me_to_license_button);
++        final TextView licenseUrlText = (TextView) findViewById(R.id.license_url_text);
++        licenseButton.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                licenseUrlText.setVisibility(View.VISIBLE);
++            }
++        });
+     }
+ }
+--- a/app/src/main/res/layout/content_info.xml
++++ b/app/src/main/res/layout/content_info.xml
+@@ -8,10 +8,33 @@
+     tools:context=".InfoActivity"
+     tools:showIn="@layout/activity_info">
+ 
+-    <TextView
+-        android:layout_width="wrap_content"
++    <LinearLayout
++        android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+-        android:layout_margin="@dimen/text_margin"
+-        android:text="@string/large_text" />
++        android:orientation="vertical">
+ 
+-</android.support.v4.widget.NestedScrollView>
++        <Button
++            android:id="@+id/take_me_to_license_button"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_margin="@dimen/text_margin"
++            android:text="@string/take_me_to_license" />
++
++        <TextView
++            android:id="@+id/license_url_text"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_margin="@dimen/text_margin"
++            android:text="@string/license_url"
++            android:visibility="gone"
++            android:clickable="true" />
++
++        <TextView
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_margin="@dimen/text_margin"
++            android:text="@string/large_text" />
++
++    </LinearLayout>
++
++</android.support.v4.widget.NestedScrollView>
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -38,9 +38,12 @@
+         "TERMS AND CONDITIONS\n"
+         "0. Definitions:"
+         "\"This License\" refers to version 3 of the GNU General Public License.\n"
+-        "..."
++        "...\n\n"
++        "https://www.gnu.org/licenses/gpl-3.0-standalone.html"
+ 
+     </string>
++    <string name="take_me_to_license">TAKE ME TO LICENSE</string>
++    <string name="license_url">https://www.gnu.org/licenses/gpl-3.0-standalone.html</string>
+     <string name="title_activity_general_training_schedule_editor">Add Trainigns Schedule</string>
+ 
+     <string-array name="exerciseType">

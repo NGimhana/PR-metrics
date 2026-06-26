@@ -1,0 +1,81 @@
+--- a/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
++++ b/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
+@@ -160,6 +160,9 @@
+         });
+ 
+         queue = NetworkComponent.getRequestQueueInstance(requireContext());
++        filterWords = Utils.getFilterWords(getContext());
++        filterDomains = Utils.getFilterDomains(getContext());
++        hideJobs = SettingsUtils.shouldHideJobs(getContext());
+         stories.add(new Story());
+         attemptRefresh();
+ 
+@@ -482,27 +485,7 @@
+                             return;
+                         }
+ 
+-                        // lets check if we should remove the post because of filter
+-                        for (String phrase : filterWords) {
+-                            if (story.title.toLowerCase().contains(phrase.toLowerCase())) {
+-                                stories.remove(story);
+-                                adapter.notifyItemRemoved(index);
+-                                loadedTo = Math.max(0, loadedTo - 1);
+-                                return;
+-                            }
+-                        }
+-                        // or domain name
+-                        for (String phrase : filterDomains) {
+-                            if (story.url.toLowerCase().contains(phrase.toLowerCase())) {
+-                                stories.remove(story);
+-                                adapter.notifyItemRemoved(index);
+-                                loadedTo = Math.max(0, loadedTo - 1);
+-                                return;
+-                            }
+-                        }
+-
+-                        // or because it's a job
+-                        if (hideJobs && adapter.type != SettingsUtils.getJobsIndex(getResources()) && (story.isJob || story.by.equals("whoishiring"))) {
++                        if (shouldFilterStory(story)) {
+                             stories.remove(story);
+                             adapter.notifyItemRemoved(index);
+                             loadedTo = Math.max(0, loadedTo - 1);
+@@ -734,7 +717,7 @@
+                             Story story = iterator.next();
+                             story.clicked = clickedIds.contains(story.id);
+ 
+-                            if (hideClicked && story.clicked) {
++                            if (story.loaded && (shouldFilterStory(story) || (hideClicked && story.clicked))) {
+                                 iterator.remove();
+                             }
+                         }
+@@ -768,6 +751,30 @@
+ 
+     public boolean currentTypeIsAlgolia() {
+         return 0 < adapter.type && 4 > adapter.type;
++    }
++
++    private boolean shouldFilterStory(Story story) {
++        if (story == null) {
++            return false;
++        }
++
++        String title = story.title == null ? "" : story.title.toLowerCase();
++        for (String phrase : filterWords) {
++            if (!TextUtils.isEmpty(phrase) && title.contains(phrase.toLowerCase())) {
++                return true;
++            }
++        }
++
++        String url = story.url == null ? "" : story.url.toLowerCase();
++        for (String phrase : filterDomains) {
++            if (!TextUtils.isEmpty(phrase) && url.contains(phrase.toLowerCase())) {
++                return true;
++            }
++        }
++
++        return hideJobs
++                && adapter.type != SettingsUtils.getJobsIndex(getResources())
++                && (story.isJob || "whoishiring".equals(story.by));
+     }
+ 
+     public boolean exitSearch() {

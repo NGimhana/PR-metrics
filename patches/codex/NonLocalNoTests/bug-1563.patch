@@ -1,0 +1,97 @@
+--- a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+@@ -117,6 +117,7 @@
+      * Keyword for {@link SharedPreferences}
+      */
+     private static final String CURRENT_DIR_CACHE = "current_dir_cached";
++    private static final int INVALID_SCROLL_POSITION = -1;
+ 
+     /**
+      * The permissions we need to do our job.
+@@ -150,6 +151,9 @@
+      * The current directory (empty when starting the app).
+      */
+     private String currentDirectory = "";
++    private int pendingListScrollPosition = INVALID_SCROLL_POSITION;
++    private int pendingListScrollOffset = 0;
++    private boolean restoreListScrollOnNextLoad = false;
+ 
+     /**
+      * The {@link Toolbar}.
+@@ -567,6 +571,7 @@
+      * F5
+      */
+     public void reloadCurrentDirectory() {
++        cacheListScrollPositionForReload();
+         loadPath(currentDirectory);
+     }
+ 
+@@ -614,16 +619,19 @@
+ 
+             arrayAdapter = new FileArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()));
+             fileListView.setAdapter(arrayAdapter);
++            restoreListScrollPositionIfNeeded();
+         } catch (NoAccessException e) {
+             Log.w(TAG, "Can't read '" + path + "': Permission denied!");
+             fileListView.setVisibility(GONE);
+             errorText.setVisibility(VISIBLE);
+             emptyText.setVisibility(GONE);
++            clearPendingListScrollRestore();
+         } catch (EmptyDirectoryException e) {
+             Log.w(TAG, "Can't read '" + path + "': Empty directory!");
+             fileListView.setVisibility(GONE);
+             errorText.setVisibility(GONE);
+             emptyText.setVisibility(VISIBLE);
++            clearPendingListScrollRestore();
+         }
+         currentDirectory = path;
+ 
+@@ -655,11 +663,48 @@
+ 
+         arrayAdapter = new ArchiveArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()), archive);
+         fileListView.setAdapter(arrayAdapter);
++        restoreListScrollPositionIfNeeded();
+ 
+         currentDirectory = path;
+         historyMap.put(historyCounter++, new HistoryEntry(currentDirectory, archive));
+         setToolbarText();
+         setFreeSpaceText();
++    }
++
++    private void cacheListScrollPositionForReload() {
++        if (fileListView == null || fileListView.getAdapter() == null) {
++            clearPendingListScrollRestore();
++            return;
++        }
++        int firstVisiblePosition = fileListView.getFirstVisiblePosition();
++        if (firstVisiblePosition < 0) {
++            clearPendingListScrollRestore();
++            return;
++        }
++        View firstChild = fileListView.getChildAt(0);
++        pendingListScrollPosition = firstVisiblePosition;
++        pendingListScrollOffset = firstChild == null ? 0 : firstChild.getTop() - fileListView.getPaddingTop();
++        restoreListScrollOnNextLoad = true;
++    }
++
++    private void restoreListScrollPositionIfNeeded() {
++        if (!restoreListScrollOnNextLoad || fileListView == null || fileListView.getAdapter() == null) {
++            return;
++        }
++        int itemCount = fileListView.getAdapter().getCount();
++        if (itemCount > 0) {
++            int targetPos = Math.min(pendingListScrollPosition, itemCount - 1);
++            if (targetPos >= 0) {
++                fileListView.setSelectionFromTop(targetPos, pendingListScrollOffset);
++            }
++        }
++        clearPendingListScrollRestore();
++    }
++
++    private void clearPendingListScrollRestore() {
++        pendingListScrollPosition = INVALID_SCROLL_POSITION;
++        pendingListScrollOffset = 0;
++        restoreListScrollOnNextLoad = false;
+     }
+ 
+     /**

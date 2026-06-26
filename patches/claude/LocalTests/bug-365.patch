@@ -1,0 +1,19 @@
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/RemoveQueriesModule.java
+@@ -188,14 +188,14 @@
+          * Returns the name of a query (by index)
+          */
+         public String getQueryName(int index) {
+-            return queries.get(index).split("=")[0];
++            return queries.get(index).split("=", -1)[0];
+         }
+ 
+         /**
+          * Returns the decoded value of a query (by index)
+          */
+         public String getQueryValue(int index) {
+-            String[] split = queries.get(index).split("=");
++            String[] split = queries.get(index).split("=", -1);
+             if (split.length == 1) return "";
+             try {
+                 return URLDecoder.decode(split[1]);

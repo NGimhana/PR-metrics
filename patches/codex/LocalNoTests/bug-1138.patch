@@ -1,0 +1,90 @@
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+@@ -56,9 +56,11 @@
+ public class GpsLoggingService extends Service  {
+     private static NotificationManager notificationManager;
+     private static int NOTIFICATION_ID = 8675309;
++    private static int FILE_WRITE_FAILURE_NOTIFICATION_ID = 8675310;
+     private final IBinder binder = new GpsLoggingBinder();
+     AlarmManager nextPointAlarmManager;
+     private NotificationCompat.Builder nfc;
++    private boolean hasNotifiedWriteFailure;
+ 
+     private static final Logger LOG = Logs.of(GpsLoggingService.class);
+ 
+@@ -478,6 +480,7 @@
+         notifyClientsStarted(false);
+         session.setCurrentFileName("");
+         session.setCurrentFormattedFileName("");
++        hasNotifiedWriteFailure = false;
+     }
+ 
+     /**
+@@ -970,7 +973,9 @@
+             LOG.debug("Logging passive location to file");
+         }
+ 
+-        writeToFile(loc);
++        if(!writeToFile(loc)){
++            return;
++        }
+         resetAutoSendTimersIfNecessary();
+         stopManagerAndResetAlarm();
+ 
+@@ -1078,7 +1083,7 @@
+      *
+      * @param loc Location object
+      */
+-    private void writeToFile(Location loc) {
++    private boolean writeToFile(Location loc) {
+         session.setAddNewTrackSegment(false);
+ 
+         try {
+@@ -1091,11 +1096,46 @@
+             }
+         }
+         catch(Exception e){
+-             LOG.error(getString(R.string.could_not_write_to_file), e);
++            notifyFileWriteFailure(e);
++            stopLogging();
++            return false;
+         }
+ 
+         session.clearDescription();
+         EventBus.getDefault().post(new ServiceEvents.AnnotationStatus(true));
++        return true;
++    }
++
++    private void notifyFileWriteFailure(Exception e) {
++        LOG.error(getString(R.string.could_not_write_to_file), e);
++
++        if(hasNotifiedWriteFailure){
++            return;
++        }
++
++        hasNotifiedWriteFailure = true;
++
++        Intent contentIntent = new Intent(this, GpsMainActivity.class);
++        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
++        stackBuilder.addNextIntent(contentIntent);
++        PendingIntent pendingIntent = stackBuilder.getPendingIntent(1, PendingIntent.FLAG_UPDATE_CURRENT);
++
++        String title = getString(R.string.could_not_write_to_file);
++        String text = getString(R.string.pref_logging_file_no_permissions);
++
++        NotificationCompat.Builder errorBuilder = new NotificationCompat.Builder(getApplicationContext(), "gpslogger")
++                .setSmallIcon(R.drawable.notification)
++                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.gpsloggericon3))
++                .setCategory(NotificationCompat.CATEGORY_ERROR)
++                .setPriority(NotificationCompat.PRIORITY_HIGH)
++                .setContentTitle(title)
++                .setContentText(text)
++                .setStyle(new NotificationCompat.BigTextStyle().bigText(text).setBigContentTitle(title))
++                .setAutoCancel(true)
++                .setContentIntent(pendingIntent);
++
++        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
++        manager.notify(FILE_WRITE_FAILURE_NOTIFICATION_ID, errorBuilder.build());
+     }
+ 
+     /**

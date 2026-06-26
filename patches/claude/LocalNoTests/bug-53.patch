@@ -1,0 +1,24 @@
+--- a/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
++++ b/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
+@@ -93,12 +93,20 @@
+         } else {
+             encryptCheckbox.setVisibility(View.GONE);
+         }
+-        fileExtEdit.setText(appSettings.getNewFileDialogLastUsedExtension());
++        final String lastUsedExtension = appSettings.getNewFileDialogLastUsedExtension();
++        fileExtEdit.setText(lastUsedExtension);
+         fileNameEdit.requestFocus();
+         new Handler().postDelayed(new ContextUtils.DoTouchView(fileNameEdit), 200);
+ 
+         fileNameEdit.setFilters(new InputFilter[]{ContextUtils.INPUTFILTER_FILENAME});
+         fileExtEdit.setFilters(fileNameEdit.getFilters());
++
++        for (int i = 0; i < typeSpinnerToExtension.length; i++) {
++            if (typeSpinnerToExtension[i].equals(lastUsedExtension)) {
++                typeSpinner.setSelection(i);
++                break;
++            }
++        }
+ 
+         final AtomicBoolean typeSpinnerNoTriggerOnFirst = new AtomicBoolean(true);
+         typeSpinner.setOnItemSelectedListener(new AndroidSpinnerOnItemSelectedAdapter(pos -> {

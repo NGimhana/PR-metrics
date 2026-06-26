@@ -1,0 +1,72 @@
+diff --git a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+index e6a58f0..5054c31 100644
+--- a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
++++ b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+@@ -46,6 +46,8 @@ public class DocumentEditFragment extends BaseFragment implements TextFormat.Tex
+     public static final int HISTORY_DELTA = 5000;
+     public static final String FRAGMENT_TAG = "DocumentEditFragment";
+     private static final String SAVESTATE_DOCUMENT = "DOCUMENT";
++    private static final String SAVESTATE_SELECTION_START = "SAVESTATE_SELECTION_START";
++    private static final String SAVESTATE_SELECTION_END = "SAVESTATE_SELECTION_END";
+     public static boolean showPreviewOnBack = false;
+ 
+     public static DocumentEditFragment newInstance(Document document) {
+@@ -95,11 +97,17 @@ public class DocumentEditFragment extends BaseFragment implements TextFormat.Tex
+         //applyTextFormat(TextFormat.FORMAT_PLAIN);
+         setupAppearancePreferences();
+ 
+-        if (savedInstanceState != null && savedInstanceState.containsKey(SAVESTATE_DOCUMENT)) {
+-            _document = (Document) savedInstanceState.getSerializable(SAVESTATE_DOCUMENT);
++        int selectionStart = -1;
++        int selectionEnd = -1;
++        if (savedInstanceState != null) {
++            if (savedInstanceState.containsKey(SAVESTATE_DOCUMENT)) {
++                _document = (Document) savedInstanceState.getSerializable(SAVESTATE_DOCUMENT);
++            }
++            selectionStart = savedInstanceState.getInt(SAVESTATE_SELECTION_START, -1);
++            selectionEnd = savedInstanceState.getInt(SAVESTATE_SELECTION_END, -1);
+         }
+         _document = loadDocument();
+-        loadDocumentIntoUi();
++        loadDocumentIntoUi(selectionStart, selectionEnd);
+ 
+         new ActivityUtils(getActivity()).hideSoftKeyboard();
+         _hlEditor.clearFocus();
+@@ -109,7 +117,6 @@ public class DocumentEditFragment extends BaseFragment implements TextFormat.Tex
+     public void onResume() {
+         super.onResume();
+         checkReloadDisk();
+-        _hlEditor.setText(_document.getContent());
+     }
+ 
+     @Override
+@@ -132,10 +139,17 @@ public class DocumentEditFragment extends BaseFragment implements TextFormat.Tex
+     }
+ 
+     public void loadDocumentIntoUi() {
+-        int editorpos = _hlEditor.getSelectionStart();
++        loadDocumentIntoUi(-1, -1);
++    }
++
++    public void loadDocumentIntoUi(int start, int end) {
++        int selectionStart = start >= 0 ? start : _hlEditor.getSelectionStart();
++        int selectionEnd = end >= 0 ? end : _hlEditor.getSelectionEnd();
+         _hlEditor.setText(_document.getContent());
+-        editorpos = editorpos > _hlEditor.length() ? _hlEditor.length() - 1 : editorpos;
+-        _hlEditor.setSelection(editorpos < 0 ? 0 : editorpos);
++        int length = _hlEditor.length();
++        selectionStart = Math.min(Math.max(selectionStart, 0), length);
++        selectionEnd = Math.min(Math.max(selectionEnd, 0), length);
++        _hlEditor.setSelection(selectionStart, selectionEnd);
+         Activity activity = getActivity();
+         if (activity != null && activity instanceof DocumentActivity) {
+             DocumentActivity da = ((DocumentActivity) activity);
+@@ -266,6 +280,8 @@ public class DocumentEditFragment extends BaseFragment implements TextFormat.Tex
+     public void onSaveInstanceState(@NonNull Bundle outState) {
+         saveDocument();
+         outState.putSerializable(SAVESTATE_DOCUMENT, _document);
++        outState.putInt(SAVESTATE_SELECTION_START, _hlEditor.getSelectionStart());
++        outState.putInt(SAVESTATE_SELECTION_END, _hlEditor.getSelectionEnd());
+         super.onSaveInstanceState(outState);
+     }
+ 

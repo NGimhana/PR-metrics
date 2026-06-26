@@ -1,0 +1,22 @@
+diff --git a/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java b/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
+index 52e5a78..266a6a4 100644
+--- a/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
++++ b/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
+@@ -75,7 +75,7 @@ class ExperienceTweaks extends Forwarder {
+             public boolean onSingleTapUp(MotionEvent e) {
+                 // Double tap disabled: display history directly
+                 if(!prefs.getBoolean("double-tap", false)) {
+-                    if (prefs.getBoolean("history-onclick", false)) {
++                    if (prefs.getBoolean("history-onclick", false) || isMinimalisticModeEnabledForFavorites()) {
+                         doAction("display-history");
+                     }
+                 }
+@@ -86,7 +86,7 @@ class ExperienceTweaks extends Forwarder {
+             public boolean onSingleTapConfirmed(MotionEvent e) {
+                 // Double tap enabled: wait to confirm this is indeed a single tap, not a double tap
+                 if(prefs.getBoolean("double-tap", false)) {
+-                    if (prefs.getBoolean("history-onclick", false)) {
++                    if (prefs.getBoolean("history-onclick", false) || isMinimalisticModeEnabledForFavorites()) {
+                         doAction("display-history");
+                     }
+                 }

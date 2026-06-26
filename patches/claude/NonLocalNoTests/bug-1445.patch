@@ -1,0 +1,22 @@
+--- a/app/src/main/java/com/cohenadair/anglerslog/database/cursors/TripCursor.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/database/cursors/TripCursor.java
+@@ -26,7 +26,7 @@
+ 
+         trip.setStartDate(new Date(getLong(getColumnIndex(TripTable.Columns.START_DATE))));
+         trip.setEndDate(new Date(getLong(getColumnIndex(TripTable.Columns.END_DATE))));
+-        trip.setNotes(getString(getColumnIndex(CatchTable.Columns.NOTES)));
++        trip.setNotes(getString(getColumnIndex(TripTable.Columns.NOTES)));
+ 
+         return trip;
+     }
+--- a/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java
+@@ -919,7 +919,7 @@
+         ArrayList<UserDefineObject> trips = getTrips();
+ 
+         for (UserDefineObject object : trips)
+-            if (trip.overlapsTrip((Trip)object))
++            if (!object.getId().equals(trip.getId()) && trip.overlapsTrip((Trip)object))
+                 return true;
+ 
+         return false;

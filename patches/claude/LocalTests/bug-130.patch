@@ -1,0 +1,15 @@
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -433,6 +433,12 @@
+ 
+             selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.PASSWORD));
+ 
++            if (encryptionType == Constants.EncryptionType.KEYSTORE) {
++                desc.setText(R.string.intro_slide3_desc_keystore);
++            } else if (encryptionType == Constants.EncryptionType.PASSWORD) {
++                desc.setText(R.string.intro_slide3_desc_password);
++            }
++
+             return root;
+         }
+ 

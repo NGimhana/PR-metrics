@@ -1,0 +1,31 @@
+--- a/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
++++ b/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
+@@ -75,7 +75,7 @@
+             public boolean onSingleTapUp(MotionEvent e) {
+                 // Double tap disabled: display history directly
+                 if(!prefs.getBoolean("double-tap", false)) {
+-                    if (prefs.getBoolean("history-onclick", false)) {
++                    if (shouldHandleSingleTap()) {
+                         doAction("display-history");
+                     }
+                 }
+@@ -86,7 +86,7 @@
+             public boolean onSingleTapConfirmed(MotionEvent e) {
+                 // Double tap enabled: wait to confirm this is indeed a single tap, not a double tap
+                 if(prefs.getBoolean("double-tap", false)) {
+-                    if (prefs.getBoolean("history-onclick", false)) {
++                    if (shouldHandleSingleTap()) {
+                         doAction("display-history");
+                     }
+                 }
+@@ -309,6 +309,10 @@
+         return prefs.getBoolean("history-hide", false) && prefs.getBoolean("favorites-hide", false) && prefs.getBoolean("enable-favorites-bar", true);
+     }
+ 
++    private boolean shouldHandleSingleTap() {
++        return prefs.getBoolean("history-onclick", false) || isMinimalisticModeEnabledForFavorites();
++    }
++
+     /**
+      * Should we force the keyboard not to display suggestions?
+      * (swiftkey is broken, see https://github.com/Neamar/KISS/issues/44)

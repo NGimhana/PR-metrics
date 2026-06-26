@@ -1,0 +1,319 @@
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+index d215ec3..6284bea 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+@@ -32,6 +32,7 @@ import androidx.annotation.Nullable;
+ import androidx.core.app.NotificationCompat;
+ import androidx.core.app.TaskStackBuilder;
+ import android.text.Html;
++import android.widget.Toast;
+ import com.mendhak.gpslogger.common.*;
+ import com.mendhak.gpslogger.common.events.CommandEvents;
+ import com.mendhak.gpslogger.common.events.ProfileEvents;
+@@ -393,6 +394,8 @@ public class GpsLoggingService extends Service  {
+     protected void startLogging() {
+         LOG.debug(".");
+         session.setAddNewTrackSegment(true);
++        session.setHasFileWriteError(false);
++        session.setFileWriteErrorMessage("");
+ 
+ 
+ 
+@@ -409,6 +412,17 @@ public class GpsLoggingService extends Service  {
+ 
+         session.setStarted(true);
+ 
++        if (!Strings.isNullOrEmpty(preferenceHelper.getGpsLoggerFolder())) {
++            File folder = new File(preferenceHelper.getGpsLoggerFolder());
++            if (!folder.exists()) {
++                folder.mkdirs();
++            }
++
++            if (!folder.canWrite()) {
++                EventBus.getDefault().post(new ServiceEvents.FileWriteError(getString(R.string.pref_logging_file_no_permissions)));
++            }
++        }
++
+         resetAutoSendTimersIfNecessary();
+         showNotification();
+         setupAutoSendTimers();
+@@ -527,6 +541,11 @@ public class GpsLoggingService extends Service  {
+             notificationTime = session.getCurrentLocationInfo().getTime();
+         }
+ 
++        if (session.hasFileWriteError()) {
++            contentTitle = getString(R.string.could_not_write_to_file);
++            contentText = session.getFileWriteErrorMessage();
++        }
++
+         if (nfc == null) {
+ 
+             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+@@ -546,35 +565,39 @@ public class GpsLoggingService extends Service  {
+             nfc = new NotificationCompat.Builder(getApplicationContext(),"gpslogger")
+                     .setSmallIcon(R.drawable.notification)
+                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.gpsloggericon3))
+-                    .setPriority( preferenceHelper.shouldHideNotificationFromStatusBar() ? NotificationCompat.PRIORITY_MIN : NotificationCompat.PRIORITY_LOW)
+                     .setCategory(NotificationCompat.CATEGORY_SERVICE)
+                     .setVisibility(preferenceHelper.shouldHideNotificationFromLockScreen() ? NotificationCompat.VISIBILITY_SECRET : NotificationCompat.VISIBILITY_PUBLIC) //This hides the notification from lock screen
+                     .setContentTitle(contentTitle)
+                     .setContentText(contentText)
+                     .setStyle(new NotificationCompat.BigTextStyle().bigText(contentText).setBigContentTitle(contentTitle))
+                     .setOngoing(true)
+-                    .setOnlyAlertOnce(true)
+                     .setContentIntent(pending);
+ 
+-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+-                nfc.setPriority(NotificationCompat.PRIORITY_LOW);
+-            }
+-
+             if(!preferenceHelper.shouldHideNotificationButtons()){
+                 nfc.addAction(R.drawable.annotate2, getString(R.string.menu_annotate), piAnnotate)
+                         .addAction(android.R.drawable.ic_menu_close_clear_cancel, getString(R.string.shortcut_stop), piStop);
+             }
+         }
+ 
++        if (session.hasFileWriteError()) {
++            nfc.setPriority(NotificationCompat.PRIORITY_HIGH);
++            nfc.setOnlyAlertOnce(false);
++        } else {
++            nfc.setPriority(preferenceHelper.shouldHideNotificationFromStatusBar() ? NotificationCompat.PRIORITY_MIN : NotificationCompat.PRIORITY_LOW);
++            nfc.setOnlyAlertOnce(true);
++        }
+ 
++        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
++            if (!session.hasFileWriteError()) {
++                nfc.setPriority(NotificationCompat.PRIORITY_LOW);
++            }
++        }
+ 
+         nfc.setContentTitle(contentTitle);
+         nfc.setContentText(contentText);
+         nfc.setStyle(new NotificationCompat.BigTextStyle().bigText(contentText).setBigContentTitle(contentTitle));
+         nfc.setWhen(notificationTime);
+ 
+-        //notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+-        //notificationManager.notify(NOTIFICATION_ID, nfc.build());
+         return nfc.build();
+     }
+ 
+@@ -1092,6 +1115,7 @@ public class GpsLoggingService extends Service  {
+         }
+         catch(Exception e){
+              LOG.error(getString(R.string.could_not_write_to_file), e);
++             EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+         }
+ 
+         session.clearDescription();
+@@ -1223,4 +1247,25 @@ public class GpsLoggingService extends Service  {
+         }
+     }
+ 
++    @EventBusHook
++    public void onEvent(ServiceEvents.FileWriteError error) {
++        String msg = error.message;
++        if (Strings.isNullOrEmpty(msg)) {
++            msg = getString(R.string.could_not_write_to_file);
++        }
++
++        if (!session.hasFileWriteError()) {
++            final String finalMsg = msg;
++            handler.post(new Runnable() {
++                @Override
++                public void run() {
++                    Toast.makeText(GpsLoggingService.this, finalMsg, Toast.LENGTH_LONG).show();
++                }
++            });
++        }
++        session.setHasFileWriteError(true);
++        session.setFileWriteErrorMessage(msg);
++        showNotification();
++    }
++
+ }
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsMainActivity.java b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsMainActivity.java
+index c19d4f1..c4bf4ba 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsMainActivity.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsMainActivity.java
+@@ -515,7 +515,17 @@ public class GpsMainActivity extends AppCompatActivity
+         super.onSaveInstanceState(outState);
+     }
+ 
+-    private void registerConscryptProvider(){
++    @EventBusHook
++    public void onEventMainThread(ServiceEvents.FileWriteError error) {
++        String msg = error.message;
++        if(Strings.isNullOrEmpty(msg)){
++            msg = getString(R.string.could_not_write_to_file);
++        }
++        Dialogs.alert(getString(R.string.error), msg, this);
++    }
++
++    private void registerConscryptProvider() {
++
+         ConscryptProviderInstaller.installIfNeeded(this);
+     }
+ 
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/common/Session.java b/gpslogger/src/main/java/com/mendhak/gpslogger/common/Session.java
+index 7a89763..faccc05 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/common/Session.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/common/Session.java
+@@ -376,6 +376,22 @@ public class Session {
+         return Long.parseLong(get("firstRetryTimeStamp", "0"));
+     }
+ 
++    public boolean hasFileWriteError() {
++        return Boolean.valueOf(get("hasFileWriteError", "false"));
++    }
++
++    public void setHasFileWriteError(boolean hasFileWriteError) {
++        set("hasFileWriteError", String.valueOf(hasFileWriteError));
++    }
++
++    public String getFileWriteErrorMessage() {
++        return get("fileWriteErrorMessage", "");
++    }
++
++    public void setFileWriteErrorMessage(String fileWriteErrorMessage) {
++        set("fileWriteErrorMessage", fileWriteErrorMessage);
++    }
++
+ 
+     /**
+      * When retrying to get best accuracy, this can store a location object representing the best so far.
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java b/gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java
+index 40014a8..47f28bc 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java
+@@ -91,4 +91,14 @@ public class ServiceEvents {
+         }
+     }
+ 
++    /**
++     * An error occurred while writing to a file
++     */
++    public static class FileWriteError {
++        public String message;
++        public FileWriteError(String message) {
++            this.message = message;
++        }
++    }
++
+ }
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/geojson/GeoJSONWriterPoints.java b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/geojson/GeoJSONWriterPoints.java
+index cd28eb0..43fcd97 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/geojson/GeoJSONWriterPoints.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/geojson/GeoJSONWriterPoints.java
+@@ -4,8 +4,10 @@ import android.location.Location;
+ import androidx.annotation.NonNull;
+ 
+ import com.mendhak.gpslogger.common.Strings;
++import com.mendhak.gpslogger.common.events.ServiceEvents;
+ import com.mendhak.gpslogger.common.slf4j.Logs;
+ import com.mendhak.gpslogger.loggers.Files;
++import de.greenrobot.event.EventBus;
+ 
+ import org.slf4j.Logger;
+ 
+@@ -68,6 +70,7 @@ public class GeoJSONWriterPoints implements Runnable {
+         } catch (IOException e) {
+             e.printStackTrace();
+             LOG.error("GeoJSONWriterPoints", e);
++            EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+         }
+ 
+     }
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/gpx/Gpx10FileLogger.java b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/gpx/Gpx10FileLogger.java
+index 2cd6a14..c9ce587 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/gpx/Gpx10FileLogger.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/gpx/Gpx10FileLogger.java
+@@ -27,8 +27,10 @@ import com.mendhak.gpslogger.common.PreferenceHelper;
+ import com.mendhak.gpslogger.common.RejectionHandler;
+ import com.mendhak.gpslogger.common.Strings;
+ import com.mendhak.gpslogger.common.slf4j.Logs;
++import com.mendhak.gpslogger.common.events.ServiceEvents;
+ import com.mendhak.gpslogger.loggers.FileLogger;
+ import com.mendhak.gpslogger.loggers.Files;
++import de.greenrobot.event.EventBus;
+ import org.slf4j.Logger;
+ 
+ import java.io.*;
+@@ -161,6 +163,7 @@ class Gpx10AnnotateHandler implements Runnable {
+                 LOG.debug("Finished annotation to GPX10 File");
+             } catch (Exception e) {
+                 LOG.error("Gpx10FileLogger.annotate", e);
++                EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+             }
+ 
+         }
+@@ -242,6 +245,7 @@ class Gpx10WriteHandler implements Runnable {
+ 
+             } catch (Exception e) {
+                 LOG.error("Gpx10FileLogger.write", e);
++                EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+             }
+ 
+         }
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/kml/Kml22FileLogger.java b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/kml/Kml22FileLogger.java
+index 87e0124..2cd393c 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/kml/Kml22FileLogger.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/kml/Kml22FileLogger.java
+@@ -25,8 +25,10 @@ import com.mendhak.gpslogger.common.PreferenceHelper;
+ import com.mendhak.gpslogger.common.RejectionHandler;
+ import com.mendhak.gpslogger.common.Strings;
+ import com.mendhak.gpslogger.common.slf4j.Logs;
++import com.mendhak.gpslogger.common.events.ServiceEvents;
+ import com.mendhak.gpslogger.loggers.FileLogger;
+ import com.mendhak.gpslogger.loggers.Files;
++import de.greenrobot.event.EventBus;
+ import org.slf4j.Logger;
+ 
+ import java.io.*;
+@@ -118,6 +120,7 @@ class Kml22AnnotateHandler implements Runnable {
+             }
+         } catch (Exception e) {
+             LOG.error("Kml22FileLogger.annotate", e);
++            EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+         }
+     }
+ 
+@@ -223,6 +226,7 @@ class Kml22WriteHandler implements Runnable {
+ 
+         } catch (Exception e) {
+             LOG.error("Kml22FileLogger.write", e);
++            EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+         }
+     }
+ }
+diff --git a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/nmea/NmeaFileLogger.java b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/nmea/NmeaFileLogger.java
+index bee4d5a..7f54a89 100644
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/nmea/NmeaFileLogger.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/loggers/nmea/NmeaFileLogger.java
+@@ -23,7 +23,9 @@ import com.mendhak.gpslogger.common.PreferenceHelper;
+ import com.mendhak.gpslogger.common.RejectionHandler;
+ import com.mendhak.gpslogger.common.Session;
+ import com.mendhak.gpslogger.common.Strings;
++import com.mendhak.gpslogger.common.events.ServiceEvents;
+ import com.mendhak.gpslogger.loggers.Files;
++import de.greenrobot.event.EventBus;
+ 
+ import java.io.BufferedWriter;
+ import java.io.File;
+@@ -60,7 +62,7 @@ public class NmeaFileLogger {
+             try {
+                 nmeaFile.createNewFile();
+             } catch (IOException e) {
+-
++                EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+             }
+         }
+ 
+@@ -92,7 +94,7 @@ class NmeaWriteHandler implements Runnable {
+                 Files.addToMediaDatabase(gpxFile, "text/plain");
+ 
+             } catch (IOException e) {
+-
++                EventBus.getDefault().post(new ServiceEvents.FileWriteError(e.getMessage()));
+             }
+         }
+ 

@@ -1,0 +1,14 @@
+--- a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
++++ b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+@@ -109,7 +109,11 @@
+     public void onResume() {
+         super.onResume();
+         checkReloadDisk();
++        int cursor = _hlEditor.getSelectionStart();
+         _hlEditor.setText(_document.getContent());
++        if (cursor >= 0 && cursor <= _hlEditor.length()) {
++            _hlEditor.setSelection(cursor);
++        }
+     }
+ 
+     @Override

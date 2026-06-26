@@ -1,0 +1,59 @@
+--- a/app/src/main/java/com/simon/harmonichackernews/CommentsRecyclerViewAdapter.java
++++ b/app/src/main/java/com/simon/harmonichackernews/CommentsRecyclerViewAdapter.java
+@@ -4,6 +4,7 @@
+ import android.app.Activity;
+ import android.content.Context;
+ import android.content.SharedPreferences;
++import android.os.SystemClock;
+ import android.text.SpannableStringBuilder;
+ import android.text.Spanned;
+ import android.text.TextUtils;
+@@ -12,6 +13,7 @@
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
++import android.view.ViewConfiguration;
+ import android.widget.Button;
+ import android.widget.ImageView;
+ import android.widget.LinearLayout;
+@@ -404,6 +406,8 @@
+     }
+ 
+     public class ItemViewHolder extends RecyclerView.ViewHolder {
++        private final long longPressLinkSuppressionMs = ViewConfiguration.getLongPressTimeout() + 200L;
++
+         public final HtmlTextView commentBody;
+         public final TextView commentBy;
+         public final TextView commentByTime;
+@@ -411,6 +415,7 @@
+         public final View commentIndentIndicator;
+ 
+         public Comment comment;
++        private long lastLongClickUptimeMs = Long.MIN_VALUE;
+ 
+         public ItemViewHolder(View view) {
+             super(view);
+@@ -421,11 +426,13 @@
+             commentIndentIndicator = view.findViewById(R.id.comment_indent_indicator);
+ 
+             itemView.setOnLongClickListener(v -> {
++                lastLongClickUptimeMs = SystemClock.uptimeMillis();
+                 commentLongClickListener.onItemClick(comment, getAbsoluteAdapterPosition(), v);
+                 return true;
+             });
+ 
+             commentBody.setOnLongClickListener(v -> {
++                lastLongClickUptimeMs = SystemClock.uptimeMillis();
+                 commentLongClickListener.onItemClick(comment, getAbsoluteAdapterPosition(), v);
+                 return true;
+             });
+@@ -439,6 +446,9 @@
+             commentBody.setOnClickATagListener(new OnClickATagListener() {
+                 @Override
+                 public boolean onClick(View widget, String spannedText, @Nullable String href) {
++                    if (SystemClock.uptimeMillis() - lastLongClickUptimeMs <= longPressLinkSuppressionMs) {
++                        return true;
++                    }
+                     Utils.openLinkMaybeHN(widget.getContext(), href);
+                     return true;
+                 }

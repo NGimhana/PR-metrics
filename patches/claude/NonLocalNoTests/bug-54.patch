@@ -1,0 +1,14 @@
+--- a/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
++++ b/app/src/main/java/net/gsantner/markor/activity/DocumentEditFragment.java
+@@ -230,8 +230,11 @@
+             document.setDoHistory(appSettings.isEditorHistoryEnabled());
+         }
+         if (document.getHistory().isEmpty()) {
++            boolean oldDoHistory = document.isDoHistory();
++            document.setDoHistory(true);
+             document.forceAddNextChangeToHistory();
+             document.addToHistory();
++            document.setDoHistory(oldDoHistory);
+         }
+ 
+         return document;

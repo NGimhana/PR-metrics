@@ -1,0 +1,65 @@
+--- a/app/src/main/java/free/rm/skytube/gui/businessobjects/adapters/GridViewHolder.java
++++ b/app/src/main/java/free/rm/skytube/gui/businessobjects/adapters/GridViewHolder.java
+@@ -257,9 +257,6 @@
+                 actionHandler.updateSubscribeMenuItem(youTubeVideo.getChannelId(), menu);
+ 
+                 popupMenu.setOnMenuItemClickListener(item -> {
+-                        if (actionHandler.handleChannelActions(context, youTubeVideo.getChannel(), item.getItemId())) {
+-                                return true;
+-                        }
+                         switch(item.getItemId()) {
+                                 case R.id.menu_open_video_with:
+                                         compositeDisposable.add(youTubeVideo.playVideoExternally(context).subscribe());
+@@ -304,7 +301,7 @@
+                                         }
+                                         return true;
+                         }
+-                        return false;
++                        return actionHandler.handleChannelActions(context, youTubeVideo.getChannel(), item.getItemId());
+                 });
+                 popupMenu.show();
+         }
+--- a/app/src/main/java/free/rm/skytube/gui/fragments/YouTubePlayerV1Fragment.java
++++ b/app/src/main/java/free/rm/skytube/gui/fragments/YouTubePlayerV1Fragment.java
+@@ -668,9 +668,6 @@
+ 
+         @Override
+         public boolean onOptionsItemSelected(MenuItem item) {
+-                if (actionHandler.handleChannelActions(getContext(), youTubeChannel, item.getItemId())) {
+-                        return true;
+-                }
+                 switch (item.getItemId()) {
+                         case R.id.menu_reload_video:
+                                 loadVideo();
+@@ -712,6 +709,9 @@
+                                 }
+                                 return true;
+                         default:
++                                if (actionHandler.handleChannelActions(getContext(), youTubeChannel, item.getItemId())) {
++                                        return true;
++                                }
+                                 return super.onOptionsItemSelected(item);
+                 }
+         }
+--- a/app/src/main/java/free/rm/skytube/gui/fragments/YouTubePlayerV2Fragment.java
++++ b/app/src/main/java/free/rm/skytube/gui/fragments/YouTubePlayerV2Fragment.java
+@@ -705,9 +705,6 @@
+     @Override
+     public boolean onOptionsItemSelected(MenuItem item) {
+         Context context = getContext();
+-        if (actionHandler.handleChannelActions(context, youTubeChannel, item.getItemId())) {
+-            return true;
+-        }
+         switch (item.getItemId()) {
+             case R.id.menu_reload_video:
+                 player.seekToDefaultPosition();
+@@ -761,6 +758,9 @@
+                 item.setChecked(repeat);
+                 return true;
+             default:
++                if (actionHandler.handleChannelActions(context, youTubeChannel, item.getItemId())) {
++                    return true;
++                }
+                 return super.onOptionsItemSelected(item);
+         }
+     }

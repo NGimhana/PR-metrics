@@ -1,0 +1,80 @@
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+@@ -1,7 +1,6 @@
+ package com.trianguloy.urlchecker.modules.list;
+ 
+ import android.net.Uri;
+-import android.net.UrlQuerySanitizer;
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.LinearLayout;
+@@ -19,6 +18,7 @@
+ import com.trianguloy.urlchecker.utilities.methods.Inflater;
+ import com.trianguloy.urlchecker.utilities.methods.JavaUtils;
+ 
++import java.net.URLDecoder;
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+@@ -74,12 +74,34 @@
+ 
+         // parse
+         var uri = Uri.parse(urlData.url);
+-        var urlQuerySanitizer = new UrlQuerySanitizer();
+-        // the default parseUrl doesn't remove the fragment
+-        if (uri.getQuery() != null) {
+-            urlQuerySanitizer.setAllowUnregisteredParamaters(true);
+-            urlQuerySanitizer.setUnregisteredParameterValueSanitizer(v -> v);
+-            urlQuerySanitizer.parseQuery(uri.getQuery());
++        // Parse query parameters manually with proper UTF-8 percent-decoding.
++        // (UrlQuerySanitizer.unescape() decodes each percent-encoded byte as a
++        //  Latin-1 char, which corrupts multi-byte UTF-8 sequences from %25-encoded URLs)
++        var decodedQuery = uri.getQuery();
++        var parameters = new ArrayList<String[]>();
++        if (decodedQuery != null) {
++            for (String pair : decodedQuery.split("&")) {
++                if (pair.isEmpty()) continue;
++                int eq = pair.indexOf('=');
++                try {
++                    String key, value;
++                    if (eq >= 0) {
++                        key = URLDecoder.decode(pair.substring(0, eq), "UTF-8");
++                        value = URLDecoder.decode(pair.substring(eq + 1), "UTF-8");
++                    } else {
++                        key = URLDecoder.decode(pair, "UTF-8");
++                        value = "";
++                    }
++                    parameters.add(new String[]{key, value});
++                } catch (Exception e) {
++                    // fallback: use values without further decoding
++                    if (eq >= 0) {
++                        parameters.add(new String[]{pair.substring(0, eq), pair.substring(eq + 1)});
++                    } else {
++                        parameters.add(new String[]{pair, ""});
++                    }
++                }
++            }
+         }
+ 
+         // domain elements
+@@ -108,7 +130,6 @@
+         }
+ 
+         // query parameters
+-        var parameters = urlQuerySanitizer.getParameterList();
+         if (parameters.size() > 0) {
+             var queries = addGroup("Parameters", parameters.size(), uri.buildUpon().query(null));
+             for (var i = 0; i < parameters.size(); i++) {
+@@ -116,10 +137,10 @@
+                 var builder = uri.buildUpon();
+                 builder.query(null);
+                 for (var j = 0; j < parameters.size(); j++) {
+-                    if (i != j) builder.appendQueryParameter(parameters.get(j).mParameter, parameters.get(j).mValue);
++                    if (i != j) builder.appendQueryParameter(parameters.get(j)[0], parameters.get(j)[1]);
+                 }
+                 // append the parameter
+-                addPart(parameters.get(i).mParameter, parameters.get(i).mValue, queries, builder);
++                addPart(parameters.get(i)[0], parameters.get(i)[1], queries, builder);
+             }
+         }
+ 

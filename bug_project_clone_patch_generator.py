@@ -14,14 +14,15 @@ def clean_slug(s):
         return ""
     return "".join(str(s).split()).lower()
 
-class_path_df = pd.read_csv("GT_csv/Unified Diffs 50 UI APR Bugs - bugs_with_unified_diff.csv")
-commit_id_df = pd.read_csv("GT_csv/Unified Diffs 50 UI APR Bugs - bugs_with_unified_diff_commits.csv")
+### ToDO: This design is for having the commits and code as separate CSVs. If we have a single CSV with all the information, we can simplify this code.
+class_path_df = pd.read_csv("GT_csv/gemini/NonLocalTests/NLT.csv")
+commit_id_df = pd.read_csv("GT_csv/gemini/NonLocalTests/NLT.csv")
 
 
 # Create directories if they don't exist
 projects_dir = os.path.abspath("projects")
 checkout_dir_base = os.path.abspath("checkout-bugs-final")
-patches_dir = os.path.abspath("patches/new_patches")
+patches_dir = os.path.abspath("patches/gemini/NonLocalTests")
 
 os.makedirs(projects_dir, exist_ok=True)
 os.makedirs(checkout_dir_base, exist_ok=True)
@@ -154,7 +155,8 @@ for index, row in class_path_df.iterrows():
         #     check=True
         # )
         with open(patch_file, "w") as f_out:
-            f_out.write(row["GT_diff"])
+            # f_out.write(row["GT_diff"]) ## This is for developer patches
+            f_out.write(row["agent_diff"]) ## This is for agent generated patches
 
     except Exception as e:
         print(f"Error generating patch for {raw_slug}: {e}")

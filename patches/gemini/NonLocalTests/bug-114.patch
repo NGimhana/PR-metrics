@@ -1,0 +1,47 @@
+diff --git a/app/build.gradle b/app/build.gradle
+index 699c9a4..5d01931 100644
+--- a/app/build.gradle
++++ b/app/build.gradle
+@@ -23,7 +23,19 @@ android {
+         targetCompatibility JavaVersion.VERSION_1_8
+     }
+ 
++    signingConfigs {
++        debug {
++            storeFile file('debug.keystore')
++            storePassword 'android'
++            keyAlias 'androiddebugkey'
++            keyPassword 'android'
++        }
++    }
++
+     buildTypes {
++        debug {
++            signingConfig signingConfigs.debug
++        }
+         release {
+             minifyEnabled true
+             shrinkResources true
+diff --git a/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java b/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java
+index 1a36cfe..4c2d263 100644
+--- a/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java
++++ b/app/src/main/java/org/sufficientlysecure/htmltextview/LocalLinkMovementMethod.java
+@@ -23,6 +23,7 @@ import android.text.method.LinkMovementMethod;
+ import android.text.method.Touch;
+ import android.text.style.ClickableSpan;
+ import android.view.MotionEvent;
++import android.view.ViewConfiguration;
+ import android.widget.TextView;
+ 
+ /**
+@@ -61,7 +62,9 @@ public class LocalLinkMovementMethod extends LinkMovementMethod {
+ 
+             if (link.length != 0) {
+                 if (action == MotionEvent.ACTION_UP) {
+-                    link[0].onClick(widget);
++                    if (event.getEventTime() - event.getDownTime() < ViewConfiguration.getLongPressTimeout()) {
++                        link[0].onClick(widget);
++                    }
+                 } else if (action == MotionEvent.ACTION_DOWN) {
+                     Selection.setSelection(buffer,
+                             buffer.getSpanStart(link[0]),

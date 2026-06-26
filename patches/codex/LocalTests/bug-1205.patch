@@ -1,0 +1,61 @@
+--- a/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
++++ b/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
+@@ -9,6 +9,7 @@
+ import android.os.Bundle;
+ import android.preference.PreferenceManager;
+ import android.support.annotation.NonNull;
++import android.support.design.widget.BottomSheetBehavior;
+ import android.support.design.widget.NavigationView;
+ import android.support.v4.app.Fragment;
+ import android.support.v4.app.FragmentManager;
+@@ -19,6 +20,7 @@
+ import android.support.v7.app.AppCompatActivity;
+ import android.support.v7.widget.Toolbar;
+ import android.view.MenuItem;
++import android.view.View;
+ import android.widget.Toast;
+ 
+ import java.util.ArrayList;
+@@ -269,12 +271,36 @@
+                     .findFragmentById(R.id.content);
+             if (currentFragment instanceof HomeFragment) {
+                 checkDoubleBackPress();
++            } else if (collapseBottomSheetIfExpanded(currentFragment)) {
++                // Keep user on the same fragment when the bottom sheet is open.
+             } else {
+                 Fragment fragment = new HomeFragment();
+                 getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
+                 setDefaultMenuSelected(0);
+             }
+         }
++    }
++
++    private boolean collapseBottomSheetIfExpanded(Fragment fragment) {
++        if (fragment == null || fragment.getView() == null) {
++            return false;
++        }
++
++        View bottomSheet = fragment.getView().findViewById(R.id.bottom_sheet);
++        if (bottomSheet == null) {
++            return false;
++        }
++
++        BottomSheetBehavior sheetBehavior = BottomSheetBehavior.from(bottomSheet);
++        int state = sheetBehavior.getState();
++        if (state == BottomSheetBehavior.STATE_EXPANDED
++                || state == BottomSheetBehavior.STATE_DRAGGING
++                || state == BottomSheetBehavior.STATE_SETTLING) {
++            sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
++            return true;
++        }
++
++        return false;
+     }
+ 
+     /**
+@@ -416,4 +442,4 @@
+         }
+         return true;
+     }
+-}
++}

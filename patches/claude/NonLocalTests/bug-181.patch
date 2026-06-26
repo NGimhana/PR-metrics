@@ -1,0 +1,66 @@
+--- a/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
++++ b/app/src/main/java/com/simon/harmonichackernews/StoriesFragment.java
+@@ -360,6 +360,36 @@
+         hideClicked = SettingsUtils.shouldHideClicked(getContext());
+         alwaysOpenComments = SettingsUtils.shouldAlwaysOpenComments(getContext());
+ 
++        // Re-filter existing stories with updated filter words
++        if (stories != null && adapter != null && !filterWords.isEmpty()) {
++            Iterator<Story> iterator = stories.iterator();
++            boolean first = true;
++            int index = 0;
++            while (iterator.hasNext()) {
++                Story story = iterator.next();
++                // Skip the header item (first item)
++                if (first) {
++                    first = false;
++                    index++;
++                    continue;
++                }
++                boolean filtered = false;
++                for (String phrase : filterWords) {
++                    if (story.title != null && story.title.toLowerCase().contains(phrase.toLowerCase())) {
++                        filtered = true;
++                        break;
++                    }
++                }
++                if (filtered) {
++                    iterator.remove();
++                    adapter.notifyItemRemoved(index);
++                    loadedTo = Math.max(0, loadedTo - 1);
++                } else {
++                    index++;
++                }
++            }
++        }
++
+         long timeDiff = System.currentTimeMillis() - lastLoaded;
+ 
+         // if more than 1 hr
+@@ -736,6 +766,26 @@
+ 
+                             if (hideClicked && story.clicked) {
+                                 iterator.remove();
++                                continue;
++                            }
++
++                            boolean filtered = false;
++                            for (String phrase : filterWords) {
++                                if (story.title != null && story.title.toLowerCase().contains(phrase.toLowerCase())) {
++                                    filtered = true;
++                                    break;
++                                }
++                            }
++                            if (!filtered) {
++                                for (String phrase : filterDomains) {
++                                    if (story.url != null && story.url.toLowerCase().contains(phrase.toLowerCase())) {
++                                        filtered = true;
++                                        break;
++                                    }
++                                }
++                            }
++                            if (filtered) {
++                                iterator.remove();
+                             }
+                         }
+ 

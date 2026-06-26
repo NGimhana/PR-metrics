@@ -1,0 +1,42 @@
+diff --git a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+index 8c44102..979ab0a 100644
+--- a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
++++ b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+@@ -479,14 +479,13 @@ public class RoboticArmActivity extends GuideActivity {
+         }
+     }
+     private void processDegreeInput(EditText degreeText, SeekArc seekArc) {
+-        int previousDegree = degree;
+         String degreeStr = degreeText.getText().toString().trim();
+-
++        int localDegree;
+         if (degreeStr.isEmpty()) {
+-            degree = (degree == 0) ? (int) (seekArc.getProgress() * 3.6) : previousDegree;
++            localDegree = (int) (seekArc.getProgress() * 3.6);
+         } else {
+             try {
+-                degree = Integer.parseInt(degreeStr);
++                localDegree = Integer.parseInt(degreeStr);
+             } catch (NumberFormatException e) {
+                 degreeText.setText(getResources().getString(R.string.zero));
+                 seekArc.setProgress(0);
+@@ -495,13 +494,17 @@ public class RoboticArmActivity extends GuideActivity {
+             }
+         }
+ 
+-        if (degree > 360 || degree < 0) {
++        if (localDegree > 360 || localDegree < 0) {
+             degreeText.setText(getResources().getString(R.string.zero));
+             seekArc.setProgress(0);
+             toastInvalidValueMessage();
+         } else {
+-            seekArc.setProgress((int) (degree / 3.6));
++            degree = localDegree;
+             editEnter = true;
++            seekArc.setProgress((int) (localDegree / 3.6));
++            editEnter = false;
++            degreeText.setText(String.valueOf(localDegree));
++            degreeText.setCursorVisible(false);
+         }
+     }
+ 

@@ -1,0 +1,78 @@
+--- a/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
++++ b/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
+@@ -10,6 +10,7 @@
+ import android.preference.PreferenceManager;
+ import android.support.annotation.NonNull;
+ import android.support.design.widget.NavigationView;
++import android.support.design.widget.BottomSheetBehavior;
+ import android.support.v4.app.Fragment;
+ import android.support.v4.app.FragmentManager;
+ import android.support.v4.content.ContextCompat;
+@@ -19,6 +20,7 @@
+ import android.support.v7.app.AppCompatActivity;
+ import android.support.v7.widget.Toolbar;
+ import android.view.MenuItem;
++import android.view.View;
+ import android.widget.Toast;
+ 
+ import java.util.ArrayList;
+@@ -267,6 +269,9 @@
+         } else {
+             Fragment currentFragment = getSupportFragmentManager()
+                     .findFragmentById(R.id.content);
++            if (collapseBottomSheetIfExpanded(currentFragment)) {
++                return;
++            }
+             if (currentFragment instanceof HomeFragment) {
+                 checkDoubleBackPress();
+             } else {
+@@ -275,6 +280,32 @@
+                 setDefaultMenuSelected(0);
+             }
+         }
++    }
++
++    private boolean collapseBottomSheetIfExpanded(Fragment currentFragment) {
++        if (currentFragment == null || currentFragment.getView() == null) {
++            return false;
++        }
++
++        View bottomSheet = currentFragment.getView().findViewById(R.id.bottom_sheet);
++        if (bottomSheet == null) {
++            return false;
++        }
++
++        try {
++            BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(bottomSheet);
++            int state = behavior.getState();
++            if (state == BottomSheetBehavior.STATE_EXPANDED
++                    || state == BottomSheetBehavior.STATE_DRAGGING
++                    || state == BottomSheetBehavior.STATE_SETTLING) {
++                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
++                return true;
++            }
++        } catch (Exception ignored) {
++            return false;
++        }
++
++        return false;
+     }
+ 
+     /**
+@@ -416,4 +447,4 @@
+         }
+         return true;
+     }
+-}
++}
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -7,7 +7,7 @@
+     <string name="password_protect_pdf_text">Password Protect PDF</string>
+     <string name="edit_images_text">Edit Images</string>
+     <string name="open_pdf_text">Open PDF</string>
+-    <string name="create_pdf_text">Create PDF</string>
++    <string name="create_pdf_text">CREATE PDF</string>
+     <string name="details"><b>Details</b></string>
+     <string name="search_hint">Name of file</string>
+     <string name="search">search</string>

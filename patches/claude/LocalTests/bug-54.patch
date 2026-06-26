@@ -1,0 +1,21 @@
+--- a/app/src/main/java/net/gsantner/markor/util/AppSettings.java
++++ b/app/src/main/java/net/gsantner/markor/util/AppSettings.java
+@@ -304,6 +304,6 @@
+     }
+ 
+     public boolean isEditorHistoryEnabled() {
+-        return getBool(R.string.pref_key__editor_history_enabled, false);
++        return getBool(R.string.pref_key__editor_history_enabled, true);
+     }
+ }
+--- a/app/src/main/res/layout/document__fragment__edit.xml
++++ b/app/src/main/res/layout/document__fragment__edit.xml
+@@ -46,7 +46,7 @@
+             android:fontFamily="sans-serif-light"
+             android:gravity="top"
+             android:imeOptions="flagNoExtractUi"
+-            android:inputType="textMultiLine|textCapSentences"
++            android:inputType="textMultiLine"
+             android:paddingBottom="120dp"
+             android:paddingLeft="@dimen/activity_horizontal_margin"
+             android:paddingRight="@dimen/activity_horizontal_margin"

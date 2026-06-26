@@ -1,0 +1,60 @@
+diff --git a/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java b/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
+index 52e5a78..f570a97 100644
+--- a/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
++++ b/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
+@@ -75,7 +75,7 @@ class ExperienceTweaks extends Forwarder {
+             public boolean onSingleTapUp(MotionEvent e) {
+                 // Double tap disabled: display history directly
+                 if(!prefs.getBoolean("double-tap", false)) {
+-                    if (prefs.getBoolean("history-onclick", false)) {
++                    if (prefs.getBoolean("history-onclick", false) || (isMinimalisticModeEnabled() && prefs.getBoolean("favorites-hide", false))) {
+                         doAction("display-history");
+                     }
+                 }
+@@ -86,7 +86,7 @@ class ExperienceTweaks extends Forwarder {
+             public boolean onSingleTapConfirmed(MotionEvent e) {
+                 // Double tap enabled: wait to confirm this is indeed a single tap, not a double tap
+                 if(prefs.getBoolean("double-tap", false)) {
+-                    if (prefs.getBoolean("history-onclick", false)) {
++                    if (prefs.getBoolean("history-onclick", false) || (isMinimalisticModeEnabled() && prefs.getBoolean("favorites-hide", false))) {
+                         doAction("display-history");
+                     }
+                 }
+@@ -168,7 +168,7 @@ class ExperienceTweaks extends Forwarder {
+                             }
+                         }
+ 
+-                        if (isMinimalisticModeEnabledForFavorites()) {
++                        if (isMinimalisticModeEnabled() && isExternalFavoriteBarEnabled()) {
+                             mainActivity.favoritesBar.setVisibility(View.VISIBLE);
+                         }
+                         break;
+@@ -227,7 +227,7 @@ class ExperienceTweaks extends Forwarder {
+     }
+ 
+     void onDisplayKissBar(boolean display) {
+-        if (isMinimalisticModeEnabledForFavorites() && !display) {
++        if (isMinimalisticModeEnabled() && isExternalFavoriteBarEnabled() && !display && prefs.getBoolean("favorites-hide", false)) {
+             mainActivity.favoritesBar.setVisibility(View.GONE);
+         }
+ 
+@@ -244,7 +244,7 @@ class ExperienceTweaks extends Forwarder {
+                 // By default, help text is displayed -- not in minimalistic mode.
+                 mainEmptyView.setVisibility(View.GONE);
+ 
+-                if (isMinimalisticModeEnabledForFavorites()) {
++                if (isExternalFavoriteBarEnabled() && prefs.getBoolean("favorites-hide", false)) {
+                     mainActivity.favoritesBar.setVisibility(View.GONE);
+                 }
+             } else {
+@@ -305,8 +305,8 @@ class ExperienceTweaks extends Forwarder {
+         return prefs.getBoolean("history-hide", false);
+     }
+ 
+-    private boolean isMinimalisticModeEnabledForFavorites() {
+-        return prefs.getBoolean("history-hide", false) && prefs.getBoolean("favorites-hide", false) && prefs.getBoolean("enable-favorites-bar", true);
++    private boolean isExternalFavoriteBarEnabled() {
++        return prefs.getBoolean("enable-favorites-bar", true);
+     }
+ 
+     /**

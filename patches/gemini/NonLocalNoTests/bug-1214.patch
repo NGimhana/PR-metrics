@@ -1,0 +1,137 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 08e7ef5..4080550 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -330,6 +330,8 @@ public class IntroScreenActivity extends IntroActivity {
+             passwordInput = root.findViewById(R.id.introPasswordEdit);
+             passwordConfirm = root.findViewById(R.id.introPasswordConfirm);
+ 
++            UIHelper.setupPasswordVisibilityToggleSync(passwordLayout, passwordConfirm);
++
+             generateSelectionMapping();
+ 
+             final String[] authEntries = getResources().getStringArray(R.array.settings_entries_auth);
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java
+index 9d1373d..0147782 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java
+@@ -127,6 +127,8 @@ public class CredentialsPreference extends DialogPreference
+         passwordInput = view.findViewById(R.id.passwordEdit);
+         passwordConfirm = view.findViewById(R.id.passwordConfirm);
+ 
++        UIHelper.setupPasswordVisibilityToggleSync(passwordLayout, passwordConfirm);
++
+         if (settings.getBlockAccessibility()) {
+             passwordLayout.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+             passwordConfirm.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java
+index 4fcc709..963006f 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java
+@@ -43,6 +43,7 @@ import org.shadowice.flocke.andotp.Utilities.Constants;
+ import org.shadowice.flocke.andotp.Utilities.EncryptionHelper;
+ import org.shadowice.flocke.andotp.Utilities.KeyStoreHelper;
+ import org.shadowice.flocke.andotp.Utilities.Settings;
++import org.shadowice.flocke.andotp.Utilities.UIHelper;
+ 
+ import java.nio.charset.StandardCharsets;
+ import java.security.KeyPair;
+@@ -99,6 +100,8 @@ public class PasswordEncryptedPreference extends DialogPreference
+         passwordInput = view.findViewById(R.id.passwordEdit);
+         passwordConfirm = view.findViewById(R.id.passwordConfirm);
+ 
++        UIHelper.setupPasswordVisibilityToggleSync(passwordLayout, passwordConfirm);
++
+         if (settings.getBlockAccessibility()) {
+             passwordLayout.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+             passwordConfirm.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Utilities/UIHelper.java b/app/src/main/java/org/shadowice/flocke/andotp/Utilities/UIHelper.java
+index 10b4d07..4e581b8 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Utilities/UIHelper.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Utilities/UIHelper.java
+@@ -25,10 +25,46 @@ package org.shadowice.flocke.andotp.Utilities;
+ import android.app.AlertDialog;
+ import android.content.Context;
+ import android.content.DialogInterface;
++import android.text.method.PasswordTransformationMethod;
+ import android.view.View;
+ import android.view.inputmethod.InputMethodManager;
++import android.widget.Checkable;
++import android.widget.EditText;
++
++import com.google.android.material.textfield.TextInputLayout;
+ 
+ public class UIHelper {
++    public static void setupPasswordVisibilityToggleSync(final TextInputLayout layout, final EditText confirm) {
++        final EditText main = layout.getEditText();
++        if (main == null || confirm == null)
++            return;
++
++        layout.setEndIconOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View v) {
++                int selectionMain = main.getSelectionEnd();
++                int selectionConfirm = confirm.getSelectionEnd();
++
++                boolean isPassword = main.getTransformationMethod() instanceof PasswordTransformationMethod;
++                if (isPassword) {
++                    main.setTransformationMethod(null);
++                    confirm.setTransformationMethod(null);
++                } else {
++                    main.setTransformationMethod(PasswordTransformationMethod.getInstance());
++                    confirm.setTransformationMethod(PasswordTransformationMethod.getInstance());
++                }
++
++                if (selectionMain >= 0)
++                    main.setSelection(selectionMain);
++                if (selectionConfirm >= 0)
++                    confirm.setSelection(selectionConfirm);
++
++                if (v instanceof Checkable) {
++                    ((Checkable) v).setChecked(!isPassword);
++                }
++            }
++        });
++    }
+     public static void showGenericDialog(Context context, int titleId, int messageId) {
+         showGenericDialog(context, titleId, messageId, null);
+     }
+diff --git a/app/src/main/res/layout/component_authentication.xml b/app/src/main/res/layout/component_authentication.xml
+index 08c2f25..0f20052 100644
+--- a/app/src/main/res/layout/component_authentication.xml
++++ b/app/src/main/res/layout/component_authentication.xml
+@@ -29,7 +29,7 @@
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:hint="@string/settings_hint_password"
+-            app:passwordToggleEnabled="true" >
++            app:endIconMode="password_toggle" >
+ 
+             <com.google.android.material.textfield.TextInputEditText
+                 android:id="@+id/passwordEdit"
+diff --git a/app/src/main/res/layout/component_intro_authentication.xml b/app/src/main/res/layout/component_intro_authentication.xml
+index ac18d64..1b709ee 100644
+--- a/app/src/main/res/layout/component_intro_authentication.xml
++++ b/app/src/main/res/layout/component_intro_authentication.xml
+@@ -64,7 +64,7 @@
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:hint="@string/settings_hint_password"
+-                app:passwordToggleEnabled="true" >
++                app:endIconMode="password_toggle" >
+ 
+                 <com.google.android.material.textfield.TextInputEditText
+                     android:id="@+id/introPasswordEdit"
+diff --git a/app/src/main/res/layout/component_password.xml b/app/src/main/res/layout/component_password.xml
+index b45de7e..256700b 100644
+--- a/app/src/main/res/layout/component_password.xml
++++ b/app/src/main/res/layout/component_password.xml
+@@ -15,7 +15,7 @@
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:hint="@string/settings_hint_password"
+-        app:passwordToggleEnabled="true" >
++        app:endIconMode="password_toggle" >
+ 
+         <com.google.android.material.textfield.TextInputEditText
+             android:id="@+id/passwordEdit"

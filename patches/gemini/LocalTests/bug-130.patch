@@ -1,0 +1,34 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 3e7d383..dadc030 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -256,11 +256,15 @@ public class IntroScreenActivity extends IntroActivity {
+         }
+ 
+         public void updateEncryptionType(Constants.EncryptionType encryptionType) {
++            boolean changed = (this.encryptionType != encryptionType);
+             this.encryptionType = encryptionType;
+ 
+             if (desc != null) {
+                 if (encryptionType == Constants.EncryptionType.KEYSTORE) {
+                     desc.setText(R.string.intro_slide3_desc_keystore);
++
++                    if (changed)
++                        selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.NONE));
+                 } else if (encryptionType == Constants.EncryptionType.PASSWORD) {
+                     desc.setText(R.string.intro_slide3_desc_password);
+ 
+@@ -431,7 +435,12 @@ public class IntroScreenActivity extends IntroActivity {
+             passwordInput.addTextChangedListener(textWatcher);
+             passwordConfirm.addTextChangedListener(textWatcher);
+ 
+-            selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.PASSWORD));
++            if (encryptionType == Constants.EncryptionType.PASSWORD)
++                selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.PASSWORD));
++            else
++                selection.setSelection(selectionMapping.indexOfValue(Constants.AuthMethod.NONE));
++
++            updateEncryptionType(encryptionType);
+ 
+             return root;
+         }

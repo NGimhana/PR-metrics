@@ -1,0 +1,104 @@
+--- a/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
++++ b/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
+@@ -21,6 +21,7 @@
+         selectTextDialogBuilder.setView(rootView);
+ 
+         HtmlTextView htmlTextView = rootView.findViewById(R.id.select_text_htmltextview);
++        htmlTextView.setShowFullLinks(true);
+         htmlTextView.setHtml(text);
+ 
+         htmlTextView.setOnClickATagListener(new OnClickATagListener() {
+--- a/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTagHandler.java
++++ b/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTagHandler.java
+@@ -115,6 +115,7 @@
+     private ClickableTableSpan clickableTableSpan;
+     private DrawTableLinkSpan drawTableLinkSpan;
+     private HtmlFormatter.TagClickListenerProvider onClickATagListenerProvider;
++    private boolean showFullLinks = false;
+ 
+     private static class Ul {
+     }
+@@ -436,4 +437,8 @@
+     public void setOnClickATagListenerProvider(HtmlFormatter.TagClickListenerProvider onClickATagListenerProvider) {
+         this.onClickATagListenerProvider = onClickATagListenerProvider;
+     }
++
++    public void setShowFullLinks(boolean showFullLinks) {
++        this.showFullLinks = showFullLinks;
++    }
+ }
+--- a/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTextView.java
++++ b/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTextView.java
+@@ -19,8 +19,10 @@
+ import android.content.Context;
+ import android.text.Html;
+ import android.text.Spannable;
++import android.text.SpannableStringBuilder;
+ import android.text.Spanned;
+ import android.text.style.QuoteSpan;
++import android.text.style.URLSpan;
+ import android.util.AttributeSet;
+ 
+ import androidx.annotation.NonNull;
+@@ -47,6 +49,7 @@
+     private float indent = 24.0f; // Default to 24px.
+ 
+     private boolean removeTrailingWhiteSpace = true;
++    private boolean showFullLinks = false;
+ 
+     public HtmlTextView(Context context, AttributeSet attrs, int defStyle) {
+         super(context, attrs, defStyle);
+@@ -108,10 +111,42 @@
+                 }, indent, removeTrailingWhiteSpace
+         );
+         replaceQuoteSpans(styledText);
++
++        if (showFullLinks) {
++            styledText = replaceLinksWithFullUrls(styledText);
++        }
++
+         setText(styledText);
+ 
+         // make links work
+         setMovementMethod(LocalLinkMovementMethod.getInstance());
++    }
++
++    /**
++     * Replaces the display text of URLSpans with the full URL from the href attribute.
++     * This ensures that truncated link text in comments is shown in full in the select text view.
++     */
++    private Spanned replaceLinksWithFullUrls(Spanned spanned) {
++        SpannableStringBuilder builder = new SpannableStringBuilder(spanned);
++        URLSpan[] urlSpans = builder.getSpans(0, builder.length(), URLSpan.class);
++        // Process spans in reverse order to maintain correct positions
++        for (int i = urlSpans.length - 1; i >= 0; i--) {
++            URLSpan span = urlSpans[i];
++            String url = span.getURL();
++            if (url != null) {
++                int start = builder.getSpanStart(span);
++                int end = builder.getSpanEnd(span);
++                int flags = builder.getSpanFlags(span);
++                String displayText = builder.subSequence(start, end).toString();
++                if (!displayText.equals(url)) {
++                    builder.replace(start, end, url);
++                    // Re-apply the span over the new text
++                    builder.removeSpan(span);
++                    builder.setSpan(span, start, start + url.length(), flags);
++                }
++            }
++        }
++        return builder;
+     }
+ 
+     /**
+@@ -136,6 +171,10 @@
+ 
+     public void setOnClickATagListener(@Nullable OnClickATagListener onClickATagListener) {
+         this.onClickATagListener = onClickATagListener;
++    }
++
++    public void setShowFullLinks(boolean showFullLinks) {
++        this.showFullLinks = showFullLinks;
+     }
+ 
+     /**

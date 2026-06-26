@@ -1,0 +1,87 @@
+diff --git a/app/src/main/java/de/danoeh/antennapod/adapter/AllEpisodesRecycleAdapter.java b/app/src/main/java/de/danoeh/antennapod/adapter/AllEpisodesRecycleAdapter.java
+index a431a47..382bcfb 100644
+--- a/app/src/main/java/de/danoeh/antennapod/adapter/AllEpisodesRecycleAdapter.java
++++ b/app/src/main/java/de/danoeh/antennapod/adapter/AllEpisodesRecycleAdapter.java
+@@ -106,6 +106,9 @@ public class AllEpisodesRecycleAdapter extends RecyclerView.Adapter<AllEpisodesR
+     public void onBindViewHolder(final Holder holder, int position) {
+         final FeedItem item = itemAccess.getItem(position);
+         if (item == null) return;
++        holder.itemView.setTranslationX(0);
++        holder.itemView.setTranslationY(0);
++        holder.itemView.setAlpha(1.0f);
+         holder.itemView.setOnLongClickListener(v -> {
+             this.position = holder.getAdapterPosition();
+             return false;
+diff --git a/app/src/main/java/de/danoeh/antennapod/adapter/QueueRecyclerAdapter.java b/app/src/main/java/de/danoeh/antennapod/adapter/QueueRecyclerAdapter.java
+index 3ad9dc7..62c07e9 100644
+--- a/app/src/main/java/de/danoeh/antennapod/adapter/QueueRecyclerAdapter.java
++++ b/app/src/main/java/de/danoeh/antennapod/adapter/QueueRecyclerAdapter.java
+@@ -92,6 +92,9 @@ public class QueueRecyclerAdapter extends RecyclerView.Adapter<QueueRecyclerAdap
+ 
+     public void onBindViewHolder(ViewHolder holder, int pos) {
+         FeedItem item = itemAccess.getItem(pos);
++        holder.itemView.setTranslationX(0);
++        holder.itemView.setTranslationY(0);
++        holder.itemView.setAlpha(1.0f);
+         holder.bind(item);
+         holder.itemView.setOnLongClickListener(v -> {
+             selectedItem = item;
+diff --git a/app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java b/app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java
+index ff7af97..337a2fe 100644
+--- a/app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java
++++ b/app/src/main/java/de/danoeh/antennapod/fragment/AllEpisodesFragment.java
+@@ -320,7 +320,7 @@ public class AllEpisodesFragment extends Fragment {
+         }
+         layoutManager = new LinearLayoutManager(getActivity());
+         recyclerView.setLayoutManager(layoutManager);
+-        recyclerView.setHasFixedSize(true);
++        recyclerView.setHasFixedSize(false);
+         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+ 
+         progLoading = root.findViewById(R.id.progLoading);
+diff --git a/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java b/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
+index c6db974..a063e00 100644
+--- a/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
++++ b/app/src/main/java/de/danoeh/antennapod/fragment/QueueFragment.java
+@@ -131,8 +131,9 @@ public class QueueFragment extends Fragment {
+         switch(event.action) {
+             case ADDED:
+                 queue.add(event.position, event.item);
++                onFragmentLoaded(false);
+                 recyclerAdapter.notifyItemInserted(event.position);
+-                break;
++                return;
+             case SET_QUEUE:
+                 queue = event.items;
+                 recyclerAdapter.notifyDataSetChanged();
+@@ -140,8 +141,10 @@ public class QueueFragment extends Fragment {
+             case REMOVED:
+             case IRREVERSIBLE_REMOVED:
+                 int position = FeedItemUtil.indexOfItemWithId(queue, event.item.getId());
+-                queue.remove(position);
+-                recyclerAdapter.notifyItemRemoved(position);
++                if (position >= 0) {
++                    queue.remove(position);
++                    recyclerAdapter.notifyItemRemoved(position);
++                }
+                 break;
+             case CLEARED:
+                 queue.clear();
+@@ -389,7 +392,7 @@ public class QueueFragment extends Fragment {
+         layoutManager = new LinearLayoutManager(getActivity());
+         recyclerView.setLayoutManager(layoutManager);
+         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).build());
+-        recyclerView.setHasFixedSize(true);
++        recyclerView.setHasFixedSize(false);
+         registerForContextMenu(recyclerView);
+ 
+         itemTouchHelper = new ItemTouchHelper(
+@@ -511,7 +514,7 @@ public class QueueFragment extends Fragment {
+             recyclerView.setAdapter(recyclerAdapter);
+         }
+         if(queue == null || queue.size() == 0) {
+-            recyclerView.setVisibility(View.GONE);
++            recyclerView.setVisibility(View.INVISIBLE);
+             txtvEmpty.setVisibility(View.VISIBLE);
+         } else {
+             txtvEmpty.setVisibility(View.GONE);

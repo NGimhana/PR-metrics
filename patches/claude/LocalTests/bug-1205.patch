@@ -1,0 +1,48 @@
+--- a/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
++++ b/app/src/main/java/swati4star/createpdf/activity/MainActivity.java
+@@ -18,7 +18,10 @@
+ import android.support.v7.app.ActionBarDrawerToggle;
+ import android.support.v7.app.AppCompatActivity;
+ import android.support.v7.widget.Toolbar;
++import android.support.design.widget.BottomSheetBehavior;
+ import android.view.MenuItem;
++import android.view.View;
++import android.widget.LinearLayout;
+ import android.widget.Toast;
+ 
+ import java.util.ArrayList;
+@@ -270,11 +273,34 @@
+             if (currentFragment instanceof HomeFragment) {
+                 checkDoubleBackPress();
+             } else {
++                // Check if bottom sheet is expanded, if so collapse it
++                if (closeBottomSheetIfOpen(currentFragment)) {
++                    return;
++                }
+                 Fragment fragment = new HomeFragment();
+                 getSupportFragmentManager().beginTransaction().replace(R.id.content, fragment).commit();
+                 setDefaultMenuSelected(0);
+             }
+         }
++    }
++
++    /**
++     * Checks if the current fragment has an open bottom sheet and closes it
++     * @param fragment current fragment
++     * @return true if a bottom sheet was open and is now being collapsed
++     */
++    private boolean closeBottomSheetIfOpen(Fragment fragment) {
++        if (fragment != null && fragment.getView() != null) {
++            View bottomSheet = fragment.getView().findViewById(R.id.bottom_sheet);
++            if (bottomSheet != null) {
++                BottomSheetBehavior sheetBehavior = BottomSheetBehavior.from(bottomSheet);
++                if (sheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
++                    sheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
++                    return true;
++                }
++            }
++        }
++        return false;
+     }
+ 
+     /**

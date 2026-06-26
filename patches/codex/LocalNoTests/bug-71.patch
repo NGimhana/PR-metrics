@@ -1,0 +1,43 @@
+--- a/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
++++ b/app/src/main/java/fr/neamar/kiss/forwarder/ExperienceTweaks.java
+@@ -75,9 +75,7 @@
+             public boolean onSingleTapUp(MotionEvent e) {
+                 // Double tap disabled: display history directly
+                 if(!prefs.getBoolean("double-tap", false)) {
+-                    if (prefs.getBoolean("history-onclick", false)) {
+-                        doAction("display-history");
+-                    }
++                    onSingleTap();
+                 }
+                 return super.onSingleTapUp(e);
+             }
+@@ -86,9 +84,7 @@
+             public boolean onSingleTapConfirmed(MotionEvent e) {
+                 // Double tap enabled: wait to confirm this is indeed a single tap, not a double tap
+                 if(prefs.getBoolean("double-tap", false)) {
+-                    if (prefs.getBoolean("history-onclick", false)) {
+-                        doAction("display-history");
+-                    }
++                    onSingleTap();
+                 }
+ 
+                 return super.onSingleTapConfirmed(e);
+@@ -139,6 +135,18 @@
+                     doAction(prefs.getString("gesture-up", "display-keyboard"));
+                 }
+                 return true;
++            }
++
++            private void onSingleTap() {
++                if (prefs.getBoolean("history-onclick", false)) {
++                    doAction("display-history");
++                    return;
++                }
++
++                // In minimalistic mode, favorites reveal should not depend on history-on-click.
++                if (isMinimalisticModeEnabledForFavorites()) {
++                    mainActivity.favoritesBar.setVisibility(View.VISIBLE);
++                }
+             }
+ 
+             private void doAction(String action) {

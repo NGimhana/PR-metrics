@@ -1,0 +1,56 @@
+--- a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+@@ -189,6 +189,12 @@
+     private BaseArrayAdapter arrayAdapter;
+ 
+     /**
++     * Saved ListView state for the next directory reload.
++     */
++    private int pendingReloadScrollPosition = -1;
++    private int pendingReloadScrollOffset = 0;
++
++    /**
+      * The file operation context containing the {@link Operation} to do and a list of {@link FMFile} objects.
+      */
+     private EditablePair<Operation, ArrayList<FMFile>> fileOpContext = new EditablePair<>(NONE, new ArrayList<>());
+@@ -567,6 +573,11 @@
+      * F5
+      */
+     public void reloadCurrentDirectory() {
++        if (fileListView != null) {
++            pendingReloadScrollPosition = fileListView.getFirstVisiblePosition();
++            View topView = fileListView.getChildAt(0);
++            pendingReloadScrollOffset = topView != null ? topView.getTop() : 0;
++        }
+         loadPath(currentDirectory);
+     }
+ 
+@@ -614,6 +625,7 @@
+ 
+             arrayAdapter = new FileArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()));
+             fileListView.setAdapter(arrayAdapter);
++            restoreScrollAfterReloadIfNeeded();
+         } catch (NoAccessException e) {
+             Log.w(TAG, "Can't read '" + path + "': Permission denied!");
+             fileListView.setVisibility(GONE);
+@@ -655,11 +667,20 @@
+ 
+         arrayAdapter = new ArchiveArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()), archive);
+         fileListView.setAdapter(arrayAdapter);
++        restoreScrollAfterReloadIfNeeded();
+ 
+         currentDirectory = path;
+         historyMap.put(historyCounter++, new HistoryEntry(currentDirectory, archive));
+         setToolbarText();
+         setFreeSpaceText();
++    }
++
++    private void restoreScrollAfterReloadIfNeeded() {
++        if (pendingReloadScrollPosition >= 0) {
++            fileListView.setSelectionFromTop(pendingReloadScrollPosition, pendingReloadScrollOffset);
++            pendingReloadScrollPosition = -1;
++            pendingReloadScrollOffset = 0;
++        }
+     }
+ 
+     /**

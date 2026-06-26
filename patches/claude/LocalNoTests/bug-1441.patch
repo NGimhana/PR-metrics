@@ -1,0 +1,27 @@
+--- a/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/locations/ManageFishingSpotFragment.java
+@@ -124,14 +124,16 @@
+         FishingSpot fishingSpot = getNewFishingSpot();
+         fishingSpot.setName(mNameView.getInputText());
+ 
+-        if (mMap != null) {
+-            fishingSpot.setLatitude(mMap.getCameraPosition().target.latitude);
+-            fishingSpot.setLongitude(mMap.getCameraPosition().target.longitude);
+-        } else {
+-            // in case Google Play Services isn't available, fishing spots can still be added and updated later
+-            fishingSpot.setLatitude(0.0);
+-            fishingSpot.setLongitude(0.0);
+-        }
++        double lat = validateCoordinateInput(mLatitudeView);
++        double lng = validateCoordinateInput(mLongitudeView);
++
++        if (lat == -1 || lng == -1) {
++            AlertUtils.showError(getActivity(), R.string.msg_invalid_coordinate);
++            return false;
++        }
++
++        fishingSpot.setLatitude(lat);
++        fishingSpot.setLongitude(lng);
+ 
+         // name
+         if (fishingSpot.isNameNull()) {

@@ -1,0 +1,37 @@
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsLoggingService.java
+@@ -1092,6 +1092,7 @@
+         }
+         catch(Exception e){
+              LOG.error(getString(R.string.could_not_write_to_file), e);
++             EventBus.getDefault().post(new ServiceEvents.FileWriteFailure());
+         }
+ 
+         session.clearDescription();
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/GpsMainActivity.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/GpsMainActivity.java
+@@ -1783,4 +1783,9 @@
+     public void onEventMainThread(ServiceEvents.LocationServicesUnavailable locationServicesUnavailable) {
+         setBulbStatus();
+     }
++
++    @EventBusHook
++    public void onEventMainThread(ServiceEvents.FileWriteFailure fileWriteFailure) {
++        Toast.makeText(getApplicationContext(), getString(R.string.could_not_write_to_file), Toast.LENGTH_LONG).show();
++    }
+ }
+--- a/gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java
++++ b/gpslogger/src/main/java/com/mendhak/gpslogger/common/events/ServiceEvents.java
+@@ -82,6 +82,12 @@
+     }
+ 
+     /**
++     * Could not write to file
++     */
++    public static class FileWriteFailure {
++    }
++
++    /**
+      * The file name has been set
+      */
+     public static class FileNamed {

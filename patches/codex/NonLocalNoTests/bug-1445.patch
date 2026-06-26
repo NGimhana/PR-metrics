@@ -1,0 +1,35 @@
+--- a/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/model/Logbook.java
+@@ -916,11 +916,19 @@
+ 
+     //region Trip Manipulation
+     public static boolean tripExists(Trip trip) {
++        return tripExists(trip, null);
++    }
++
++    public static boolean tripExists(Trip trip, UUID excludedTripId) {
+         ArrayList<UserDefineObject> trips = getTrips();
+ 
+-        for (UserDefineObject object : trips)
++        for (UserDefineObject object : trips) {
++            if (excludedTripId != null && object.getId().equals(excludedTripId))
++                continue;
++
+             if (trip.overlapsTrip((Trip)object))
+                 return true;
++        }
+ 
+         return false;
+     }
+--- a/app/src/main/java/com/cohenadair/anglerslog/trips/ManageTripFragment.java
++++ b/app/src/main/java/com/cohenadair/anglerslog/trips/ManageTripFragment.java
+@@ -125,7 +125,8 @@
+     @Override
+     public boolean verifyUserInput() {
+         // make sure the new trip doesn't overlap any existing trips
+-        if ((mDateChanged || !isEditing()) && Logbook.tripExists(getNewTrip())) {
++        UUID excludedTripId = isEditing() ? getEditingId() : null;
++        if ((mDateChanged || !isEditing()) && Logbook.tripExists(getNewTrip(), excludedTripId)) {
+             AlertUtils.showError(getActivity(), R.string.error_trip_date);
+             return false;
+         }

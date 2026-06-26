@@ -1,0 +1,19 @@
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+@@ -74,13 +74,12 @@
+         // parse
+         var uri = Uri.parse(urlData.url);
+         var urlQuerySanitizer = new UrlQuerySanitizer();
++        var encodedQuery = uri.getEncodedQuery();
+         // the default parseUrl doesn't remove the fragment
+-        if (uri.getQuery() != null) {
++        if (encodedQuery != null) {
+             urlQuerySanitizer.setAllowUnregisteredParamaters(true);
+             urlQuerySanitizer.setUnregisteredParameterValueSanitizer(v -> v);
+-            urlQuerySanitizer.parseQuery(uri.getQuery()
+-                    // this will fix issues with the parser decoding twice
+-                    .replace("%", "%25"));
++            urlQuerySanitizer.parseQuery(encodedQuery);
+         }
+ 
+         // domain elements

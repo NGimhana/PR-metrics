@@ -1,0 +1,105 @@
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+@@ -1,7 +1,6 @@
+ package com.trianguloy.urlchecker.modules.list;
+ 
+ import android.net.Uri;
+-import android.net.UrlQuerySanitizer;
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.LinearLayout;
+@@ -19,6 +18,8 @@
+ import com.trianguloy.urlchecker.utilities.methods.Inflater;
+ import com.trianguloy.urlchecker.utilities.methods.JavaUtils;
+ 
++import java.net.URLDecoder;
++import java.nio.charset.StandardCharsets;
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+@@ -50,6 +51,16 @@
+ 
+ class UriPartsDialog extends AModuleDialog {
+ 
++    private static class QueryParameter {
++        final String name;
++        final String value;
++
++        QueryParameter(String name, String value) {
++            this.name = name;
++            this.value = value;
++        }
++    }
++
+     private LinearLayout box;
+     private final List<String> expandedGroups = new ArrayList<>();
+ 
+@@ -74,13 +85,6 @@
+ 
+         // parse
+         var uri = Uri.parse(urlData.url);
+-        var urlQuerySanitizer = new UrlQuerySanitizer();
+-        // the default parseUrl doesn't remove the fragment
+-        if (uri.getQuery() != null) {
+-            urlQuerySanitizer.setAllowUnregisteredParamaters(true);
+-            urlQuerySanitizer.setUnregisteredParameterValueSanitizer(v -> v);
+-            urlQuerySanitizer.parseQuery(uri.getQuery());
+-        }
+ 
+         // domain elements
+         if (uri.getAuthority() != null || uri.getScheme() != null) {
+@@ -108,7 +112,7 @@
+         }
+ 
+         // query parameters
+-        var parameters = urlQuerySanitizer.getParameterList();
++        var parameters = parseQueryParameters(uri);
+         if (parameters.size() > 0) {
+             var queries = addGroup("Parameters", parameters.size(), uri.buildUpon().query(null));
+             for (var i = 0; i < parameters.size(); i++) {
+@@ -116,10 +120,10 @@
+                 var builder = uri.buildUpon();
+                 builder.query(null);
+                 for (var j = 0; j < parameters.size(); j++) {
+-                    if (i != j) builder.appendQueryParameter(parameters.get(j).mParameter, parameters.get(j).mValue);
++                    if (i != j) builder.appendQueryParameter(parameters.get(j).name, parameters.get(j).value);
+                 }
+                 // append the parameter
+-                addPart(parameters.get(i).mParameter, parameters.get(i).mValue, queries, builder);
++                addPart(parameters.get(i).name, parameters.get(i).value, queries, builder);
+             }
+         }
+ 
+@@ -130,6 +134,32 @@
+         }
+ 
+         setVisibility(box.getChildCount() > 0);
++    }
++
++    /**
++     * Returns query parameters decoded as shown in this module.
++     * The query has already been decoded once by {@link Uri#getQuery()}, then each part is decoded again here.
++     */
++    private static List<QueryParameter> parseQueryParameters(Uri uri) {
++        var query = uri.getQuery();
++        var params = new ArrayList<QueryParameter>();
++        if (query == null || query.isEmpty()) return params;
++
++        for (var parameter : query.split("&", -1)) {
++            var split = parameter.split("=", 2);
++            var name = decodeQueryPart(split[0]);
++            var value = split.length == 2 ? decodeQueryPart(split[1]) : "";
++            params.add(new QueryParameter(name, value));
++        }
++        return params;
++    }
++
++    private static String decodeQueryPart(String part) {
++        try {
++            return URLDecoder.decode(part, StandardCharsets.UTF_8.name());
++        } catch (Exception ignored) {
++            return part;
++        }
+     }
+ 
+     /**

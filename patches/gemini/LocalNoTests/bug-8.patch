@@ -1,0 +1,75 @@
+diff --git a/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java b/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
+index af0b7e5..9475ea6 100644
+--- a/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
++++ b/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
+@@ -80,6 +80,14 @@ public class TrickyTripperActivity extends AppCompatActivity implements DeleteDi
+ 
+         mDrawerToggle = new MyActionBarDrawerToggle();
+         mDrawerLayout.setDrawerListener(mDrawerToggle);
++        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
++            @Override
++            public void onPageSelected(int position) {
++                if (mActionMode != null) {
++                    mActionMode.finish();
++                }
++            }
++        });
+ 
+ 
+         final ActionBar actionBar = getSupportActionBar();
+@@ -429,6 +437,9 @@ public class TrickyTripperActivity extends AppCompatActivity implements DeleteDi
+         }
+ 
+         public void onDrawerOpened(View drawerView) {
++            if (mActionMode != null) {
++                mActionMode.finish();
++            }
+             previouslySelectedTripId = getApp().getTripController().getTripLoaded().getId();
+             super.onDrawerOpened(drawerView);
+             updateList(getApp().getTripController().getAllTrips());
+diff --git a/app/src/main/java/de/koelle/christian/trickytripper/activities/ParticipantTabActivity.java b/app/src/main/java/de/koelle/christian/trickytripper/activities/ParticipantTabActivity.java
+index 0273f5e..af4f137 100644
+--- a/app/src/main/java/de/koelle/christian/trickytripper/activities/ParticipantTabActivity.java
++++ b/app/src/main/java/de/koelle/christian/trickytripper/activities/ParticipantTabActivity.java
+@@ -222,11 +222,16 @@ public class ParticipantTabActivity extends ListFragment {
+     }
+ 
+     public ActionMode getRunningActionMode() {
+-        return ((TrickyTripperActivity) getActivity()).getRunningActionMode();
++        if (getActivity() != null) {
++            return ((TrickyTripperActivity) getActivity()).getRunningActionMode();
++        }
++        return null;
+     }
+ 
+     public void setRunningActionMode(ActionMode actionMode) {
+-        ((TrickyTripperActivity) getActivity()).setRunningActionMode(actionMode);
++        if (getActivity() != null) {
++            ((TrickyTripperActivity) getActivity()).setRunningActionMode(actionMode);
++        }
+     }
+ 
+ 
+diff --git a/app/src/main/java/de/koelle/christian/trickytripper/activities/PaymentTabActivity.java b/app/src/main/java/de/koelle/christian/trickytripper/activities/PaymentTabActivity.java
+index 871c2cc..5475f71 100644
+--- a/app/src/main/java/de/koelle/christian/trickytripper/activities/PaymentTabActivity.java
++++ b/app/src/main/java/de/koelle/christian/trickytripper/activities/PaymentTabActivity.java
+@@ -255,11 +255,16 @@ public class PaymentTabActivity extends ListFragment implements DeleteConfirmati
+     }
+ 
+     public ActionMode getRunningActionMode() {
+-        return ((TrickyTripperActivity) getActivity()).getRunningActionMode();
++        if (getActivity() != null) {
++            return ((TrickyTripperActivity) getActivity()).getRunningActionMode();
++        }
++        return null;
+     }
+ 
+     public void setRunningActionMode(ActionMode actionMode) {
+-        ((TrickyTripperActivity) getActivity()).setRunningActionMode(actionMode);
++        if (getActivity() != null) {
++            ((TrickyTripperActivity) getActivity()).setRunningActionMode(actionMode);
++        }
+     }
+ 
+ 

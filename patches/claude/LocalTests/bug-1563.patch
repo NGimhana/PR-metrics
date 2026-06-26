@@ -1,0 +1,27 @@
+--- a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+@@ -13,6 +13,7 @@
+ import android.os.Build;
+ import android.os.Bundle;
+ import android.os.Environment;
++import android.os.Parcelable;
+ import android.os.StrictMode;
+ import android.preference.PreferenceManager;
+ import android.support.annotation.NonNull;
+@@ -612,8 +613,16 @@
+             errorText.setVisibility(GONE);
+             emptyText.setVisibility(GONE);
+ 
++            // Save scroll position before resetting adapter
++            Parcelable state = fileListView.onSaveInstanceState();
++
+             arrayAdapter = new FileArrayAdapter(this, R.layout.layout_file, sortFilesByPreference(files, new PrefUtils<String>(SORT_FILES_BY).getValue()));
+             fileListView.setAdapter(arrayAdapter);
++
++            // Restore scroll position after setting new adapter
++            if (state != null) {
++                fileListView.onRestoreInstanceState(state);
++            }
+         } catch (NoAccessException e) {
+             Log.w(TAG, "Can't read '" + path + "': Permission denied!");
+             fileListView.setVisibility(GONE);

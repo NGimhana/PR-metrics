@@ -1,0 +1,101 @@
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java
+@@ -49,7 +49,17 @@
+         super.onStart();
+         TextView ScheduleInfo = (TextView) findViewById(R.id.ScheduleInfo);
+ 
+-        String scheduleInfo = String.format(getResources().getString(R.string.ScheduleInfo), ActiveSchedule.getRepetitions(), ActiveSchedule.getPauseTime(), ActiveSchedule.getSets(), ActiveSchedule.getSpeed());
++        String trainingsType = ActiveSchedule.getTrainingsType() == null
++                ? getResources().getStringArray(R.array.ScheduleType)[0]
++                : ActiveSchedule.getTrainingsType().name().replace('_', ' ');
++
++        String scheduleInfo = String.format(
++                getResources().getString(R.string.ScheduleInfo),
++                ActiveSchedule.getRepetitions(),
++                ActiveSchedule.getPauseTime(),
++                ActiveSchedule.getSets(),
++                ActiveSchedule.getSpeed(),
++                trainingsType);
+         ScheduleInfo.setText(scheduleInfo);
+     }
+ 
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java
+@@ -7,8 +7,10 @@
+ import android.support.v7.widget.Toolbar;
+ import android.view.View;
+ import android.widget.EditText;
++import android.widget.Spinner;
+ 
+ import com.german_software_engineers.trainerapp.Controller.ApplicationManager;
++import com.german_software_engineers.trainerappmodel.Enumerations.TrainingsTypes;
+ import com.german_software_engineers.trainerappmodel.Legacy.Schedule;
+ import com.german_software_engineers.trainerappmodel.Exceptions.ScheduleAvailableException;
+ 
+@@ -48,6 +50,13 @@
+         }
+ 
+         Schedule schedule = new Schedule(((EditText)findViewById(R.id.nameTextEdit)).getText().toString());
++        Spinner trainingTypeSpinner = (Spinner) findViewById(R.id.trainSpinner);
++        int selectedTypePosition = trainingTypeSpinner.getSelectedItemPosition();
++        TrainingsTypes[] trainingsTypes = TrainingsTypes.values();
++        if(selectedTypePosition < 0 || selectedTypePosition >= trainingsTypes.length){
++            selectedTypePosition = 0;
++        }
++        schedule.setTrainingsType(trainingsTypes[selectedTypePosition]);
+ 
+         Integer reps = 0;
+         if(!((EditText)findViewById(R.id.repEdit)).getText().toString().isEmpty()) {
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -75,7 +75,7 @@
+ 
+     <!--ExerciseViewActivity-->
+     <string name="ExerciseViewActivityTitle">ExerciseViewActivity</string>
+-    <string name="ScheduleInfo">Repetitions: %1$d \nPause: %2$d s\nSets: %3$d \nSpeed: %4$d</string>
++    <string name="ScheduleInfo">Repetitions: %1$d \nPause: %2$d s\nSets: %3$d \nSpeed: %4$d\nTraining Type: %5$s</string>
+ 
+     <string name="WarmUpExerciseInfoExecutionTime">Execution Time: %1$d\n</string>
+     <string name="WarmUpExerciseInfoIntensity">Intensity: %1$s min\n</string>
+--- a/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Model/XMLParser.java
++++ b/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Model/XMLParser.java
+@@ -2,6 +2,7 @@
+ 
+ import com.german_software_engineers.trainerappmodel.Enumerations.ExerciseType;
+ import com.german_software_engineers.trainerappmodel.Enumerations.Intensities;
++import com.german_software_engineers.trainerappmodel.Enumerations.TrainingsTypes;
+ import com.german_software_engineers.trainerappmodel.Exceptions.ScheduleAvailableException;
+ import com.german_software_engineers.trainerappmodel.Exercise.BodyWeightExercise;
+ import com.german_software_engineers.trainerappmodel.Exercise.DeviceExercise;
+@@ -92,7 +93,18 @@
+                     Element element=(Element)node;
+                     String name = element.getAttribute(SCHEDULE_NAME_TAG);
+                     Schedule schedule = new Schedule(name);
+-//                    schedule.setTrainingsType(TrainingsTypes.valueOf(element.getAttribute(SCHEDULE_TRAININGSTYPE_TAG)));
++
++                    TrainingsTypes parsedTrainingsType = TrainingsTypes.strength_endurance;
++                    String trainingsTypeValue = element.getAttribute(SCHEDULE_TRAININGSTYPE_TAG);
++                    if(!trainingsTypeValue.isEmpty()){
++                        try {
++                            parsedTrainingsType = TrainingsTypes.valueOf(trainingsTypeValue);
++                        } catch (IllegalArgumentException ignored) {
++                            parsedTrainingsType = TrainingsTypes.strength_endurance;
++                        }
++                    }
++                    schedule.setTrainingsType(parsedTrainingsType);
++
+                     schedule.setPauseTime(Integer.valueOf(element.getAttribute(SCHEDULE_PAUSETIME_TAG)));
+                     schedule.setRepetitions(Integer.valueOf(element.getAttribute(SCHEDULE_REPETITIONS_TAG)));
+                     schedule.setSets(Integer.valueOf(element.getAttribute(SCHEDULE_SETS_TAG)));
+@@ -219,7 +231,10 @@
+ //                scheduleName.setValue(sched.getName());
+ //                scheduleElement.setAttributeNode(scheduleName);
+                 scheduleElement.setAttribute(SCHEDULE_NAME_TAG, sched.getName());
+-//                scheduleElement.setAttribute(SCHEDULE_TRAININGSTYPE_TAG, sched.getTrainingsType().name());
++                TrainingsTypes trainingsType = sched.getTrainingsType() == null
++                        ? TrainingsTypes.strength_endurance
++                        : sched.getTrainingsType();
++                scheduleElement.setAttribute(SCHEDULE_TRAININGSTYPE_TAG, trainingsType.name());
+                 scheduleElement.setAttribute(SCHEDULE_REPETITIONS_TAG, String.valueOf(sched.getRepetitions()));
+                 scheduleElement.setAttribute(SCHEDULE_PAUSETIME_TAG, String.valueOf(sched.getPauseTime()));
+                 scheduleElement.setAttribute(SCHEDULE_SETS_TAG, String.valueOf(sched.getSets()));

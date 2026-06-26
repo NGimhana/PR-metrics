@@ -1,0 +1,123 @@
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java
+index ce3f025..5433f7c 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java
+@@ -6,6 +6,8 @@ import android.app.Dialog;
+ import android.content.DialogInterface;
+ import android.os.Bundle;
+ import android.support.v4.app.DialogFragment;
++import android.view.LayoutInflater;
++import android.view.View;
+ import android.widget.CheckBox;
+ import android.widget.TextView;
+ 
+@@ -13,14 +15,16 @@ import com.german_software_engineers.trainerapp.Model.Exercise;
+ import com.german_software_engineers.trainerapp.Model.Schedule;
+ 
+ public class ExerciseDialog extends DialogFragment {
+-    Dialog dialog;
++    View dialogView;
+     Schedule Schedule = null;
+ 
+     @Override
+     public Dialog onCreateDialog(Bundle savedInstanceState) {
+         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
++        LayoutInflater inflater = getActivity().getLayoutInflater();
++        dialogView = inflater.inflate(R.layout.exersice_dialog, null);
+ 
+-        builder.setView(R.layout.exersice_dialog)
++        builder.setView(dialogView)
+                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                     public void onClick(DialogInterface dialog, int id) {
+                         generateExcercise();
+@@ -31,44 +35,57 @@ public class ExerciseDialog extends DialogFragment {
+                         dialog.cancel();
+                     }
+                 });
+-        dialog = builder.create();
+-        return dialog;
++        return builder.create();
+     }
+ 
+     public void generateExcercise(){
+-        String name = ((TextView)dialog.findViewById(R.id.exerciseName)).getText().toString();
++        if (dialogView == null) return;
+ 
+-        boolean isSeatActivated = ((CheckBox)dialog.findViewById(R.id.seatCheckBox)).isChecked();
++        String name = ((TextView)dialogView.findViewById(R.id.exerciseName)).getText().toString();
++
++        boolean isSeatActivated = ((CheckBox)dialogView.findViewById(R.id.seatCheckBox)).isChecked();
+         Integer seatPos = 0;
+-        if(isSeatActivated)
+-            seatPos = Integer.valueOf(((TextView)dialog.findViewById(R.id.SeatEdit)).getText().toString());
++        if(isSeatActivated) {
++            String val = ((TextView)dialogView.findViewById(R.id.SeatEdit)).getText().toString();
++            if (!val.isEmpty()) seatPos = Integer.valueOf(val);
++        }
+ 
+-        boolean isLegActivated = ((CheckBox)dialog.findViewById(R.id.LegCheckBox)).isChecked();
++        boolean isLegActivated = ((CheckBox)dialogView.findViewById(R.id.LegCheckBox)).isChecked();
+         Integer LegPos = 0;
+-        if(isLegActivated)
+-            LegPos = Integer.valueOf(((TextView)dialog.findViewById(R.id.LegEdit)).getText().toString());
++        if(isLegActivated) {
++            String val = ((TextView)dialogView.findViewById(R.id.LegEdit)).getText().toString();
++            if (!val.isEmpty()) LegPos = Integer.valueOf(val);
++        }
+ 
+-        boolean isFootActivated = ((CheckBox)dialog.findViewById(R.id.FootCheckBox)).isChecked();
++        boolean isFootActivated = ((CheckBox)dialogView.findViewById(R.id.FootCheckBox)).isChecked();
+         Integer footPos = 0;
+-        if(isFootActivated)
+-            footPos = Integer.valueOf(((TextView)dialog.findViewById(R.id.FootEdit)).getText().toString());
++        if(isFootActivated) {
++            String val = ((TextView)dialogView.findViewById(R.id.FootEdit)).getText().toString();
++            if (!val.isEmpty()) footPos = Integer.valueOf(val);
++        }
+ 
+-        boolean isAngnleActivated = ((CheckBox)dialog.findViewById(R.id.AngleCheckBox)).isChecked();
++        boolean isAngleActivated = ((CheckBox)dialogView.findViewById(R.id.AngleCheckBox)).isChecked();
+         Integer anglePos = 0;
+-        if(isAngnleActivated)
+-            anglePos = Integer.valueOf(((TextView)dialog.findViewById(R.id.AngleEdit)).getText().toString());
++        if(isAngleActivated) {
++            String val = ((TextView)dialogView.findViewById(R.id.AngleEdit)).getText().toString();
++            if (!val.isEmpty()) anglePos = Integer.valueOf(val);
++        }
+ 
+-        boolean isBackActivated = ((CheckBox)dialog.findViewById(R.id.BackCheckBox)).isChecked();
++        boolean isBackActivated = ((CheckBox)dialogView.findViewById(R.id.BackCheckBox)).isChecked();
+         Integer backPos = 0;
+-        if(isAngnleActivated)
+-            backPos = Integer.valueOf(((TextView)dialog.findViewById(R.id.BackEdit)).getText().toString());
++        if(isBackActivated) {
++            String val = ((TextView)dialogView.findViewById(R.id.BackEdit)).getText().toString();
++            if (!val.isEmpty()) backPos = Integer.valueOf(val);
++        }
+ 
+-        boolean isWeightActivated = ((CheckBox)dialog.findViewById(R.id.WeightCheckBox)).isChecked();
++        boolean isWeightActivated = ((CheckBox)dialogView.findViewById(R.id.WeightCheckBox)).isChecked();
+         Double weight = 0.0;
+-        if(isWeightActivated)
+-            weight = Double.valueOf(((TextView)dialog.findViewById(R.id.WeightEdit)).getText().toString());
++        if(isWeightActivated) {
++            String val = ((TextView)dialogView.findViewById(R.id.WeightEdit)).getText().toString();
++            if (!val.isEmpty()) weight = Double.valueOf(val);
++        }
+ 
+-        Exercise exc = new Exercise(name,isSeatActivated, isLegActivated,isFootActivated,isAngnleActivated,isWeightActivated, isBackActivated);
++        Exercise exc = new Exercise(name,isSeatActivated, isLegActivated,isFootActivated,isAngleActivated,isWeightActivated, isBackActivated);
+         exc.setAnglePosition(anglePos.intValue());
+         exc.setFootPosition(footPos.intValue());
+         exc.setLegPosition(LegPos.intValue());
+@@ -76,7 +93,9 @@ public class ExerciseDialog extends DialogFragment {
+         exc.setWeight(weight.doubleValue());
+         exc.setBackPosition(backPos.intValue());
+ 
+-        Schedule.addExercise(exc);
++        if (Schedule != null) {
++            Schedule.addExercise(exc);
++        }
+     }
+ 
+     public void setSchedule(Schedule schedule){

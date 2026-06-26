@@ -1,0 +1,213 @@
+diff --git a/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java b/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java
+index 22984c7..e677d51 100644
+--- a/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java
++++ b/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java
+@@ -277,12 +277,16 @@ public class CollectActivity extends AppCompatActivity {
+     private boolean validateData() {
+         final String strValue = etCurVal.getText().toString();
+         final TraitObject currentTrait = traitBox.getCurrentTrait();
++
++        if (currentTrait == null) {
++            return true;
++        }
++
+         final String trait = currentTrait.getTrait();
+ 
+         if (traitBox.existsNewTraits()
+-                && traitBox.getCurrentTrait() != null
+                 && etCurVal.getText().toString().length() > 0
+-                && !traitBox.getCurrentTrait().isValidValue(etCurVal.getText().toString())) {
++                && !currentTrait.isValidValue(etCurVal.getText().toString())) {
+ 
+             if (strValue.length() > 0 && currentTrait.isOver(strValue)) {
+                 Utils.makeToast(getApplicationContext(),getString(R.string.trait_error_maximum_value)
+@@ -304,15 +308,19 @@ public class CollectActivity extends AppCompatActivity {
+     }
+ 
+     private void setNaText() {
+-        etCurVal.setText("NA");
++        if (traitBox.getCurrentTrait() != null) {
++            etCurVal.setText("NA");
+ 
+-        traitLayouts.setNaTraitsText(traitBox.getCurrentFormat());
++            traitLayouts.setNaTraitsText(traitBox.getCurrentFormat());
++        }
+     }
+ 
+     private void setNaTextBrapiEmptyField() {
+-        etCurVal.setHint("NA");
++        if (traitBox.getCurrentTrait() != null) {
++            etCurVal.setHint("NA");
+ 
+-        traitLayouts.setNaTraitsText(traitBox.getCurrentFormat());
++            traitLayouts.setNaTraitsText(traitBox.getCurrentFormat());
++        }
+     }
+ 
+     private void initToolbars() {
+@@ -326,8 +334,10 @@ public class CollectActivity extends AppCompatActivity {
+             @Override
+             public void onClick(View v) {
+                 TraitObject currentTrait = traitBox.getCurrentTrait();
+-                updateTrait(currentTrait.getTrait(), currentTrait.getFormat(), "NA");
+-                setNaText();
++                if (currentTrait != null) {
++                    updateTrait(currentTrait.getTrait(), currentTrait.getFormat(), "NA");
++                    setNaText();
++                }
+             }
+         });
+ 
+@@ -338,17 +348,19 @@ public class CollectActivity extends AppCompatActivity {
+ 
+                 // if a brapi observation that has been synced, don't allow deleting
+                 TraitObject currentTrait = traitBox.getCurrentTrait();
+-                if (dt.isBrapiSynced(rangeBox.getPlotID(), currentTrait.getTrait())) {
+-                    if (currentTrait.getFormat().equals("photo")) {
+-                        // I want to use abstract method
+-                        Map newTraits = traitBox.getNewTraits();
+-                        PhotoTraitLayout traitPhoto = traitLayouts.getPhotoTrait();
+-                        traitPhoto.brapiDelete(newTraits);
++                if (currentTrait != null) {
++                    if (dt.isBrapiSynced(rangeBox.getPlotID(), currentTrait.getTrait())) {
++                        if (currentTrait.getFormat().equals("photo")) {
++                            // I want to use abstract method
++                            Map newTraits = traitBox.getNewTraits();
++                            PhotoTraitLayout traitPhoto = traitLayouts.getPhotoTrait();
++                            traitPhoto.brapiDelete(newTraits);
++                        } else {
++                            brapiDelete(currentTrait.getTrait(), false);
++                        }
+                     } else {
+-                        brapiDelete(currentTrait.getTrait(), false);
++                        traitLayouts.deleteTraitListener(currentTrait.getFormat());
+                     }
+-                } else {
+-                    traitLayouts.deleteTraitListener(currentTrait.getFormat());
+                 }
+             }
+         });
+@@ -387,6 +399,8 @@ public class CollectActivity extends AppCompatActivity {
+                     .setDropDownViewResource(R.layout.custom_spinnerlayout);
+             traitBox.initTraitType(directionArrayAdapter, rangeSuppress);
+ 
++        } else {
++            traitLayouts.hideLayouts();
+         }
+     }
+ 
+@@ -555,7 +569,7 @@ public class CollectActivity extends AppCompatActivity {
+      */
+     public void updateTrait(String parent, String trait, String value) {
+ 
+-        if (rangeBox.isEmpty()) {
++        if (rangeBox.isEmpty() || parent == null || parent.isEmpty()) {
+             return;
+         }
+ 
+@@ -1205,11 +1219,11 @@ public class CollectActivity extends AppCompatActivity {
+         }
+ 
+         final String getCurrentFormat() {
+-            return currentTrait.getFormat();
++            return currentTrait != null ? currentTrait.getFormat() : "";
+         }
+ 
+         boolean existsTrait() {
+-            return newTraits.containsKey(currentTrait.getTrait());
++            return currentTrait != null && newTraits.containsKey(currentTrait.getTrait());
+         }
+ 
+         final String createSummaryText(final String plotID) {
+@@ -1217,7 +1231,7 @@ public class CollectActivity extends AppCompatActivity {
+             StringBuilder data = new StringBuilder();
+ 
+             //TODO this test crashes app
+-            if (rangeBox.getCRange() != null) {
++            if (rangeBox.getCRange() != null && prefixTraits != null) {
+                 for (String s : traitBox.prefixTraits) {
+                     data.append(s).append(": ");
+                     data.append(dt.getDropDownRange(s, plotID)[0]).append("\n");
+@@ -1234,13 +1248,15 @@ public class CollectActivity extends AppCompatActivity {
+         }
+ 
+         public void remove(String traitName, String plotID) {
+-            if (newTraits.containsKey(traitName))
++            if (traitName != null && !traitName.isEmpty() && newTraits.containsKey(traitName))
+                 newTraits.remove(traitName);
+             dt.deleteTrait(plotID, traitName);
+         }
+ 
+         public void remove(TraitObject trait, String plotID) {
+-            remove(trait.getTrait(), plotID);
++            if (trait != null) {
++                remove(trait.getTrait(), plotID);
++            }
+         }
+ 
+         private OnTouchListener createTraitOnTouchListener(final ImageView arrow,
+@@ -1269,7 +1285,7 @@ public class CollectActivity extends AppCompatActivity {
+         void moveTrait(String direction) {
+             int pos = 0;
+ 
+-            if (!validateData()) {
++            if (traitType.getCount() == 0 || !validateData()) {
+                 return;
+             }
+ 
+diff --git a/app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java b/app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java
+index b31f85b..6320816 100644
+--- a/app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java
++++ b/app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java
+@@ -45,12 +45,14 @@ public class CounterTraitLayout extends BaseTraitLayout {
+         addCounterBtn.setOnClickListener(new OnClickListener() {
+             public void onClick(View arg0) {
+                 //TODO NullPointerException
+-                if (getNewTraits().containsKey(getCurrentTrait().getTrait()) && getNewTraits().get(getCurrentTrait().getTrait()).toString().equals("NA")) {
+-                    counterTv.setText("1");
+-                } else {
+-                    counterTv.setText(Integer.toString(Integer.parseInt(counterTv.getText().toString()) + 1));
++                if (getCurrentTrait() != null) {
++                    if (getNewTraits().containsKey(getCurrentTrait().getTrait()) && getNewTraits().get(getCurrentTrait().getTrait()).toString().equals("NA")) {
++                        counterTv.setText("1");
++                    } else {
++                        counterTv.setText(Integer.toString(Integer.parseInt(counterTv.getText().toString()) + 1));
++                    }
++                    updateTrait(getCurrentTrait().getTrait(), "counter", counterTv.getText().toString());
+                 }
+-                updateTrait(getCurrentTrait().getTrait(), "counter", counterTv.getText().toString());
+             }
+         });
+ 
+@@ -58,12 +60,14 @@ public class CounterTraitLayout extends BaseTraitLayout {
+         minusCounterBtn.setOnClickListener(new OnClickListener() {
+             public void onClick(View arg0) {
+                 //TODO NullPointerException
+-                if (getNewTraits().containsKey(getCurrentTrait().getTrait()) && getNewTraits().get(getCurrentTrait().getTrait()).toString().equals("NA")) {
+-                    counterTv.setText("-1");
+-                } else {
+-                    counterTv.setText(Integer.toString(Integer.parseInt(counterTv.getText().toString()) - 1));
++                if (getCurrentTrait() != null) {
++                    if (getNewTraits().containsKey(getCurrentTrait().getTrait()) && getNewTraits().get(getCurrentTrait().getTrait()).toString().equals("NA")) {
++                        counterTv.setText("-1");
++                    } else {
++                        counterTv.setText(Integer.toString(Integer.parseInt(counterTv.getText().toString()) - 1));
++                    }
++                    updateTrait(getCurrentTrait().getTrait(), "counter", counterTv.getText().toString());
+                 }
+-                updateTrait(getCurrentTrait().getTrait(), "counter", counterTv.getText().toString());
+             }
+         });
+ 
+diff --git a/app/src/main/java/com/fieldbook/tracker/traits/LayoutCollections.java b/app/src/main/java/com/fieldbook/tracker/traits/LayoutCollections.java
+index f2ae4d8..8e6f50e 100644
+--- a/app/src/main/java/com/fieldbook/tracker/traits/LayoutCollections.java
++++ b/app/src/main/java/com/fieldbook/tracker/traits/LayoutCollections.java
+@@ -25,6 +25,7 @@ public class LayoutCollections {
+         for (int traitID : traitIDs) {
+             BaseTraitLayout layout = _activity.findViewById(traitID);
+             layout.init();
++            layout.setVisibility(View.GONE);
+             traitLayouts.add(layout);
+         }
+     }

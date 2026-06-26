@@ -1,0 +1,24 @@
+diff --git a/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTagHandler.java b/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTagHandler.java
+index 2b062cc..85f9e36 100644
+--- a/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTagHandler.java
++++ b/app/src/main/java/org/sufficientlysecure/htmltextview/HtmlTagHandler.java
+@@ -266,7 +266,18 @@ public class HtmlTagHandler implements WrapperTagHandler {
+                 final int spanStart = output.getSpanStart(a);
+                 final int spanEnd = output.length();
+                 final String href = a instanceof A ? ((A) a).href : null;
+-                final String spannedText = output.subSequence(spanStart, spanEnd).toString();
++                String spannedTextValue = output.subSequence(spanStart, spanEnd).toString();
++
++                if (href != null && (spannedTextValue.endsWith("...") || spannedTextValue.endsWith("…"))) {
++                    String prefix = spannedTextValue.substring(0, spannedTextValue.length() - (spannedTextValue.endsWith("...") ? 3 : 1));
++                    if (prefix.length() > 5 && href.contains(prefix)) {
++                        output.replace(spanStart, spanEnd, href);
++                        spannedTextValue = href;
++                    }
++                }
++
++                final String spannedText = spannedTextValue;
++
+                 end(output, A.class, false, new URLSpan(href) {
+                     @Override
+                     public void onClick(View widget) {

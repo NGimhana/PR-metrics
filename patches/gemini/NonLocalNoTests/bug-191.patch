@@ -1,0 +1,63 @@
+diff --git a/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java b/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
+index c8816ff..cfa5c2c 100644
+--- a/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
++++ b/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
+@@ -47,8 +47,11 @@ public class TowerInserter {
+         }
+ 
+         if (mInsertedTower == null && !mGameManager.isGameOver()) {
+-            showTowerLevels();
+-            mInsertedTower = mTowerFactory.createTower(towerName);
++            Tower tower = mTowerFactory.createTower(towerName);
++            if (mScoreBoard.getCredits() >= tower.getValue()) {
++                showTowerLevels();
++                mInsertedTower = tower;
++            }
+         }
+     }
+ 
+@@ -95,17 +98,21 @@ public class TowerInserter {
+         }
+ 
+         if (mInsertedTower != null && mCurrentPlateau != null) {
+-            mInsertedTower.setEnabled(true);
+-            mCurrentPlateau.setOccupant(mInsertedTower);
++            if (mScoreBoard.getCredits() >= mInsertedTower.getValue()) {
++                mInsertedTower.setEnabled(true);
++                mCurrentPlateau.setOccupant(mInsertedTower);
+ 
+-            mScoreBoard.takeCredits(mInsertedTower.getValue());
+-            mTowerAging.ageTower(mInsertedTower);
++                mScoreBoard.takeCredits(mInsertedTower.getValue());
++                mTowerAging.ageTower(mInsertedTower);
+ 
+-            mTowerSelector.selectTower(null);
+-            hideTowerLevels();
++                mTowerSelector.selectTower(null);
++                hideTowerLevels();
+ 
+-            mCurrentPlateau = null;
+-            mInsertedTower = null;
++                mCurrentPlateau = null;
++                mInsertedTower = null;
++            } else {
++                cancel();
++            }
+         }
+     }
+ 
+diff --git a/app/src/main/java/ch/logixisland/anuto/view/game/TowerView.java b/app/src/main/java/ch/logixisland/anuto/view/game/TowerView.java
+index be6cb61..470ddd3 100644
+--- a/app/src/main/java/ch/logixisland/anuto/view/game/TowerView.java
++++ b/app/src/main/java/ch/logixisland/anuto/view/game/TowerView.java
+@@ -122,6 +122,10 @@ public class TowerView extends View implements View.OnTouchListener, View.OnDrag
+     @Override
+     public boolean onTouch(View view, MotionEvent event) {
+         if (event.getAction() == MotionEvent.ACTION_DOWN) {
++            if (mScoreBoard.getCredits() < mPreviewTower.getValue()) {
++                return false;
++            }
++
+             mTowerInserter.insertTower(mPreviewTower.getName());
+ 
+             View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder() {

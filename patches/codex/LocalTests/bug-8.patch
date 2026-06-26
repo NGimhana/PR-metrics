@@ -1,0 +1,31 @@
+--- a/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
++++ b/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
+@@ -77,6 +77,15 @@
+         mViewPager = (ViewPager) findViewById(R.id.drawer_content_pager);
+ 
+         updatePagerAdapter();
++        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
++            @Override
++            public void onPageSelected(int position) {
++                // ActionMode callbacks belong to tab fragments. Close it when switching tabs.
++                if (mActionMode != null) {
++                    mActionMode.finish();
++                }
++            }
++        });
+ 
+         mDrawerToggle = new MyActionBarDrawerToggle();
+         mDrawerLayout.setDrawerListener(mDrawerToggle);
+@@ -442,6 +451,10 @@
+     }
+ 
+     public void setRunningActionMode(ActionMode actionMode) {
++        if (mActionMode != null && actionMode != null && mActionMode != actionMode) {
++            mActionMode.finish();
++        }
+         this.mActionMode = actionMode;
+-    }
+-}
++        supportInvalidateOptionsMenu();
++    }
++}

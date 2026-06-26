@@ -1,0 +1,106 @@
+diff --git a/app/src/main/java/io/lerk/lrkFM/adapter/ArchiveArrayAdapter.java b/app/src/main/java/io/lerk/lrkFM/adapter/ArchiveArrayAdapter.java
+index 5412610..37354c2 100644
+--- a/app/src/main/java/io/lerk/lrkFM/adapter/ArchiveArrayAdapter.java
++++ b/app/src/main/java/io/lerk/lrkFM/adapter/ArchiveArrayAdapter.java
+@@ -101,11 +101,18 @@ public class ArchiveArrayAdapter extends BaseArrayAdapter {
+             ImageButton contextButton = v.findViewById(R.id.contextMenuButton);
+             contextButton.setOnClickListener(v1 -> activity.getFileListView().showContextMenuForChild(v));
+ 
++            boolean isInContext = false;
+             for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
+                 if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+-                    v.setBackgroundColor(activity.getColor(R.color.default_primary));
++                    isInContext = true;
++                    break;
+                 }
+             }
++            if (isInContext) {
++                v.setBackgroundColor(activity.getColor(R.color.default_primary));
++            } else {
++                v.setBackgroundResource(0);
++            }
+         } else {
+             Log.e(TAG, "File is null!");
+         }
+diff --git a/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java b/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
+index 3499e3e..321e73b 100644
+--- a/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
++++ b/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
+@@ -15,6 +15,8 @@ import android.widget.TextView;
+ import android.widget.Toast;
+ 
+ import java.text.SimpleDateFormat;
++import java.util.ArrayList;
++import java.util.Iterator;
+ import java.util.List;
+ import java.util.Objects;
+ 
+@@ -146,14 +148,6 @@ public class FileArrayAdapter extends BaseArrayAdapter {
+             });
+ 
+             CheckBox checkBox = v.findViewById(R.id.fileCheckBox);
+-            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+-                if (isChecked && !isInContext(f)) {
+-                    activity.getFileOpContext().getSecond().add(f);
+-                } else if (!isChecked && isInContext(f)) {
+-                    removeFromContext(f);
+-                }
+-            });
+-
+             if (new Pref<Boolean>(SHOW_MENU_BUTTON_INSTEAD_OF_CHECKBOX).getValue()) {
+                 checkBox.setVisibility(View.INVISIBLE);
+                 contextButton.setVisibility(View.VISIBLE);
+@@ -162,32 +156,42 @@ public class FileArrayAdapter extends BaseArrayAdapter {
+                 contextButton.setVisibility(View.GONE);
+             }
+ 
+-            for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
+-                if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
++            if (isInContext(f)) {
++                v.setBackgroundColor(activity.getColorByAttr(R.attr.colorPrimary));
++                checkBox.setChecked(true);
++            } else {
++                v.setBackgroundResource(0);
++                checkBox.setChecked(false);
++            }
++
++            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
++                if (isChecked && !isInContext(f)) {
++                    activity.getFileOpContext().getSecond().add(f);
+                     v.setBackgroundColor(activity.getColorByAttr(R.attr.colorPrimary));
+-                    checkBox.setChecked(true);
+-                } else {
+-                    checkBox.setChecked(false);
++                } else if (!isChecked && isInContext(f)) {
++                    removeFromContext(f);
++                    v.setBackgroundResource(0);
+                 }
+-            }
++            });
+         }
+         return v;
+     }
+ 
+     private boolean isInContext(FMFile f) {
+-        boolean res = false;
+         for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
+             if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+-                res = true;
++                return true;
+             }
+         }
+-        return res;
++        return false;
+     }
+ 
+     private void removeFromContext(FMFile f) {
+-        for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
++        ArrayList<FMFile> second = activity.getFileOpContext().getSecond();
++        for (Iterator<FMFile> iterator = second.iterator(); iterator.hasNext(); ) {
++            FMFile contextFile = iterator.next();
+             if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+-                activity.getFileOpContext().getSecond().remove(contextFile);
++                iterator.remove();
+             }
+         }
+     }

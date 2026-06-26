@@ -1,0 +1,38 @@
+--- a/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
++++ b/app/src/main/java/com/simon/harmonichackernews/utils/DialogUtils.java
+@@ -10,6 +10,9 @@
+ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+ import com.simon.harmonichackernews.R;
+ 
++import org.jsoup.Jsoup;
++import org.jsoup.nodes.Document;
++import org.jsoup.nodes.Element;
+ import org.sufficientlysecure.htmltextview.HtmlTextView;
+ import org.sufficientlysecure.htmltextview.OnClickATagListener;
+ 
+@@ -21,7 +24,7 @@
+         selectTextDialogBuilder.setView(rootView);
+ 
+         HtmlTextView htmlTextView = rootView.findViewById(R.id.select_text_htmltextview);
+-        htmlTextView.setHtml(text);
++        htmlTextView.setHtml(expandTruncatedLinks(text));
+ 
+         htmlTextView.setOnClickATagListener(new OnClickATagListener() {
+             @Override
+@@ -36,4 +39,16 @@
+         selectTextDialog.show();
+     }
+ 
++    private static String expandTruncatedLinks(String html) {
++        Document doc = Jsoup.parseBodyFragment(html);
++        for (Element element : doc.select("a[href]")) {
++            String href = element.attr("href");
++            String linkText = element.text();
++            if (href.startsWith("http") && linkText.startsWith("http") && linkText.endsWith("...")) {
++                element.text(href);
++            }
++        }
++        return doc.body().html();
++    }
++
+ }

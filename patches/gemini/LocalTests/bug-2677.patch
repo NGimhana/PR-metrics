@@ -1,0 +1,96 @@
+diff --git a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+index 8c44102..d2d1211 100644
+--- a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
++++ b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+@@ -225,11 +225,8 @@ public class RoboticArmActivity extends GuideActivity {
+         seekArc1.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
+-                if (editEnter) {
+-                    degreeText1.setText(String.valueOf(degree));
+-                    editEnter = false;
+-                } else {
+-                    degreeText1.setText(String.valueOf((int) (i * 3.6)));
++                if (b) {
++                    degreeText1.setText(String.valueOf(i));
+                 }
+                 degreeText1.setCursorVisible(false);
+             }
+@@ -248,11 +245,8 @@ public class RoboticArmActivity extends GuideActivity {
+         seekArc2.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
+-                if (editEnter) {
+-                    degreeText2.setText(String.valueOf(degree));
+-                    editEnter = false;
+-                } else {
+-                    degreeText2.setText(String.valueOf((int) (i * 3.6)));
++                if (b) {
++                    degreeText2.setText(String.valueOf(i));
+                 }
+                 degreeText2.setCursorVisible(false);
+             }
+@@ -271,11 +265,8 @@ public class RoboticArmActivity extends GuideActivity {
+         seekArc3.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
+-                if (editEnter) {
+-                    degreeText3.setText(String.valueOf(degree));
+-                    editEnter = false;
+-                } else {
+-                    degreeText3.setText(String.valueOf((int) (i * 3.6)));
++                if (b) {
++                    degreeText3.setText(String.valueOf(i));
+                 }
+                 degreeText3.setCursorVisible(false);
+             }
+@@ -294,11 +285,8 @@ public class RoboticArmActivity extends GuideActivity {
+         seekArc4.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
+-                if (editEnter) {
+-                    degreeText4.setText(String.valueOf(degree));
+-                    editEnter = false;
+-                } else {
+-                    degreeText4.setText(String.valueOf((int) (i * 3.6)));
++                if (b) {
++                    degreeText4.setText(String.valueOf(i));
+                 }
+                 degreeText4.setCursorVisible(false);
+             }
+@@ -483,7 +471,7 @@ public class RoboticArmActivity extends GuideActivity {
+         String degreeStr = degreeText.getText().toString().trim();
+ 
+         if (degreeStr.isEmpty()) {
+-            degree = (degree == 0) ? (int) (seekArc.getProgress() * 3.6) : previousDegree;
++            degree = (degree == 0) ? seekArc.getProgress() : previousDegree;
+         } else {
+             try {
+                 degree = Integer.parseInt(degreeStr);
+@@ -500,7 +488,7 @@ public class RoboticArmActivity extends GuideActivity {
+             seekArc.setProgress(0);
+             toastInvalidValueMessage();
+         } else {
+-            seekArc.setProgress((int) (degree / 3.6));
++            seekArc.setProgress(degree);
+             editEnter = true;
+         }
+     }
+diff --git a/app/src/main/res/layout/servo_controller_layout.xml b/app/src/main/res/layout/servo_controller_layout.xml
+index ba28b36..b7ea1ab 100644
+--- a/app/src/main/res/layout/servo_controller_layout.xml
++++ b/app/src/main/res/layout/servo_controller_layout.xml
+@@ -34,9 +34,10 @@
+             android:layout_gravity="center"
+             android:padding="@dimen/seekarc_padding"
+             app:progressColor="@color/colorPrimary"
+-            seekarc:rotation="180"
+-            seekarc:startAngle="0"
+-            seekarc:sweepAngle="360" />
++            app:rotation="180"
++            app:startAngle="0"
++            app:sweepAngle="360"
++            app:max="360" />
+ 
+         <EditText
+             android:id="@+id/degreeText"

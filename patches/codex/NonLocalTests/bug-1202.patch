@@ -1,0 +1,17 @@
+--- a/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
++++ b/app/src/main/java/swati4star/createpdf/activity/ImageEditor.java
+@@ -152,6 +152,8 @@
+     @OnClick(R.id.savecurrent)
+     void saveC() {
+         mClicked = true;
++        // Treat doodle edits as pending filter edits so save state is consistent for navigation.
++        mClickedFilter = mClickedFilter || mDoodleSelected;
+         if (mClickedFilter || mDoodleSelected) {
+             saveCurrentImage();
+         } else {
+@@ -384,4 +386,4 @@
+         mPhotoEditor.setBrushColor(getResources().getColor(color));
+     }
+ 
+-}
++}

@@ -7,7 +7,7 @@ This project uses [JavaParser](https://javaparser.org/) to extract method start 
 mvn clean compile exec:java
 
 
-mvn clean compile exec:java -Dexec.args="/Users/nadeeshan/Desktop/PR/birch/hunk4j/dataset/d4j_dataset.json /Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs ./AST_TEST.json"
+mvn clean compile exec:java -Dexec.args="/Users/nadeeshan/Documents/Summer2026/PR-metrics/hunk4j/javaparser/method-line-extractor/AST_TEST_ast.json /Users/nadeeshan/Documents/Summer2026/PR-metrics/checkout-bugs-final ./AST_TEST_TEST.json"
 ```
 
 ### Output example

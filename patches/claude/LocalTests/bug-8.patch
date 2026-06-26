@@ -1,0 +1,25 @@
+--- a/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
++++ b/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
+@@ -96,6 +96,22 @@
+         }
+         mViewPager.setCurrentItem(index);
+ 
++        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
++            @Override
++            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
++            }
++
++            @Override
++            public void onPageSelected(int position) {
++                if (mActionMode != null) {
++                    mActionMode.finish();
++                }
++            }
++
++            @Override
++            public void onPageScrollStateChanged(int state) {
++            }
++        });
+ 
+         TrickyTripperApp app = getApp();
+         final Collator c = app.getMiscController().getDefaultStringCollator();

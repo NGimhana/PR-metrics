@@ -1,0 +1,18 @@
+diff --git a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+index cd2414b..95442a0 100644
+--- a/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
++++ b/app/src/main/java/io/lerk/lrkFM/activities/FileActivity.java
+@@ -567,7 +567,13 @@ public class FileActivity extends AppCompatActivity
+      * F5
+      */
+     public void reloadCurrentDirectory() {
++        int index = fileListView.getFirstVisiblePosition();
++        View v = fileListView.getChildAt(0);
++        int top = (v == null) ? 0 : (v.getTop() - fileListView.getPaddingTop());
++
+         loadPath(currentDirectory);
++
++        fileListView.setSelectionFromTop(index, top);
+     }
+ 
+     @SuppressWarnings("deprecation")

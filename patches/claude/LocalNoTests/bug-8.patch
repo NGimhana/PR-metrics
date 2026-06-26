@@ -1,0 +1,18 @@
+--- a/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
++++ b/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
+@@ -78,6 +78,15 @@
+ 
+         updatePagerAdapter();
+ 
++        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
++            @Override
++            public void onPageSelected(int position) {
++                if (mActionMode != null) {
++                    mActionMode.finish();
++                }
++            }
++        });
++
+         mDrawerToggle = new MyActionBarDrawerToggle();
+         mDrawerLayout.setDrawerListener(mDrawerToggle);
+ 

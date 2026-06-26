@@ -1,0 +1,29 @@
+--- a/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
++++ b/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
+@@ -47,8 +47,12 @@
+         }
+ 
+         if (mInsertedTower == null && !mGameManager.isGameOver()) {
+-            showTowerLevels();
+-            mInsertedTower = mTowerFactory.createTower(towerName);
++            Tower tower = mTowerFactory.createTower(towerName);
++
++            if (mScoreBoard.getCredits() >= tower.getValue()) {
++                showTowerLevels();
++                mInsertedTower = tower;
++            }
+         }
+     }
+ 
+@@ -95,6 +99,11 @@
+         }
+ 
+         if (mInsertedTower != null && mCurrentPlateau != null) {
++            if (mScoreBoard.getCredits() < mInsertedTower.getValue()) {
++                cancel();
++                return;
++            }
++
+             mInsertedTower.setEnabled(true);
+             mCurrentPlateau.setOccupant(mInsertedTower);
+ 

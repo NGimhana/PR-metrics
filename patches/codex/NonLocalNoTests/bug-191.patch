@@ -1,0 +1,27 @@
+--- a/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
++++ b/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
+@@ -95,6 +95,11 @@
+         }
+ 
+         if (mInsertedTower != null && mCurrentPlateau != null) {
++            if (mScoreBoard.getCredits() < mInsertedTower.getValue()) {
++                cancel();
++                return;
++            }
++
+             mInsertedTower.setEnabled(true);
+             mCurrentPlateau.setOccupant(mInsertedTower);
+ 
+--- a/app/src/main/java/ch/logixisland/anuto/view/game/TowerView.java
++++ b/app/src/main/java/ch/logixisland/anuto/view/game/TowerView.java
+@@ -122,6 +122,10 @@
+     @Override
+     public boolean onTouch(View view, MotionEvent event) {
+         if (event.getAction() == MotionEvent.ACTION_DOWN) {
++            if (mPreviewTower == null || mScoreBoard.getCredits() < mPreviewTower.getValue()) {
++                return false;
++            }
++
+             mTowerInserter.insertTower(mPreviewTower.getName());
+ 
+             View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder() {

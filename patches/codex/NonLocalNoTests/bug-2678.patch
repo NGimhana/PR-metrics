@@ -1,0 +1,159 @@
+--- a/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
++++ b/app/src/main/java/io/pslab/activity/RoboticArmActivity.java
+@@ -67,8 +67,8 @@
+     private EditText degreeText1, degreeText2, degreeText3, degreeText4;
+     private SeekArc seekArc1, seekArc2, seekArc3, seekArc4;
+     private LinearLayout servo1TimeLine, servo2TimeLine, servo3TimeLine, servo4TimeLine;
+-    private int degree;
+-    private boolean editEnter = false;
++    private final int[] servoDegrees = new int[4];
++    private final boolean[] editEnter = new boolean[4];
+     private HorizontalScrollView scrollView;
+     private CountDownTimer timeLine;
+     private boolean isPlaying = false;
+@@ -225,11 +225,12 @@
+         seekArc1.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
+-                if (editEnter) {
+-                    degreeText1.setText(String.valueOf(degree));
+-                    editEnter = false;
++                if (editEnter[0]) {
++                    degreeText1.setText(String.valueOf(servoDegrees[0]));
++                    editEnter[0] = false;
+                 } else {
+-                    degreeText1.setText(String.valueOf((int) (i * 3.6)));
++                    servoDegrees[0] = (int) (i * 3.6);
++                    degreeText1.setText(String.valueOf(servoDegrees[0]));
+                 }
+                 degreeText1.setCursorVisible(false);
+             }
+@@ -248,11 +249,12 @@
+         seekArc2.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
+-                if (editEnter) {
+-                    degreeText2.setText(String.valueOf(degree));
+-                    editEnter = false;
++                if (editEnter[1]) {
++                    degreeText2.setText(String.valueOf(servoDegrees[1]));
++                    editEnter[1] = false;
+                 } else {
+-                    degreeText2.setText(String.valueOf((int) (i * 3.6)));
++                    servoDegrees[1] = (int) (i * 3.6);
++                    degreeText2.setText(String.valueOf(servoDegrees[1]));
+                 }
+                 degreeText2.setCursorVisible(false);
+             }
+@@ -271,11 +273,12 @@
+         seekArc3.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
+-                if (editEnter) {
+-                    degreeText3.setText(String.valueOf(degree));
+-                    editEnter = false;
++                if (editEnter[2]) {
++                    degreeText3.setText(String.valueOf(servoDegrees[2]));
++                    editEnter[2] = false;
+                 } else {
+-                    degreeText3.setText(String.valueOf((int) (i * 3.6)));
++                    servoDegrees[2] = (int) (i * 3.6);
++                    degreeText3.setText(String.valueOf(servoDegrees[2]));
+                 }
+                 degreeText3.setCursorVisible(false);
+             }
+@@ -294,11 +297,12 @@
+         seekArc4.setOnSeekArcChangeListener(new SeekArc.OnSeekArcChangeListener() {
+             @Override
+             public void onProgressChanged(SeekArc seekArc, int i, boolean b) {
+-                if (editEnter) {
+-                    degreeText4.setText(String.valueOf(degree));
+-                    editEnter = false;
++                if (editEnter[3]) {
++                    degreeText4.setText(String.valueOf(servoDegrees[3]));
++                    editEnter[3] = false;
+                 } else {
+-                    degreeText4.setText(String.valueOf((int) (i * 3.6)));
++                    servoDegrees[3] = (int) (i * 3.6);
++                    degreeText4.setText(String.valueOf(servoDegrees[3]));
+                 }
+                 degreeText4.setCursorVisible(false);
+             }
+@@ -355,7 +359,7 @@
+             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                 removeStatusBar();
+                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+-                    processDegreeInput(degreeText1, seekArc1);
++                    processDegreeInput(degreeText1, seekArc1, 0);
+                 }
+                 return false;
+             }
+@@ -373,7 +377,7 @@
+             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                 removeStatusBar();
+                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+-                    processDegreeInput(degreeText2, seekArc2);
++                    processDegreeInput(degreeText2, seekArc2, 1);
+                 }
+                 return false;
+             }
+@@ -391,7 +395,7 @@
+             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                 removeStatusBar();
+                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+-                    processDegreeInput(degreeText3, seekArc3);
++                    processDegreeInput(degreeText3, seekArc3, 2);
+                 }
+                 return false;
+             }
+@@ -409,7 +413,7 @@
+             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                 removeStatusBar();
+                 if (actionId == EditorInfo.IME_ACTION_DONE) {
+-                    processDegreeInput(degreeText4, seekArc4);
++                    processDegreeInput(degreeText4, seekArc4, 3);
+                 }
+                 return false;
+             }
+@@ -478,16 +482,18 @@
+             ((TextView) servo4TimeLine.getChildAt(i).findViewById(R.id.timeline_box_degree_text)).setText(servoData.getDegree4() + getResources().getString(R.string.robotic_arm_degree_symbol));
+         }
+     }
+-    private void processDegreeInput(EditText degreeText, SeekArc seekArc) {
+-        int previousDegree = degree;
++    private void processDegreeInput(EditText degreeText, SeekArc seekArc, int servoIndex) {
+         String degreeStr = degreeText.getText().toString().trim();
++        int degree;
+ 
+         if (degreeStr.isEmpty()) {
+-            degree = (degree == 0) ? (int) (seekArc.getProgress() * 3.6) : previousDegree;
++            degree = servoDegrees[servoIndex];
+         } else {
+             try {
+                 degree = Integer.parseInt(degreeStr);
+             } catch (NumberFormatException e) {
++                servoDegrees[servoIndex] = 0;
++                editEnter[servoIndex] = false;
+                 degreeText.setText(getResources().getString(R.string.zero));
+                 seekArc.setProgress(0);
+                 toastInvalidValueMessage();
+@@ -496,12 +502,18 @@
+         }
+ 
+         if (degree > 360 || degree < 0) {
++            servoDegrees[servoIndex] = 0;
++            editEnter[servoIndex] = false;
+             degreeText.setText(getResources().getString(R.string.zero));
+             seekArc.setProgress(0);
+             toastInvalidValueMessage();
+         } else {
++            servoDegrees[servoIndex] = degree;
++            editEnter[servoIndex] = true;
+             seekArc.setProgress((int) (degree / 3.6));
+-            editEnter = true;
++            degreeText.setText(String.valueOf(servoDegrees[servoIndex]));
++            degreeText.setCursorVisible(false);
++            editEnter[servoIndex] = false;
+         }
+     }
+ 

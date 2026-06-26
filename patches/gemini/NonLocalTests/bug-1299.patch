@@ -1,0 +1,160 @@
+diff --git a/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java b/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java
+index 22984c7..ddab53a 100644
+--- a/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java
++++ b/app/src/main/java/com/fieldbook/tracker/activities/CollectActivity.java
+@@ -275,8 +275,12 @@ public class CollectActivity extends AppCompatActivity {
+     }
+ 
+     private boolean validateData() {
+-        final String strValue = etCurVal.getText().toString();
+         final TraitObject currentTrait = traitBox.getCurrentTrait();
++        if (currentTrait == null) {
++            return true;
++        }
++
++        final String strValue = etCurVal.getText().toString();
+         final String trait = currentTrait.getTrait();
+ 
+         if (traitBox.existsNewTraits()
+@@ -326,6 +330,9 @@ public class CollectActivity extends AppCompatActivity {
+             @Override
+             public void onClick(View v) {
+                 TraitObject currentTrait = traitBox.getCurrentTrait();
++                if (currentTrait == null) {
++                    return;
++                }
+                 updateTrait(currentTrait.getTrait(), currentTrait.getFormat(), "NA");
+                 setNaText();
+             }
+@@ -338,6 +345,9 @@ public class CollectActivity extends AppCompatActivity {
+ 
+                 // if a brapi observation that has been synced, don't allow deleting
+                 TraitObject currentTrait = traitBox.getCurrentTrait();
++                if (currentTrait == null) {
++                    return;
++                }
+                 if (dt.isBrapiSynced(rangeBox.getPlotID(), currentTrait.getTrait())) {
+                     if (currentTrait.getFormat().equals("photo")) {
+                         // I want to use abstract method
+@@ -1205,11 +1215,14 @@ public class CollectActivity extends AppCompatActivity {
+         }
+ 
+         final String getCurrentFormat() {
++            if (currentTrait == null) {
++                return "text";
++            }
+             return currentTrait.getFormat();
+         }
+ 
+         boolean existsTrait() {
+-            return newTraits.containsKey(currentTrait.getTrait());
++            return currentTrait != null && newTraits != null && newTraits.containsKey(currentTrait.getTrait());
+         }
+ 
+         final String createSummaryText(final String plotID) {
+@@ -1217,7 +1230,7 @@ public class CollectActivity extends AppCompatActivity {
+             StringBuilder data = new StringBuilder();
+ 
+             //TODO this test crashes app
+-            if (rangeBox.getCRange() != null) {
++            if (rangeBox.getCRange() != null && traitBox.prefixTraits != null) {
+                 for (String s : traitBox.prefixTraits) {
+                     data.append(s).append(": ");
+                     data.append(dt.getDropDownRange(s, plotID)[0]).append("\n");
+@@ -1611,27 +1624,34 @@ public class CollectActivity extends AppCompatActivity {
+             paging = 1;
+ 
+             setAllRangeID();
+-            if (rangeID != null) {
++            if (rangeID != null && rangeID.length > 0) {
+                 cRange = dt.getRange(rangeID[0]);
+ 
+-                //TODO NullPointerException
+-                lastRange = cRange.range;
+-                display();
++                if (cRange != null) {
++                    //TODO NullPointerException
++                    lastRange = cRange.range;
++                    display();
+ 
+-                traitBox.setNewTraits(cRange.plot_id);
++                    traitBox.setNewTraits(cRange.plot_id);
++                }
+             }
+         }
+ 
+         // Refresh onscreen controls
+         void refresh() {
++            if (rangeID == null || paging < 1 || paging > rangeID.length) {
++                return;
++            }
+             cRange = dt.getRange(rangeID[paging - 1]);
+ 
+-            display();
+-            final SharedPreferences ep = parent.getPreference();
+-            if (ep.getBoolean(GeneralKeys.PRIMARY_SOUND, false)) {
+-                if (!cRange.range.equals(lastRange) && !lastRange.equals("")) {
+-                    lastRange = cRange.range;
+-                    playSound("plonk");
++            if (cRange != null) {
++                display();
++                final SharedPreferences ep = parent.getPreference();
++                if (ep.getBoolean(GeneralKeys.PRIMARY_SOUND, false)) {
++                    if (!cRange.range.equals(lastRange) && !lastRange.equals("")) {
++                        lastRange = cRange.range;
++                        playSound("plonk");
++                    }
+                 }
+             }
+         }
+diff --git a/app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java b/app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java
+index 9617811..0e66770 100644
+--- a/app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java
++++ b/app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java
+@@ -283,6 +283,9 @@ public class ConfigActivity extends AppCompatActivity {
+                         if (!ep.getBoolean("ImportFieldFinished", false)) {
+                             Utils.makeToast(getApplicationContext(),getString(R.string.warning_field_missing));
+                             return;
++                        } else if (dt.getTraitColumnsAsString() == null) {
++                            Utils.makeToast(getApplicationContext(),getString(R.string.warning_traits_missing));
++                            return;
+                         }
+ 
+                         collectDataFilePermission();
+diff --git a/app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java b/app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java
+index b31f85b..3d335ce 100644
+--- a/app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java
++++ b/app/src/main/java/com/fieldbook/tracker/traits/CounterTraitLayout.java
+@@ -44,6 +44,9 @@ public class CounterTraitLayout extends BaseTraitLayout {
+         // Add counter
+         addCounterBtn.setOnClickListener(new OnClickListener() {
+             public void onClick(View arg0) {
++                if (getCurrentTrait() == null) {
++                    return;
++                }
+                 //TODO NullPointerException
+                 if (getNewTraits().containsKey(getCurrentTrait().getTrait()) && getNewTraits().get(getCurrentTrait().getTrait()).toString().equals("NA")) {
+                     counterTv.setText("1");
+@@ -57,6 +60,9 @@ public class CounterTraitLayout extends BaseTraitLayout {
+         // Minus counter
+         minusCounterBtn.setOnClickListener(new OnClickListener() {
+             public void onClick(View arg0) {
++                if (getCurrentTrait() == null) {
++                    return;
++                }
+                 //TODO NullPointerException
+                 if (getNewTraits().containsKey(getCurrentTrait().getTrait()) && getNewTraits().get(getCurrentTrait().getTrait()).toString().equals("NA")) {
+                     counterTv.setText("-1");
+diff --git a/app/src/main/res/layout/trait_counter.xml b/app/src/main/res/layout/trait_counter.xml
+index cdc91b2..e731a3d 100644
+--- a/app/src/main/res/layout/trait_counter.xml
++++ b/app/src/main/res/layout/trait_counter.xml
+@@ -6,7 +6,7 @@
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     android:orientation="vertical"
+-    android:visibility="visible">
++    android:visibility="gone">
+ 
+     <androidx.constraintlayout.widget.ConstraintLayout
+         android:id="@+id/layout_main"

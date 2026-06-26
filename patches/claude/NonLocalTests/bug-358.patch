@@ -1,0 +1,71 @@
+--- a/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
++++ b/app/src/main/java/com/trianguloy/urlchecker/modules/list/UriPartsModule.java
+@@ -1,7 +1,6 @@
+ package com.trianguloy.urlchecker.modules.list;
+ 
+ import android.net.Uri;
+-import android.net.UrlQuerySanitizer;
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.LinearLayout;
+@@ -19,6 +18,7 @@
+ import com.trianguloy.urlchecker.utilities.methods.Inflater;
+ import com.trianguloy.urlchecker.utilities.methods.JavaUtils;
+ 
++import java.net.URLDecoder;
+ import java.util.ArrayList;
+ import java.util.List;
+ 
+@@ -74,12 +74,21 @@
+ 
+         // parse
+         var uri = Uri.parse(urlData.url);
+-        var urlQuerySanitizer = new UrlQuerySanitizer();
+-        // the default parseUrl doesn't remove the fragment
+-        if (uri.getQuery() != null) {
+-            urlQuerySanitizer.setAllowUnregisteredParamaters(true);
+-            urlQuerySanitizer.setUnregisteredParameterValueSanitizer(v -> v);
+-            urlQuerySanitizer.parseQuery(uri.getQuery());
++        // Parse query parameters manually using URLDecoder for proper UTF-8 handling.
++        // UrlQuerySanitizer decodes %XX as Latin-1 chars, which corrupts double-encoded UTF-8.
++        List<String[]> queryParameters = new ArrayList<>();
++        var encodedQuery = uri.getEncodedQuery();
++        if (encodedQuery != null) {
++            for (String param : encodedQuery.split("&")) {
++                String[] parts = param.split("=", 2);
++                try {
++                    String key = URLDecoder.decode(parts[0], "UTF-8");
++                    String value = parts.length > 1 ? URLDecoder.decode(parts[1], "UTF-8") : "";
++                    queryParameters.add(new String[]{key, value});
++                } catch (Exception e) {
++                    queryParameters.add(new String[]{parts[0], parts.length > 1 ? parts[1] : ""});
++                }
++            }
+         }
+ 
+         // domain elements
+@@ -108,18 +117,17 @@
+         }
+ 
+         // query parameters
+-        var parameters = urlQuerySanitizer.getParameterList();
+-        if (parameters.size() > 0) {
+-            var queries = addGroup("Parameters", parameters.size(), uri.buildUpon().query(null));
+-            for (var i = 0; i < parameters.size(); i++) {
++        if (queryParameters.size() > 0) {
++            var queries = addGroup("Parameters", queryParameters.size(), uri.buildUpon().query(null));
++            for (var i = 0; i < queryParameters.size(); i++) {
+                 // generate same url but without this parameter
+                 var builder = uri.buildUpon();
+                 builder.query(null);
+-                for (var j = 0; j < parameters.size(); j++) {
+-                    if (i != j) builder.appendQueryParameter(parameters.get(j).mParameter, parameters.get(j).mValue);
++                for (var j = 0; j < queryParameters.size(); j++) {
++                    if (i != j) builder.appendQueryParameter(queryParameters.get(j)[0], queryParameters.get(j)[1]);
+                 }
+                 // append the parameter
+-                addPart(parameters.get(i).mParameter, parameters.get(i).mValue, queries, builder);
++                addPart(queryParameters.get(i)[0], queryParameters.get(i)[1], queries, builder);
+             }
+         }
+ 
