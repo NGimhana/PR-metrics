@@ -1,0 +1,372 @@
+diff --git a/.idea/fileTemplates/internal/AnnotationType.java b/.idea/fileTemplates/internal/AnnotationType.java
+new file mode 100644
+index 0000000..7afa666
+--- /dev/null
++++ b/.idea/fileTemplates/internal/AnnotationType.java
+@@ -0,0 +1,20 @@
++#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
++#parse("File Header.java")
++/**
++    Copyright (C) ${YEAR}  ${USER}
++
++    This program is free software: you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation, either version 3 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++public @interface ${NAME} {
++}
+diff --git a/.idea/fileTemplates/internal/Enum.java b/.idea/fileTemplates/internal/Enum.java
+new file mode 100644
+index 0000000..d5309a4
+--- /dev/null
++++ b/.idea/fileTemplates/internal/Enum.java
+@@ -0,0 +1,20 @@
++#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
++#parse("File Header.java")
++/**
++    Copyright (C) ${YEAR}  ${USER}
++
++    This program is free software: you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation, either version 3 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++public enum ${NAME} {
++}
+diff --git a/.idea/fileTemplates/internal/Interface.java b/.idea/fileTemplates/internal/Interface.java
+new file mode 100644
+index 0000000..e93c2d8
+--- /dev/null
++++ b/.idea/fileTemplates/internal/Interface.java
+@@ -0,0 +1,20 @@
++#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
++#parse("File Header.java")
++/**
++    Copyright (C) ${YEAR}  ${USER}
++
++    This program is free software: you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation, either version 3 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++public interface ${NAME} {
++}
+diff --git a/.idea/fileTemplates/internal/Kotlin Class.kt b/.idea/fileTemplates/internal/Kotlin Class.kt
+new file mode 100644
+index 0000000..35fff0e
+--- /dev/null
++++ b/.idea/fileTemplates/internal/Kotlin Class.kt	
+@@ -0,0 +1,22 @@
++#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
++
++#end
++#parse("File Header.java")
++/**
++    Copyright (C) ${YEAR}  ${USER}
++
++    This program is free software: you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation, either version 3 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++class ${NAME} {
++}
+\ No newline at end of file
+diff --git a/.idea/fileTemplates/internal/Kotlin Enum.kt b/.idea/fileTemplates/internal/Kotlin Enum.kt
+new file mode 100644
+index 0000000..d91e2a1
+--- /dev/null
++++ b/.idea/fileTemplates/internal/Kotlin Enum.kt	
+@@ -0,0 +1,22 @@
++#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
++
++#end
++#parse("File Header.java")
++/**
++    Copyright (C) ${YEAR}  ${USER}
++
++    This program is free software: you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation, either version 3 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++enum class ${NAME} {
++}
+\ No newline at end of file
+diff --git a/.idea/fileTemplates/internal/Kotlin File.kt b/.idea/fileTemplates/internal/Kotlin File.kt
+new file mode 100644
+index 0000000..65ca663
+--- /dev/null
++++ b/.idea/fileTemplates/internal/Kotlin File.kt	
+@@ -0,0 +1,20 @@
++#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
++
++#end
++#parse("File Header.java")
++/**
++    Copyright (C) ${YEAR}  ${USER}
++
++    This program is free software: you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation, either version 3 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
+\ No newline at end of file
+diff --git a/.idea/fileTemplates/internal/Kotlin Interface.kt b/.idea/fileTemplates/internal/Kotlin Interface.kt
+new file mode 100644
+index 0000000..0488e04
+--- /dev/null
++++ b/.idea/fileTemplates/internal/Kotlin Interface.kt	
+@@ -0,0 +1,22 @@
++#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME}
++
++#end
++#parse("File Header.java")
++/**
++    Copyright (C) ${YEAR}  ${USER}
++
++    This program is free software: you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation, either version 3 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++interface ${NAME} {
++}
+\ No newline at end of file
+diff --git a/app/build.gradle b/app/build.gradle
+index 78a4801..ea99ca5 100644
+--- a/app/build.gradle
++++ b/app/build.gradle
+@@ -7,7 +7,7 @@ android {
+         minSdkVersion 21
+         targetSdkVersion 28
+         versionCode 1902089
+-        versionName "Alpha 1902 Build 89"
++        versionName "1902 Build 89"
+         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+     }
+     compileOptions() {
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java
+index daa74b4..aab808a 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java
+@@ -63,7 +63,7 @@ public class ExerciseViewActivity extends ExerciseListActivity {
+         fragment = ExcersizeListFragment.newInstance(1, ActiveSchedule.getName(), Controller);
+         getSupportFragmentManager().beginTransaction().replace(R.id.execView, fragment).commit();
+ 
+-        String scheduleInfo = String.format(getResources().getString(R.string.ScheduleInfo), ActiveSchedule.getRepetitions(), ActiveSchedule.getPauseTime(), ActiveSchedule.getSets(), ActiveSchedule.getSpeed());
++        String scheduleInfo = String.format(getResources().getString(R.string.ScheduleInfo), ActiveSchedule.getRepetitions(), ActiveSchedule.getPauseTime(), ActiveSchedule.getSets(), ActiveSchedule.getSpeed(), ActiveSchedule.getTrainingsType().toString());
+         ScheduleInfo.setText(scheduleInfo);
+     }
+ 
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java b/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java
+index b65e161..d9a2fde 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java
+@@ -24,10 +24,12 @@ import android.support.v7.app.AppCompatActivity;
+ import android.support.v7.widget.Toolbar;
+ import android.view.View;
+ import android.widget.EditText;
++import android.widget.Spinner;
+ 
+ import com.german_software_engineers.trainerapp.Controller.ApplicationManager;
+ import com.german_software_engineers.trainerapp.ExerciseView.Activity.ExerciseViewActivity;
+ import com.german_software_engineers.trainerapp.R;
++import com.german_software_engineers.trainerappmodel.Enumerations.TrainingsTypes;
+ import com.german_software_engineers.trainerappmodel.Schedule.Schedule;
+ import com.german_software_engineers.trainerappmodel.Exceptions.ScheduleAvailableException;
+ 
+@@ -37,16 +39,11 @@ public class GeneralTrainingScheduleEditor extends AppCompatActivity {
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_general_training_schedule_editor);
+-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
++        Toolbar toolbar = findViewById(R.id.toolbar);
+         setSupportActionBar(toolbar);
+ 
+-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+-        fab.setOnClickListener(new View.OnClickListener() {
+-            @Override
+-            public void onClick(View view) {
+-                openNextActivity();
+-            }
+-        });
++        FloatingActionButton fab = findViewById(R.id.fab);
++        fab.setOnClickListener(view -> openNextActivity());
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+         if(((ApplicationManager)getApplication()).getApplicationModel().activeSchedule()!=null){
+             decorateGuiWithActiveSchedule();
+@@ -64,7 +61,7 @@ public class GeneralTrainingScheduleEditor extends AppCompatActivity {
+     private void decorateGuiWithActiveSchedule(){
+         Schedule activeSchedule = ((ApplicationManager)getApplication()).getApplicationModel().activeSchedule();
+         ((EditText) findViewById(R.id.nameTextEdit)).setText(activeSchedule.getName());
+-        ((EditText) findViewById(R.id.nameTextEdit)).setEnabled(false);
++        findViewById(R.id.nameTextEdit).setEnabled(false);
+ 
+         if(activeSchedule.getRepetitions()!=Integer.MAX_VALUE)
+             ((EditText) findViewById(R.id.repEdit)).setText(String.valueOf(activeSchedule.getRepetitions()));
+@@ -91,6 +88,8 @@ public class GeneralTrainingScheduleEditor extends AppCompatActivity {
+         else
+             schedule = new Schedule(((EditText) findViewById(R.id.nameTextEdit)).getText().toString());
+ 
++        schedule.setTrainingsType(TrainingsTypes.values()[(int)((Spinner)findViewById(R.id.trainSpinner)).getSelectedItemId()]);
++
+         Integer reps = 0;
+         if (!((EditText) findViewById(R.id.repEdit)).getText().toString().isEmpty()) {
+             reps = Integer.valueOf(((EditText) findViewById(R.id.repEdit)).getText().toString());
+diff --git a/app/src/main/res/values-de-rDE/strings.xml b/app/src/main/res/values-de-rDE/strings.xml
+index 4b09697..312bf01 100644
+--- a/app/src/main/res/values-de-rDE/strings.xml
++++ b/app/src/main/res/values-de-rDE/strings.xml
+@@ -40,7 +40,7 @@
+     <string name="WarmUpExerciseTime">Zeit: [min]</string>
+     <string name="WarmUpExerciseIntensity">Intensität</string>
+     <string name="WamUpExerciseSubintensity">Sub-Intensität:</string>
+-    <string name="ScheduleInfo">Wiederholungen: %1$d \nPause: %2$d s\nSätze: %3$d \nBewegungstempo: %4$d</string>
++    <string name="ScheduleInfo">Wiederholungen: %1$d \nPause: %2$d \nSätze: %3$d \nBewegungstempo: %4$d\nTrainingstyp: %5$s</string>
+     <string name="WarmUpExerciseInfoExecutionTime">"Dauer: %1$d"</string>
+     <string name="WarmUpExerciseInfoIntensity">Intensität: %1$s</string>
+     <string name="WarmUpExerciseInfoSubIntensity">Sub-Intensität: %1$d</string>
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index 9d59fc0..aeab4f9 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -96,7 +96,7 @@
+ 
+ 
+     <string name="title_activity_edit_exercise">Edit Exercise</string>
+-    <string name="ScheduleInfo">Repetitions: %1$d \nPause: %2$d s\nSets: %3$d \nSpeed: %4$d</string>
++    <string name="ScheduleInfo">Repetitions: %1$d \nPause: %2$d s\nSets: %3$d \nSpeed: %4$d\n Trainings Type: %5$s</string>
+     <string name="WarmUpExerciseInfoExecutionTime">"Execution Time: %1$d "</string>
+     <string name="WarmUpExerciseInfoBPM">"Heart Frequency: %1$d BPM "</string>
+     <string name="DeviceExerciseInfoLegPosition">"Leg: %1$d "</string>
+diff --git a/build.gradle b/build.gradle
+index 6c2bb63..af70df7 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -7,7 +7,7 @@ buildscript {
+         jcenter()
+     }
+     dependencies {
+-        classpath 'com.android.tools.build:gradle:3.3.0'
++        classpath 'com.android.tools.build:gradle:3.3.2'
+         
+ 
+         // NOTE: Do not place your application dependencies here; they belong
+diff --git a/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Enumerations/TrainingsTypes.java b/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Enumerations/TrainingsTypes.java
+index 9486447..4981819 100644
+--- a/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Enumerations/TrainingsTypes.java
++++ b/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Enumerations/TrainingsTypes.java
+@@ -21,5 +21,6 @@ public enum TrainingsTypes {
+     strength_endurance,
+     hypertrophy,
+     maximum_strength,
+-    pyramid_training
++    pyramid_training,
++    invalid
+ }
+diff --git a/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Model/XMLParser.java b/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Model/XMLParser.java
+index 7f50c88..39141ff 100644
+--- a/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Model/XMLParser.java
++++ b/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Model/XMLParser.java
+@@ -19,6 +19,7 @@ package com.german_software_engineers.trainerappmodel.Model;
+ 
+ import com.german_software_engineers.trainerappmodel.Enumerations.ExerciseType;
+ import com.german_software_engineers.trainerappmodel.Enumerations.Intensities;
++import com.german_software_engineers.trainerappmodel.Enumerations.TrainingsTypes;
+ import com.german_software_engineers.trainerappmodel.Exceptions.ScheduleAvailableException;
+ import com.german_software_engineers.trainerappmodel.Exercise.BodyWeightExercise;
+ import com.german_software_engineers.trainerappmodel.Exercise.DeviceExercise;
+@@ -108,7 +109,8 @@ public class XMLParser {
+                     Element element=(Element)node;
+                     String name = element.getAttribute(SCHEDULE_NAME_TAG);
+                     Schedule schedule = new Schedule(name);
+-//                    schedule.setTrainingsType(TrainingsTypes.valueOf(element.getAttribute(SCHEDULE_TRAININGSTYPE_TAG)));
++                    if(!element.getAttribute(SCHEDULE_TRAININGSTYPE_TAG).isEmpty())
++                        schedule.setTrainingsType(TrainingsTypes.valueOf(element.getAttribute(SCHEDULE_TRAININGSTYPE_TAG)));
+                     schedule.setPauseTime(Integer.valueOf(element.getAttribute(SCHEDULE_PAUSETIME_TAG)));
+                     schedule.setRepetitions(Integer.valueOf(element.getAttribute(SCHEDULE_REPETITIONS_TAG)));
+                     schedule.setSets(Integer.valueOf(element.getAttribute(SCHEDULE_SETS_TAG)));
+@@ -231,11 +233,8 @@ public class XMLParser {
+             for (Schedule sched : ApplicationModel.getSchedulesList()) {
+                 Element scheduleElement = doc.createElement(SCHEDULE_ID);
+ 
+-//                Attr scheduleName=doc.createAttribute(SCHEDULE_NAME_TAG);
+-//                scheduleName.setValue(sched.getName());
+-//                scheduleElement.setAttributeNode(scheduleName);
+                 scheduleElement.setAttribute(SCHEDULE_NAME_TAG, sched.getName());
+-//                scheduleElement.setAttribute(SCHEDULE_TRAININGSTYPE_TAG, sched.getTrainingsType().name());
++                scheduleElement.setAttribute(SCHEDULE_TRAININGSTYPE_TAG, sched.getTrainingsType().name());
+                 scheduleElement.setAttribute(SCHEDULE_REPETITIONS_TAG, String.valueOf(sched.getRepetitions()));
+                 scheduleElement.setAttribute(SCHEDULE_PAUSETIME_TAG, String.valueOf(sched.getPauseTime()));
+                 scheduleElement.setAttribute(SCHEDULE_SETS_TAG, String.valueOf(sched.getSets()));
+diff --git a/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Schedule/Schedule.java b/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Schedule/Schedule.java
+index 68eef13..ad59375 100644
+--- a/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Schedule/Schedule.java
++++ b/trainerappmodel/src/main/java/com/german_software_engineers/trainerappmodel/Schedule/Schedule.java
+@@ -29,7 +29,7 @@ import java.util.TreeMap;
+ 
+ public class Schedule {
+     private String Name;
+-    private TrainingsTypes TrainingsType;
++    private TrainingsTypes TrainingsType = TrainingsTypes.invalid;
+     private int Repetitions = Integer.MAX_VALUE;
+     private int PauseTime = Integer.MAX_VALUE;
+     private int Sets = Integer.MAX_VALUE;

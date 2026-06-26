@@ -1,0 +1,26 @@
+diff --git a/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java b/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
+index 5a30516..6f432b3 100644
+--- a/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
++++ b/app/src/main/java/io/lerk/lrkFM/adapter/FileArrayAdapter.java
+@@ -177,7 +177,9 @@ public class FileArrayAdapter extends BaseArrayAdapter {
+ 
+     private boolean isInContext(FMFile f) {
+         boolean res = false;
+-        for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
++        //noinspection ForLoopReplaceableByForEach prevents ConcurrentModificationException
++        for (Iterator<FMFile> iterator = activity.getFileOpContext().getSecond().iterator(); iterator.hasNext(); ) {
++            FMFile contextFile = iterator.next();
+             if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+                 res = true;
+             }
+@@ -186,7 +188,9 @@ public class FileArrayAdapter extends BaseArrayAdapter {
+     }
+ 
+     private void removeFromContext(FMFile f) {
+-        for (FMFile contextFile : activity.getFileOpContext().getSecond()) {
++        //noinspection ForLoopReplaceableByForEach prevents ConcurrentModificationException
++        for (Iterator<FMFile> iterator = activity.getFileOpContext().getSecond().iterator(); iterator.hasNext(); ) {
++            FMFile contextFile = iterator.next();
+             if (contextFile.getFile().getAbsolutePath().equals(f.getFile().getAbsolutePath())) {
+                 activity.getFileOpContext().getSecond().remove(contextFile);
+             }

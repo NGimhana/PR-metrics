@@ -1,0 +1,53 @@
+diff --git a/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java b/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
+index 3b7d39508..0cb39c967 100644
+--- a/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
++++ b/app/src/main/java/net/gsantner/markor/ui/NewFileDialog.java
+@@ -29,9 +29,9 @@ import android.widget.EditText;
+ import android.widget.Spinner;
+ 
+ import net.gsantner.markor.R;
++import net.gsantner.markor.format.todotxt.TodoTxtTask;
+ import net.gsantner.markor.util.AppSettings;
+ import net.gsantner.markor.util.ShareUtil;
+-import net.gsantner.markor.format.todotxt.TodoTxtTask;
+ import net.gsantner.opoc.ui.AndroidSpinnerOnItemSelectedAdapter;
+ import net.gsantner.opoc.util.Callback;
+ import net.gsantner.opoc.util.ContextUtils;
+@@ -115,7 +115,9 @@ public class NewFileDialog extends DialogFragment {
+                 }
+             }
+             fileNameEdit.setSelection(fileNameEdit.length());
++            appSettings.setNewFileDialogLastUsedType(typeSpinner.getSelectedItemPosition());
+         }));
++        typeSpinner.setSelection(appSettings.getNewFileDialogLastUsedType());
+ 
+         templateSpinner.setOnItemSelectedListener(new AndroidSpinnerOnItemSelectedAdapter(pos -> {
+             String prefix = null;
+diff --git a/app/src/main/java/net/gsantner/markor/util/AppSettings.java b/app/src/main/java/net/gsantner/markor/util/AppSettings.java
+index ef324e013..1f392e930 100644
+--- a/app/src/main/java/net/gsantner/markor/util/AppSettings.java
++++ b/app/src/main/java/net/gsantner/markor/util/AppSettings.java
+@@ -714,4 +714,12 @@ public class AppSettings extends SharedPreferencesPropertyBackend {
+     public void setNewFileDialogLastUsedExtension(String v) {
+         setString(R.string.pref_key__new_file_dialog_lastused_extension, v);
+     }
++
++    public int getNewFileDialogLastUsedType() {
++        return getInt(R.string.pref_key__new_file_dialog_lastused_type, 0);
++    }
++
++    public void setNewFileDialogLastUsedType(int i) {
++        setInt(R.string.pref_key__new_file_dialog_lastused_type, i);
++    }
+ }
+diff --git a/app/src/main/res/values/string-not_translatable.xml b/app/src/main/res/values/string-not_translatable.xml
+index 262c4a812..aa8a4c6f8 100644
+--- a/app/src/main/res/values/string-not_translatable.xml
++++ b/app/src/main/res/values/string-not_translatable.xml
+@@ -287,5 +287,6 @@ work. If not, see <https://creativecommons.org/publicdomain/zero/1.0/>.
+     <string name="pref_key__default_encryption_password_set_once" translatable="false">pref_key__default_encryption_password_set_once</string>
+     <string name="pref_key__new_file_dialog_lastused_encryption" translatable="false">pref_key__new_file_dialog_lastused_encryption</string>
+     <string name="pref_key__new_file_dialog_lastused_extension" translatable="false">pref_key__new_file_dialog_lastused_extension</string>
++    <string name="pref_key__new_file_dialog_lastused_type" translatable="false">pref_key__new_file_dialog_lastused_type</string>
+     <string name="select_current_line" translatable="false">Select current line(s)</string>
+ </resources>

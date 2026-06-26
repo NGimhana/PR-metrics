@@ -1,0 +1,13 @@
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java
+index ce3f025..db95946 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseDialog.java
+@@ -60,7 +60,7 @@ public class ExerciseDialog extends DialogFragment {
+ 
+         boolean isBackActivated = ((CheckBox)dialog.findViewById(R.id.BackCheckBox)).isChecked();
+         Integer backPos = 0;
+-        if(isAngnleActivated)
++        if(isBackActivated)
+             backPos = Integer.valueOf(((TextView)dialog.findViewById(R.id.BackEdit)).getText().toString());
+ 
+         boolean isWeightActivated = ((CheckBox)dialog.findViewById(R.id.WeightCheckBox)).isChecked();

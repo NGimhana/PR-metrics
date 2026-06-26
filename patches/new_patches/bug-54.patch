@@ -1,0 +1,41 @@
+diff --git a/app/src/main/java/net/gsantner/markor/util/AppSettings.java b/app/src/main/java/net/gsantner/markor/util/AppSettings.java
+index 7f7b4fda2..b808c3ff8 100644
+--- a/app/src/main/java/net/gsantner/markor/util/AppSettings.java
++++ b/app/src/main/java/net/gsantner/markor/util/AppSettings.java
+@@ -304,6 +304,6 @@ public class AppSettings extends SharedPreferencesPropertyBackend {
+     }
+ 
+     public boolean isEditorHistoryEnabled() {
+-        return getBool(R.string.pref_key__editor_history_enabled, false);
++        return getBool(R.string.pref_key__editor_history_enabled3, true);
+     }
+ }
+diff --git a/app/src/main/res/values/string-not_translatable.xml b/app/src/main/res/values/string-not_translatable.xml
+index fa0498531..563e2d433 100644
+--- a/app/src/main/res/values/string-not_translatable.xml
++++ b/app/src/main/res/values/string-not_translatable.xml
+@@ -170,7 +170,7 @@ work. If not, see <https://creativecommons.org/publicdomain/zero/1.0/>.
+     <string name="pref_key__popular_documents" translatable="false">pref_key__popular_documents</string>
+     <string name="pref_key__share_into__open_in_browser" translatable="false">pref_key__share_into__open_in_browser</string>
+     <string name="pref_key__inject_to_head" translatable="false">pref_key__inject_to_head</string>
+-    <string name="pref_key__editor_history_enabled" translatable="false">pref_key__editor_history_enabled</string>
++    <string name="pref_key__editor_history_enabled3" translatable="false">pref_key__editor_history_enabled3</string>
+ 
+ 
+     <string name="tmaid_markdown_quote" translatable="false">markdown_quote</string>
+diff --git a/app/src/main/res/xml/preferences_master.xml b/app/src/main/res/xml/preferences_master.xml
+index dec9b5cc7..d00e6a3af 100644
+--- a/app/src/main/res/xml/preferences_master.xml
++++ b/app/src/main/res/xml/preferences_master.xml
+@@ -148,9 +148,9 @@
+ 
+         <PreferenceCategory android:title="@string/other">
+             <CheckBoxPreference
+-                android:defaultValue="false"
++                android:defaultValue="true"
+                 android:icon="@drawable/ic_history_black_24dp"
+-                android:key="@string/pref_key__editor_history_enabled"
++                android:key="@string/pref_key__editor_history_enabled3"
+                 android:summary="@string/enable_undo_and_redo_be_patient"
+                 android:title="@string/history" />
+             <CheckBoxPreference

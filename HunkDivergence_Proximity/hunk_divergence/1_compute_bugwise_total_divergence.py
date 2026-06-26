@@ -6,13 +6,13 @@ from pathlib import Path
 def parse_args():
     ap = argparse.ArgumentParser(description="Aggregate hunk divergence per bug")
     ap.add_argument("--pairwise",
-                    default="HunkDivergence_Proximity/hunk_divergence/pairwise_hunk_divergence_results.csv",
+                    default="HunkDivergence_Proximity/hunk_divergence/pairwise_hunk_divergence_results_new.csv",
                     help="Pair-wise distance table")
     ap.add_argument("--total",
-                    default="HunkDivergence_Proximity/hunk_divergence/total_hunk_divergence_results.csv",
+                    default="HunkDivergence_Proximity/hunk_divergence/total_hunk_divergence_results_new.csv",
                     help="Override file with bug_id,hunk_count,divergence")
     ap.add_argument("--out",
-                    default="HunkDivergence_Proximity/hunk_divergence/bugwise_average_divergence.csv",
+                    default="HunkDivergence_Proximity/hunk_divergence/bugwise_average_divergence_new.csv",
                     help="Output CSV")
     return ap.parse_args()
 

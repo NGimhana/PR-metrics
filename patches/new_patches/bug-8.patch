@@ -1,0 +1,130 @@
+diff --git a/app/src/main/java/de/koelle/christian/common/widget/tab/BlockableViewPager.java b/app/src/main/java/de/koelle/christian/common/widget/tab/BlockableViewPager.java
+new file mode 100644
+index 0000000..c7063b7
+--- /dev/null
++++ b/app/src/main/java/de/koelle/christian/common/widget/tab/BlockableViewPager.java
+@@ -0,0 +1,40 @@
++package de.koelle.christian.common.widget.tab;
++
++import android.annotation.SuppressLint;
++import android.content.Context;
++import android.support.annotation.NonNull;
++import android.support.v4.view.ViewPager;
++import android.util.AttributeSet;
++import android.view.KeyEvent;
++import android.view.MotionEvent;
++
++public class BlockableViewPager extends ViewPager {
++
++    private boolean enabled;
++
++    public BlockableViewPager(Context context, AttributeSet attrs) {
++        super(context, attrs);
++        this.enabled = true;
++    }
++
++    @SuppressLint("ClickableViewAccessibility")
++    @Override
++    public boolean onTouchEvent(MotionEvent event) {
++        return this.enabled && super.onTouchEvent(event);
++    }
++
++    @Override
++    public boolean onInterceptTouchEvent(MotionEvent event) {
++        return this.enabled && super.onInterceptTouchEvent(event);
++    }
++
++    @Override
++    public boolean executeKeyEvent(@NonNull KeyEvent event) {
++        return this.enabled && super.executeKeyEvent(event);
++    }
++
++    public void setSwipeEnabled(boolean enabled) {
++        this.enabled = enabled;
++    }
++
++}
+\ No newline at end of file
+diff --git a/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java b/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
+index 8b791c1..0d32918 100644
+--- a/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
++++ b/app/src/main/java/de/koelle/christian/trickytripper/TrickyTripperActivity.java
+@@ -8,7 +8,6 @@ import android.os.Bundle;
+ import android.support.v4.content.ContextCompat;
+ import android.support.v4.view.GravityCompat;
+ import android.support.v4.view.PagerAdapter;
+-import android.support.v4.view.ViewPager;
+ import android.support.v4.widget.DrawerLayout;
+ import android.support.v7.app.ActionBar;
+ import android.support.v7.app.ActionBarDrawerToggle;
+@@ -33,6 +32,7 @@ import de.koelle.christian.common.changelog.ChangeLog;
+ import de.koelle.christian.common.options.OptionConstraints;
+ import de.koelle.christian.common.options.OptionConstraintsInflater;
+ import de.koelle.christian.common.utils.CurrencyUtil;
++import de.koelle.christian.common.widget.tab.BlockableViewPager;
+ import de.koelle.christian.trickytripper.activitysupport.MainPagerAdapter;
+ import de.koelle.christian.trickytripper.constants.Rc;
+ import de.koelle.christian.trickytripper.controller.TripController;
+@@ -46,7 +46,7 @@ public class TrickyTripperActivity extends AppCompatActivity implements DeleteDi
+     private static final String SELECTED_TAB_INDEX = "tabIndex";
+     private static final String DIALOG_PARAM_TRIP_SUMMARY = "dialogParamTripSummary";
+ 
+-    private ViewPager mViewPager;
++    private BlockableViewPager mViewPager;
+     private DrawerLayout mDrawerLayout;
+     private ListView mDrawerList;
+     private ActionBarDrawerToggle mDrawerToggle;
+@@ -446,5 +446,6 @@ public class TrickyTripperActivity extends AppCompatActivity implements DeleteDi
+ 
+     public void setRunningActionMode(ActionMode actionMode) {
+         this.mActionMode = actionMode;
++        mViewPager.setSwipeEnabled(actionMode== null);
+     }
+ }
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/tricky_tripper_main_view.xml b/app/src/main/res/layout/tricky_tripper_main_view.xml
+index 7d129c9..616250b 100644
+--- a/app/src/main/res/layout/tricky_tripper_main_view.xml
++++ b/app/src/main/res/layout/tricky_tripper_main_view.xml
+@@ -6,7 +6,7 @@
+ 
+ 
+ 
+-        <android.support.v4.view.ViewPager
++        <de.koelle.christian.common.widget.tab.BlockableViewPager
+             android:id="@+id/drawer_content_pager"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
+@@ -23,7 +23,7 @@
+                 android:textColor="#fff" />
+ 
+ 
+-        </android.support.v4.view.ViewPager>
++        </de.koelle.christian.common.widget.tab.BlockableViewPager>
+ 
+ 
+ 
+diff --git a/app/src/main/res/raw-de/changelog.txt b/app/src/main/res/raw-de/changelog.txt
+index c722148..fbae6f7 100644
+--- a/app/src/main/res/raw-de/changelog.txt
++++ b/app/src/main/res/raw-de/changelog.txt
+@@ -32,6 +32,7 @@ $ 1.6.1
+ % Version 1.6.1
+   _ 2019-XX-XX
+ * Fix: Tab-Aktualisierung erfolgt wieder nach Löschung einer Zahlung.
++* Fix: Fehler beim Tab-Wechsel mit geöffnetem Optionsmenü.
+ 
+ 
+ $ 1.6.0
+diff --git a/app/src/main/res/raw/changelog.txt b/app/src/main/res/raw/changelog.txt
+index 48f7d59..df0de95 100644
+--- a/app/src/main/res/raw/changelog.txt
++++ b/app/src/main/res/raw/changelog.txt
+@@ -31,6 +31,7 @@ $ 1.6.1
+ % Version 1.6.1
+   _ 2019-XX-XX
+ * Fix tab refresh post payment deletion, e.g. balance and report.
++* Fix errors on tab-change while options menu is opened.
+ 
+ $ 1.6.0
+ % Version 1.6.0

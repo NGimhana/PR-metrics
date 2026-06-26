@@ -1,0 +1,26 @@
+diff --git a/app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java b/app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java
+index 2609eab25..8f9fec4d4 100644
+--- a/app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java
++++ b/app/src/main/java/com/fieldbook/tracker/activities/ConfigActivity.java
+@@ -232,6 +232,9 @@ public class ConfigActivity extends AppCompatActivity {
+                         if (!ep.getBoolean("ImportFieldFinished", false)) {
+                             Utils.makeToast(getApplicationContext(),getString(R.string.warning_field_missing));
+                             return;
++                        } else if (dt.getTraitColumnsAsString() == null) {
++                            Utils.makeToast(getApplicationContext(),getString(R.string.warning_traits_missing));
++                            return;
+                         }
+ 
+                         collectDataFilePermission();
+diff --git a/app/src/main/res/raw/changelog.xml b/app/src/main/res/raw/changelog.xml
+index d1ac92a9d..103744f17 100644
+--- a/app/src/main/res/raw/changelog.xml
++++ b/app/src/main/res/raw/changelog.xml
+@@ -16,6 +16,7 @@
+         <bugfix>Fixed how Database settings work</bugfix>
+         <bugfix>Fixed bug when saving person or location from Settings</bugfix>
+         <bugfix>Fixed bug that hid files with uppercase extensions</bugfix>
++        <bugfix>Fixed bug allowed users to view Collect screen without traits</bugfix>
+     </release>
+ 
+     <release

@@ -14,20 +14,14 @@ def clean_slug(s):
         return ""
     return "".join(str(s).split()).lower()
 
-# class_path_df = pd.read_csv("PR-metrics/GT_csv/real-bugs-ICSE24-additional - code.csv")
-# commit_id_df = pd.read_csv("PR-metrics/GT_csv/real-bugs-ICSE24-additional - real-bugs.csv")
-# class_path_df = pd.read_csv("/Users/nadeeshan/Desktop/PR/birch/PR-metrics/GT_csv/AndroR2_dataset - code.csv")
-# commit_id_df = pd.read_csv("/Users/nadeeshan/Desktop/PR/birch/PR-metrics/GT_csv/AndroR2_dataset - Bug ID - commits.csv")
-#class_path_df = pd.read_csv("/Users/nadeeshan/Desktop/PR/birch/PR-metrics/GT_csv/RealBugs-5Apps - code.csv")
-#commit_id_df = pd.read_csv("/Users/nadeeshan/Desktop/PR/birch/PR-metrics/GT_csv/RealBugs-5Apps - real bugs - commits.csv")
-class_path_df = pd.read_csv("/Users/nadeeshan/Desktop/PR/birch/PR-metrics/GT_csv/More Real Bugs - code.csv")
-commit_id_df = pd.read_csv("/Users/nadeeshan/Desktop/PR/birch/PR-metrics/GT_csv/More Real Bugs - bugs - commits.csv")
+class_path_df = pd.read_csv("GT_csv/Unified Diffs 50 UI APR Bugs - bugs_with_unified_diff.csv")
+commit_id_df = pd.read_csv("GT_csv/Unified Diffs 50 UI APR Bugs - bugs_with_unified_diff_commits.csv")
 
 
 # Create directories if they don't exist
-projects_dir = os.path.abspath("/Users/nadeeshan/Desktop/PR/birch/PR-metrics/projects")
-checkout_dir_base = os.path.abspath("/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs")
-patches_dir = os.path.abspath("/Users/nadeeshan/Desktop/PR/birch/PR-metrics/patches")
+projects_dir = os.path.abspath("projects")
+checkout_dir_base = os.path.abspath("checkout-bugs-final")
+patches_dir = os.path.abspath("patches/new_patches")
 
 os.makedirs(projects_dir, exist_ok=True)
 os.makedirs(checkout_dir_base, exist_ok=True)
@@ -36,7 +30,7 @@ os.makedirs(patches_dir, exist_ok=True)
 ## iterate through class_path_df
 for index, row in class_path_df.iterrows():
     raw_slug = row["slug"]
-    class_path = row["class_path"]
+    # class_path = row["class_path"]
     
     ## split the raw_slug into parts based on the number --> output should like ["markor","53","real","makeDialog"]
     tokens = raw_slug.split('-')
@@ -71,7 +65,7 @@ for index, row in class_path_df.iterrows():
         continue
         
     bug_id = str(matched_row['Bug ID']).strip()
-    app_name = str(matched_row['App Name']).strip()
+    app_name = str(matched_row['Repo Name']).strip()
     buggy_commit = str(matched_row['Buggy Commit IDs']).strip()
     fixed_commit = str(matched_row['Fixed Commit IDs']).strip()
     gh_repo = str(matched_row['GH_repo']).strip()
@@ -96,69 +90,72 @@ for index, row in class_path_df.iterrows():
     else:
         print(f"  Repo {repo_name} already exists in cache.")
         
-    # 2. Extract the file path inside the repo
-    prefix = raw_slug + "/"
-    if class_path.startswith(prefix):
-        repo_file_path = class_path[len(prefix):]
-    else:
-        repo_file_path = class_path
+    # # 2. Extract the file path inside the repo
+    # prefix = raw_slug + "/"
+    # if class_path.startswith(prefix):
+    #     repo_file_path = class_path[len(prefix):]
+    # else:
+    #     repo_file_path = class_path
         
     # 3. Generate patch in patches/
     patch_file = os.path.join(patches_dir, f"{raw_slug}.patch")
-    print(f"  Generating patch for {repo_file_path}...")
+    print(f"  Generating patch for {bug_id}...")
     try:
-        if raw_slug == "realbug-1640-onCreate-ExerciseViewActivity":
-            with open(patch_file, "w") as f_out:
-                subprocess.run(
-                ["git", "diff", f"{buggy_commit}:app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java", f"{fixed_commit}:app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java"],
-                cwd=repo_dir,
-                stdout=f_out,
-                check=True
-            )
-        elif raw_slug == "realbug-1641-addScheduleToModel" or raw_slug == "realbug-1641-onCreate":
-            with open(patch_file, "w") as f_out:
-                subprocess.run(
-                ["git", "diff", f"{buggy_commit}:app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java", f"{fixed_commit}:app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java"],
-                cwd=repo_dir,
-                stdout=f_out,
-                check=True
-            )
+        # if raw_slug == "realbug-1640-onCreate-ExerciseViewActivity":
+        #     with open(patch_file, "w") as f_out:
+        #         subprocess.run(
+        #         ["git", "diff", f"{buggy_commit}:app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java", f"{fixed_commit}:app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java"],
+        #         cwd=repo_dir,
+        #         stdout=f_out,
+        #         check=True
+        #     )
+        # elif raw_slug == "realbug-1641-addScheduleToModel" or raw_slug == "realbug-1641-onCreate":
+        #     with open(patch_file, "w") as f_out:
+        #         subprocess.run(
+        #         ["git", "diff", f"{buggy_commit}:app/src/main/java/com/german_software_engineers/trainerapp/GeneralTrainingScheduleEditor.java", f"{fixed_commit}:app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java"],
+        #         cwd=repo_dir,
+        #         stdout=f_out,
+        #         check=True
+        #     )
 
-        elif raw_slug == "realbug-1641-onStart":
-            with open(patch_file, "w") as f_out:
-                subprocess.run(
-                ["git", "diff", f"{buggy_commit}:app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java", f"{fixed_commit}:app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java"],
-                cwd=repo_dir,
-                stdout=f_out,
-                check=True
-            )
+        # elif raw_slug == "realbug-1641-onStart":
+        #     with open(patch_file, "w") as f_out:
+        #         subprocess.run(
+        #         ["git", "diff", f"{buggy_commit}:app/src/main/java/com/german_software_engineers/trainerapp/ExerciseViewActivity.java", f"{fixed_commit}:app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java"],
+        #         cwd=repo_dir,
+        #         stdout=f_out,
+        #         check=True
+        #     )
         
-        elif raw_slug == "harmonic-real-114-onClick":
-            with open(patch_file, "w") as f_out:
-                subprocess.run(
-                ["git", "diff", f"{buggy_commit}:app/src/main/java/com/simon/harmonichackernews/CommentsRecyclerViewAdapter.java", f"{fixed_commit}:app/src/main/java/com/simon/harmonichackernews/adapters/CommentsRecyclerViewAdapter.java"],
-                cwd=repo_dir,
-                stdout=f_out,
-                check=True
-            )
+        # elif raw_slug == "harmonic-real-114-onClick":
+        #     with open(patch_file, "w") as f_out:
+        #         subprocess.run(
+        #         ["git", "diff", f"{buggy_commit}:app/src/main/java/com/simon/harmonichackernews/CommentsRecyclerViewAdapter.java", f"{fixed_commit}:app/src/main/java/com/simon/harmonichackernews/adapters/CommentsRecyclerViewAdapter.java"],
+        #         cwd=repo_dir,
+        #         stdout=f_out,
+        #         check=True
+        #     )
         
-        elif raw_slug == "bug-1446-onCreateView" or raw_slug == "bug-1446-updateAllFishingSpots" or raw_slug == "bug-1446-onClick" or raw_slug == "bug-1446-goToManageFishingSpot" :
-            with open(patch_file, "w") as f_out:
-                subprocess.run(
-                ["git", "diff", f"{buggy_commit}:AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java", f"{fixed_commit}:android/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java"],
-                cwd=repo_dir,
-                stdout=f_out,
-                check=True
-            )
+        # elif raw_slug == "bug-1446-onCreateView" or raw_slug == "bug-1446-updateAllFishingSpots" or raw_slug == "bug-1446-onClick" or raw_slug == "bug-1446-goToManageFishingSpot" :
+        #     with open(patch_file, "w") as f_out:
+        #         subprocess.run(
+        #         ["git", "diff", f"{buggy_commit}:AnglersLog/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java", f"{fixed_commit}:android/app/src/main/java/com/cohenadair/anglerslog/locations/ManageLocationFragment.java"],
+        #         cwd=repo_dir,
+        #         stdout=f_out,
+        #         check=True
+        #     )
 
-        else: 
-            with open(patch_file, "w") as f_out:
-                subprocess.run(
-                ["git", "diff", buggy_commit, fixed_commit, "--", repo_file_path],
-                cwd=repo_dir,
-                stdout=f_out,
-                check=True
-            )
+        # else: 
+        # with open(patch_file, "w") as f_out:
+        #     subprocess.run(
+        #     ["git", "diff", buggy_commit, fixed_commit, "--", repo_file_path],
+        #     cwd=repo_dir,
+        #     stdout=f_out,
+        #     check=True
+        # )
+        with open(patch_file, "w") as f_out:
+            f_out.write(row["GT_diff"])
+
     except Exception as e:
         print(f"Error generating patch for {raw_slug}: {e}")
         continue    

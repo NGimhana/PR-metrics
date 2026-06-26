@@ -1,0 +1,68 @@
+diff --git a/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java b/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
+index c8816ff1..1bb69bfb 100644
+--- a/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
++++ b/app/src/main/java/ch/logixisland/anuto/business/control/TowerInserter.java
+@@ -46,7 +46,8 @@ public class TowerInserter {
+             return;
+         }
+ 
+-        if (mInsertedTower == null && !mGameManager.isGameOver()) {
++        if (mInsertedTower == null && !mGameManager.isGameOver() &&
++                mScoreBoard.getCredits() >= mTowerFactory.getTowerValue(towerName)) {
+             showTowerLevels();
+             mInsertedTower = mTowerFactory.createTower(towerName);
+         }
+diff --git a/app/src/main/java/ch/logixisland/anuto/entity/tower/TowerFactory.java b/app/src/main/java/ch/logixisland/anuto/entity/tower/TowerFactory.java
+index 150cf64f..2d72e732 100644
+--- a/app/src/main/java/ch/logixisland/anuto/entity/tower/TowerFactory.java
++++ b/app/src/main/java/ch/logixisland/anuto/entity/tower/TowerFactory.java
+@@ -34,6 +34,11 @@ public class TowerFactory {
+         mTowerSettings = towerSettings;
+     }
+ 
++    public int getTowerValue(String name) {
++        TowerConfig config = mTowerSettings.getTowerConfig(name);
++        return config.getValue();
++    }
++
+     public Tower createTower(String name) {
+         TowerConfig config = mTowerSettings.getTowerConfig(name);
+         return mFactory.createInstance(name, config);
+diff --git a/app/src/main/java/ch/logixisland/anuto/view/game/TowerView.java b/app/src/main/java/ch/logixisland/anuto/view/game/TowerView.java
+index be6cb61c..4b77c4a6 100644
+--- a/app/src/main/java/ch/logixisland/anuto/view/game/TowerView.java
++++ b/app/src/main/java/ch/logixisland/anuto/view/game/TowerView.java
+@@ -122,20 +122,22 @@ public class TowerView extends View implements View.OnTouchListener, View.OnDrag
+     @Override
+     public boolean onTouch(View view, MotionEvent event) {
+         if (event.getAction() == MotionEvent.ACTION_DOWN) {
+-            mTowerInserter.insertTower(mPreviewTower.getName());
++            if (mScoreBoard.getCredits() >= mTowerFactory.getTowerValue(mPreviewTower.getName())) {
++                mTowerInserter.insertTower(mPreviewTower.getName());
+ 
+-            View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder() {
+-                @Override
+-                public void onProvideShadowMetrics(Point shadowSize, Point shadowTouchPoint) {
+-                }
++                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder() {
++                    @Override
++                    public void onProvideShadowMetrics(Point shadowSize, Point shadowTouchPoint) {
++                    }
+ 
+-                @Override
+-                public void onDrawShadow(Canvas canvas) {
+-                }
+-            };
++                    @Override
++                    public void onDrawShadow(Canvas canvas) {
++                    }
++                };
+ 
+-            ClipData data = ClipData.newPlainText("", "");
+-            startDrag(data, shadowBuilder, this, 0);
++                ClipData data = ClipData.newPlainText("", "");
++                startDrag(data, shadowBuilder, this, 0);
++            }
+         }
+ 
+         return false;

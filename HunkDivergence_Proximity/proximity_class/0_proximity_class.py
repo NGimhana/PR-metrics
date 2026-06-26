@@ -137,6 +137,9 @@ def build_hunks(bug_id: str, work_dir: str, defects4j_home: str) -> List[Hunk]:
     patch_hunks = parse_patch_file(patch_file) if patch_file.exists() else {}
 
     for hunk_id, ph in patch_hunks.items():
+        ## only consider .java files
+        if not ph.get("file", "").endswith(".java"):
+            continue
         file_rel = ph.get("file", "MISSING_FILE")
         start = ph.get("start_line", 0)
         end = ph.get("end_line", 0)
@@ -204,12 +207,12 @@ def classify(H, cutoff):
 
 def main():
     ap = argparse.ArgumentParser(description="Spatial proximity classification")
-    ap.add_argument("input_json", nargs="?", default="hunk4j/dataset/d4j_dataset.json")
-    ap.add_argument("output_csv", nargs="?", default="HunkDivergence_Proximity/proximity_class/proximity_class.csv")
-    ap.add_argument("--work-dir", default="checkout-bugs")
+    ap.add_argument("input_json", nargs="?", default="hunk4j/dataset/d4j_dataset_final.json")
+    ap.add_argument("output_csv", nargs="?", default="HunkDivergence_Proximity/proximity_class/proximity_class_new.csv")
+    ap.add_argument("--work-dir", default="checkout-bugs-final")
     # ap.add_argument('--defects4j_home', type=str, default="/Users/nadeeshan/Desktop/PR/birch/defects4j-2.0.1",
     #                 help='Path to the Defects4J home directory')
-    ap.add_argument('--defects4j_home', type=str, default="patches",
+    ap.add_argument('--defects4j_home', type=str, default="patches/new_patches",
                     help='Path to the Defects4J home directory')
     
     ap.add_argument("--threshold", type=int, help="Override LCP cutoff for Sprawl")

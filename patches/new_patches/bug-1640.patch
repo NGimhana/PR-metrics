@@ -1,0 +1,904 @@
+diff --git a/.idea/fileTemplates/internal/Class.java b/.idea/fileTemplates/internal/Class.java
+new file mode 100644
+index 0000000..d7dd108
+--- /dev/null
++++ b/.idea/fileTemplates/internal/Class.java
+@@ -0,0 +1,20 @@
++#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
++#parse("File Header.java")
++/**
++    Copyright (C) ${YEAR}  ${USER}
++
++    This program is free software: you can redistribute it and/or modify
++    it under the terms of the GNU General Public License as published by
++    the Free Software Foundation, either version 3 of the License, or
++    (at your option) any later version.
++
++    This program is distributed in the hope that it will be useful,
++    but WITHOUT ANY WARRANTY; without even the implied warranty of
++    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++    GNU General Public License for more details.
++
++    You should have received a copy of the GNU General Public License
++    along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++public class ${NAME} {
++}
+diff --git a/app/build.gradle b/app/build.gradle
+index 646995d..87ad83e 100644
+--- a/app/build.gradle
++++ b/app/build.gradle
+@@ -38,6 +38,7 @@ dependencies {
+     implementation 'com.android.support:support-v4:28.0.0'
+     implementation 'com.android.support:cardview-v7:28.0.0'
+     implementation 'com.android.support:recyclerview-v7:28.0.0'
++    implementation 'com.google.android.gms:play-services-oss-licenses:16.0.0'
+     testImplementation 'junit:junit:4.12'
+     androidTestImplementation 'com.android.support.test:runner:1.0.2'
+     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index 0b35f9e..2fc5c76 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -4,6 +4,7 @@
+ 
+     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
++    <uses-permission android:name="android.permission.INTERNET" />
+ 
+     <application
+         android:allowBackup="true"
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/Controller/ApplicationManager.java b/app/src/main/java/com/german_software_engineers/trainerapp/Controller/ApplicationManager.java
+index bdfea6c..f6a58da 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/Controller/ApplicationManager.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/Controller/ApplicationManager.java
+@@ -8,6 +8,23 @@ import com.german_software_engineers.trainerappmodel.Model.XMLParser;
+ 
+ import java.io.File;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ public class ApplicationManager extends Application {
+     private Model ApplicationModel = null;
+ 
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/Controller/ExerciseListModelController.java b/app/src/main/java/com/german_software_engineers/trainerapp/Controller/ExerciseListModelController.java
+index d9f7df4..1dce040 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/Controller/ExerciseListModelController.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/Controller/ExerciseListModelController.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.Controller;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.support.annotation.NonNull;
+ 
+ import com.german_software_engineers.trainerapp.ExerciseView.Activity.ExerciseViewActivity;
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/Controller/ScheduleListModelController.java b/app/src/main/java/com/german_software_engineers/trainerapp/Controller/ScheduleListModelController.java
+index d76bd95..bdd90fc 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/Controller/ScheduleListModelController.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/Controller/ScheduleListModelController.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.Controller;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import com.german_software_engineers.trainerapp.TrainingsSchedule;
+ import com.german_software_engineers.trainerappmodel.Model.Model;
+ import com.german_software_engineers.trainerappmodel.Schedule.Schedule;
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/EditExerciseActivity.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/EditExerciseActivity.java
+index 796b07a..06ec1c5 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/EditExerciseActivity.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/EditExerciseActivity.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ExerciseView.Activity;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.content.Intent;
+ import android.net.Uri;
+ import android.os.Bundle;
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseListActivity.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseListActivity.java
+index bbad188..2832bf4 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseListActivity.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseListActivity.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ExerciseView.Activity;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.support.v7.app.AppCompatActivity;
+ 
+ import com.german_software_engineers.trainerapp.ExerciseView.Fragments.ExcersizeListFragment;
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java
+index d7eb115..d37eabe 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Activity/ExerciseViewActivity.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ExerciseView.Activity;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.support.design.widget.FloatingActionButton;
+@@ -22,7 +39,7 @@ public class ExerciseViewActivity extends ExerciseListActivity {
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_exercise_view);
+-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
++        Toolbar toolbar = findViewById(R.id.toolbar);
+         setSupportActionBar(toolbar);
+ 
+ 
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Controller/ExerciseViewHolder.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Controller/ExerciseViewHolder.java
+index 4c8fa75..2c16891 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Controller/ExerciseViewHolder.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Controller/ExerciseViewHolder.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ExerciseView.Controller;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.graphics.Color;
+ import android.support.v7.widget.CardView;
+ import android.support.v7.widget.RecyclerView;
+@@ -112,7 +129,7 @@ public class ExerciseViewHolder extends RecyclerView.ViewHolder {
+ 
+     private void decorateWarmUpExercise(){
+         CardView card = ExerciseView.findViewById(R.id.ExerciseCard);
+-        card.setCardBackgroundColor(ExerciseView.getResources().getColor(R.color.colorPrimary));
++        card.setCardBackgroundColor(ExerciseView.getResources().getColor(R.color.WarmUpColor));
+         WarmUpExercise exc = (WarmUpExercise)Exercise;
+         StringBuilder titleBuilder = new StringBuilder();
+         titleBuilder.append(exc.getPosition());
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Controller/MyExcersizeRecyclerViewAdapter.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Controller/MyExcersizeRecyclerViewAdapter.java
+index a4a2d61..62c2058 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Controller/MyExcersizeRecyclerViewAdapter.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Controller/MyExcersizeRecyclerViewAdapter.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ExerciseView.Controller;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.support.v7.widget.RecyclerView;
+ import android.view.LayoutInflater;
+ import android.view.View;
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/BodyWeightExerciseFragment.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/BodyWeightExerciseFragment.java
+index 973ea4f..b13ce14 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/BodyWeightExerciseFragment.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/BodyWeightExerciseFragment.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ExerciseView.Fragments;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.content.Context;
+ import android.net.Uri;
+ import android.os.Bundle;
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/DeviceExerciseFragment.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/DeviceExerciseFragment.java
+index ba57e1d..c887640 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/DeviceExerciseFragment.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/DeviceExerciseFragment.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ExerciseView.Fragments;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.content.Context;
+ import android.os.Bundle;
+ import android.support.v4.app.Fragment;
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/ExcersizeListFragment.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/ExcersizeListFragment.java
+index 7b24153..92cd3cd 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/ExcersizeListFragment.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/ExcersizeListFragment.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ExerciseView.Fragments;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.content.Context;
+ import android.os.Bundle;
+ import android.support.v4.app.Fragment;
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/ExerciseFragment.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/ExerciseFragment.java
+index 83e822c..ef58246 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/ExerciseFragment.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/ExerciseFragment.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ExerciseView.Fragments;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.net.Uri;
+ import android.support.v4.app.Fragment;
+ 
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/WarmUpExerciseFragment.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/WarmUpExerciseFragment.java
+index f02e290..8270640 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/WarmUpExerciseFragment.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/Fragments/WarmUpExerciseFragment.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ExerciseView.Fragments;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.content.Context;
+ import android.net.Uri;
+ import android.os.Bundle;
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/BodyWeightExerciseViewModel.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/BodyWeightExerciseViewModel.java
+index 4d5c28b..e52c0b7 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/BodyWeightExerciseViewModel.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/BodyWeightExerciseViewModel.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ExerciseView.ViewModel;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.arch.lifecycle.MutableLiveData;
+ import android.arch.lifecycle.ViewModel;
+ 
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/DeviceExerciseViewModel.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/DeviceExerciseViewModel.java
+index 23a91e2..0f39dbb 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/DeviceExerciseViewModel.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/DeviceExerciseViewModel.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ExerciseView.ViewModel;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.arch.lifecycle.MutableLiveData;
+ import android.arch.lifecycle.ViewModel;
+ 
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/ExerciseViewModel.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/ExerciseViewModel.java
+index 45474f3..2041dc8 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/ExerciseViewModel.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/ExerciseViewModel.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ExerciseView.ViewModel;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.arch.lifecycle.LiveData;
+ import android.arch.lifecycle.MutableLiveData;
+ import android.arch.lifecycle.ViewModel;
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/WarmUpExerciseViewModel.java b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/WarmUpExerciseViewModel.java
+index 229583d..45c0d80 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/WarmUpExerciseViewModel.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ExerciseView/ViewModel/WarmUpExerciseViewModel.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ExerciseView.ViewModel;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.arch.lifecycle.ViewModel;
+ 
+ import com.german_software_engineers.trainerappmodel.Enumerations.ExerciseType;
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java b/app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java
+index dd6c9b9..b12e697 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/InfoActivity.java
+@@ -1,11 +1,32 @@
+ package com.german_software_engineers.trainerapp;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
++
++import android.content.Intent;
++import android.net.Uri;
+ import android.os.Bundle;
+ import android.support.design.widget.FloatingActionButton;
+ import android.support.design.widget.Snackbar;
+ import android.support.v7.app.AppCompatActivity;
+ import android.support.v7.widget.Toolbar;
+-import android.view.View;
++import android.widget.Button;
++import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
+ 
+ public class InfoActivity extends AppCompatActivity {
+ 
+@@ -13,12 +34,34 @@ public class InfoActivity extends AppCompatActivity {
+     protected void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_info);
+-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
++        Toolbar toolbar = findViewById(R.id.toolbar);
+         setSupportActionBar(toolbar);
+ 
+         FloatingActionButton fab = findViewById(R.id.fab);
+-        fab.setOnClickListener(view -> Snackbar.make(view, "Contact us on GitHub", Snackbar.LENGTH_LONG)
++        fab.setOnClickListener(view -> Snackbar.make(view,
++                "Contact us on GitHub", Snackbar.LENGTH_LONG)
+                 .setAction("Action", null).show());
+         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
++
++        makeConnections();
++    }
++
++    private void makeConnections(){
++        Button LicenseButton = findViewById(R.id.OurLicenseButton);
++        LicenseButton.setOnClickListener(listener->{
++            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.gnu.org/licenses/gpl-3.0-standalone.html"));
++            startActivity(browserIntent);
++        });
++
++        Button GithubButton = findViewById(R.id.OpenGithubButton);
++        GithubButton.setOnClickListener(listener->{
++            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/TheMHMoritz3/Trainer-App"));
++            startActivity(browserIntent);
++        });
++
++        Button SeeOtherLicenses = findViewById(R.id.OtherLicensesButton);
++        SeeOtherLicenses.setOnClickListener(listener->{
++            startActivity(new Intent(this, OssLicensesMenuActivity.class));
++        });
+     }
+ }
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/NavigationActivity.java b/app/src/main/java/com/german_software_engineers/trainerapp/NavigationActivity.java
+index 9515e73..6940075 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/NavigationActivity.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/NavigationActivity.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.support.design.widget.NavigationView;
+ import android.support.v7.app.AppCompatActivity;
+ 
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java b/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java
+index 01bf6e5..b65e161 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/GeneralTrainingScheduleEditor.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ScheduleView;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.support.design.widget.FloatingActionButton;
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/MyScheduleRecyclerViewAdapter.java b/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/MyScheduleRecyclerViewAdapter.java
+index c17f2e0..d89a767 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/MyScheduleRecyclerViewAdapter.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/MyScheduleRecyclerViewAdapter.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ScheduleView;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.support.v7.widget.RecyclerView;
+ import android.view.LayoutInflater;
+ import android.view.MenuItem;
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/ScheduleListFragment.java b/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/ScheduleListFragment.java
+index 81c2243..5c64ad3 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/ScheduleListFragment.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/ScheduleView/ScheduleListFragment.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp.ScheduleView;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.content.Context;
+ import android.os.Bundle;
+ import android.support.v4.app.Fragment;
+diff --git a/app/src/main/java/com/german_software_engineers/trainerapp/TrainingsSchedule.java b/app/src/main/java/com/german_software_engineers/trainerapp/TrainingsSchedule.java
+index 8b14918..7b48cee 100644
+--- a/app/src/main/java/com/german_software_engineers/trainerapp/TrainingsSchedule.java
++++ b/app/src/main/java/com/german_software_engineers/trainerapp/TrainingsSchedule.java
+@@ -1,5 +1,22 @@
+ package com.german_software_engineers.trainerapp;
+ 
++/**
++ *     Copyright (C) 2019  Moritz Herzog
++ *
++ *     This program is free software: you can redistribute it and/or modify
++ *     it under the terms of the GNU General Public License as published by
++ *     the Free Software Foundation, either version 3 of the License, or
++ *     (at your option) any later version.
++ *
++ *     This program is distributed in the hope that it will be useful,
++ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *     GNU General Public License for more details.
++ *
++ *     You should have received a copy of the GNU General Public License
++ *     along with this program.  If not, see <https://www.gnu.org/licenses/>
++ */
++
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.support.design.widget.FloatingActionButton;
+diff --git a/app/src/main/res/asserts.xml b/app/src/main/res/asserts.xml
+new file mode 100644
+index 0000000..72d8dbc
+--- /dev/null
++++ b/app/src/main/res/asserts.xml
+@@ -0,0 +1,3 @@
++<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE properties SYSTEM
++    "http://java.sun.com/dtd/properties.dtd">
++<properties />
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/content_info.xml b/app/src/main/res/layout/content_info.xml
+index 3d4d333..04747e4 100644
+--- a/app/src/main/res/layout/content_info.xml
++++ b/app/src/main/res/layout/content_info.xml
+@@ -8,10 +8,78 @@
+     tools:context=".InfoActivity"
+     tools:showIn="@layout/activity_info">
+ 
+-    <TextView
+-        android:layout_width="wrap_content"
+-        android:layout_height="wrap_content"
+-        android:layout_margin="@dimen/text_margin"
+-        android:text="@string/LicenseText" />
++    <android.support.constraint.ConstraintLayout
++        android:layout_width="match_parent"
++        android:layout_height="match_parent">
++
++        <TextView
++            android:id="@+id/CopyrightInfoText"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginStart="8dp"
++            android:layout_marginTop="12dp"
++            android:text="@string/Copyright"
++            android:textAppearance="?attr/textAppearanceListItem"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toTopOf="parent" />
++
++        <TextView
++            android:id="@+id/CopyrightReservedText"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginStart="8dp"
++            android:layout_marginTop="20dp"
++            android:text="@string/ReservedFor"
++            android:textAppearance="?attr/textAppearanceListItem"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toTopOf="@id/CopyrightInfoText" />
++
++        <TextView
++            android:id="@+id/LicenseShortText"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginStart="8dp"
++            android:layout_marginTop="20dp"
++            android:text="@string/LicenseShort"
++            android:textAppearance="?attr/textAppearanceListItem"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toTopOf="@id/CopyrightReservedText" />
++
++        <Button
++            android:id="@+id/OurLicenseButton"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginStart="8dp"
++            android:layout_marginTop="40dp"
++            android:layout_marginEnd="8dp"
++            android:text="@string/LicenseButton"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toTopOf="@id/LicenseShortText" />
++
++        <Button
++            android:id="@+id/OtherLicensesButton"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginStart="8dp"
++            android:layout_marginTop="40dp"
++            android:layout_marginEnd="8dp"
++            android:text="@string/OtherLicenses"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toTopOf="@id/OurLicenseButton"/>
++
++        <Button
++            android:id="@+id/OpenGithubButton"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginStart="8dp"
++            android:layout_marginTop="40dp"
++            android:layout_marginEnd="8dp"
++            android:text="@string/OpenGitHub"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toTopOf="@id/OtherLicensesButton"/>
++    </android.support.constraint.ConstraintLayout>
+ 
+ </android.support.v4.widget.NestedScrollView>
+\ No newline at end of file
+diff --git a/app/src/main/res/values/colors.xml b/app/src/main/res/values/colors.xml
+index 3ab3e9c..954fad1 100644
+--- a/app/src/main/res/values/colors.xml
++++ b/app/src/main/res/values/colors.xml
+@@ -3,4 +3,5 @@
+     <color name="colorPrimary">#3F51B5</color>
+     <color name="colorPrimaryDark">#303F9F</color>
+     <color name="colorAccent">#FF4081</color>
++    <color name="WarmUpColor">#7b88d1</color>
+ </resources>
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index c51deec..887ed61 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -27,32 +27,14 @@
+ 
+     <!--Info Activity-->
+     <string name="InfoActivityTitle">Info</string>
+-    <string name="LicenseText">
+-        "License - GPL V 3.0\n\n"
+-
+-        "Copyright (C) 2007 Free Software Foundation, Inc.\n"
+-        "Everyone is permitted to copy and distribute verbatim copies of this license document, but"
+-        "changing it is not allowed.\n\n"
+-
+-        "Preamble\n"
+-
+-        "The licenses for most software and other practical works are designed to take away your freedom to share and change the works. By contrast,the GNU General Public License is intended to guarantee your freedom to share and change all versions of a program--to make sure it remains free software for all its users.  We, the Free Software Foundation, use the GNU General Public License for most of our software; it applies also to any other work released this way by its authors.  You can apply it to your programs, too.\n\n"
+-        "When we speak of free software, we are referring to freedom, not price.  Our General Public Licenses are designed to make sure that you have the freedom to distribute copies of free software (and charge for them if you wish), that you receive source code or can get it if you want it, that you can change the software or use pieces of it in new free programs, and that you know you can do these things.\n\n"
+-        "To protect your rights, we need to prevent others from denying you these rights or asking you to surrender the rights.  Therefore, you have certain responsibilities if you distribute copies of the software, or if you modify it: responsibilities to respect the freedom of others.\n\n"
+-        "For example, if you distribute copies of such a program, whether gratis or for a fee, you must pass on to the recipients the same freedoms that you received.  You must make sure that they, too, receive or can get the source code.  And you must show them these terms so they know their rights.\n\n"
+-        "Developers that use the GNU GPL protect your rights with two steps: \n(1) assert copyright on the software, and \n(2) offer you this License giving you legal permission to copy, distribute and/or modify it.\n\n"
+-        "For the developers' and authors' protection, the GPL clearly explains that there is no warranty for this free software.  For both users' and authors' sake, the GPL requires that modified versions be marked as changed, so that their problems will not be attributed erroneously to authors of previous versions.\n\n"
+-        "Some devices are designed to deny users access to install or run modified versions of the software inside them, although the manufacturer can do so.  This is fundamentally incompatible with the aim of protecting users' freedom to change the software.  The systematic pattern of such abuse occurs in the area of products for individuals to use, which is precisely where it is most unacceptable.  Therefore, we have designed this version of the GPL to prohibit the practice for those products.  If such problems arise substantially in other domains, we stand ready to extend this provision to those domains in future versions of the GPL, as needed to protect the freedom of users.\n\n"
+-        "Finally, every program is threatened constantly by software patents. States should not allow patents to restrict development and use of software on general-purpose computers, but in those that do, we wish to avoid the special danger that patents applied to a free program could make it effectively proprietary.  To prevent this, the GPL assures that patents cannot be used to render the program non-free.\n\n"
+-        "The precise terms and conditions for copying, distribution and
+-modification follow.\n\n\n"
+-
+-        "TERMS AND CONDITIONS\n"
+-        "0. Definitions:"
+-        "\"This License\" refers to version 3 of the GNU General Public License.\n"
+-        "..."
+-
+-    </string>
++    <string name="Copyright">Copyright 2019</string>
++    <string name="ReservedFor">Moritz Herzog - German Software Engineers</string>
++    <string name="LicenseShort">The software is published under the GPL V3. To view the license click on the button below.</string>
++    <string name="LicenseButton">Take me to License</string>
++    <string name="OtherLicenses">Licenses of used Parts</string>
++    <string name="OpenGitHub">Open Github</string>
++
++
+     <string name="title_activity_general_training_schedule_editor">Add Trainigns Schedule</string>
+ 
+     <string-array name="ScheduleType">
+diff --git a/build.gradle b/build.gradle
+index d05426c..6c2bb63 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -8,7 +8,6 @@ buildscript {
+     }
+     dependencies {
+         classpath 'com.android.tools.build:gradle:3.3.0'
+-
+         
+ 
+         // NOTE: Do not place your application dependencies here; they belong

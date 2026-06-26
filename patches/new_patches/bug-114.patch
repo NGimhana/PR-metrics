@@ -1,0 +1,42 @@
+diff --git a/app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java b/app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java
+index 6bd261b..90482d5 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java
++++ b/app/src/main/java/com/simon/harmonichackernews/CommentsFragment.java
+@@ -1635,7 +1635,16 @@ public class CommentsFragment extends Fragment implements CommentsRecyclerViewAd
+             }
+         });
+ 
++        CommentsRecyclerViewAdapter commentAdapter = this.adapter;
++        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
++            @Override
++            public void onDismiss(DialogInterface dialog) {
++                commentAdapter.disableCommentATagClick = false;
++            }
++        });
++
+         AlertDialog dialog = builder.create();
++        commentAdapter.disableCommentATagClick = true;
+         dialog.show();
+     }
+ 
+diff --git a/app/src/main/java/com/simon/harmonichackernews/adapters/CommentsRecyclerViewAdapter.java b/app/src/main/java/com/simon/harmonichackernews/adapters/CommentsRecyclerViewAdapter.java
+index bf108c5..5ee73f2 100644
+--- a/app/src/main/java/com/simon/harmonichackernews/adapters/CommentsRecyclerViewAdapter.java
++++ b/app/src/main/java/com/simon/harmonichackernews/adapters/CommentsRecyclerViewAdapter.java
+@@ -93,6 +93,7 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
+     public boolean showUpdate = false;
+     public int spacerHeight = 0;
+     private int navbarHeight = 0;
++    public boolean disableCommentATagClick = false;
+ 
+     public static final int TYPE_HEADER = 0;
+     public static final int TYPE_COMMENT = 1;
+@@ -536,6 +537,8 @@ public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVi
+             commentBody.setOnClickATagListener(new OnClickATagListener() {
+                 @Override
+                 public boolean onClick(View widget, String spannedText, @Nullable String href) {
++                    if (disableCommentATagClick) return true ;
++
+                     Utils.openLinkMaybeHN(widget.getContext(), href);
+                     return true;
+                 }

@@ -1,0 +1,228 @@
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+index 31724ea9..28cbf504 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Activities/IntroScreenActivity.java
+@@ -54,6 +54,7 @@ import com.heinrichreimersoftware.materialintro.slide.FragmentSlide;
+ import com.heinrichreimersoftware.materialintro.slide.SimpleSlide;
+ 
+ import org.shadowice.flocke.andotp.R;
++import org.shadowice.flocke.andotp.Utilities.ConfirmedPasswordTransformationHelper;
+ import org.shadowice.flocke.andotp.Utilities.Constants;
+ import org.shadowice.flocke.andotp.Utilities.Settings;
+ import org.shadowice.flocke.andotp.Utilities.UIHelper;
+@@ -380,7 +381,7 @@ public class IntroScreenActivity extends IntroActivity {
+                     passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                     passwordConfirm.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+ 
+-                    setPasswordTransformationMethod();
++                    ConfirmedPasswordTransformationHelper.setup(passwordLayout, passwordInput, passwordConfirm);
+ 
+                     minLength = Constants.AUTH_MIN_PASSWORD_LENGTH;
+                     lengthWarning = getString(R.string.settings_label_short_password, minLength);
+@@ -390,33 +391,6 @@ public class IntroScreenActivity extends IntroActivity {
+                     focusOnPasswordInput();
+                 }
+ 
+-                private void setPasswordTransformationMethod() {
+-                    passwordLayout.setEndIconOnClickListener(new View.OnClickListener() {
+-                        @Override
+-                        public void onClick(View v) {
+-                            boolean wasShowingPassword = passwordInput.getTransformationMethod() instanceof PasswordTransformationMethod;
+-                            // Dispatch password visibility change to both password and confirm inputs
+-                            dispatchPasswordVisibilityChange(passwordInput, wasShowingPassword);
+-                            dispatchPasswordVisibilityChange(passwordConfirm, wasShowingPassword);
+-                            passwordLayout.refreshDrawableState();
+-                        }
+-                    });
+-                    passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
+-                    passwordConfirm.setTransformationMethod(PasswordTransformationMethod.getInstance());
+-                }
+-
+-                private void dispatchPasswordVisibilityChange(EditText editText, boolean wasShowingPassword) {
+-                    final int selection = editText.getSelectionEnd();
+-                    if (wasShowingPassword) {
+-                        editText.setTransformationMethod(null);
+-                    } else {
+-                        editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+-                    }
+-                    if (selection >= 0) {
+-                        editText.setSelection(selection);
+-                    }
+-                }
+-
+                 private void focusOnPasswordInput() {
+                     if (getIntroActivity().getCurrentSlidePosition() == slidePos) {
+                         passwordInput.requestFocus();
+@@ -433,7 +407,7 @@ public class IntroScreenActivity extends IntroActivity {
+                     passwordInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+                     passwordConfirm.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+ 
+-                    setPasswordTransformationMethod();
++                    ConfirmedPasswordTransformationHelper.setup(passwordLayout, passwordInput, passwordConfirm);
+ 
+                     minLength = Constants.AUTH_MIN_PIN_LENGTH;
+                     lengthWarning = getString(R.string.settings_label_short_pin, minLength);
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java
+index 1400f17e..dd0b535a 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Dialogs/PasswordEntryDialog.java
+@@ -15,6 +15,7 @@ import android.widget.Button;
+ import android.widget.EditText;
+ 
+ import org.shadowice.flocke.andotp.R;
++import org.shadowice.flocke.andotp.Utilities.ConfirmedPasswordTransformationHelper;
+ import org.shadowice.flocke.andotp.Utilities.Tools;
+ 
+ public class PasswordEntryDialog extends AppCompatDialog
+@@ -42,6 +43,7 @@ public class PasswordEntryDialog extends AppCompatDialog
+         TextInputLayout passwordLayout = findViewById(R.id.passwordInputLayout);
+         passwordInput = findViewById(R.id.passwordInput);
+         passwordConfirm = findViewById(R.id.passwordConfirm);
++        ConfirmedPasswordTransformationHelper.setup(passwordLayout, passwordInput, passwordConfirm);
+ 
+         if (blockAccessibility) {
+             passwordLayout.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java
+index eae85ce2..f5992bed 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/CredentialsPreference.java
+@@ -46,6 +46,7 @@ import com.google.android.material.textfield.TextInputEditText;
+ import com.google.android.material.textfield.TextInputLayout;
+ 
+ import org.shadowice.flocke.andotp.R;
++import org.shadowice.flocke.andotp.Utilities.ConfirmedPasswordTransformationHelper;
+ import org.shadowice.flocke.andotp.Utilities.Constants;
+ import org.shadowice.flocke.andotp.Utilities.Settings;
+ import org.shadowice.flocke.andotp.Utilities.UIHelper;
+@@ -256,8 +257,7 @@ public class CredentialsPreference extends DialogPreference
+             passwordLayout.setHint(getContext().getString(R.string.settings_hint_password));
+             passwordConfirm.setHint(R.string.settings_hint_password_confirm);
+ 
+-            passwordInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+-            passwordConfirm.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
++            ConfirmedPasswordTransformationHelper.setup(passwordLayout, passwordInput, passwordConfirm);
+ 
+             passwordInput.setTransformationMethod(new PasswordTransformationMethod());
+             passwordConfirm.setTransformationMethod(new PasswordTransformationMethod());
+@@ -278,8 +278,7 @@ public class CredentialsPreference extends DialogPreference
+             passwordInput.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+             passwordConfirm.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+ 
+-            passwordInput.setTransformationMethod(new PasswordTransformationMethod());
+-            passwordConfirm.setTransformationMethod(new PasswordTransformationMethod());
++            ConfirmedPasswordTransformationHelper.setup(passwordLayout, passwordInput, passwordConfirm);
+ 
+             minLength = Constants.AUTH_MIN_PIN_LENGTH;
+             toShortWarning.setText(getContext().getString(R.string.settings_label_short_pin, minLength));
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java
+index 7302f8d3..6e089649 100644
+--- a/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Preferences/PasswordEncryptedPreference.java
+@@ -40,6 +40,7 @@ import android.widget.Button;
+ import android.widget.EditText;
+ 
+ import org.shadowice.flocke.andotp.R;
++import org.shadowice.flocke.andotp.Utilities.ConfirmedPasswordTransformationHelper;
+ import org.shadowice.flocke.andotp.Utilities.Constants;
+ import org.shadowice.flocke.andotp.Utilities.EncryptionHelper;
+ import org.shadowice.flocke.andotp.Utilities.KeyStoreHelper;
+@@ -135,8 +136,7 @@ public class PasswordEncryptedPreference extends DialogPreference
+             passwordConfirm.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+         }
+ 
+-        passwordInput.setTransformationMethod(new PasswordTransformationMethod());
+-        passwordConfirm.setTransformationMethod(new PasswordTransformationMethod());
++        ConfirmedPasswordTransformationHelper.setup(passwordLayout, passwordInput, passwordConfirm);
+ 
+         passwordConfirm.addTextChangedListener(this);
+         passwordInput.addTextChangedListener(this);
+diff --git a/app/src/main/java/org/shadowice/flocke/andotp/Utilities/ConfirmedPasswordTransformationHelper.java b/app/src/main/java/org/shadowice/flocke/andotp/Utilities/ConfirmedPasswordTransformationHelper.java
+new file mode 100644
+index 00000000..89c2d584
+--- /dev/null
++++ b/app/src/main/java/org/shadowice/flocke/andotp/Utilities/ConfirmedPasswordTransformationHelper.java
+@@ -0,0 +1,32 @@
++package org.shadowice.flocke.andotp.Utilities;
++
++import android.text.method.PasswordTransformationMethod;
++import android.widget.EditText;
++
++import com.google.android.material.textfield.TextInputEditText;
++import com.google.android.material.textfield.TextInputLayout;
++
++public final class ConfirmedPasswordTransformationHelper {
++
++    /** Sets up the specified password views for a toggleable obscure/view password text transformation. */
++    public static void setup(TextInputLayout passwordLayout, TextInputEditText passwordInput, EditText passwordConfirmInput) {
++        passwordLayout.setEndIconOnClickListener(v -> {
++            boolean wasShowingPassword = passwordInput.getTransformationMethod() instanceof PasswordTransformationMethod;
++            // Dispatch password visibility change to both password and confirm inputs
++            dispatchPasswordVisibilityChange(passwordInput, wasShowingPassword);
++            dispatchPasswordVisibilityChange(passwordConfirmInput, wasShowingPassword);
++            passwordLayout.refreshDrawableState();
++        });
++        passwordInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
++        passwordConfirmInput.setTransformationMethod(PasswordTransformationMethod.getInstance());
++    }
++
++    private static void dispatchPasswordVisibilityChange(EditText editText, boolean wasShowingPassword) {
++        final int selection = editText.getSelectionEnd();
++        PasswordTransformationMethod newMethod = wasShowingPassword ? null : PasswordTransformationMethod.getInstance();
++        editText.setTransformationMethod(newMethod);
++        if (selection >= 0) {
++            editText.setSelection(selection);
++        }
++    }
++}
+diff --git a/app/src/main/res/layout/component_authentication.xml b/app/src/main/res/layout/component_authentication.xml
+index 08c2f259..0f20052d 100644
+--- a/app/src/main/res/layout/component_authentication.xml
++++ b/app/src/main/res/layout/component_authentication.xml
+@@ -29,7 +29,7 @@
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:hint="@string/settings_hint_password"
+-            app:passwordToggleEnabled="true" >
++            app:endIconMode="password_toggle" >
+ 
+             <com.google.android.material.textfield.TextInputEditText
+                 android:id="@+id/passwordEdit"
+diff --git a/app/src/main/res/layout/component_password.xml b/app/src/main/res/layout/component_password.xml
+index b45de7e0..256700ba 100644
+--- a/app/src/main/res/layout/component_password.xml
++++ b/app/src/main/res/layout/component_password.xml
+@@ -15,7 +15,7 @@
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:hint="@string/settings_hint_password"
+-        app:passwordToggleEnabled="true" >
++        app:endIconMode="password_toggle" >
+ 
+         <com.google.android.material.textfield.TextInputEditText
+             android:id="@+id/passwordEdit"
+diff --git a/app/src/main/res/layout/content_authenticate.xml b/app/src/main/res/layout/content_authenticate.xml
+index 45f9627f..21f9006b 100644
+--- a/app/src/main/res/layout/content_authenticate.xml
++++ b/app/src/main/res/layout/content_authenticate.xml
+@@ -22,7 +22,7 @@
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:hint="@string/auth_hint_password"
+-        app:passwordToggleEnabled="true" >
++        app:endIconMode="password_toggle" >
+ 
+         <com.google.android.material.textfield.TextInputEditText
+             android:id="@+id/passwordEdit"
+diff --git a/app/src/main/res/layout/dialog_password_entry.xml b/app/src/main/res/layout/dialog_password_entry.xml
+index 45ea76a2..f9d1d7a3 100644
+--- a/app/src/main/res/layout/dialog_password_entry.xml
++++ b/app/src/main/res/layout/dialog_password_entry.xml
+@@ -16,7 +16,7 @@
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:hint="@string/dialog_label_enter_password"
+-        app:passwordToggleEnabled="true" >
++        app:endIconMode="password_toggle" >
+ 
+         <com.google.android.material.textfield.TextInputEditText
+             android:id="@+id/passwordInput"

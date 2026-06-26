@@ -11,18 +11,18 @@ def parse_args() -> argparse.Namespace:
     )
     p.add_argument(
         "--divergence_csv",
-        default="HunkDivergence_Proximity/hunk_divergence/total_hunk_divergence_results.csv",
+        default="HunkDivergence_Proximity/hunk_divergence/total_hunk_divergence_results_new.csv",
         help="CSV containing bug_id,hunk_count,divergence "
              "(default: ../hunk_divergence_v4_crystalbleu/total_hunk_divergence_results.csv)",
     )
     p.add_argument(
         "--proximity_csv",
-        default="HunkDivergence_Proximity/proximity_class/proximity_class.csv",
+        default="HunkDivergence_Proximity/proximity_class/proximity_class_new.csv",
         help="CSV containing bug_id,proximity_class (default: proximity_class.csv)",
     )
     p.add_argument(
         "--output_csv",
-        default="HunkDivergence_Proximity/proximity_class/proximity_class_avg_hunk_divergence.csv",
+        default="HunkDivergence_Proximity/proximity_class/proximity_class_avg_hunk_divergence_new.csv",
         help="Output CSV path (default: proximity_class_avg_hunk_divergence.csv)",
     )
     return p.parse_args()

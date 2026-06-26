@@ -11,6 +11,12 @@ import os
 
 _parent_map: Dict[javalang.ast.Node, javalang.ast.Node] = {}
 
+SCRIPT_DIR = Path(__file__).resolve().parent
+ROOT_DIR = SCRIPT_DIR.parent.parent   # adjust if needed
+
+DEFAULT_AST = ROOT_DIR / "hunk4j" / "javaparser" / "method-line-extractor" / "AST_TEST_FINAL_ast.json"
+
+
 def annotate_parents(node: javalang.ast.Node,
                      parent: Optional[javalang.ast.Node] = None) -> None:
     if not isinstance(node, javalang.ast.Node):
@@ -316,14 +322,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         description="Compute Hunk-Divergence & emit per-bug and per-pair CSVs"
     )
-    parser.add_argument("--json",     default="hunk4j/dataset/d4j_dataset.json")
-    parser.add_argument("--work-dir", default="checkout-bugs")
-    parser.add_argument("--patches-dir", default="patches")
-    # parser.add_argument('--defects4j_home', type=str, default=os.path.expanduser("defects4j-2.0.1"),
+    parser.add_argument("--json",     default="hunk4j/dataset/d4j_dataset_final.json")
+    parser.add_argument("--work-dir", default="checkout-bugs-final")
+    parser.add_argument("--patches-dir", default="patches/new_patches")
+    # parser.add_argument('--defects4j_home', type=str, default=os.path.expanduser("/Users/nadeeshan/Desktop/PR/birch/defects4j-2.0.1"),
     #                     help='Path to the Defects4J home directory')
-    parser.add_argument("--ast-json", default="hunk4j/javaparser/method-line-extractor/AST_TEST_ast.json", help="AST metrics JSON from JavaParser (diameter+pairs per bug/file)",)
-    parser.add_argument("--out",      default="HunkDivergence_Proximity/hunk_divergence/total_hunk_divergence_results.csv")
-    parser.add_argument("--pair-out", default="HunkDivergence_Proximity/hunk_divergence/pairwise_hunk_divergence_results.csv")
+    parser.add_argument("--ast-json", default=str(DEFAULT_AST), help="AST metrics JSON from JavaParser (diameter+pairs per bug/file)",)
+    parser.add_argument("--out",      default="HunkDivergence_Proximity/hunk_divergence/total_hunk_divergence_results_new.csv")
+    parser.add_argument("--pair-out", default="HunkDivergence_Proximity/hunk_divergence/pairwise_hunk_divergence_results_new.csv")
     args = parser.parse_args()
 
     data      = json.load(open(args.json, encoding="utf-8"))

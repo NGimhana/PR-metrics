@@ -24,15 +24,16 @@ def get_buggy_lines(patch_file_path):
         if line.startswith('---'):
             parts = line.split(' ')
             if len(parts) >= 2:
-                current_file = parts[1].strip()
-                if current_file.startswith('a/'):
-                    current_file = current_file[2:]
-                java_index = current_file.find('.java')
+                current_file = None
+                candidate = parts[1].strip()
+                if candidate.startswith('a/'):
+                    candidate = candidate[2:]
+                java_index = candidate.find('.java')
                 if java_index != -1:
-                    current_file = current_file[:java_index + 5]
+                    current_file = candidate[:java_index + 5]
         if line.startswith('@@'):
             match = re.search(r'\+(\d+),(\d+)', line)
-            if match:
+            if match and current_file:
                 start_line = int(match.group(1))
                 line_count = int(match.group(2))
                 end_line = start_line + line_count
@@ -93,16 +94,16 @@ def process_patches(patches_dir, work_dir, output_dir):
                 }
 
     os.makedirs(output_dir, exist_ok=True)
-    output_file_path = os.path.join(output_dir, 'd4j_dataset.json')
+    output_file_path = os.path.join(output_dir, 'd4j_dataset_final.json')
     with open(output_file_path, 'w', encoding='utf-8') as json_file:
         json.dump(hunks_data, json_file, ensure_ascii=False, indent=4)
     print(f"Saved minimal dataset JSON to {output_file_path}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Process patch files and create minimal JSON with buggy hunk locations.')
-    parser.add_argument('--patches_dir', type=str, default="/Users/nadeeshan/Desktop/PR/birch/PR-metrics/patches", help='Directory containing the patch files')
-    parser.add_argument('--work_dir', type=str, default="/Users/nadeeshan/Desktop/PR/birch/PR-metrics/checkout-bugs", help='Working directory where repositories are checked out')
-    parser.add_argument('--output_dir', type=str, default="/Users/nadeeshan/Desktop/PR/birch/hunk4j/dataset", help='Output directory for the generated JSON')
+    parser.add_argument('--patches_dir', type=str, default="patches/new_patches", help='Directory containing the patch files')
+    parser.add_argument('--work_dir', type=str, default="checkout-bugs-final", help='Working directory where repositories are checked out')
+    parser.add_argument('--output_dir', type=str, default="hunk4j/dataset", help='Output directory for the generated JSON')
 
     args = parser.parse_args()
 
